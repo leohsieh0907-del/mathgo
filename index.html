@@ -3509,6 +3509,278 @@ var TRIG_ADVFILL = [
 
 (function(){var old=questions[0]['三角比']||[];var advOpen=old.filter(function(q){return q.type==='open';});questions[0]['三角比']=TRIG_BASIC.concat(advOpen).concat(TRIG_ADVFILL);})();
 
+
+/* ══════════ v16 高一其餘章批次1：仿歷屆改編 14 基本題＋三型 adv-sol 詳解 ══════════ */
+(function(){
+var CH_BASIC = [
+  // 1 單選：絕對值方程的幾何意義（數線距離）
+  {q:'數線上一點的坐標為 x，滿足 |x−3|＝|x＋1|，則 x＝？',opts:['−1','1','2','3'],ans:'B',hint:'|x−a| 是 x 到 a 的距離，兩距離相等就取中點',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>|x−3| 是數線上點 x 到 3 的距離；|x＋1|＝|x−(−1)| 是 x 到 −1 的距離。</div></div><div class="as-step"><div class="as-n">2</div><div>方程要求「到 3」與「到 −1」兩段距離相等 → x 恰為 3 與 −1 的<b>中點</b>。</div></div><div class="as-f">x ＝ (3＋(−1))／2 ＝ 1</div><svg viewBox="0 0 340 80" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="45" x2="320" y2="45" stroke="var(--ink)" stroke-width="1.8"/><line x1="90" y1="40" x2="90" y2="50" stroke="var(--ink)" stroke-width="1.6"/><line x1="170" y1="40" x2="170" y2="50" stroke="var(--accent)" stroke-width="2"/><line x1="250" y1="40" x2="250" y2="50" stroke="var(--ink)" stroke-width="1.6"/><circle cx="170" cy="45" r="4" fill="var(--accent)"/><text x="90" y="68" text-anchor="middle" font-size="13" fill="var(--ink)">−1</text><text x="170" y="68" text-anchor="middle" font-size="13" fill="var(--accent)" font-weight="700">1</text><text x="250" y="68" text-anchor="middle" font-size="13" fill="var(--ink)">3</text><text x="130" y="34" text-anchor="middle" font-size="12" fill="var(--green)" font-weight="700">2</text><text x="210" y="34" text-anchor="middle" font-size="12" fill="var(--green)" font-weight="700">2</text></svg><div class="as-note">紅點到左右兩定點的距離都是 2，正好落在中點</div><div class="as-warn">⚠ 看到 |x−a|＝|x−b| 別急著兩邊硬平方，理解成「到 a、到 b 等距」直接取中點最快；平方法也對但容易算錯正負號</div><div class="as-ans">答：x＝1</div></div>'},
+
+  // 2 單選：根式化簡
+  {q:'化簡 √48 − √12 ＋ √27 ＝？',opts:['5√3','3√3','6√3','9√3'],ans:'A',hint:'每個根號先抽出完全平方因數，化成同類方根',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>把每個根式化到最簡（抽出完全平方因數）：</div></div><div class="as-f">√48＝√(16·3)＝4√3　　√12＝√(4·3)＝2√3　　√27＝√(9·3)＝3√3</div><div class="as-step"><div class="as-n">2</div><div>都是 √3 的倍數，係數相加減：</div></div><div class="as-f">4√3 − 2√3 ＋ 3√3 ＝ (4−2＋3)√3 ＝ 5√3</div><div class="as-warn">⚠ 只有「根號內相同」才能合併係數；√48−√12 不可以直接寫成 √36。務必先化到最簡再併項</div><div class="as-ans">答：5√3</div></div>'},
+
+  // 3 單選：分母有理化
+  {q:'將 6／(√5 − √2) 的分母化為無根式，結果為？',opts:['2√5 − 2√2','√5 ＋ √2','2√5 ＋ 2√2','6√5 ＋ 6√2'],ans:'C',hint:'分子分母同乘共軛根式 (√5＋√2)',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>分母是 √5−√2，乘上<b>共軛根式</b> √5＋√2 可消去根號（平方差）：</div></div><div class="as-f">6／(√5−√2) × (√5＋√2)／(√5＋√2)</div><div class="as-step"><div class="as-n">2</div><div>分母 (√5−√2)(√5＋√2)＝5−2＝3：</div></div><div class="as-f">＝ 6(√5＋√2)／3 ＝ 2(√5＋√2) ＝ 2√5 ＋ 2√2</div><div class="as-warn">⚠ 共軛只改「中間的正負號」：√5−√2 的共軛是 √5＋√2；分母是和就乘差，是差就乘和，別把兩個根號都變號</div><div class="as-ans">答：2√5 ＋ 2√2</div></div>'},
+
+  // 4 單選：指數律（含分數、負指數）
+  {q:'計算 8^(2/3) × 9^(−1/2) ＝？',opts:['4/3','3/4','12','4'],ans:'A',hint:'分數指數＝先開方再乘方；負指數＝取倒數',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>分數指數：分母開方、分子乘方。8＝2³：</div></div><div class="as-f">8^(2/3) ＝ (2³)^(2/3) ＝ 2² ＝ 4</div><div class="as-step"><div class="as-n">2</div><div>負指數取倒數，1/2 次方是開平方：</div></div><div class="as-f">9^(−1/2) ＝ 1／9^(1/2) ＝ 1／3</div><div class="as-step"><div class="as-n">3</div><div>相乘：4 × 1/3 ＝ 4/3</div></div><div class="as-warn">⚠ 負指數是「取倒數」不是「變負數」：9^(−1/2)＝1/3，不是 −3。這是最常見的扣分點</div><div class="as-ans">答：4/3</div></div>'},
+
+  // 5 單選：乘法公式
+  {q:'已知兩實數 a、b 滿足 a＋b＝7、ab＝10，求 a² ＋ b²。',opts:['39','49','19','29'],ans:'D',hint:'套 (a＋b)² ＝ a²＋2ab＋b²',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>由乘法公式 (a＋b)²＝a²＋2ab＋b²，移項得：</div></div><div class="as-f">a²＋b² ＝ (a＋b)² − 2ab</div><div class="as-step"><div class="as-n">2</div><div>代入 a＋b＝7、ab＝10：</div></div><div class="as-f">＝ 7² − 2×10 ＝ 49 − 20 ＝ 29</div><div class="as-warn">⚠ 別忘了扣掉 2ab：直接把 (a＋b)²＝49 當答案會多算 20。驗算：a＝2、b＝5 時 a²＋b²＝4＋25＝29 ✓</div><div class="as-ans">答：29</div></div>'},
+
+  // 6 單選：因式分解 + 分式化簡
+  {q:'化簡 (x² − 9)／(x² − x − 6)（其中 x≠3、x≠−2）＝？',opts:['(x＋3)／(x＋2)','(x−3)／(x−2)','(x＋3)／(x−2)','3／2'],ans:'A',hint:'分子分母各自因式分解，約去公因式',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>分子是平方差、分母十字交乘各自分解：</div></div><div class="as-f">x²−9 ＝ (x−3)(x＋3)　　x²−x−6 ＝ (x−3)(x＋2)</div><div class="as-step"><div class="as-n">2</div><div>約去公因式 (x−3)：</div></div><div class="as-f">(x−3)(x＋3)／[(x−3)(x＋2)] ＝ (x＋3)／(x＋2)</div><div class="as-warn">⚠ 約分不能「拆項亂消」：(x²−9)/(x²−x−6) 不可以把 x² 直接消掉。一定要先分解成乘積，才能約去整個括號</div><div class="as-ans">答：(x＋3)／(x＋2)</div></div>'},
+
+  // 7 多選：絕對值與根式性質判真偽
+  {type:'multi',q:'【多選】關於實數的絕對值與根式，下列哪些正確？',opts:['√(x²) ＝ |x| 對所有實數 x 成立','|a−b| ＝ |b−a| 對所有實數 a、b 成立','若 |x| ＝ |y|，則必有 x ＝ y','|a＋b| ≤ |a| ＋ |b| 對所有實數成立','√(a²＋b²) ＝ a ＋ b 對所有正實數成立'],ans:['A','B','D'],hint:'C 想一個反例；E 拿 3、4 代看看',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div><b>A 對</b>：根號回傳非負值，√(x²) 一律等於 |x|（例：√((−3)²)＝√9＝3＝|−3|）。</div></div><div class="as-step"><div class="as-n">2</div><div><b>B 對</b>：a−b 與 b−a 互為相反數，絕對值相同（距離不分方向）。</div></div><div class="as-step"><div class="as-n">3</div><div><b>C 錯</b>：|3|＝|−3| 但 3≠−3，也可能 x＝−y。<b>D 對</b>：三角不等式。<b>E 錯</b>：√(3²＋4²)＝√25＝5 ≠ 3＋4＝7。</div></div><div class="as-f">正確：A、B、D</div><div class="as-warn">⚠ 兩個絕對值最常見的陷阱：√(x²)＝x（漏了絕對值，x 為負時錯）、以及把 √(a²＋b²) 拆成 a＋b。根號不能逐項開方</div><div class="as-ans">答：A、B、D</div></div>'},
+
+  // 8 單選：一元一次不等式與區間
+  {q:'解不等式 −3 ≤ 2x − 1 &lt; 5，其解的區間為？',opts:['−1 &lt; x ≤ 3','−1 ≤ x &lt; 3','−2 ≤ x &lt; 6','1 ≤ x &lt; 3'],ans:'B',hint:'三邊同時＋1，再同時÷2',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>連鎖不等式三邊同時加 1：</div></div><div class="as-f">−3＋1 ≤ 2x &lt; 5＋1　→　−2 ≤ 2x &lt; 6</div><div class="as-step"><div class="as-n">2</div><div>三邊同時除以 2（正數，不等號方向不變）：</div></div><div class="as-f">−1 ≤ x &lt; 3</div><div class="as-warn">⚠ 兩端的「含不含等號」要跟著搬：左邊原本 ≤ 就一路是 ≤、右邊 &lt; 就一路是 &lt;。除以正數不變號，除以負數才要翻轉</div><div class="as-ans">答：−1 ≤ x &lt; 3</div></div>'},
+
+  // 9 單選：科學記號（情境）
+  {q:'光速約 3×10⁸ 公尺／秒，一年約 3×10⁷ 秒。則一光年（光一年走的距離）約為幾公尺？',opts:['9×10¹⁴','3×10¹⁵','9×10¹⁵','6×10¹⁵'],ans:'C',hint:'距離＝速率×時間，係數相乘、10 的次方相加',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>距離＝速率×時間：</div></div><div class="as-f">(3×10⁸) × (3×10⁷)</div><div class="as-step"><div class="as-n">2</div><div>係數相乘、指數相加：</div></div><div class="as-f">＝ (3×3) × 10^(8＋7) ＝ 9 × 10¹⁵</div><div class="as-warn">⚠ 科學記號相乘：係數相乘、10 的次方「相加」（不是相乘）。若係數乘出來 ≥10（如 4×5＝20）要再進位改寫成 2×10^(n＋1)，維持 1≤係數&lt;10</div><div class="as-ans">答：9×10¹⁵ 公尺</div></div>'},
+
+  // 10 多選：指數律判真偽
+  {type:'multi',q:'【多選】設底數皆為正，下列各式哪些成立？',opts:['2³ · 2⁴ ＝ 2⁷','(3²)³ ＝ 3⁵','2⁻³ ＝ 1／8','3⁰ ＝ 0','(2·3)² ＝ 36'],ans:['A','C','E'],hint:'B 檢查指數該相乘還相加；D 想 a⁰ 的定義',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div><b>A 對</b>：同底相乘指數相加，2³·2⁴＝2⁷＝128。</div></div><div class="as-step"><div class="as-n">2</div><div><b>B 錯</b>：次方的次方要<b>相乘</b>，(3²)³＝3^(2×3)＝3⁶（＝729），不是 3⁵。</div></div><div class="as-step"><div class="as-n">3</div><div><b>C 對</b>：2⁻³＝1/2³＝1/8。<b>D 錯</b>：任何非零數的 0 次方都是 1，3⁰＝1 不是 0。<b>E 對</b>：(2·3)²＝6²＝36。</div></div><div class="as-f">正確：A、C、E</div><div class="as-warn">⚠ 兩個死穴：(aᵐ)ⁿ 指數「相乘」、aᵐ·aⁿ 指數「相加」，別互換；還有 a⁰＝1（不是 0）</div><div class="as-ans">答：A、C、E</div></div>'},
+
+  // 11 單選：絕對值不等式（小於，介於）
+  {q:'解不等式 |2x − 1| &lt; 5，其解為？',opts:['x &lt; 3','−2 ≤ x ≤ 3','x &gt; 3 或 x &lt; −2','−2 &lt; x &lt; 3'],ans:'D',hint:'|A|&lt;k 等價於 −k &lt; A &lt; k',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>|A| &lt; k（k&gt;0）可化成夾在中間的雙向不等式：</div></div><div class="as-f">−5 &lt; 2x − 1 &lt; 5</div><div class="as-step"><div class="as-n">2</div><div>三邊＋1，再÷2：</div></div><div class="as-f">−4 &lt; 2x &lt; 6　→　−2 &lt; x &lt; 3</div><div class="as-warn">⚠ 分清方向：|A|&lt;k 是「介於」(−k, k)；|A|&gt;k 才是「分開兩段」。把小於型寫成聯集是最常見的錯</div><div class="as-ans">答：−2 &lt; x &lt; 3</div></div>'},
+
+  // 12 選填：湊完全平方化簡雙重根號
+  {type:'fill',q:'【選填】√(7 ＋ 4√3) 可以寫成 a ＋ b√3 的形式（a、b 為正整數），則 a ＋ b ＝？',ans:'3',acc:['３'],hint:'把 7＋4√3 湊成某個和的平方 (a＋b√3)²',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>猜被開方式是完全平方 (a＋b√3)²＝a²＋3b² ＋ 2ab√3。對照 7＋4√3：</div></div><div class="as-f">a² ＋ 3b² ＝ 7　　且　　2ab ＝ 4</div><div class="as-step"><div class="as-n">2</div><div>由 2ab＝4 得 ab＝2，試 a＝2、b＝1：a²＋3b²＝4＋3＝7 ✓</div></div><div class="as-f">7＋4√3 ＝ (2＋√3)²　→　√(7＋4√3) ＝ 2＋√3</div><div class="as-step"><div class="as-n">3</div><div>故 a＝2、b＝1，a＋b＝3。</div></div><div class="as-warn">⚠ 開出來要取「正」的那個：√ 回傳非負值，2＋√3&gt;0 才對。若寫成 −(2＋√3) 就錯了</div><div class="as-ans">答：3</div></div>'},
+
+  // 13 單選：絕對值不等式（大於，聯集）
+  {q:'解不等式 |x − 2| ≥ 3，其解為？',opts:['−1 ≤ x ≤ 5','x ≥ 5','x ≤ −1 或 x ≥ 5','x ≤ −1'],ans:'C',hint:'|A|≥k 要拆成 A≥k 或 A≤−k 兩段',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>|x−2| ≥ 3 代表 x 到 2 的距離不小於 3，往左右各退 3，拆成兩段：</div></div><div class="as-f">x − 2 ≥ 3　　或　　x − 2 ≤ −3</div><div class="as-step"><div class="as-n">2</div><div>各自解得：</div></div><div class="as-f">x ≥ 5　　或　　x ≤ −1</div><svg viewBox="0 0 340 80" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="45" x2="320" y2="45" stroke="var(--ink)" stroke-width="1.6"/><line x1="20" y1="45" x2="110" y2="45" stroke="var(--red)" stroke-width="4"/><line x1="260" y1="45" x2="320" y2="45" stroke="var(--red)" stroke-width="4"/><circle cx="110" cy="45" r="4.5" fill="var(--red)"/><circle cx="260" cy="45" r="4.5" fill="var(--red)"/><circle cx="185" cy="45" r="3" fill="var(--bg)" stroke="var(--ink)" stroke-width="1.4"/><text x="110" y="68" text-anchor="middle" font-size="13" fill="var(--red)" font-weight="700">−1</text><text x="185" y="68" text-anchor="middle" font-size="13" fill="var(--ink)">2</text><text x="260" y="68" text-anchor="middle" font-size="13" fill="var(--red)" font-weight="700">5</text></svg><div class="as-note">紅色兩段（含端點）就是解；中間 −1 到 5 之間反而不符合</div><div class="as-warn">⚠ 「大於（≥）型」是聯集要用「或」，不能寫成 −1 ≤ x ≤ 5；≥ 含等號故端點 −1、5 都要算進去（實心點）</div><div class="as-ans">答：x ≤ −1 或 x ≥ 5</div></div>'},
+
+  // 14 選填：絕對值不等式的整數解個數
+  {type:'fill',q:'【選填】不等式 |x − 1| ≤ 4 的整數解共有幾個？',ans:'9',acc:['９'],hint:'先解出 x 的範圍，再數區間內的整數',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>|x−1| ≤ 4 化成夾在中間：</div></div><div class="as-f">−4 ≤ x − 1 ≤ 4</div><div class="as-step"><div class="as-n">2</div><div>三邊＋1：</div></div><div class="as-f">−3 ≤ x ≤ 5</div><div class="as-step"><div class="as-n">3</div><div>數 −3 到 5 的整數：−3、−2、−1、0、1、2、3、4、5，共 5−(−3)＋1 ＝ 9 個。</div></div><div class="as-warn">⚠ 數整數個數用「上界−下界＋1」，兩端點是 ≤ 都要算進去（少算端點就會答成 8）</div><div class="as-ans">答：9 個</div></div>'}
+];
+
+questions[0]['數與式']=CH_BASIC.concat((questions[0]['數與式']||[]).filter(function(q){return /進階實戰/.test(q.q);}));
+})();
+(function(){
+/* v16 高一「直線與圓」基本題重製 —— 單選10＋多選2＋選填2，全 adv-sol 詳解 */
+var CH_BASIC = [
+  {q:'通過 A(−1, 3) 與 B(2, −3) 兩點的直線方程式為？',
+   opts:['2x+y−1=0','2x−y+5=0','x−2y+7=0','2x+y+1=0'],ans:'A',
+   hint:'先用兩點求斜率，再代點斜式',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先求斜率（分子分母都用 B−A，順序一致）：</div></div><div class="as-f">m = (−3−3)/(2−(−1)) = −6/3 = −2</div><div class="as-step"><div class="as-n">2</div><div>點斜式代入 A(−1, 3)：</div></div><div class="as-f">y−3 = −2(x+1)　→　y = −2x+1　→　2x+y−1=0</div><div class="as-step"><div class="as-n">3</div><div>代另一點 B(2,−3) 驗算：</div></div><div class="as-f">2·2+(−3)−1 = 4−3−1 = 0 ✓</div><div class="as-warn">⚠ 斜率分母 2−(−1)=3 別算成 1；把 A(−1,3) 代點斜式時 x+1 的正負號最容易掉，代完一定要用另一點驗算</div><div class="as-ans">答：2x+y−1=0</div></div>'},
+
+  {q:'過點 (1, 2) 且與直線 3x−4y+2=0 垂直的直線方程式為？',
+   opts:['3x−4y+5=0','4x+3y−10=0','4x−3y+2=0','3x+4y−11=0'],ans:'B',
+   hint:'垂直斜率取負倒數，再代點斜式',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>直線 3x−4y+2=0 的斜率 = −A/B = 3/4；垂直線斜率取「負倒數」：</div></div><div class="as-f">m₁·m₂ = −1　→　m₂ = −4/3</div><div class="as-step"><div class="as-n">2</div><div>點斜式過 (1, 2)：</div></div><div class="as-f">y−2 = −4/3(x−1)　→　3y−6 = −4x+4　→　4x+3y−10=0</div><div class="as-step"><div class="as-n">3</div><div>驗算：代 (1,2) 得 4+6−10=0 ✓，斜率 −4/3 與 3/4 相乘為 −1 ✓</div></div><div class="as-warn">⚠ 垂直是「負倒數」不是「倒數」，正負號一定要變；3x−4y 的斜率是 3/4（即 −A/B），別直接看成 3 或 −4。選項 D 雖過 (1,2) 但斜率是 −3/4，只平行不垂直</div><div class="as-ans">答：4x+3y−10=0</div></div>'},
+
+  {q:'點 P(2, −1) 到直線 3x−4y+3=0 的距離為？',
+   opts:['5/13','1','13/5','5'],ans:'C',
+   hint:'點到直線距離公式，分子取絕對值',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>點到直線距離公式：</div></div><div class="as-f">d = |ax₀+by₀+c| / √(a²+b²)</div><div class="as-step"><div class="as-n">2</div><div>代入直線 3x−4y+3=0、點 (2, −1)：</div></div><div class="as-f">d = |3·2−4·(−1)+3| / √(3²+4²) = |6+4+3| / 5 = 13/5</div><div class="as-warn">⚠ 分子務必取絕對值；−4·(−1)=+4 兩個負號別漏一個變成 −4。分母是「係數平方和開根號」√(9+16)=5，不是 3+4=7</div><div class="as-ans">答：13/5</div></div>'},
+
+  {q:'圓 x²+y²−6x+4y−3=0 的半徑為？',
+   opts:['√13','2√2','16','4'],ans:'D',
+   hint:'一般式配方成標準式，半徑是右邊開根號',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>x、y 各自湊完全平方：</div></div><div class="as-f">x²−6x = (x−3)²−9　；　y²+4y = (y+2)²−4</div><div class="as-step"><div class="as-n">2</div><div>把 −9、−4 與原常數 −3 一起移到右邊：</div></div><div class="as-f">(x−3)²+(y+2)² = 3+9+4 = 16　→　圓心(3,−2)、r = √16 = 4</div><div class="as-warn">⚠ 常數項 −3 移到右邊要「變號」成 +3；補進去的 9、4 也要一起加到右邊。半徑是 √16=4，別把右邊的 16 直接當半徑</div><div class="as-ans">答：4</div></div>'},
+
+  {q:'圓 x²+y²=9 與直線 x+y=4 的位置關係為？',
+   opts:['相交（兩交點）','相切','相離','直線通過圓心'],ans:'A',
+   hint:'比較「圓心到直線的距離」與半徑',
+   fig:'<svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="100" x2="320" y2="100" stroke="var(--ink3)" stroke-width="1"/><line x1="150" y1="15" x2="150" y2="190" stroke="var(--ink3)" stroke-width="1"/><text x="312" y="94" font-size="11" fill="var(--ink3)">x</text><text x="156" y="24" font-size="11" fill="var(--ink3)">y</text><circle cx="150" cy="100" r="55" fill="none" stroke="var(--ink)" stroke-width="1.8"/><line x1="72" y1="182" x2="248" y2="22" stroke="var(--accent)" stroke-width="2"/><circle cx="150" cy="100" r="3" fill="var(--ink)"/><text x="60" y="70" font-size="12" fill="var(--ink)" font-weight="700">x²+y²=9</text><text x="236" y="18" font-size="12" fill="var(--accent)" font-weight="700">x+y=4</text><text x="180" y="150" font-size="12" fill="var(--red)" font-weight="700">位置關係?</text></svg>',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>圓 x²+y²=9 → 圓心 O(0,0)、r=3；把直線寫成 x+y−4=0。</div></div><div class="as-step"><div class="as-n">2</div><div>求圓心到直線的距離：</div></div><div class="as-f">d = |0+0−4| / √(1²+1²) = 4/√2 = 2√2 ≈ 2.83</div><div class="as-step"><div class="as-n">3</div><div>比較 d 與 r：</div></div><div class="as-f">2√2 ≈ 2.83 &lt; 3 = r　→　直線與圓相交（兩交點）</div><div class="as-note">d &lt; r 相交　；　d = r 相切　；　d &gt; r 相離</div><div class="as-warn">⚠ 判斷位置關係一律用「距離 vs 半徑」，別去解聯立看有沒有實根（又慢又易錯）；4/√2 要先有理化成 2√2 再和 3 比大小</div><div class="as-ans">答：相交（兩交點）</div></div>'},
+
+  {q:'直線 3x+4y=15 截圓 x²+y²=25 所得的弦長為？',
+   opts:['6','8','10','4√3'],ans:'B',
+   hint:'先求弦心距，再用 弦長=2√(r²−d²)',
+   fig:'<svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="105" x2="320" y2="105" stroke="var(--ink3)" stroke-width="1"/><line x1="140" y1="15" x2="140" y2="195" stroke="var(--ink3)" stroke-width="1"/><text x="312" y="99" font-size="11" fill="var(--ink3)">x</text><text x="146" y="24" font-size="11" fill="var(--ink3)">y</text><circle cx="140" cy="105" r="58" fill="none" stroke="var(--ink)" stroke-width="1.8"/><line x1="66" y1="176" x2="236" y2="46" stroke="var(--accent)" stroke-width="2"/><line x1="140" y1="105" x2="164" y2="74" stroke="var(--ink3)" stroke-width="1.4" stroke-dasharray="4 3"/><circle cx="140" cy="105" r="3" fill="var(--ink)"/><text x="46" y="70" font-size="12" fill="var(--ink)" font-weight="700">x²+y²=25</text><text x="226" y="42" font-size="12" fill="var(--accent)" font-weight="700">3x+4y=15</text><text x="176" y="150" font-size="12" fill="var(--red)" font-weight="700">弦長=?</text></svg>',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>圓 x²+y²=25 → 圓心 O(0,0)、r=5。求弦心距（圓心到直線 3x+4y−15=0 的距離）：</div></div><div class="as-f">d = |3·0+4·0−15| / √(3²+4²) = 15/5 = 3</div><div class="as-step"><div class="as-n">2</div><div>弦心距 d、半弦、半徑 r 構成直角三角形：</div></div><div class="as-f">弦長 = 2√(r²−d²) = 2√(25−9) = 2·4 = 8</div><svg viewBox="0 0 340 175" xmlns="http://www.w3.org/2000/svg"><circle cx="170" cy="88" r="66" fill="none" stroke="var(--ink)" stroke-width="1.6"/><line x1="116" y1="126" x2="224" y2="126" stroke="var(--ink)" stroke-width="2.4"/><line x1="170" y1="88" x2="170" y2="126" stroke="var(--red)" stroke-width="2"/><line x1="170" y1="88" x2="224" y2="126" stroke="var(--accent)" stroke-width="2"/><rect x="170" y="115" width="11" height="11" fill="none" stroke="var(--ink3)" stroke-width="1.2"/><circle cx="170" cy="88" r="3" fill="var(--ink)"/><text x="160" y="82" font-size="13" fill="var(--ink)" font-weight="700">O</text><text x="200" y="100" font-size="13" fill="var(--accent)" font-weight="700">r</text><text x="176" y="112" font-size="13" fill="var(--red)" font-weight="700">d</text><text x="186" y="144" font-size="12" fill="var(--ink2)">弦/2</text></svg><div class="as-note">弦心距 d、半弦、半徑 r 構成直角三角形：(弦長/2)² = r²−d²，故 弦長 = 2√(r²−d²)</div><div class="as-warn">⚠ 公式最前面的「2」最常被漏掉（2√(r²−d²) 才是整條弦，√(r²−d²) 只是半弦）；算完檢查弦長 ≤ 直徑 2r=10 才合理</div><div class="as-ans">答：8</div></div>'},
+
+  {type:'multi',q:'【多選】關於直線 L：x−2y+4=0，下列敘述哪些正確？',
+   opts:['斜率為 1/2','y 截距為 2','x 截距為 4','與直線 2x−4y=7 平行','與直線 2x+y=0 垂直'],
+   ans:['A','B','D','E'],
+   hint:'先化成 y=(x/2)+2，再逐項檢查',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>化成斜截式：x−2y+4=0 → y = (1/2)x + 2。故斜率 1/2、y 截距 2（A、B 對）。</div></div><div class="as-step"><div class="as-n">2</div><div>x 截距令 y=0：x+4=0 → x=−4，不是 4（C 錯）。</div></div><div class="as-f">與 2x−4y=7 比較：y = (1/2)x − 7/4，斜率同為 1/2 且非同一條線 → 平行（D 對）</div><div class="as-step"><div class="as-n">3</div><div>與 2x+y=0 比較：其斜率 −2，(1/2)·(−2)=−1 → 垂直（E 對）。</div></div><div class="as-warn">⚠ x 截距是「令 y=0 解出 x」，正負號常弄反成 +4；判斷平行要「斜率相等且不是同一條線」，垂直則兩斜率相乘等於 −1</div><div class="as-ans">答：A、B、D、E</div></div>'},
+
+  {q:'兩直線 2x−y=3 與 x+y=3 的交點到原點的距離為？',
+   opts:['5','√3','√5','2√2'],ans:'C',
+   hint:'先解聯立求交點，再代距離公式',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>解聯立 2x−y=3、x+y=3。兩式相加消去 y：</div></div><div class="as-f">3x = 6　→　x = 2；代回 x+y=3 得 y = 1　→　交點 (2, 1)</div><div class="as-step"><div class="as-n">2</div><div>交點到原點 (0,0) 的距離：</div></div><div class="as-f">√((2−0)²+(1−0)²) = √(4+1) = √5</div><div class="as-warn">⚠ 要先解出交點再代距離公式，不能直接把兩條直線的係數亂套；相加消 y 時 (−y)+(y)=0，別誤算成 2y</div><div class="as-ans">答：√5</div></div>'},
+
+  {q:'自點 P(6, 8) 作圓 x²+y²=25 的切線，切線長為？',
+   opts:['5','10','√11','5√3'],ans:'D',
+   hint:'切線長=√(OP²−r²)，先確認 P 在圓外',
+   fig:'<svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="150" x2="320" y2="150" stroke="var(--ink3)" stroke-width="1"/><line x1="80" y1="15" x2="80" y2="195" stroke="var(--ink3)" stroke-width="1"/><text x="312" y="144" font-size="11" fill="var(--ink3)">x</text><text x="86" y="24" font-size="11" fill="var(--ink3)">y</text><circle cx="80" cy="150" r="52" fill="none" stroke="var(--ink)" stroke-width="1.8"/><line x1="240" y1="42" x2="118" y2="115" stroke="var(--accent)" stroke-width="2"/><circle cx="240" cy="42" r="3.5" fill="var(--ink)"/><circle cx="80" cy="150" r="3" fill="var(--ink)"/><text x="248" y="40" font-size="12" fill="var(--ink)" font-weight="700">P(6,8)</text><text x="30" y="120" font-size="12" fill="var(--ink)" font-weight="700">O</text><text x="150" y="70" font-size="12" fill="var(--red)" font-weight="700">切線長=?</text></svg>',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>圓 x²+y²=25 → 圓心 O(0,0)、r=5。先確認 P 在圓外：</div></div><div class="as-f">OP² = 6²+8² = 100 &gt; 25 = r²　→　P 在圓外（可作切線）</div><div class="as-step"><div class="as-n">2</div><div>半徑 OT ⊥ 切線 PT，由勾股定理：</div></div><div class="as-f">切線長 = √(OP²−r²) = √(100−25) = √75 = 5√3</div><svg viewBox="0 0 340 165" xmlns="http://www.w3.org/2000/svg"><circle cx="90" cy="95" r="60" fill="none" stroke="var(--ink)" stroke-width="1.6"/><line x1="90" y1="95" x2="108" y2="38" stroke="var(--ink)" stroke-width="1.8"/><line x1="90" y1="95" x2="290" y2="95" stroke="var(--ink3)" stroke-width="1.5" stroke-dasharray="5 4"/><line x1="108" y1="38" x2="290" y2="95" stroke="var(--red)" stroke-width="2.2"/><rect x="104" y="42" width="10" height="10" fill="none" stroke="var(--ink3)" stroke-width="1.2" transform="rotate(18 108 46)"/><circle cx="90" cy="95" r="3" fill="var(--ink)"/><circle cx="290" cy="95" r="3" fill="var(--ink)"/><circle cx="108" cy="38" r="3" fill="var(--accent)"/><text x="78" y="109" font-size="13" fill="var(--ink)" font-weight="700">O</text><text x="294" y="109" font-size="13" fill="var(--ink)" font-weight="700">P</text><text x="104" y="30" font-size="13" fill="var(--accent)" font-weight="700">T</text><text x="196" y="56" font-size="12" fill="var(--red)" font-weight="700">切線長</text></svg><div class="as-note">半徑 OT ⊥ 切線 TP：切線長² = OP²−r²（勾股定理），外點切線題幾乎每次都用這條</div><div class="as-warn">⚠ 切線長是 √(OP²−r²)，別寫成 √(OP²−r) 或 OP−r；√75 一定要化簡成 5√3，留著 √75 段考會扣分</div><div class="as-ans">答：5√3</div></div>'},
+
+  {type:'multi',q:'【多選】圓 C：x²+y²−2x+4y−20=0，下列敘述哪些正確？',
+   opts:['圓心為 (1, −2)','半徑為 5','點 (4, 2) 在圓上','原點在圓內','圓與 y 軸相切'],
+   ans:['A','B','C','D'],
+   hint:'先配方求圓心半徑，再逐項代入檢查',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>配方化成標準式：</div></div><div class="as-f">(x−1)²+(y+2)² = 20+1+4 = 25　→　圓心 (1,−2)、r=5（A、B 對）</div><div class="as-step"><div class="as-n">2</div><div>代點 (4, 2) 看與 r² 的關係：</div></div><div class="as-f">(4−1)²+(2+2)² = 9+16 = 25 = r²　→　在圓上（C 對）</div><div class="as-step"><div class="as-n">3</div><div>原點：(0−1)²+(0+2)² = 5 &lt; 25 → 圓內（D 對）；圓心到 y 軸距離 |1|=1 &lt; 5 → 與 y 軸相交而非相切（E 錯）。</div></div><div class="as-warn">⚠ 配方時 −20 移項要變 +20；圓心座標取「一次項係數的一半再變號」。判斷點在圓內／外只需比「代入左式的值 vs r²」，比 r² 小在內、等於在上、大在外</div><div class="as-ans">答：A、B、C、D</div></div>'},
+
+  {q:'兩平行線 3x+4y−10=0 與 3x+4y−20=0 之間的距離為？',
+   opts:['2','10','5','1'],ans:'A',
+   hint:'平行線距離 d=|c₁−c₂|/√(a²+b²)',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>兩線 x、y 係數完全相同（3、4），確為平行線，可直接套平行線距離公式：</div></div><div class="as-f">d = |c₁−c₂| / √(a²+b²)</div><div class="as-step"><div class="as-n">2</div><div>代入 c₁=−10、c₂=−20：</div></div><div class="as-f">d = |−10−(−20)| / √(3²+4²) = 10/5 = 2</div><div class="as-warn">⚠ 用平行線距離公式前，兩線的 x、y 係數必須「完全相同」，若不同要先化成相同再算；分子是兩常數項相減再取絕對值</div><div class="as-ans">答：2</div></div>'},
+
+  {type:'fill',q:'【選填】圓 x²+y²=10 上的點到直線 x−3y+20=0 的最短距離為？',
+   ans:'√10',acc:['3.16','3.162'],
+   hint:'最短距離 = 圓心到直線的距離 − 半徑',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>圓 x²+y²=10 → 圓心 O(0,0)、r=√10。求圓心到直線的距離：</div></div><div class="as-f">d = |0−3·0+20| / √(1²+(−3)²) = 20/√10 = 2√10</div><div class="as-step"><div class="as-n">2</div><div>因 d = 2√10 &gt; √10 = r，直線與圓相離。圓上的點到直線最短，發生在「過圓心垂直於直線」那條線與圓的近端交點：</div></div><div class="as-f">最短距離 = d − r = 2√10 − √10 = √10</div><div class="as-warn">⚠ 「最短 = d−r」的前提是直線與圓相離（d &gt; r）；若相交，最短距離是 0。20/√10 要有理化成 2√10 才好相減</div><div class="as-ans">答：√10</div></div>'},
+
+  {q:'通過 (0, 1) 與 (√3, 4) 兩點的直線，與 x 軸正向的夾角為？',
+   opts:['30°','60°','45°','90°'],ans:'B',
+   hint:'斜率＝傾斜角的正切；先求斜率',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先求通過兩點的斜率：</div></div><div class="as-f">m = (4−1)/(√3−0) = 3/√3 = √3</div><div class="as-step"><div class="as-n">2</div><div>斜率 = tanθ（θ 為與 x 軸正向的傾斜角）：</div></div><div class="as-f">tanθ = √3　→　θ = 60°</div><div class="as-warn">⚠ 斜率等於「傾斜角的正切」；3/√3 要有理化 = √3，別看成 3（否則會誤判角度）。傾斜角範圍是 0° ≤ θ &lt; 180°</div><div class="as-ans">答：60°</div></div>'},
+
+  {type:'fill',q:'【選填】直線 x+y+c=0（c＞0）與圓 x²+y²=2 相切，則 c=？',
+   ans:'2',acc:['2.0'],
+   hint:'相切 ⟺ 圓心到直線的距離 = 半徑',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>相切的條件：圓心到直線的距離 = 半徑。圓 x²+y²=2 → 圓心 O(0,0)、r=√2。</div></div><div class="as-step"><div class="as-n">2</div><div>圓心到直線 x+y+c=0 的距離：</div></div><div class="as-f">d = |0+0+c| / √(1²+1²) = |c|/√2</div><div class="as-step"><div class="as-n">3</div><div>令 d = r：</div></div><div class="as-f">|c|/√2 = √2　→　|c| = 2　→　c = ±2；因 c &gt; 0，取 c = 2</div><div class="as-warn">⚠ 相切用「距離＝半徑」最快，別代聯立去逼重根；解出 |c|=2 其實有 ±2 兩解，題目限 c &gt; 0 才只取 2，漏看條件就會多寫一個答案</div><div class="as-ans">答：2</div></div>'}
+];
+
+questions[0]['直線與圓']=CH_BASIC.concat((questions[0]['直線與圓']||[]).filter(function(q){return /進階實戰/.test(q.q);}));
+})();
+(function(){
+/* 數學通 v16 高一「多項式函數」基本題重製（14 題：單選10＋多選2＋選填2）
+   仿歷屆改編・原創仿題・三型 adv-sol 詳解。逐題已驗算。 */
+var CH_BASIC = [
+  // 1 單選：餘式定理（除以一次式 2x−1）
+  {q:'f(x)=2x³+x²−5x+3 除以 (2x−1) 的餘式為何？',
+   opts:['1','−1','2','3'],ans:'A',hint:'2x−1=0 的根代入 f',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>餘式定理：除以一次式 (2x−1)，先解 2x−1＝0 得 x＝1/2，餘式就是 f(1/2)。</div></div><div class="as-f">f(1/2)＝2·(1/2)³＋(1/2)²−5·(1/2)＋3</div><div class="as-step"><div class="as-n">2</div><div>逐項算：2·(1/8)＝1/4，(1/2)²＝1/4，−5/2，＋3。</div></div><div class="as-f">＝1/4＋1/4−5/2＋3＝1/2−5/2＋3＝1</div><div class="as-warn">⚠ 除以 (2x−1) 不是代 x＝1，是代「根」x＝1/2；直接代 x＝1 是最常見的扣分點。</div><div class="as-ans">答：餘式為 1</div></div>'},
+
+  // 2 單選：因式定理求參數
+  {q:'若 (x＋2) 是 f(x)=x³＋kx²−4x＋4 的因式，則 k＝？',
+   opts:['1','2','−2','−1'],ans:'D',hint:'因式 → f(−2)=0',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>因式定理：(x＋2) 是因式 ⟺ f(−2)＝0。</div></div><div class="as-f">f(−2)＝(−2)³＋k(−2)²−4(−2)＋4＝−8＋4k＋8＋4</div><div class="as-step"><div class="as-n">2</div><div>化簡並令其為 0：</div></div><div class="as-f">4k＋4＝0　→　k＝−1</div><div class="as-warn">⚠ 是 (x＋2) 就代 x＝−2（讓括號為 0 的值），別代成 ＋2；正負號一錯整題全錯。</div><div class="as-ans">答：k＝−1</div></div>'},
+
+  // 3 單選：綜合除法求商式
+  {q:'用綜合除法計算 (x³−4x²＋5x−2)÷(x−1)，商式為何？',
+   opts:['x²−3x−2','x²−3x＋2','x²−5x＋2','x²＋3x＋2'],ans:'B',hint:'係數 1,−4,5,−2 對 x=1 做綜合除法',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>取係數 1,−4,5,−2，除式 (x−1) 用 x＝1 做綜合除法。</div></div><div class="as-f">1 ｜ 1　−4　　5　−2<br>　 ｜ 　　 1　−3　　2<br>　 ｜ 1　−3　　2 ｜ 0</div><div class="as-step"><div class="as-n">2</div><div>最後一格 0 是餘數，前三格 1,−3,2 是商式係數（次數降一次）。</div></div><div class="as-f">商式＝x²−3x＋2，餘式＝0</div><div class="as-warn">⚠ 綜合除法的「乘加」是往右下相加不是相減；且最後一格是餘數，不可併進商式。</div><div class="as-ans">答：商式為 x²−3x＋2</div></div>'},
+
+  // 4 單選：判別式（兩相異實根）
+  {q:'一元二次方程式 x²−(k＋1)x＋4＝0 有兩相異實根，則 k 的範圍為？',
+   opts:['−5<k<3','k>3','k>3 或 k<−5','k<−5'],ans:'C',hint:'兩相異實根 → 判別式 D>0',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>兩相異實根 ⟺ 判別式 D＝b²−4ac &gt; 0。此處 a＝1、b＝−(k＋1)、c＝4。</div></div><div class="as-f">D＝(k＋1)²−4·1·4＝(k＋1)²−16 &gt; 0</div><div class="as-step"><div class="as-n">2</div><div>解 (k＋1)² &gt; 16，即 |k＋1| &gt; 4：</div></div><div class="as-f">k＋1 &gt; 4 或 k＋1 &lt; −4　→　k &gt; 3 或 k &lt; −5</div><div class="as-warn">⚠ 「相異」用 D &gt; 0（嚴格不等式）；若題目說「有實根」才用 D ≥ 0，等號差一個邊界值就丟分。</div><div class="as-ans">答：k &gt; 3 或 k &lt; −5</div></div>'},
+
+  // 5 單選：根與係數（倒數和）
+  {q:'方程式 2x²−3x−4＝0 的兩根為 α、β，則 1/α＋1/β＝？',
+   opts:['−3/4','3/4','−3/8','3/8'],ans:'A',hint:'1/α＋1/β＝(α＋β)/(αβ)',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>根與係數：α＋β＝−b/a＝3/2，αβ＝c/a＝−4/2＝−2。</div></div><div class="as-f">α＋β＝3/2，　αβ＝−2</div><div class="as-step"><div class="as-n">2</div><div>通分：1/α＋1/β＝(α＋β)/(αβ)。</div></div><div class="as-f">＝(3/2)/(−2)＝−3/4</div><div class="as-warn">⚠ αβ＝c/a 要含符號，這裡是 −2 不是 2；分母帶負號漏掉會把答案正負弄反。</div><div class="as-ans">答：−3/4</div></div>'},
+
+  // 6 單選：配方求最小值（附拋物線 SVG）
+  {q:'二次函數 f(x)=2x²−8x＋5 的最小值為何？',
+   opts:['5','3','−8','−3'],ans:'D',hint:'先提出領導係數 2 再配方',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先把 x² 與 x 項提出係數 2，再配方：</div></div><div class="as-f">f(x)＝2(x²−4x)＋5＝2(x²−4x＋4)−2·4＋5＝2(x−2)²−3</div><div class="as-step"><div class="as-n">2</div><div>因 2 &gt; 0 開口向上，(x−2)² 最小為 0（在 x＝2），故 f 最小值＝−3。</div></div><svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="90" x2="320" y2="90" stroke="var(--ink3)" stroke-width="1.4"/><line x1="150" y1="20" x2="150" y2="178" stroke="var(--ink3)" stroke-width="1.4"/><path d="M 80 45 Q 150 205 220 45" fill="none" stroke="var(--accent)" stroke-width="2.2"/><circle cx="150" cy="125" r="4" fill="var(--red)"/><text x="158" y="140" font-size="12" fill="var(--red)" font-weight="700">(2, −3)</text><text x="300" y="84" font-size="12" fill="var(--ink2)">x</text><text x="156" y="30" font-size="12" fill="var(--ink2)">y</text></svg><div class="as-note">開口向上的拋物線，頂點 (2,−3) 是整條曲線的最低點，即函數最小值。</div><div class="as-warn">⚠ 配方時提出係數 2 後，補進括號的 ＋4 拿到括號外要「×2」變 −8，這一步漏乘是最常見錯誤。</div><div class="as-ans">答：最小值為 −3</div></div>'},
+
+  // 7 多選：二次函數圖形性質（附拋物線 SVG）
+  {type:'multi',q:'【多選】關於二次函數 y＝−x²＋2x＋3，下列哪些正確？',
+   opts:['圖形開口向下','頂點為 (1,4)','圖形與 x 軸交於 (−1,0) 與 (3,0)','此函數有最小值 4','y 截距為 3'],
+   ans:['A','B','C','E'],hint:'配方成 −(x−1)²＋4，並分解求 x 截距',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>配方：y＝−(x²−2x)＋3＝−(x−1)²＋4，領導係數 −1 &lt; 0 → 開口向下（A對），頂點 (1,4)（B對）。</div></div><div class="as-f">y＝−(x−1)²＋4</div><div class="as-step"><div class="as-n">2</div><div>求 x 截距（令 y＝0）：−x²＋2x＋3＝0 ⟺ x²−2x−3＝0 ⟺ (x−3)(x＋1)＝0，得 x＝3、−1（C對）。</div></div><div class="as-step"><div class="as-n">3</div><div>y 截距令 x＝0：y＝3（E對）。開口向下 → 有「最大值」4 而非最小值（D錯）。</div></div><svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="150" x2="320" y2="150" stroke="var(--ink3)" stroke-width="1.4"/><line x1="150" y1="20" x2="150" y2="175" stroke="var(--ink3)" stroke-width="1.4"/><path d="M 60 150 Q 150 10 240 150" fill="none" stroke="var(--accent)" stroke-width="2.2"/><circle cx="150" cy="80" r="4" fill="var(--red)"/><text x="158" y="78" font-size="12" fill="var(--red)" font-weight="700">(1, 4) 最高點</text><circle cx="60" cy="150" r="3.5" fill="var(--green)"/><circle cx="240" cy="150" r="3.5" fill="var(--green)"/><text x="34" y="167" font-size="11" fill="var(--green)" font-weight="700">(−1,0)</text><text x="214" y="167" font-size="11" fill="var(--green)" font-weight="700">(3,0)</text></svg><div class="as-note">開口向下、頂點在上方，與 x 軸有兩個交點；頂點的 y 值 4 是最大值。</div><div class="as-warn">⚠ 開口向下對應「最大值」；把它說成最小值（選 D）是圖形題最典型的誤判。</div><div class="as-ans">答：A、B、C、E</div></div>'},
+
+  // 8 單選：多項式不等式
+  {q:'不等式 x²−x−6 ≥ 0 的解為何？',
+   opts:['−2≤x≤3','x≤−2 或 x≥3','x<−2 或 x>3','x≥3'],ans:'B',hint:'先因式分解，再判號',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>因式分解：x²−x−6＝(x−3)(x＋2)，臨界點 x＝−2、3。</div></div><div class="as-f">(x−3)(x＋2) ≥ 0</div><div class="as-step"><div class="as-n">2</div><div>開口向上的拋物線，「≥ 0」取兩根之外（含端點）：</div></div><div class="as-f">x ≤ −2　或　x ≥ 3</div><div class="as-warn">⚠ 有等號（≥）端點要「取到」用 ≤／≥；且大於 0 取兩根「之外」、小於 0 才取「之間」，方向與 0 的關係別記反。</div><div class="as-ans">答：x ≤ −2 或 x ≥ 3</div></div>'},
+
+  // 9 單選：勘根定理
+  {q:'設 f(x)=x³＋x−3，下列哪一個區間內必存在 f(x)=0 的實根？',
+   opts:['(−1,0)','(0,1)','(1,2)','(2,3)'],ans:'C',hint:'找兩端點函數值「變號」的區間',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>勘根定理：連續函數在區間端點值「異號」（乘積 &lt; 0）時，區間內必有一根。</div></div><div class="as-step"><div class="as-n">2</div><div>逐一代入端點：</div></div><div class="as-f">f(1)＝1＋1−3＝−1 &lt; 0<br>f(2)＝8＋2−3＝7 &gt; 0</div><div class="as-step"><div class="as-n">3</div><div>f(1)·f(2) &lt; 0，故在 (1,2) 內必有一實根。</div></div><div class="as-warn">⚠ 勘根靠的是端點「變號」，不是看函數值大小；兩端同號（如 f(2)、f(3) 都正）不能保證有根。</div><div class="as-ans">答：(1,2)</div></div>'},
+
+  // 10 多選：待定係數＋因式定理
+  {type:'multi',q:'【多選】設 f(x)=x³−2x²＋ax＋b，已知 f(1)＝0 且 f(−1)＝−6，下列哪些正確？',
+   opts:['a＝2','b＝−1','(x−1) 是 f(x) 的因式','f(0)＝−1','f(x)=0 有三個相異實根'],
+   ans:['A','B','C','D'],hint:'兩條件列聯立解 a、b，再分解因式',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>代入兩條件：</div></div><div class="as-f">f(1)＝1−2＋a＋b＝0　→　a＋b＝1<br>f(−1)＝−1−2−a＋b＝−6　→　b−a＝−3</div><div class="as-step"><div class="as-n">2</div><div>兩式相加：2b＝−2 → b＝−1，回代 a＝2（A、B對）。故 f(x)＝x³−2x²＋2x−1。</div></div><div class="as-step"><div class="as-n">3</div><div>f(1)＝0 → (x−1) 為因式（C對）；f(0)＝b＝−1（D對）。</div></div><div class="as-f">f(x)＝(x−1)(x²−x＋1)</div><div class="as-step"><div class="as-n">4</div><div>x²−x＋1 的判別式＝1−4＝−3 &lt; 0，無實根，故 f 只有 1 個實根（E錯）。</div></div><div class="as-warn">⚠ 「有因式 (x−1)」不代表「三個相異實根」；剩下的二次因式判別式為負時根本沒有實根，別看到三次就以為有三根。</div><div class="as-ans">答：A、B、C、D</div></div>'},
+
+  // 11 單選：閉區間上的最大值
+  {q:'二次函數 f(x)=x²−4x＋1 在區間 0 ≤ x ≤ 3 上的最大值為何？',
+   opts:['1','−3','−2','9'],ans:'A',hint:'頂點在區間內時，最大值出現在端點',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>配方：f(x)＝(x−2)²−3，開口向上、頂點 x＝2（在區間內，是最小值處）。</div></div><div class="as-f">f(2)＝−3（此為最小值，非最大）</div><div class="as-step"><div class="as-n">2</div><div>開口向上時「最大值」出現在離頂點較遠的端點，比較兩端點：</div></div><div class="as-f">f(0)＝1，　f(3)＝9−12＋1＝−2</div><div class="as-step"><div class="as-n">3</div><div>取較大者：最大值＝f(0)＝1。</div></div><div class="as-warn">⚠ 有範圍限制時，頂點只給「最小值」，最大值必須比較「兩端點」；直接把頂點 −3 當答案是最常見的陷阱。</div><div class="as-ans">答：最大值為 1</div></div>'},
+
+  // 12 選填：根與係數（矩形情境）
+  {type:'fill',q:'【選填】一個矩形的周長為 20、面積為 21，則它較長的一邊長為＿＿。',
+   ans:'7',hint:'長寬和＝10、積＝21，化為一元二次',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>設長、寬為 x、y。周長 20 → x＋y＝10；面積 21 → xy＝21。</div></div><div class="as-step"><div class="as-n">2</div><div>由根與係數，x、y 是以下方程式的兩根：</div></div><div class="as-f">t²−(x＋y)t＋xy＝0　→　t²−10t＋21＝0</div><div class="as-step"><div class="as-n">3</div><div>分解 (t−3)(t−7)＝0，得 3 與 7，較長邊為 7。</div></div><div class="as-warn">⚠ 周長是「2(長＋寬)」，要先除以 2 得長寬和＝10，不是直接用 20；此外邊長需為正，負根一律捨去。</div><div class="as-ans">答：較長邊長為 7</div></div>'},
+
+  // 13 單選：二次函數最佳化情境
+  {q:'用一段長 12 公分的鐵絲圍成一個矩形，此矩形面積的最大值為何？（單位：平方公分）',
+   opts:['6','9','12','36'],ans:'B',hint:'長寬和固定，設一邊為 x 寫出面積函數',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>周長 12 → 長＋寬＝6。設一邊為 x，另一邊為 6−x，面積 A(x)＝x(6−x)。</div></div><div class="as-f">A(x)＝−x²＋6x</div><div class="as-step"><div class="as-n">2</div><div>配方：A(x)＝−(x−3)²＋9，開口向下，頂點在 x＝3 取最大。</div></div><div class="as-f">A(3)＝−(0)²＋9＝9（此時長＝寬＝3，即正方形）</div><div class="as-warn">⚠ 用周長列式要先除以 2 得「長＋寬＝6」；直接用 x(12−x) 會把周長當成長寬和，答案就錯。</div><div class="as-ans">答：最大面積為 9 平方公分</div></div>'},
+
+  // 14 選填：多項式不等式的整數解個數
+  {type:'fill',q:'【選填】滿足不等式 x²−4x＋3 &lt; 0 的整數 x 共有＿＿個。',
+   ans:'1',hint:'先因式分解定出解區間，再數整數',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>因式分解：x²−4x＋3＝(x−1)(x−3)，臨界點 1、3。</div></div><div class="as-step"><div class="as-n">2</div><div>「&lt; 0」取兩根「之間」（不含端點）：</div></div><div class="as-f">1 &lt; x &lt; 3</div><div class="as-step"><div class="as-n">3</div><div>此範圍內的整數只有 x＝2，共 1 個。</div></div><div class="as-warn">⚠ 嚴格 &lt; 0 端點 1、3 不算（開區間）；把端點也數進去會多算成 3 個。</div><div class="as-ans">答：共 1 個（x＝2）</div></div>'}
+];
+
+questions[0]['多項式函數']=CH_BASIC.concat((questions[0]['多項式函數']||[]).filter(function(q){return /進階實戰/.test(q.q);}));
+})();
+(function(){
+/* v16 指數與對數（初步）基本題重製：單選10＋多選2＋選填2＝14；explain 全為 .adv-sol 步驟式 */
+var CH_BASIC=[
+  {q:'化簡 (2³)² ÷ 2⁴ × 2⁻¹ ＝？',opts:['1','4','1/2','2'],ans:'D',hint:'次方的次方先算，再同底加減指數',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先把「次方的次方」算出來——指數相乘：</div></div><div class="as-f">(2³)² ＝ 2^(3×2) ＝ 2⁶</div><div class="as-step"><div class="as-n">2</div><div>同底數相除對應指數「減」、相乘對應指數「加」，一次做完：</div></div><div class="as-f">2⁶ ÷ 2⁴ × 2⁻¹ ＝ 2^(6−4−1) ＝ 2¹ ＝ 2</div><div class="as-warn">⚠ 指數加減別亂序：除法是「減」、負指數 2⁻¹ 再「減」一次，是 6−4−1＝1 不是 6−4＋1；把 2⁻¹ 的負號看漏是本題最常見扣分</div><div class="as-ans">答：2</div></div>'},
+
+  {q:'求 9^(3/2) − 8^(2/3) ＝？',opts:['23','19','5','25'],ans:'A',hint:'分母開根、分子取次方',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>分數指數的讀法：分母是「開幾次方根」、分子是「取幾次方」：</div></div><div class="as-f">9^(3/2) ＝ (√9)³ ＝ 3³ ＝ 27</div><div class="as-step"><div class="as-n">2</div><div>同法處理第二項：</div></div><div class="as-f">8^(2/3) ＝ (³√8)² ＝ 2² ＝ 4　→　27 − 4 ＝ 23</div><div class="as-warn">⚠ 別把 3/2 當成 3÷2＝1.5 直接拿去乘底數；a^(m/n) 要「先開 n 次方根、再取 m 次方」，兩項各自算成整數再相減</div><div class="as-ans">答：23</div></div>'},
+
+  {q:'某超級電腦每秒可執行 3×10⁹ 次運算，連續執行 2×10⁴ 秒，共執行幾次運算？（以科學記號表示）',opts:['5×10¹³','6×10¹³','6×10³⁶','6×10¹²'],ans:'B',hint:'係數相乘、10 的次方指數相加',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>科學記號相乘：係數對係數、10 的次方對 10 的次方分開處理：</div></div><div class="as-f">(3×10⁹) × (2×10⁴) ＝ (3×2) × 10^(9＋4)</div><div class="as-step"><div class="as-n">2</div><div>係數 3×2＝6（仍在 1～10 之間不必進位），指數 9＋4＝13：</div></div><div class="as-f">＝ 6 × 10¹³</div><div class="as-warn">⚠ 10 的次方是「指數相加」(9＋4＝13) 不是相乘 (9×4＝36)；另外若係數相乘超過 10（例如 5×4＝20）要改寫成 2×10^(n＋1)，維持科學記號 1≤a＜10</div><div class="as-ans">答：6×10¹³ 次</div></div>'},
+
+  {q:'設 0＜a＜1，令 x＝a^(2/5)、y＝a^(3/5)、z＝a^(1/5)，則 x、y、z 由大到小的順序為？',opts:['x＞y＞z','y＞x＞z','z＞x＞y','x＞z＞y'],ans:'C',hint:'底數小於1時指數函數遞減',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>底數 0＜a＜1，指數函數 y＝aˣ 是<b>遞減</b>的——指數越大、值反而越小：</div></div><div class="as-step"><div class="as-n">2</div><div>比較三個指數大小：</div></div><div class="as-f">1/5 ＜ 2/5 ＜ 3/5</div><div class="as-step"><div class="as-n">3</div><div>指數最小的 z＝a^(1/5) 值最大，指數最大的 y＝a^(3/5) 值最小：</div></div><div class="as-f">z ＞ x ＞ y</div><svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg"><line x1="30" y1="160" x2="315" y2="160" stroke="var(--ink3)" stroke-width="1.2"/><line x1="55" y1="24" x2="55" y2="168" stroke="var(--ink3)" stroke-width="1.2"/><polyline points="60,42 90,68 120,90 150,108 180,124 210,136 240,145 270,151 300,155" fill="none" stroke="var(--accent)" stroke-width="2.2"/><circle cx="100" cy="77" r="4.5" fill="var(--green)"/><circle cx="150" cy="108" r="4.5" fill="var(--gold)"/><circle cx="210" cy="136" r="4.5" fill="var(--red)"/><text x="96" y="66" font-size="12" fill="var(--green)" font-weight="700">z＝a^(1/5)</text><text x="156" y="104" font-size="12" fill="var(--gold)" font-weight="700">x＝a^(2/5)</text><text x="216" y="132" font-size="12" fill="var(--red)" font-weight="700">y＝a^(3/5)</text><text x="60" y="18" font-size="11" fill="var(--ink3)">值</text><text x="316" y="174" font-size="11" fill="var(--ink3)">指數</text></svg><div class="as-note">遞減曲線上，指數越往右、對應的值越低；z 指數最小落在最高處、y 指數最大落在最低處</div><div class="as-warn">⚠ 底數是否大於 1 決定單調方向！0＜a＜1 時「指數大 → 值小」要反過來比；若照指數大小直接排成 x＞y＞z 就整題錯</div><div class="as-ans">答：z＞x＞y</div></div>'},
+
+  {q:'log₃(1/27) ＝？',opts:['3','1/3','−1/27','−3'],ans:'D',hint:'把 1/27 寫成 3 的次方',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先把真數 1/27 化成 3 的次方（負指數＝倒數）：</div></div><div class="as-f">1/27 ＝ 1/3³ ＝ 3⁻³</div><div class="as-step"><div class="as-n">2</div><div>對數就是在問「3 的幾次方等於它」：</div></div><div class="as-f">log₃ 3⁻³ ＝ −3</div><div class="as-warn">⚠ 真數小於 1 時對數必為負！別把 log₃(1/27) 誤算成 log₃27＝3 漏掉倒數的負號——看到分數真數先想「答案是負的」</div><div class="as-ans">答：−3</div></div>'},
+
+  {q:'已知 log 2≈0.301、log 3≈0.477，求 log 12≈？',opts:['1.079','0.778','1.204','0.903'],ans:'A',hint:'先把 12 質因數分解',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>把 12 質因數分解，再用對數律把乘積拆成加法、次方拆成乘數：</div></div><div class="as-f">log 12 ＝ log(2²×3) ＝ 2 log 2 ＋ log 3</div><div class="as-step"><div class="as-n">2</div><div>代入已知值：</div></div><div class="as-f">＝ 2×0.301 ＋ 0.477 ＝ 0.602 ＋ 0.477 ＝ 1.079</div><div class="as-warn">⚠ 12 要拆成 2²×3，不要拆成 2×6（log 6 沒給就卡住）；log(2²) ＝ 2 log 2 的「2」是乘上去、不是次方留著</div><div class="as-ans">答：1.079</div></div>'},
+
+  {type:'multi',q:'【多選】下列指數運算，哪些正確？',opts:['(a³)²＝a⁶','a⁵÷a²＝a³（a≠0）','2³＋2²＝2⁵','(2a)³＝2a³','(a^(1/2))⁴＝a²'],ans:['A','B','E'],hint:'同底「相加」沒有指數公式',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>逐項檢驗指數律：</div></div><div class="as-f">(A) (a³)²＝a^(3×2)＝a⁶　✓　次方的次方，指數相乘<br>(B) a⁵÷a²＝a^(5−2)＝a³　✓　同底相除，指數相減</div><div class="as-step"><div class="as-n">2</div><div>找出誘答的錯項：</div></div><div class="as-f">(C) 2³＋2²＝8＋4＝12，但 2⁵＝32　✗　同底「相加」不能併指數<br>(D) (2a)³＝2³a³＝8a³　✗　係數 2 也要立方<br>(E) (a^(1/2))⁴＝a^(1/2×4)＝a²　✓</div><div class="as-warn">⚠ 兩個經典陷阱：同底相加「沒有」任何指數公式（C）；乘積的次方要「每個因數都取次方」，(2a)³ 的係數 2 也要立方成 8（D）——這兩處最常被誤選為對</div><div class="as-ans">答：A、B、E</div></div>'},
+
+  {q:'log₄ 8 ＝？',opts:['2','3','3/2','1/2'],ans:'C',hint:'換底成同一個底（底＝2）',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>用換底公式，把底統一成 2（因為 4、8 都是 2 的次方）：</div></div><div class="as-f">log₄ 8 ＝ log₂ 8 ÷ log₂ 4 ＝ log₂ 2³ ÷ log₂ 2²</div><div class="as-step"><div class="as-n">2</div><div>兩個對數各自化為次方數再相除：</div></div><div class="as-f">＝ 3 ÷ 2 ＝ 3/2　（驗算：4^(3/2)＝(√4)³＝8　✓）</div><div class="as-warn">⚠ 換底是「log 分之 log」且分子分母底數必須一致；別把 log₄ 8 誤當成 8÷4＝2。算完用 4^(3/2)＝8 反代驗證最保險</div><div class="as-ans">答：3/2</div></div>'},
+
+  {q:'解方程式 9ˣ ＝ 27^(x−1)，x＝？',opts:['1','3','−3','2'],ans:'B',hint:'兩邊化成以 3 為底',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>把兩邊都化成以 3 為底（統一底數）：</div></div><div class="as-f">9ˣ ＝ 3^(2x)　、　27^(x−1) ＝ 3^(3(x−1))</div><div class="as-step"><div class="as-n">2</div><div>底數相同 → 指數相等，注意 3 要乘進整個括號：</div></div><div class="as-f">2x ＝ 3(x−1) ＝ 3x − 3　→　x ＝ 3</div><div class="as-warn">⚠ 27^(x−1) 的指數是 3×(x−1)＝3x−3，別漏乘括號寫成 3x−1；「先統一底數、再讓指數相等」是解指數方程的標準流程</div><div class="as-ans">答：x＝3</div></div>'},
+
+  {type:'multi',q:'【多選】設 log 為常用對數（底 10），下列哪些恆成立？',opts:['log(2×5)＝log 2＋log 5','log(10÷2)＝log 10−log 2','log 2³＝3 log 2','log(2＋3)＝log 2＋log 3','(log 100)÷(log 10)＝log 10'],ans:['A','B','C'],hint:'log 只能拆乘、除、次方，不能拆加減',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>三條基本對數律逐一對照：</div></div><div class="as-f">(A) 積 → 相加：log(2×5)＝log 2＋log 5　✓<br>(B) 商 → 相減：log(10÷2)＝log 10−log 2　✓<br>(C) 次方 → 乘到前面：log 2³＝3 log 2　✓</div><div class="as-step"><div class="as-n">2</div><div>兩個誘答項：</div></div><div class="as-f">(D) 「和」不能拆：log(2＋3)＝log 5，而 log 2＋log 3＝log 6　✗<br>(E) (log 100)÷(log 10)＝2÷1＝2，但 log 10＝1，2≠1　✗</div><div class="as-warn">⚠ log(A＋B) 永遠不能拆（D）；(E) 是把「兩個 log 相除」誤當成商的對數——相除其實是換底公式 log₁₀100＝2，不等於 log(底)。加減與除法的混淆是多選最大扣分點</div><div class="as-ans">答：A、B、C</div></div>'},
+
+  {q:'已知 log 2≈0.301，則 2⁵⁰ 是幾位數？',opts:['15','17','51','16'],ans:'D',hint:'位數＝⌊log N⌋＋1',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先求 2⁵⁰ 的常用對數：</div></div><div class="as-f">log 2⁵⁰ ＝ 50 × log 2 ＝ 50 × 0.301 ＝ 15.05</div><div class="as-step"><div class="as-n">2</div><div>套位數公式：取對數的整數部分再＋1：</div></div><div class="as-f">位數 ＝ ⌊log N⌋ ＋ 1 ＝ ⌊15.05⌋ ＋ 1 ＝ 15 ＋ 1 ＝ 16</div><div class="as-warn">⚠ 位數是「整數部分＋1」：15.05 的整數部分是 15，答 16 位；別把 15.05 四捨五入成 15 位、也別把指數 50 當成位數</div><div class="as-ans">答：16 位數</div></div>'},
+
+  {type:'fill',q:'【選填】已知 2ˣ＝3，求 2^(3x＋1) 的值。',ans:'54',acc:['54.0'],hint:'把 2^(3x) 整包看成 (2ˣ)³',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>用指數律把指數 3x＋1 拆開：</div></div><div class="as-f">2^(3x＋1) ＝ 2^(3x) × 2¹</div><div class="as-step"><div class="as-n">2</div><div>把 2^(3x) 整包還原成 (2ˣ) 的立方，再代入 2ˣ＝3：</div></div><div class="as-f">2^(3x) ＝ (2ˣ)³ ＝ 3³ ＝ 27　→　27 × 2 ＝ 54</div><div class="as-warn">⚠ 不必解出 x！把 3x 的指數整包變成 (2ˣ)³ 直接代 3 最快；最後別忘了還有 ×2¹ 這一項，只寫 27 就少乘 2</div><div class="as-ans">答：54</div></div>'},
+
+  {q:'已知 log 3≈0.477，則 3⁴⁰ 的最高位（首位）數字是多少？',opts:['1','2','3','9'],ans:'A',hint:'首位數字看 log 的小數部分',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先求對數：</div></div><div class="as-f">log 3⁴⁰ ＝ 40 × 0.477 ＝ 19.08</div><div class="as-step"><div class="as-n">2</div><div>首位數字只看<b>小數部分</b> 0.08：3⁴⁰ ＝ 10^0.08 × 10¹⁹</div></div><div class="as-f">log 1 ＝ 0 ≤ 0.08 ＜ 0.301 ＝ log 2　→　1 ≤ 10^0.08 ＜ 2</div><svg viewBox="0 0 340 130" xmlns="http://www.w3.org/2000/svg"><line x1="30" y1="70" x2="310" y2="70" stroke="var(--ink)" stroke-width="1.6"/><line x1="30" y1="63" x2="114" y2="63" stroke="var(--green)" stroke-width="5" opacity="0.35"/><line x1="30" y1="62" x2="30" y2="78" stroke="var(--ink3)" stroke-width="1.4"/><line x1="114" y1="62" x2="114" y2="78" stroke="var(--gold)" stroke-width="1.8"/><line x1="310" y1="62" x2="310" y2="78" stroke="var(--ink3)" stroke-width="1.4"/><circle cx="52" cy="70" r="4.5" fill="var(--red)"/><line x1="52" y1="46" x2="52" y2="64" stroke="var(--red)" stroke-width="1.3"/><text x="40" y="40" font-size="12" fill="var(--red)" font-weight="700">0.08</text><text x="20" y="96" font-size="11" fill="var(--ink3)">0＝log1</text><text x="88" y="96" font-size="11" fill="var(--gold)" font-weight="700">0.301＝log2</text><text x="300" y="96" font-size="11" fill="var(--ink3)">1</text><text x="30" y="118" font-size="12" fill="var(--red)" font-weight="700">→ 首位數字 1</text></svg><div class="as-note">數線上小數部分 0.08 落在 log1(0) 與 log2(0.301) 之間，所以 10^0.08 介於 1 與 2，首位數字是 1</div><div class="as-warn">⚠ 首位數字只看「小數部分」，整數部分 19 只決定位數（20 位）不決定首位；0.08 落在 log1～log2 之間 → 首位 1，別因為 3⁴⁰ 是大數就直覺猜大數字</div><div class="as-ans">答：1</div></div>'},
+
+  {type:'fill',q:'【選填】已知 log 2≈0.301、log 3≈0.477，求 12³⁰ 是幾位數。',ans:'33',acc:['33位','33 位'],hint:'先算 log 12，再乘 30，最後⌊⌋＋1',
+   explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先把 log 12 拆出來（12＝2²×3）：</div></div><div class="as-f">log 12 ＝ 2 log 2 ＋ log 3 ＝ 0.602 ＋ 0.477 ＝ 1.079</div><div class="as-step"><div class="as-n">2</div><div>乘上次方 30：</div></div><div class="as-f">log 12³⁰ ＝ 30 × 1.079 ＝ 32.37</div><div class="as-step"><div class="as-n">3</div><div>套位數公式：</div></div><div class="as-f">位數 ＝ ⌊32.37⌋ ＋ 1 ＝ 32 ＋ 1 ＝ 33</div><div class="as-warn">⚠ 兩個地方最容易錯：log 12 要先自己算成 1.079（別直接查表想找 log 12）；最後「整數部分 32 再＋1」得 33，漏掉＋1 會答成 32 位</div><div class="as-ans">答：33 位數</div></div>'}
+];
+
+questions[0]['指數與對數（初步）']=CH_BASIC.concat((questions[0]['指數與對數（初步）']||[]).filter(function(q){return /進階實戰/.test(q.q);}));
+})();
+
 var solOrder={0:['數與式','直線與圓','多項式函數','指數與對數','三角比','數列與級數','數據分析','排列組合與機率'],1:['三角函數','指數與對數函數','平面向量','空間向量','空間平面與直線','條件機率','矩陣'],2:['數列的極限','導函數','積分','隨機變數','複數','二次曲線','線性規劃']};
 [0,1,2].forEach(function(g){solutionsData[g].sort(function(a,b){return solOrder[g].indexOf(a.topic)-solOrder[g].indexOf(b.topic);});});
 
