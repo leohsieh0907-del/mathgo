@@ -60,6 +60,13 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--i
 .nav-badge{margin-left:auto;background:#2E5BFF;color:#fff;font-size:9px;font-family:var(--mono);padding:1px 5px;border-radius:99px}
 .nav-badge.teal{background:var(--teal)}
 .nav-badge.purple{background:var(--purple)}
+.nav-subchapters{display:none;padding:2px 0 6px}
+.nav-ch-track{font-size:8px;font-weight:700;color:#4A4846;letter-spacing:.08em;padding:6px 10px 3px 34px;font-family:var(--mono)}
+.nav-ch{display:flex;align-items:center;gap:7px;padding:6px 10px 6px 34px;cursor:pointer;color:#83817C;font-size:12px;transition:all .12s;border-radius:6px;margin:0 2px}
+.nav-ch:hover{background:#242220;color:#fff}
+.nav-ch.active-ch{background:#2A2826;color:#fff;font-weight:600}
+.nav-ch-num{font-size:9px;color:#5A5854;font-family:var(--mono);flex-shrink:0}
+.nav-ch.active-ch .nav-ch-num{color:#7DA0FF}
 .sidebar-footer{padding:14px;border-top:1px solid #2E2C2A}
 .progress-label{font-size:10px;color:#6B6966;margin-bottom:6px}
 .progress-bar{height:3px;background:#2E2C2A;border-radius:99px;overflow:hidden}
@@ -77,6 +84,12 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--i
 .topbar-title{font-size:15px;font-weight:700;letter-spacing:-.3px}
 .topbar-sub{font-size:11px;color:var(--ink3);margin-top:1px}
 .topbar-right{display:flex;align-items:center;gap:10px}
+.update-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-bottom:20px}
+.update-info{display:flex;flex-direction:column;gap:3px;min-width:0}
+.update-ver{font-size:13px;font-weight:700;color:var(--ink)}
+.update-ver b{color:var(--accent);font-family:var(--mono)}
+.update-sub{font-size:11px;color:var(--ink3)}
+.update-sub.ok{color:var(--green,#1a7f5a)}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;background:var(--bg)}
 .screen{display:none;padding:28px;max-width:1100px}
 .screen.active{display:block}
@@ -479,7 +492,7 @@ textarea.fill-input{min-height:96px;resize:vertical;line-height:1.7;font-family:
     <div class="sidebar-logo">
       <div class="app-name">數學通</div>
       <div class="app-tagline">108課綱・MATH PRO</div>
-      <div class="app-ver">v20・更新 2026-07-17（重點筆記三年全擴充：fcard＋對應例子圖）</div>
+      <div class="app-ver">v21・更新 2026-07-17（課程內容併入側欄＋首頁版本更新鍵）</div>
     </div>
     <div class="sidebar-grade">
       <button class="grade-btn active" onclick="setGrade(0,this)">高一</button>
@@ -494,6 +507,7 @@ textarea.fill-input{min-height:96px;resize:vertical;line-height:1.7;font-family:
       <div class="nav-item" id="tab-curriculum" onclick="go('curriculum')">
         <div class="nav-icon">📚</div>課程內容
       </div>
+      <div class="nav-subchapters" id="nav-curr-chapters"></div>
       <div class="nav-item" id="tab-practice" onclick="go('practice')">
         <div class="nav-icon">✏</div>練習題
         <div class="nav-badge">12</div>
@@ -535,6 +549,13 @@ textarea.fill-input{min-height:96px;resize:vertical;line-height:1.7;font-family:
 
       <!-- ══ HOME ══ -->
       <div class="screen active" id="screen-home">
+        <div class="update-bar">
+          <div class="update-info">
+            <div class="update-ver">目前版本 <b id="hv-ver">v20</b></div>
+            <div class="update-sub" id="hv-status">按右方按鈕清除快取、更新到最新版</div>
+          </div>
+          <button class="btn btn-primary" id="hv-btn" style="font-size:12px;padding:8px 16px;white-space:nowrap" onclick="forceUpdate()">🔄 檢查更新</button>
+        </div>
         <div class="sec-label">我的學習統計</div>
         <div class="stat-row">
           <div class="stat-card blue"><div class="stat-num" id="gs-done">0</div><div class="stat-desc">累計作答題數</div></div>
@@ -668,10 +689,7 @@ textarea.fill-input{min-height:96px;resize:vertical;line-height:1.7;font-family:
 
       <!-- ══ CURRICULUM ══ -->
       <div class="screen" id="screen-curriculum">
-        <div class="curriculum-layout">
-          <div class="curriculum-tree" id="curr-tree"></div>
-          <div id="curr-content"><div class="curr-empty">← 請從左側選擇章節</div></div>
-        </div>
+        <div id="curr-content"><div class="curr-empty">← 請從左側「課程內容」選擇章節</div></div>
       </div>
 
             <!-- ══ EXAM ══ -->
@@ -4839,15 +4857,19 @@ function submitExam(){
 }
 
 function renderCurriculum(){
-  var tree=document.getElementById('curr-tree');if(!tree)return;
-  var html='';
-  currTree.forEach(function(g){html+='<div class="tree-grade"><div class="tree-grade-header'+(g.open?' open':'')+'" onclick="toggleTreeGrade(this)">'+g.grade+'<span class="tree-grade-arrow">▶</span></div><div class="tree-chapters'+(g.open?' open':'')+'">';g.tracks.forEach(function(track){html+='<div class="tree-track-label">'+track.label+'</div>';track.chapters.forEach(function(ch){html+='<div class="tree-chapter'+(ch.key===activeCurrKey?' active-ch':'')+'" onclick="loadCurrChapter(\''+ch.key+'\')"><span class="tree-ch-num">'+ch.num+'</span>'+ch.name+'</div>';});});html+='</div></div>';});
-  tree.innerHTML=html;loadCurrChapter(activeCurrKey);
+  var nav=document.getElementById('nav-curr-chapters');if(!nav)return;
+  var g=currTree[gradeIdx];var html='';var keys=[];
+  g.tracks.forEach(function(track){
+    if(g.tracks.length>1)html+='<div class="nav-ch-track">'+track.label+'</div>';
+    track.chapters.forEach(function(ch){keys.push(ch.key);html+='<div class="nav-ch'+(ch.key===activeCurrKey?' active-ch':'')+'" onclick="loadCurrChapter(\''+ch.key+'\')"><span class="nav-ch-num">'+ch.num+'</span>'+ch.name+'</div>';});
+  });
+  nav.innerHTML=html;
+  if(keys.indexOf(activeCurrKey)<0)activeCurrKey=keys[0];
+  loadCurrChapter(activeCurrKey);
 }
-function toggleTreeGrade(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open');}
 function loadCurrChapter(key){
   activeCurrKey=key;
-  document.querySelectorAll('.tree-chapter').forEach(function(el){el.classList.toggle('active-ch',el.getAttribute('onclick').indexOf("'"+key+"'")>-1);});
+  document.querySelectorAll('.nav-ch').forEach(function(el){el.classList.toggle('active-ch',el.getAttribute('onclick').indexOf("'"+key+"'")>-1);});
   var data=curriculumDetails[key];var cont=document.getElementById('curr-content');if(!cont)return;
   if(!data){cont.innerHTML='<div class="curr-empty">← 點選左側章節查看內容</div>';return;}
   var tagsHtml=(data.tags||[]).map(function(t){var cls=t.indexOf('學測')>-1?'exam':t.indexOf('必')>-1?'key':'';return '<span class="curr-tag '+cls+'">'+t+'</span>';}).join('');
@@ -4881,6 +4903,7 @@ function go(id){
   document.getElementById('screen-'+id).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(function(t){t.classList.remove('active');});
   var tab=document.getElementById('tab-'+id);if(tab)tab.classList.add('active');
+  var nc=document.getElementById('nav-curr-chapters');if(nc)nc.style.display=(id==='curriculum')?'block':'none';
   document.getElementById('tt').textContent=scrTitles[id]||'數學通';
   document.getElementById('ts').textContent=scrSubs[id]||'';
   var sc=document.getElementById('scroll');if(sc)sc.scrollTop=0;
@@ -4906,7 +4929,20 @@ function setGrade(idx,el){
 function pickExam(el,g){el.parentElement.querySelectorAll('.exam-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');}
 function startExam(){alert('請從試卷列表選擇試卷開始作答');}
 
+var APP_VER='v21';
+function forceUpdate(){
+  var btn=document.getElementById('hv-btn'),st=document.getElementById('hv-status');
+  if(btn){btn.disabled=true;btn.textContent='更新中…';}
+  if(st){st.classList.remove('ok');st.textContent='正在清除快取並抓取最新版…';}
+  function done(){var b=(location.pathname||'/').split('?')[0];location.replace(b+'?u='+Date.now());}
+  var jobs=[];
+  if('serviceWorker' in navigator){jobs.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));}));}
+  if(window.caches){jobs.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));}));}
+  if(!jobs.length){done();return;}
+  Promise.all(jobs).then(done).catch(done);
+}
 window.onload=function(){
+  var hv=document.getElementById('hv-ver');if(hv)hv.textContent=APP_VER;
   renderHome();
   renderPractice();
   renderSolutions();
