@@ -90,6 +90,19 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--i
 .update-ver b{color:var(--accent);font-family:var(--mono)}
 .update-sub{font-size:11px;color:var(--ink3)}
 .update-sub.ok{color:var(--green,#1a7f5a)}
+.update-actions{display:flex;gap:8px;flex-shrink:0}
+.install-guide{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:20px}
+.install-guide h4{font-size:14px;font-weight:700;color:var(--ink);margin:0 0 4px}
+.install-guide .ig-lead{font-size:12px;color:var(--ink3);margin-bottom:16px}
+.ig-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:620px){.ig-cols{grid-template-columns:1fr}}
+.ig-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.ig-card .ig-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ig-step{display:flex;gap:9px;font-size:12.5px;color:var(--ink2);line-height:1.5;margin-bottom:7px}
+.ig-step:last-child{margin-bottom:0}
+.ig-num{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;font-family:var(--mono)}
+.ig-note{margin-top:14px;font-size:12px;color:var(--ink3);background:var(--bg);border-radius:8px;padding:10px 12px;line-height:1.5}
+.ig-note b{color:var(--accent)}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;background:var(--bg)}
 .screen{display:none;padding:28px;max-width:1100px}
 .screen.active{display:block}
@@ -554,7 +567,31 @@ textarea.fill-input{min-height:96px;resize:vertical;line-height:1.7;font-family:
             <div class="update-ver">目前版本 <b id="hv-ver">v20</b></div>
             <div class="update-sub" id="hv-status">按右方按鈕清除快取、更新到最新版</div>
           </div>
-          <button class="btn btn-primary" id="hv-btn" style="font-size:12px;padding:8px 16px;white-space:nowrap" onclick="forceUpdate()">🔄 檢查更新</button>
+          <div class="update-actions">
+            <button class="btn btn-ghost" style="font-size:12px;padding:8px 14px;white-space:nowrap" onclick="toggleInstall()">📲 安裝說明</button>
+            <button class="btn btn-primary" id="hv-btn" style="font-size:12px;padding:8px 16px;white-space:nowrap" onclick="forceUpdate()">🔄 檢查更新</button>
+          </div>
+        </div>
+        <div class="install-guide" id="install-guide" style="display:none">
+          <h4>📲 安裝到主畫面／桌面</h4>
+          <div class="ig-lead">免下載、開了就用、可離線；裝好後全螢幕、有專屬圖示，跟一般 App 一樣。</div>
+          <div class="ig-cols">
+            <div class="ig-card">
+              <div class="ig-title">🍎 iPad／iPhone（用 Safari）</div>
+              <div class="ig-step"><span class="ig-num">1</span><span>用 <b>Safari</b> 開這個網站（Chrome 版 iOS 不支援）</span></div>
+              <div class="ig-step"><span class="ig-num">2</span><span>點分享鍵 <b>⬆️</b>（底部或右上）</span></div>
+              <div class="ig-step"><span class="ig-num">3</span><span>選「<b>加入主畫面</b>」→ 右上「新增」</span></div>
+              <div class="ig-step"><span class="ig-num">4</span><span>主畫面出現「數學通」圖示，點開即全螢幕</span></div>
+            </div>
+            <div class="ig-card">
+              <div class="ig-title">💻 電腦（Chrome／Edge）</div>
+              <div class="ig-step"><span class="ig-num">1</span><span>開網站後，網址列右側點<b>安裝圖示</b>（⊕／小螢幕圖）</span></div>
+              <div class="ig-step"><span class="ig-num">2</span><span>或點瀏覽器選單 →「<b>安裝數學通…</b>」</span></div>
+              <div class="ig-step"><span class="ig-num">3</span><span>按「安裝」→ 成獨立視窗 App</span></div>
+              <div class="ig-step"><span class="ig-num">4</span><span>開始功能表／Dock 會有「數學通」圖示</span></div>
+            </div>
+          </div>
+          <div class="ig-note">🔄 <b>更新</b>：裝成 App 後有離線快取，改版不會自動更新——開 App 按上方「<b>🔄 檢查更新</b>」，或把 App 關掉重開即可。</div>
         </div>
         <div class="sec-label">我的學習統計</div>
         <div class="stat-row">
@@ -4930,6 +4967,7 @@ function pickExam(el,g){el.parentElement.querySelectorAll('.exam-opt').forEach(f
 function startExam(){alert('請從試卷列表選擇試卷開始作答');}
 
 var APP_VER='v21';
+function toggleInstall(){var g=document.getElementById('install-guide');if(!g)return;g.style.display=(g.style.display==='none'||!g.style.display)?'block':'none';}
 function forceUpdate(){
   var btn=document.getElementById('hv-btn'),st=document.getElementById('hv-status');
   if(btn){btn.disabled=true;btn.textContent='更新中…';}
