@@ -48,6 +48,11 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--i
 .sidebar-logo .app-name{font-size:18px;font-weight:700;letter-spacing:-.5px;color:#fff}
 .sidebar-logo .app-tagline{font-size:10px;color:#6B6966;margin-top:2px;font-family:var(--mono)}
 .sidebar-logo .app-ver{font-size:9px;color:#4A4846;margin-top:3px;font-family:var(--mono);letter-spacing:.3px}
+.sidebar-subject{display:flex;gap:4px;padding:12px 14px 0}
+.subject-btn{flex:1;text-align:center;padding:7px 0;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;color:#9A9893;background:#242220;border:1px solid #2E2C2A;font-family:var(--font);transition:all .15s}
+.subject-btn.active{background:#fff;color:#1A1917;border-color:#fff}
+.subject-btn.sci.active{background:#12B76A;color:#fff;border-color:#12B76A}
+.subject-btn.chem.active{background:#F59E0B;color:#fff;border-color:#F59E0B}
 .sidebar-grade{display:flex;gap:3px;padding:12px 14px;border-bottom:1px solid #2E2C2A}
 .grade-btn{flex:1;text-align:center;padding:5px 0;border-radius:5px;font-size:11px;font-weight:500;cursor:pointer;color:#6B6966;background:transparent;border:none;font-family:var(--font);transition:all .15s}
 .grade-btn.active{background:#2E5BFF;color:#fff}
@@ -504,8 +509,13 @@ textarea.fill-input{min-height:96px;resize:vertical;line-height:1.7;font-family:
   <div class="sidebar">
     <div class="sidebar-logo">
       <div class="app-name">數學通</div>
-      <div class="app-tagline">108課綱・MATH PRO</div>
-      <div class="app-ver">v21・更新 2026-07-17（課程內容併入側欄＋首頁版本更新鍵）</div>
+      <div class="app-tagline">108課綱・數學／物理／化學</div>
+      <div class="app-ver">v23・更新 2026-07-18（物理・力學＋化學・原子結構範本章）</div>
+    </div>
+    <div class="sidebar-subject">
+      <button class="subject-btn active" onclick="setSubject(0,this)">數學</button>
+      <button class="subject-btn sci" onclick="setSubject(1,this)">物理</button>
+      <button class="subject-btn chem" onclick="setSubject(2,this)">化學</button>
     </div>
     <div class="sidebar-grade">
       <button class="grade-btn active" onclick="setGrade(0,this)">高一</button>
@@ -4540,19 +4550,26 @@ var solOrder={0:['數與式','直線與圓','多項式函數','指數與對數',
 [0,1,2].forEach(function(g){solutionsData[g].sort(function(a,b){return solOrder[g].indexOf(a.topic)-solOrder[g].indexOf(b.topic);});});
 
 
+var STORE_PREFIX='mathgo';
 var myCards=[];
 try{myCards=JSON.parse(localStorage.getItem('mathgo_myCards')||'[]');}catch(e){myCards=[];}
 var pStats={};
 try{pStats=JSON.parse(localStorage.getItem('mathgo_stats')||'{}');}catch(e){pStats={};}
 var examHist={};
 try{examHist=JSON.parse(localStorage.getItem('mathgo_examHist')||'{}');}catch(e){examHist={};}
-function saveCards(){try{localStorage.setItem('mathgo_myCards',JSON.stringify(myCards));}catch(e){}}
-function saveStats(){try{localStorage.setItem('mathgo_stats',JSON.stringify(pStats));}catch(e){}}
-function saveExamHist(){try{localStorage.setItem('mathgo_examHist',JSON.stringify(examHist));}catch(e){}}
+function saveCards(){try{localStorage.setItem(STORE_PREFIX+'_myCards',JSON.stringify(myCards));}catch(e){}}
+function saveStats(){try{localStorage.setItem(STORE_PREFIX+'_stats',JSON.stringify(pStats));}catch(e){}}
+function saveExamHist(){try{localStorage.setItem(STORE_PREFIX+'_examHist',JSON.stringify(examHist));}catch(e){}}
+function reloadStats(){
+  try{myCards=JSON.parse(localStorage.getItem(STORE_PREFIX+'_myCards')||'[]');}catch(e){myCards=[];}
+  try{pStats=JSON.parse(localStorage.getItem(STORE_PREFIX+'_stats')||'{}');}catch(e){pStats={};}
+  try{examHist=JSON.parse(localStorage.getItem(STORE_PREFIX+'_examHist')||'{}');}catch(e){examHist={};}
+  try{daily=JSON.parse(localStorage.getItem(STORE_PREFIX+'_daily')||'{}');}catch(e){daily={};}
+}
 function renderMath(el){if(typeof renderMathInElement==='function'&&el)renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});}
 var daily={};
 try{daily=JSON.parse(localStorage.getItem('mathgo_daily')||'{}');}catch(e){daily={};}
-function saveDaily(){try{localStorage.setItem('mathgo_daily',JSON.stringify(daily));}catch(e){}}
+function saveDaily(){try{localStorage.setItem(STORE_PREFIX+'_daily',JSON.stringify(daily));}catch(e){}}
 function pad2(n){return (n<10?'0':'')+n;}
 function dayKey(d){return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());}
 function recordDaily(a,c){var t=dayKey(new Date());var d=daily[t]||(daily[t]={a:0,c:0});d.a+=a;d.c+=c;saveDaily();updateGlobalStats();}
@@ -4966,7 +4983,7 @@ function setGrade(idx,el){
 function pickExam(el,g){el.parentElement.querySelectorAll('.exam-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');}
 function startExam(){alert('請從試卷列表選擇試卷開始作答');}
 
-var APP_VER='v21';
+var APP_VER='v23';
 function toggleInstall(){var g=document.getElementById('install-guide');if(!g)return;g.style.display=(g.style.display==='none'||!g.style.display)?'block':'none';}
 function forceUpdate(){
   var btn=document.getElementById('hv-btn'),st=document.getElementById('hv-status');
@@ -4979,6 +4996,789 @@ function forceUpdate(){
   if(!jobs.length){done();return;}
   Promise.all(jobs).then(done).catch(done);
 }
+/* ══════════════ 多科目 registry（物理 / 化學） ══════════════ */
+/* 物理內容占位——整合起草 agent 產出後填入（PHYS_INJECT 區塊） */
+/* ══ 物理內容（起草+驗算 agent 產出，整合注入） ══ */
+// phys_conceptual.js — 物理高一「運動與力」課程頁 + 重點筆記 + 速記卡
+// 三個變數：PHYS_COURSE / PHYS_NOTES / PHYS_CARDS
+
+var PHYS_COURSE = {
+  num: 'CH 01',
+  name: '運動與力',
+  book: '第一冊 力學',
+  grade: '高一',
+  sub: '位移速度加速度、等加速度運動、牛頓三大運動定律、力與摩擦',
+  tags: ['分科範圍', '必修', '先懂再背'],
+  sections: [
+    {
+      title: '🗣 白話導讀：先看得懂，再開始算',
+      color: 'blue',
+      body: `<p class="c-intro">力學在問兩件事：物體「怎麼動」和「為什麼這樣動」。前半段叫<span class="c-def">運動學</span>——只描述位置、速度、加速度，不管誰在推它；後半段叫<span class="c-def">動力學</span>——用牛頓定律解釋是哪些力造成這個運動。整章的骨架就是這條因果鏈。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">受力</span>物體被幾個力推拉</div><div class="c-op">→</div><div class="c-block o"><span class="bk-tag">合力</span>ΣF = ma 決定加速度</div><div class="c-op">→</div><div class="c-block"><span class="bk-tag">運動</span>速度、位移隨時間變化</div></div>
+<p class="c-intro">所以解題順序幾乎固定：先畫<span class="c-def">自由體圖</span >找出所有力、加總成合力，用 <span class="c-def">F = ma</span> 求出加速度，再套<span class="c-def">等加速度四公式</span>算速度與位移。看到題目別急著代數字，先問自己「這一步在算因，還是在算果」。</p>
+<div class="c-warn">⚠ 最常見的誤解：以為「有速度就一定有力」。等速直線運動合力為零，力是用來改變速度（產生加速度）的，不是用來維持速度的。</div>`
+    },
+    {
+      title: '📈 運動學：位移、速度、加速度與 v–t 圖',
+      color: 'green',
+      body: `<p class="c-intro">先分清三個量：<span class="c-def">位移</span>是起點到終點的直線向量（有方向），<span class="c-def">路徑長</span>是實際走過的總長度（純量）；來回一趟位移可能是 0，路徑長卻不是 0。速度＝位移÷時間，加速度＝速度變化÷時間。</p>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext">平均速度 = 位移 ÷ 總時間（看頭尾兩點）</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext">瞬時速度 = 某一瞬間的速度（v–t 圖上那一點）</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext">加速度 a = (v − v₀) ÷ t，單位 m/s²</div></div>
+<p class="c-intro">等加速度運動最愛考 <span class="c-def">v–t 圖</span>：圖的<span class="c-def">斜率就是加速度</span>，圖下<span class="c-def">面積就是位移</span>。下圖是一條起始 v₀＝5、加速度 a＝2 的直線，10 秒後速度到 25 m/s。</p>
+<div class="c-svg"><svg viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+<line x1="50" y1="20" x2="50" y2="165" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="50" y1="165" x2="350" y2="165" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="20" y="30" font-size="12" fill="var(--ink3)">v (m/s)</text>
+<text x="315" y="185" font-size="12" fill="var(--ink3)">t (s)</text>
+<polygon points="50,145 320,45 320,165 50,165" fill="var(--accent)" fill-opacity="0.15"/>
+<line x1="50" y1="145" x2="320" y2="45" stroke="var(--green)" stroke-width="2.5"/>
+<line x1="50" y1="145" x2="320" y2="145" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 3"/>
+<line x1="320" y1="45" x2="320" y2="165" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="50" cy="145" r="3" fill="var(--green)"/>
+<circle cx="320" cy="45" r="3" fill="var(--green)"/>
+<text x="20" y="150" font-size="11" fill="var(--green)">v₀=5</text>
+<text x="326" y="45" font-size="11" fill="var(--green)">25</text>
+<text x="312" y="182" font-size="11" fill="var(--ink3)">10</text>
+<text x="150" y="120" font-size="12" fill="var(--accent)">面積 = 位移</text>
+<text x="185" y="80" font-size="11" fill="var(--green)">斜率 = a = 2</text>
+</svg></div>
+<p class="c-intro">面積用梯形算：位移 s ＝ (上底＋下底) × 高 ÷ 2 ＝ (5＋25) × 10 ÷ 2 ＝ 150 m。這正好對上公式 s ＝ (v₀＋v)t／2。四個等加速度公式其實都是這張圖的不同讀法。</p>
+<div class="fcard"><div class="fcard-f">v = v₀ + at　｜　s = v₀t + ½at²　｜　v² = v₀² + 2as　｜　s = (v₀+v)t／2</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>「速度看一次方、位移看平方；沒時間就用 v² = v₀² + 2as。」</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>加速度固定（等加速度、自由落體）才能用。動手前先確認 a 是常數，並把「往哪個方向為正」定清楚。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>v₀＝5、a＝2、t＝10：v ＝ 5＋2×10 ＝ 25 m/s；s ＝ 5×10＋½×2×10² ＝ 150 m，與梯形面積相符。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 題目沒給時間 t，只給距離求末速？<details><summary>看解法</summary><div class="ans">用不含 t 的 v² = v₀² + 2as，直接代 s 求 v。</div></details>② 剎車到停止求距離（v＝0）？<details><summary>看解法</summary><div class="ans">a 取負值，0 ＝ v₀² + 2as → s ＝ −v₀² ÷ (2a)，得正的煞停距離。</div></details></div></div></div>`
+    },
+    {
+      title: '🍎 牛頓三大運動定律',
+      color: 'gold',
+      body: `<p class="c-intro"><span class="c-def">第一定律（慣性）</span>：不受合力或合力為零時，靜者恆靜、動者維持等速直線。<span class="c-def">第二定律</span>：合力＝質量×加速度（ΣF ＝ ma），力和加速度同方向。<span class="c-def">第三定律</span>：作用力與反作用力大小相等、方向相反，且作用在<span class="c-def">兩個不同物體</span>上，所以不會互相抵消。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">第一</span>沒合力就不改變運動狀態</div><div class="c-op">→</div><div class="c-block o"><span class="bk-tag">第二</span>有合力就有 a＝ΣF/m</div><div class="c-op">→</div><div class="c-block"><span class="bk-tag">第三</span>你推牆、牆同時推你</div></div>
+<p class="c-intro">第二定律的解題核心是<span class="c-def">自由體圖</span>：把物體單獨畫出來，標上所有作用在「它身上」的力，再沿運動方向加總。下圖一個放在水平面、被水平力 F 拉動的方塊，受到 4 個力。</p>
+<div class="c-svg"><svg viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+<line x1="40" y1="150" x2="340" y2="150" stroke="var(--ink3)" stroke-width="2"/>
+<rect x="150" y="110" width="70" height="40" rx="4" fill="var(--accent)" fill-opacity="0.18" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="172" y="135" font-size="13" fill="var(--ink)">m</text>
+<line x1="185" y1="108" x2="185" y2="55" stroke="var(--green)" stroke-width="2"/>
+<polygon points="185,48 180,60 190,60" fill="var(--green)"/>
+<text x="192" y="60" font-size="12" fill="var(--green)">N</text>
+<line x1="185" y1="152" x2="185" y2="192" stroke="var(--red)" stroke-width="2"/>
+<polygon points="185,198 180,186 190,186" fill="var(--red)"/>
+<text x="192" y="188" font-size="12" fill="var(--red)">mg</text>
+<line x1="222" y1="130" x2="300" y2="130" stroke="var(--gold)" stroke-width="2"/>
+<polygon points="306,130 294,125 294,135" fill="var(--gold)"/>
+<text x="270" y="122" font-size="12" fill="var(--gold)">F</text>
+<line x1="148" y1="130" x2="95" y2="130" stroke="var(--ink)" stroke-width="2"/>
+<polygon points="89,130 101,125 101,135" fill="var(--ink)"/>
+<text x="100" y="122" font-size="12" fill="var(--ink)">f</text>
+</svg></div>
+<p class="c-intro">垂直方向不動：N ＝ mg。水平方向：F − f ＝ ma。兩軸分開列式是牛頓題的通用招式。</p>
+<div class="fcard"><div class="fcard-f">ΣF = ma　（合力 = 質量 × 加速度）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>「把身上所有力加起來，等於 m 乘 a；力往哪，加速度就往哪。」</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>任何要找加速度或未知力的題目。先畫自由體圖、選正方向，再把力分成水平與鉛直兩軸各自 ΣF ＝ ma。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>m＝2 kg，水平拉力 F＝12 N，摩擦力 f＝2 N：水平 ΣF ＝ 12−2 ＝ 10 N，a ＝ 10÷2 ＝ 5 m/s²。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 電梯以 a 向上加速，人的視重（地板法向力 N）？<details><summary>看解法</summary><div class="ans">N − mg ＝ ma → N ＝ m(g＋a)，比體重大（超重）。向下加速則 N ＝ m(g−a)。</div></details>② 為什麼作用反作用不會抵消？<details><summary>看解法</summary><div class="ans">兩力作用在不同物體，各自畫自由體圖時只會出現其中一個，不同物體的力不能相加抵消。</div></details></div></div></div>`
+    },
+    {
+      title: '⚖️ 力與摩擦：重力、法向力、摩擦力',
+      color: 'green',
+      body: `<p class="c-intro"><span class="c-def">重力</span> W ＝ mg 恆向下（取 g＝10 m/s²）。<span class="c-def">法向力</span> N 是接觸面垂直頂住物體的力，大小視情況而定（水平面上等於 mg，斜面或有外力時要另外算）。<span class="c-def">摩擦力</span> f ＝ μN 沿接觸面、與相對運動（趨勢）方向相反。</p>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext">先判斷靜摩擦還動摩擦：物體有沒有在滑動？</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext">靜摩擦是「有多少擋多少」，最大值 f = μₛN；還沒滑動時 f 等於外力</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext">一旦滑動，用動摩擦 f = μₖN（μₖ 通常小於 μₛ，且固定）</div></div>
+<div class="c-svg"><svg viewBox="0 0 380 190" xmlns="http://www.w3.org/2000/svg">
+<line x1="40" y1="150" x2="340" y2="150" stroke="var(--ink3)" stroke-width="2"/>
+<rect x="150" y="112" width="66" height="38" rx="4" fill="var(--green)" fill-opacity="0.15" stroke="var(--green)" stroke-width="1.5"/>
+<line x1="183" y1="110" x2="183" y2="58" stroke="var(--green)" stroke-width="2"/>
+<polygon points="183,52 178,64 188,64" fill="var(--green)"/>
+<text x="190" y="64" font-size="12" fill="var(--green)">N</text>
+<line x1="183" y1="152" x2="183" y2="188" stroke="var(--red)" stroke-width="2"/>
+<polygon points="183,192 178,180 188,180" fill="var(--red)"/>
+<text x="190" y="184" font-size="12" fill="var(--red)">W=mg</text>
+<line x1="218" y1="131" x2="298" y2="131" stroke="var(--gold)" stroke-width="2"/>
+<polygon points="304,131 292,126 292,136" fill="var(--gold)"/>
+<text x="268" y="124" font-size="12" fill="var(--gold)">F 外力</text>
+<line x1="148" y1="131" x2="98" y2="131" stroke="var(--accent)" stroke-width="2"/>
+<polygon points="92,131 104,126 104,136" fill="var(--accent)"/>
+<text x="96" y="124" font-size="12" fill="var(--accent)">f=μN</text>
+</svg></div>
+<p class="c-intro">水平面上四力平衡的鉛直式子：N ＝ mg，代進 f ＝ μN ＝ μmg。這是摩擦題最常用的一步。</p>
+<div class="fcard"><div class="fcard-f">f = μN　（摩擦力 = 摩擦係數 × 法向力）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>「壓得越緊摩擦越大；先算 N，再乘 μ。」</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>物體正在滑動（動摩擦）或問「最大靜摩擦」時。先由鉛直方向求 N，注意斜面或垂直外力會改變 N，不一定等於 mg。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>m＝5 kg 放水平面，μ＝0.4，g＝10：N ＝ mg ＝ 50 N，f ＝ 0.4×50 ＝ 20 N。要拉動需外力大於 20 N。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 用 15 N 水平推卻推不動，此時摩擦力多大？<details><summary>看解法</summary><div class="ans">還沒滑動，靜摩擦「有多少擋多少」，f ＝ 15 N（不是 20 N），因為小於最大靜摩擦。</div></details>② 在物體上再壓一個向下的手，摩擦變大還變小？<details><summary>看解法</summary><div class="ans">N 變大 → f ＝ μN 變大，更難推動。</div></details></div></div></div>
+<div class="fcard"><div class="fcard-f">W = mg　（重力 = 質量 × 重力加速度，g = 10 m/s²）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>「幾公斤乘以十，就是幾牛頓的重力。」</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>凡是要放重力進自由體圖、或算法向力、視重、摩擦力時。分清「質量 m（kg，不變）」與「重量 W（N，隨 g 變）」。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>m＝3 kg：W ＝ 3×10 ＝ 30 N，方向向下。同一物體到月球 g 變小，質量仍 3 kg 但重量變小。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 自由落體時物體只受重力，加速度多大？<details><summary>看解法</summary><div class="ans">ΣF ＝ mg ＝ ma → a ＝ g ＝ 10 m/s²，與質量無關。</div></details>② 電梯纜繩斷了，裡面的人「失重」是重力消失嗎？<details><summary>看解法</summary><div class="ans">不是，重力還在（仍 mg）；只是地板法向力 N ＝ 0，人與地板一起以 g 下墜，才感覺失重。</div></details></div></div></div>`
+    },
+    {
+      title: '✏️ 練習問題',
+      color: 'blue',
+      body: `<p class="c-intro">動手前先想「這題在算因（力）還是果（運動）」，再挑公式。全部取 g ＝ 10 m/s²。</p>
+<div class="c-practice"><b>練習 1：</b>汽車由靜止以 a ＝ 3 m/s² 等加速，行駛 6 秒後速度多少？共走了多遠？
+<details><summary>看解答</summary>v ＝ v₀＋at ＝ 0＋3×6 ＝ 18 m/s。s ＝ v₀t＋½at² ＝ 0＋½×3×6² ＝ 54 m。（也可用梯形面積 ½×18×6 ＝ 54 m 驗證。）</details></div>
+<div class="c-practice"><b>練習 2：</b>質量 4 kg 的木箱放水平地面，μ ＝ 0.5。用水平力 30 N 推它，求加速度。
+<details><summary>看解答</summary>N ＝ mg ＝ 4×10 ＝ 40 N，動摩擦 f ＝ μN ＝ 0.5×40 ＝ 20 N。水平 ΣF ＝ 30−20 ＝ 10 N，a ＝ ΣF÷m ＝ 10÷4 ＝ 2.5 m/s²。</details></div>
+<div class="c-practice"><b>練習 3：</b>60 kg 的人站在電梯地板上，電梯以 2 m/s² 向上加速，求地板對人的法向力（視重）。
+<details><summary>看解答</summary>取向上為正，ΣF ＝ N − mg ＝ ma → N ＝ m(g＋a) ＝ 60×(10＋2) ＝ 720 N，比靜止時的 600 N 大，即「超重」。</details></div>
+<div class="c-warn">⚠ 練習 2 若題目改成「推不動」，摩擦力就不是 20 N，而是等於你施的力（靜摩擦有多少擋多少），別直接套 μN。</div>`
+    }
+  ]
+};
+
+var PHYS_NOTES = {
+  pills: ['運動與力'],
+  content: {
+    '運動與力': [
+      {
+        title: '一張圖看懂等加速度：v–t 圖',
+        tag: '核心概念',
+        tagClass: 'blue',
+        open: true,
+        body: `<div class="c-svg"><svg viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+<line x1="50" y1="20" x2="50" y2="165" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="50" y1="165" x2="350" y2="165" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="20" y="30" font-size="12" fill="var(--ink3)">v (m/s)</text>
+<text x="315" y="185" font-size="12" fill="var(--ink3)">t (s)</text>
+<polygon points="50,145 320,45 320,165 50,165" fill="var(--accent)" fill-opacity="0.15"/>
+<line x1="50" y1="145" x2="320" y2="45" stroke="var(--green)" stroke-width="2.5"/>
+<circle cx="50" cy="145" r="3" fill="var(--green)"/>
+<circle cx="320" cy="45" r="3" fill="var(--green)"/>
+<text x="18" y="150" font-size="11" fill="var(--green)">v₀=5</text>
+<text x="326" y="48" font-size="11" fill="var(--green)">25</text>
+<text x="312" y="182" font-size="11" fill="var(--ink3)">10</text>
+<text x="140" y="120" font-size="12" fill="var(--accent)">面積 = 位移 150 m</text>
+<text x="180" y="78" font-size="11" fill="var(--green)">斜率 = a = 2</text>
+</svg></div>
+<p class="c-intro">記一句話就夠：<span class="c-def">v–t 圖的斜率是加速度，圖下的面積是位移</span>。上圖 v₀＝5、a＝2、跑 10 秒，用梯形面積 (5＋25)×10÷2 ＝ 150 m 就是位移，和公式 s ＝ (v₀＋v)t／2 完全一致。看到等加速度的題目，先在腦中畫這條斜線。</p>
+<div class="fcard"><div class="fcard-f">v = v₀ + at　｜　s = v₀t + ½at²　｜　v² = v₀² + 2as　｜　s = (v₀+v)t／2</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>「速度一次方、位移平方，沒時間就用 v² = v₀² + 2as。」</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>加速度為定值（含自由落體 a＝g）。先定正方向，缺哪個量就挑不含它的公式。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>v₀＝5、a＝2、t＝10：v ＝ 25 m/s、s ＝ 150 m。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 只給距離、沒給時間求末速？<details><summary>看解法</summary><div class="ans">用 v² = v₀² + 2as。</div></details>② 剎車求煞停距離？<details><summary>看解法</summary><div class="ans">v＝0，s ＝ −v₀² ÷ (2a)，a 取負。</div></details></div></div></div>`
+      },
+      {
+        title: '位移 vs 路徑長、速度 vs 速率',
+        tag: '易混淆',
+        tagClass: 'green',
+        open: false,
+        body: `<p class="c-intro"><span class="c-def">位移</span>是向量，只看起點到終點；<span class="c-def">路徑長</span>是純量，累計實際走過的路。繞操場一圈回到原點，位移＝0，路徑長＝一圈長度。速度＝位移÷時間（有方向），速率＝路徑長÷時間（無方向）。</p>
+<div class="formula">平均速度 = 位移 ÷ 時間　；　平均速率 = 路徑長 ÷ 時間</div>
+<div class="c-warn">⚠ 只有直線且不折返時，位移大小才等於路徑長、速度大小才等於速率。考題常故意設計來回或轉彎讓兩者不同。</div>`
+      },
+      {
+        title: '牛頓三定律與自由體圖',
+        tag: '核心概念',
+        tagClass: 'gold',
+        open: false,
+        body: `<p class="c-intro">第一定律（慣性）：沒合力就維持原狀態；第二定律：<span class="c-def">ΣF ＝ ma</span>；第三定律：作用力與反作用力等大反向、作用在<span class="c-def">不同物體</span>。解題永遠先畫自由體圖，把力分成水平、鉛直兩軸各自列 ΣF ＝ ma。</p>
+<div class="fcard"><div class="fcard-f">ΣF = ma</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>「身上所有力加起來 = m 乘 a，力往哪加速度往哪。」</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>求加速度或未知力。先畫自由體圖、選正方向、分兩軸。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>m＝2、F＝12 N、f＝2 N：ΣF ＝ 10 N，a ＝ 5 m/s²。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 電梯向上加速求視重？<details><summary>看解法</summary><div class="ans">N ＝ m(g＋a)，超重。</div></details>② 作用反作用為何不抵消？<details><summary>看解法</summary><div class="ans">作用在不同物體，各自畫圖只出現一個。</div></details></div></div></div>`
+      },
+      {
+        title: '重力、法向力、摩擦力三兄弟',
+        tag: '必背',
+        tagClass: 'red',
+        open: false,
+        body: `<p class="c-intro"><span class="c-def">重力 W ＝ mg</span> 恆向下；<span class="c-def">法向力 N</span> 垂直接觸面，大小看情況（水平面 N＝mg，斜面或加壓要另算）；<span class="c-def">摩擦力 f ＝ μN</span> 沿面、擋住相對運動。靜摩擦「有多少擋多少」直到最大值 μₛN，滑動後用動摩擦 μₖN。</p>
+<div class="fcard"><div class="fcard-f">f = μN　｜　W = mg（g = 10 m/s²）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>「先算 N 再乘 μ；幾公斤乘十就是幾牛頓重。」</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>算摩擦、視重、平衡時。分清質量 m（不變）與重量 W（隨 g 變）。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>m＝5、μ＝0.4：N ＝ 50 N，f ＝ 20 N。m＝3：W ＝ 30 N。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 推 15 N 卻推不動，摩擦多大？<details><summary>看解法</summary><div class="ans">靜摩擦 ＝ 15 N（小於最大值）。</div></details>② 自由落體 a 多大？<details><summary>看解法</summary><div class="ans">mg ＝ ma → a ＝ g ＝ 10 m/s²，與質量無關。</div></details></div></div></div>`
+      }
+    ]
+  }
+};
+
+var PHYS_CARDS = [
+  {
+    q: 'v–t 圖的「斜率」與「圖下面積」各代表什麼？',
+    a: '斜率 = 加速度 a\n圖下面積 = 位移 s\n（面積用梯形算：(上底+下底)×高÷2）'
+  },
+  {
+    q: '等加速度運動四公式',
+    a: 'v = v₀ + at\ns = v₀t + ½at²\nv² = v₀² + 2as\ns = (v₀+v)t／2\n沒給時間 t 就用第三式'
+  },
+  {
+    q: '位移與路徑長差在哪？',
+    a: '位移＝向量，只看起點到終點，可為 0\n路徑長＝純量，累計走過的總長\n來回一圈：位移 0、路徑長不為 0'
+  },
+  {
+    q: '牛頓三大運動定律',
+    a: '一、慣性：無合力則維持靜止或等速直線\n二、ΣF = ma（力與加速度同向）\n三、作用反作用等大反向，作用在不同物體上'
+  },
+  {
+    q: '摩擦力公式與靜/動摩擦差別',
+    a: 'f = μN（先求 N 再乘 μ）\n靜摩擦：有多少擋多少，上限 μₛN\n動摩擦：滑動後為定值 μₖN（通常小於靜摩擦）'
+  },
+  {
+    q: '重量 W 與質量 m 的差別？（g = 10）',
+    a: 'W = mg，單位 N，隨所在星球 g 改變\n質量 m 單位 kg，物體固有、到哪都不變\n例：m＝3 kg → W＝30 N'
+  },
+  {
+    q: '電梯視重：以加速度 a 向上／向下加速，地板法向力 N＝？',
+    a: '向上加速：N = m(g+a) → 超重\n向下加速：N = m(g−a) → 失重\n自由下墜 a＝g：N＝0（完全失重，但重力仍在）'
+  }
+];
+var PHYS_BASIC = [
+  {
+    q:'一物體沿東西向直線運動，先向東走 30 m，再向西走 50 m。此過程的「路徑長」與「位移大小」分別為何？',
+    opts:['路徑長 80 m，位移 20 m','路徑長 80 m，位移 80 m','路徑長 20 m，位移 20 m','路徑長 20 m，位移 80 m'],
+    ans:'A',
+    hint:'路徑長把每段距離相加；位移只看起點到終點、方向會相消。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>路徑長是實際走過的距離總和，與方向無關，直接相加。</div></div><div class="as-f">路徑長 = 30 + 50 = 80 m</div><div class="as-step"><div class="as-n">2</div><div>位移是起點到終點的向量；向東 30 m 後再向西 50 m，方向相消後淨向西。</div></div><div class="as-f">位移 = 50(西) − 30(東) = 20 m，方向向西</div><div class="as-warn">⚠ 位移會因方向相消，路徑長只會累加，兩者不可混為一談。</div><div class="as-ans">答：路徑長 80 m，位移大小 20 m（向西）</div></div>'
+  },
+  {
+    q:'某人走一段路，前半段路程以 4 m/s 前進，後半段等長路程以 6 m/s 前進。全程的平均速率為何？',
+    opts:['5 m/s','4.8 m/s','5.2 m/s','4.9 m/s'],
+    ans:'B',
+    hint:'等「距離」不是等「時間」，平均速率要用總路程除以總時間。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>設每段路程為 d，各段所花時間分別為 t₁ = d/4、t₂ = d/6。</div></div><div class="as-f">t₁ = d/4，t₂ = d/6</div><div class="as-step"><div class="as-n">2</div><div>平均速率 = 總路程 ÷ 總時間，代入化簡。</div></div><div class="as-f">v = 2d ÷ (d/4 + d/6) = 2d ÷ (5d/12) = 24/5 = 4.8 m/s</div><div class="as-warn">⚠ 等距離時是「調和平均」，不是 (4+6)/2 = 5 的算術平均。</div><div class="as-ans">答：4.8 m/s</div></div>'
+  },
+  {
+    type:'fill',
+    q:'【選填】一輛汽車在 5 s 內由 10 m/s 等加速到 25 m/s，其加速度為多少 m/s²？（只填數字）',
+    ans:'3',
+    acc:['３'],
+    hint:'加速度 = 速度變化量 ÷ 時間。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>等加速度定義：a = Δv / Δt，分子用速度變化量。</div></div><div class="as-f">a = (25 − 10) / 5</div><div class="as-step"><div class="as-n">2</div><div>計算。</div></div><div class="as-f">a = 15 / 5 = 3 m/s²</div><div class="as-warn">⚠ 分子要用「速度變化量」15，別誤用末速 25 直接除。</div><div class="as-ans">答：3 m/s²</div></div>'
+  },
+  {
+    q:'物體以初速 2 m/s 做等加速度直線運動，加速度為 3 m/s²，經過 4 s 後的速度為何？',
+    opts:['12 m/s','14 m/s','10 m/s','16 m/s'],
+    ans:'B',
+    hint:'用 v = v₀ + at。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>速度公式 v = v₀ + at。</div></div><div class="as-f">v = v₀ + at</div><div class="as-step"><div class="as-n">2</div><div>代入 v₀ = 2、a = 3、t = 4。</div></div><div class="as-f">v = 2 + 3 × 4 = 14 m/s</div><div class="as-warn">⚠ 先算乘法 3×4，再加 2；別算成 (2+3)×4。</div><div class="as-ans">答：14 m/s</div></div>'
+  },
+  {
+    q:'一物體由靜止出發做等加速度運動，加速度為 2 m/s²，則前 6 s 內的位移為何？',
+    opts:['12 m','72 m','36 m','18 m'],
+    ans:'C',
+    hint:'靜止出發 v₀ = 0，用 s = v₀t + ½at²。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>靜止出發 v₀ = 0，位移公式 s = v₀t + ½at²。</div></div><div class="as-f">s = v₀t + ½at²</div><div class="as-step"><div class="as-n">2</div><div>代入 v₀ = 0、a = 2、t = 6。</div></div><div class="as-f">s = 0 + ½ × 2 × 6² = 36 m</div><div class="as-warn">⚠ t 要先平方，6² = 36 不是 12；別漏掉 ½。</div><div class="as-ans">答：36 m</div></div>'
+  },
+  {
+    q:'汽車以 20 m/s 行駛時緊急煞車，以 5 m/s² 的等減速度前進直到停止，則煞車後滑行的距離為何？',
+    opts:['20 m','80 m','4 m','40 m'],
+    ans:'D',
+    hint:'末速 v = 0，用不含時間的 v² = v₀² + 2as，減速 a 取負。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>停止時 v = 0，用 v² = v₀² + 2as，減速度 a = −5 m/s²。</div></div><div class="as-f">0 = v₀² + 2as</div><div class="as-step"><div class="as-n">2</div><div>代入 v₀ = 20、a = −5 求 s。</div></div><div class="as-f">0 = 20² + 2×(−5)×s → 10s = 400 → s = 40 m</div><div class="as-warn">⚠ 減速時 a 要帶負號；20² = 400 別算成 40。</div><div class="as-ans">答：40 m</div></div>'
+  },
+  {
+    q:'某物體的速度—時間（v–t）圖如附圖：前 4 s 由靜止等加速到 20 m/s，接著等速維持到第 10 s。此 10 s 內物體的總位移為何？',
+    opts:['200 m','120 m','160 m','140 m'],
+    ans:'C',
+    hint:'v–t 圖「線下面積」等於位移，拆成三角形加矩形。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>v–t 圖線下面積代表位移。前 4 s 為三角形、4~10 s 為矩形。</div></div><svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg"><line x1="30" y1="20" x2="30" y2="130" stroke="var(--ink3)" stroke-width="1.5"/><line x1="30" y1="130" x2="240" y2="130" stroke="var(--ink3)" stroke-width="1.5"/><text x="12" y="30" font-size="11" fill="var(--ink)">v</text><text x="232" y="146" font-size="11" fill="var(--ink)">t</text><polyline points="30,130 110,50 230,50" fill="none" stroke="var(--accent)" stroke-width="2.5"/><line x1="110" y1="130" x2="110" y2="50" stroke="var(--ink3)" stroke-dasharray="3 3" stroke-width="1"/><text x="103" y="145" font-size="10" fill="var(--ink)">4</text><text x="220" y="145" font-size="10" fill="var(--ink)">10</text><text x="8" y="54" font-size="10" fill="var(--ink)">20</text><text x="55" y="102" font-size="10" fill="var(--green)">三角</text><text x="150" y="95" font-size="10" fill="var(--gold)">矩形</text></svg><div class="as-note">藍線為速度：前 4 s 等加速到 20 m/s，後 6 s 等速。</div><div class="as-step"><div class="as-n">2</div><div>三角形面積 + 矩形面積。</div></div><div class="as-f">S = ½×4×20 + 20×6 = 40 + 120 = 160 m</div><div class="as-warn">⚠ 別只算三角形，也別漏掉等速段 6 s 的矩形。</div><div class="as-ans">答：160 m</div></div>'
+  },
+  {
+    q:'一物體自靜止自由落下，取 g = 10 m/s²，經過 3 s 後其落下的距離與落地瞬間的速度分別為何？（忽略空氣阻力）',
+    opts:['距離 30 m，速度 30 m/s','距離 45 m，速度 45 m/s','距離 90 m，速度 30 m/s','距離 45 m，速度 30 m/s'],
+    ans:'D',
+    hint:'自由落體 v₀ = 0：距離用 h = ½gt²，速度用 v = gt。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>自由落體初速 v₀ = 0，落距 h = ½gt²。</div></div><div class="as-f">h = ½ × 10 × 3² = 45 m</div><div class="as-step"><div class="as-n">2</div><div>落地速度 v = gt。</div></div><div class="as-f">v = 10 × 3 = 30 m/s</div><div class="as-warn">⚠ 距離用 t²（=9）別用 t；速度才是一次方。</div><div class="as-ans">答：距離 45 m，落地速度 30 m/s</div></div>'
+  },
+  {
+    type:'fill',
+    q:'【選填】以 20 m/s 的初速將小球鉛直上拋，取 g = 10 m/s²，忽略空氣阻力，則小球能上升的最大高度為多少 m？（只填數字）',
+    ans:'20',
+    acc:['２０'],
+    hint:'到達最高點時瞬時速度為 0，用 v² = v₀² − 2gh。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>鉛直上拋到最高點時瞬時速度 v = 0，用 v² = v₀² − 2gh。</div></div><div class="as-f">0 = 20² − 2 × 10 × h</div><div class="as-step"><div class="as-n">2</div><div>解出最大高度 h。</div></div><div class="as-f">20h = 400 → h = 20 m</div><div class="as-warn">⚠ 上升時 g 與運動反向取減號；最高點是「速度」為 0，不是加速度為 0（g 仍向下）。</div><div class="as-ans">答：20 m</div></div>'
+  },
+  {
+    q:'一質量 4 kg 的物體受到合力 12 N 作用，則其加速度為何？',
+    opts:['48 m/s²','3 m/s²','8 m/s²','0.33 m/s²'],
+    ans:'B',
+    hint:'牛頓第二定律 F = ma，故 a = F/m。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>牛頓第二定律 F = ma，移項得 a = F/m。</div></div><div class="as-f">a = F / m = 12 / 4</div><div class="as-step"><div class="as-n">2</div><div>計算。</div></div><div class="as-f">a = 3 m/s²</div><div class="as-warn">⚠ 是「合力除以質量」，不是相乘（48 為誤解）。</div><div class="as-ans">答：3 m/s²</div></div>'
+  },
+  {
+    type:'multi',
+    q:'【多選】關於牛頓運動定律，下列敘述何者正確？',
+    opts:[
+      '慣性定律：物體不受外力（或所受合力為零）時，靜者恆靜、動者維持等速直線運動',
+      '作用力與反作用力作用在同一物體上，故會互相抵消',
+      'F = ma 中，同樣大小的力作用在質量較大的物體上，產生的加速度較小',
+      '物體所受合力為零時，加速度必為零，但速度不一定為零',
+      '一物體正在等速直線前進，就表示它完全不受任何力'
+    ],
+    ans:['A','C','D'],
+    hint:'逐項判斷；注意作用反作用作用在「不同物體」，合力為零不等於不受力。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>逐項檢查每個敘述是否符合牛頓三大定律。</div></div><div class="as-f">(A) 慣性定律敘述正確 ✓ (B) 作用力與反作用力分屬「不同」物體，不會抵消 ✗ (C) a = F/m，m 大則 a 小 ✓ (D) ΣF = 0 → a = 0，但可維持等速（v 不必為 0）✓ (E) 等速直線可能是「合力為零」而非不受力 ✗</div><div class="as-warn">⚠ 作用力與反作用力永遠作用在兩個不同物體上，故永不抵消；合力為零≠不受力。</div><div class="as-ans">答：A、C、D</div></div>'
+  },
+  {
+    q:'質量 5 kg 的木箱放在水平地面上，木箱與地面間的動摩擦係數為 0.4，取 g = 10 m/s²。今以水平力 F 使木箱在地面上「等速」滑動，則 F 的大小為何？',
+    opts:['50 N','25 N','20 N','2 N'],
+    ans:'C',
+    hint:'先算法向力 N = mg，再算動摩擦力 f = μN；等速代表合力為零。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>鉛直方向平衡，法向力 N = mg。</div></div><div class="as-f">N = mg = 5 × 10 = 50 N</div><svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect x="80" y="70" width="40" height="30" fill="var(--bg)" stroke="var(--ink)" stroke-width="1.5"/><line x1="100" y1="70" x2="100" y2="24" stroke="var(--accent)" stroke-width="2"/><polygon points="100,16 95,26 105,26" fill="var(--accent)"/><text x="106" y="30" font-size="12" fill="var(--accent)">N</text><line x1="100" y1="100" x2="100" y2="138" stroke="var(--red)" stroke-width="2"/><polygon points="100,146 95,136 105,136" fill="var(--red)"/><text x="106" y="138" font-size="12" fill="var(--red)">mg</text><line x1="120" y1="85" x2="170" y2="85" stroke="var(--green)" stroke-width="2"/><polygon points="178,85 168,80 168,90" fill="var(--green)"/><text x="148" y="78" font-size="12" fill="var(--green)">F</text><line x1="80" y1="85" x2="32" y2="85" stroke="var(--gold)" stroke-width="2"/><polygon points="24,85 34,80 34,90" fill="var(--gold)"/><text x="42" y="78" font-size="12" fill="var(--gold)">f</text></svg><div class="as-note">木箱受重力 mg（下）、法向力 N（上）、外力 F 與摩擦力 f（水平相反）。</div><div class="as-step"><div class="as-n">2</div><div>等速 → 水平合力為零 → F = 動摩擦力 f = μN。</div></div><div class="as-f">F = μN = 0.4 × 50 = 20 N</div><div class="as-warn">⚠ 「等速」代表加速度為零、合力為零，故 F 恰等於摩擦力，不需更大。</div><div class="as-ans">答：20 N</div></div>'
+  },
+  {
+    q:'質量 2 kg 的物體放在傾角 30° 的「光滑」斜面上由靜止釋放，取 g = 10 m/s²。則物體沿斜面下滑的加速度為何？',
+    opts:['10 m/s²','5 m/s²','2.5 m/s²','8.66 m/s²'],
+    ans:'B',
+    hint:'光滑斜面：沿斜面淨力為 mg sinθ，故 a = g sinθ，與質量無關。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>把重力沿斜面與垂直斜面分解，沿斜面分量為 mg sinθ。光滑斜面無摩擦，此即淨力。</div></div><svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg"><polygon points="30,120 200,120 200,30" fill="var(--bg)" stroke="var(--ink)" stroke-width="1.5"/><text x="46" y="115" font-size="11" fill="var(--accent)">30°</text><rect x="100" y="58" width="30" height="20" fill="var(--gold)" stroke="var(--ink)" stroke-width="1.2" transform="rotate(-28 115 68)"/><line x1="120" y1="72" x2="120" y2="116" stroke="var(--red)" stroke-width="2"/><polygon points="120,124 115,114 125,114" fill="var(--red)"/><text x="126" y="110" font-size="11" fill="var(--red)">mg</text></svg><div class="as-note">重力 mg 分解：沿斜面分量 mg sinθ、垂直斜面分量 mg cosθ。</div><div class="as-step"><div class="as-n">2</div><div>沿斜面方向 ma = mg sinθ，質量相消得 a = g sinθ。</div></div><div class="as-f">a = g sin30° = 10 × 0.5 = 5 m/s²</div><div class="as-warn">⚠ 光滑斜面 a = g sinθ 與質量無關；用 sin30° = 0.5，別誤用 cos30°。</div><div class="as-ans">答：5 m/s²</div></div>'
+  },
+  {
+    type:'multi',
+    q:'【多選】質量 50 kg 的人站在電梯內的體重計上，取 g = 10 m/s²。下列各種情形中，體重計的讀數（視重）「大於」500 N 者為何？',
+    opts:[
+      '電梯以 2 m/s² 的加速度向上加速',
+      '電梯以 2 m/s² 的加速度向下加速',
+      '電梯以等速度向上移動',
+      '電梯向下移動但以 2 m/s² 減速',
+      '電梯纜繩斷裂，人與電梯一起自由落下'
+    ],
+    ans:['A','D'],
+    hint:'視重看「加速度方向」：加速度向上時 N = m(g+a) 變大，向下時變小。',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>視重 = 體重計對人的法向力 N。正常靜止時 N = mg = 50×10 = 500 N。由 N − mg = ma 判斷：加速度向上 N＞mg，向下 N＜mg。</div></div><svg viewBox="0 0 180 170" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="20" width="100" height="130" fill="none" stroke="var(--ink3)" stroke-width="1.5"/><rect x="75" y="78" width="30" height="42" fill="var(--bg)" stroke="var(--ink)" stroke-width="1.4"/><line x1="60" y1="118" x2="60" y2="76" stroke="var(--accent)" stroke-width="2"/><polygon points="60,68 55,78 65,78" fill="var(--accent)"/><text x="66" y="80" font-size="11" fill="var(--accent)">N</text><line x1="120" y1="92" x2="120" y2="132" stroke="var(--red)" stroke-width="2"/><polygon points="120,140 115,130 125,130" fill="var(--red)"/><text x="126" y="118" font-size="11" fill="var(--red)">mg</text><text x="146" y="92" font-size="11" fill="var(--green)">a↑</text></svg><div class="as-note">加速度向上時法向力 N 大於 mg，體重計讀數變大。</div><div class="as-step"><div class="as-n">2</div><div>逐項判斷加速度方向。</div></div><div class="as-f">(A) 向上加速，a 向上 → N = 50×(10+2) = 600 N ✓ (B) 向下加速，a 向下 → N = 50×(10−2) = 400 N ✗ (C) 等速 → N = 500 N，不大於 ✗ (D) 向下減速，加速度其實向上 → N = 50×(10+2) = 600 N ✓ (E) 自由落下 a = g → N = 0 ✗</div><div class="as-warn">⚠ 關鍵看「加速度方向」而非電梯移動方向；向下減速的加速度是朝上的。</div><div class="as-ans">答：A、D</div></div>'
+  }
+];
+// phys_adv.js — 物理高一「運動與力」6 進階實戰題（多步驟 open，紙上作答自評）
+var PHYS_ADV = [
+  {
+    type:'open',
+    q:'【進階實戰】一輛汽車以 20 m/s 的速度沿直線行駛，駕駛看到紅燈後開始剎車，車子做等減速度運動，經過 4 秒恰好停止。取 g=10 m/s²（本題用不到）。求：(1) 剎車過程的加速度大小與方向。(2) 從剎車到停止所滑行的總距離。(3) 剎車後前 2 秒內車子所前進的距離。',
+    ans:'(1) 加速度大小 5 m/s²，方向與運動方向相反（減速）。\n(2) 剎車總距離 40 m。\n(3) 前 2 秒前進 30 m。',
+    hint:'先用 v=v₀+at 求 a，再用 v–t 圖三角形面積或 v²=v₀²+2as 求距離；前 2 秒用 s=v₀t+½at²。',
+    fig:'<svg viewBox="0 0 300 130" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="60" width="60" height="26" rx="4" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="45" cy="90" r="7" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="75" cy="90" r="7" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="95" y1="55" x2="150" y2="55" stroke="var(--accent)" stroke-width="2"/><polygon points="156,55 146,50 146,60" fill="var(--accent)"/><text x="100" y="48" font-size="12" fill="var(--accent)">20 m/s</text><text x="30" y="118" font-size="12" fill="var(--ink)">剎車 4 s 後停止</text><text x="185" y="80" font-size="13" fill="var(--red)">? 剎車距離</text></svg>',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>取初速方向為正。末速 v=0、初速 v₀=20 m/s、時間 t=4 s，由 v=v₀+at 解加速度。</div></div><div class="as-f">a = (v − v₀)/t = (0 − 20)/4 = −5 m/s²（負號代表與運動方向相反）</div><div class="as-step"><div class="as-n">2</div><div>剎車距離＝v–t 圖下三角形面積（底 4 s、高 20 m/s），也可用 v²=v₀²+2as 驗證。</div></div><svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="120" x2="230" y2="120" stroke="var(--ink)" stroke-width="1.5"/><line x1="40" y1="120" x2="40" y2="20" stroke="var(--ink)" stroke-width="1.5"/><polygon points="40,30 200,120 40,120" fill="var(--accent)" opacity="0.18"/><line x1="40" y1="30" x2="200" y2="120" stroke="var(--accent)" stroke-width="2"/><text x="8" y="34" font-size="11" fill="var(--ink)">20</text><text x="195" y="135" font-size="11" fill="var(--ink)">4</text><text x="215" y="118" font-size="11" fill="var(--ink3)">t(s)</text><text x="46" y="18" font-size="11" fill="var(--ink3)">v(m/s)</text><text x="95" y="100" font-size="12" fill="var(--accent)">面積=位移</text></svg><div class="as-note">v–t 圖：斜線斜率即加速度 −5 m/s²，斜線與座標軸圍成的三角形面積就是滑行距離。</div><div class="as-f">s = ½ × 4 × 20 = 40 m ；驗證 v²=v₀²+2as → 0 = 20² + 2(−5)s → s = 40 m ✓</div><div class="as-step"><div class="as-n">3</div><div>前 2 秒用 s=v₀t+½at²。</div></div><div class="as-f">s₂ = 20×2 + ½×(−5)×2² = 40 − 10 = 30 m（此時速度 v=20−5×2=10 m/s，梯形面積 ½(20+10)×2=30 m ✓）</div><div class="as-warn">⚠ 常見錯誤：把加速度當正的、或忘了減速要代負號；另外前 2 秒是「前進距離」不是剩餘距離，別用總距離減。</div><div class="as-ans">答：(1) 5 m/s²，方向與運動方向相反；(2) 40 m；(3) 30 m。</div></div>'
+  },
+  {
+    type:'open',
+    q:'【進階實戰】在地面將一小球以 30 m/s 的初速度鉛直向上拋出，取 g=10 m/s²，不計空氣阻力。求：(1) 小球上升的最大高度。(2) 小球從拋出到落回地面的總時間。(3) 拋出後第 4 秒瞬間，小球的速度（大小與方向）與離地高度。',
+    ans:'(1) 最大高度 45 m。\n(2) 總滯空時間 6 s。\n(3) 第 4 秒時速度 10 m/s、方向向下；離地高度 40 m。',
+    hint:'向上為正、a=−g=−10。最高點 v=0；落地時位移=0。用 v=v₀−gt 與 s=v₀t−½gt²。',
+    fig:'<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><line x1="30" y1="135" x2="270" y2="135" stroke="var(--ink)" stroke-width="2"/><circle cx="80" cy="120" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="80" y1="110" x2="80" y2="40" stroke="var(--accent)" stroke-width="2"/><polygon points="80,32 75,44 85,44" fill="var(--accent)"/><text x="90" y="60" font-size="12" fill="var(--accent)">30 m/s</text><text x="120" y="30" font-size="12" fill="var(--red)">? 最高點</text><line x1="220" y1="40" x2="220" y2="130" stroke="var(--red)" stroke-dasharray="4 3" stroke-width="1.5"/><text x="226" y="90" font-size="12" fill="var(--red)">? 高度</text></svg>',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>取向上為正，加速度 a=−g=−10 m/s²。最高點速度為 0，用 v²=v₀²−2gh。</div></div><div class="as-f">0 = 30² − 2×10×h → h = 900/20 = 45 m</div><div class="as-step"><div class="as-n">2</div><div>先求上升時間 t↑=v₀/g，因上升下降對稱，總時間=2t↑（也可令落地位移 s=0）。</div></div><svg viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg"><line x1="30" y1="115" x2="235" y2="115" stroke="var(--ink)" stroke-width="1.5"/><line x1="30" y1="115" x2="30" y2="20" stroke="var(--ink)" stroke-width="1.5"/><line x1="30" y1="30" x2="130" y2="115" stroke="var(--accent)" stroke-width="2"/><line x1="130" y1="115" x2="215" y2="115" stroke="var(--accent)" stroke-width="2" opacity="0"/><line x1="130" y1="115" x2="158" y2="139" stroke="var(--accent)" stroke-width="2"/><text x="8" y="34" font-size="11" fill="var(--ink)">30</text><text x="120" y="130" font-size="11" fill="var(--ink)">3</text><text x="188" y="130" font-size="11" fill="var(--ink)">6</text><text x="10" y="18" font-size="11" fill="var(--ink3)">v</text><text x="215" y="112" font-size="11" fill="var(--ink3)">t</text><line x1="30" y1="115" x2="235" y2="115" stroke="var(--ink3)" stroke-dasharray="3 3" stroke-width="1"/></svg><div class="as-note">v–t 圖：速度由 +30 直線遞減，t=3 s 時為 0（最高點），之後變負（向下），t=6 s 落地。</div><div class="as-f">t↑ = v₀/g = 30/10 = 3 s ；總時間 T = 2×3 = 6 s</div><div class="as-step"><div class="as-n">3</div><div>第 4 秒代入 v=v₀−gt 與 s=v₀t−½gt²。</div></div><div class="as-f">v = 30 − 10×4 = −10 m/s（負號＝方向向下，大小 10 m/s）<br>s = 30×4 − ½×10×4² = 120 − 80 = 40 m</div><div class="as-warn">⚠ 常見錯誤：把最大高度 45 m 當成第 4 秒的高度；或忘了 t=4 s 已過最高點（t=3 s），球正在下落，速度應為負。</div><div class="as-ans">答：(1) 45 m；(2) 6 s；(3) 速度 10 m/s 方向向下，離地 40 m。</div></div>'
+  },
+  {
+    type:'open',
+    q:'【進階實戰】質量 50 kg 的人站在電梯內的體重計（磅秤）上，取 g=10 m/s²。磅秤讀數等於它對人的支撐力（法向力 N）。求下列各情況磅秤的讀數（以牛頓 N 表示）：(1) 電梯靜止或等速上升。(2) 電梯以 2 m/s² 的加速度向上加速。(3) 電梯以 2 m/s² 的加速度向下加速。(4) 電梯纜繩斷裂、與人一起自由下落。',
+    ans:'(1) 500 N。\n(2) 600 N（超重）。\n(3) 400 N（失重）。\n(4) 0 N（完全失重）。',
+    hint:'對人畫自由體圖，只有向上 N 與向下 mg。取向上為正，寫 N−mg=ma，a 依方向代正負。',
+    fig:'<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="70" y="20" width="120" height="120" fill="none" stroke="var(--ink)" stroke-width="2"/><rect x="105" y="105" width="50" height="14" fill="none" stroke="var(--ink)" stroke-width="1.5"/><circle cx="130" cy="70" r="10" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="130" y1="80" x2="130" y2="103" stroke="var(--ink)" stroke-width="2"/><text x="200" y="60" font-size="12" fill="var(--ink)">m=50 kg</text><text x="200" y="80" font-size="12" fill="var(--ink)">a=2 m/s²</text><text x="200" y="115" font-size="12" fill="var(--red)">? 磅秤讀數</text></svg>',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>對「人」畫自由體圖：向上是磅秤支撐力 N，向下是重力 mg=50×10=500 N。取向上為正，列 N−mg=ma。</div></div><svg viewBox="0 0 240 150" xmlns="http://www.w3.org/2000/svg"><rect x="95" y="60" width="50" height="34" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="120" y1="58" x2="120" y2="18" stroke="var(--accent)" stroke-width="2"/><polygon points="120,12 114,24 126,24" fill="var(--accent)"/><text x="128" y="26" font-size="13" fill="var(--accent)">N</text><line x1="120" y1="96" x2="120" y2="136" stroke="var(--red)" stroke-width="2"/><polygon points="120,142 114,130 126,130" fill="var(--red)"/><text x="128" y="128" font-size="13" fill="var(--red)">mg</text></svg><div class="as-note">自由體圖：人只受向上 N 與向下 mg 兩力；磅秤讀數＝N。</div><div class="as-f">靜止或等速：a=0 → N = mg = 500 N</div><div class="as-step"><div class="as-n">2</div><div>向上加速，a=+2：N = mg + ma = m(g+a)。</div></div><div class="as-f">N = 50×(10+2) = 600 N（超重，讀數變大）</div><div class="as-step"><div class="as-n">3</div><div>向下加速，加速度朝下 a=−2：N = m(g−a) = m(g−2)。</div></div><div class="as-f">N = 50×(10−2) = 400 N（失重，讀數變小）</div><div class="as-step"><div class="as-n">4</div><div>自由下落，加速度=g 朝下：N = m(g−g) = 0。</div></div><div class="as-f">N = 50×(10−10) = 0 N（完全失重）</div><div class="as-warn">⚠ 常見錯誤：把「向下加速」誤以為讀數變大。判斷口訣：加速度向上→超重、向下→失重；磅秤量的是 N 不是 mg，人的重力永遠 500 N 不變。</div><div class="as-ans">答：(1) 500 N；(2) 600 N；(3) 400 N；(4) 0 N。</div></div>'
+  },
+  {
+    type:'open',
+    q:'【進階實戰】質量 4 kg 的物體放在傾角 37° 的斜面上（sin37°=0.6、cos37°=0.8），物體與斜面間的動摩擦係數 μ=0.25，取 g=10 m/s²。物體由靜止開始沿斜面下滑。求：(1) 斜面對物體的法向力 N。(2) 下滑時的摩擦力大小。(3) 物體沿斜面下滑的加速度。(4) 下滑 2 秒後的速度與沿斜面移動的距離。',
+    ans:'(1) N = 32 N。\n(2) 摩擦力 f = 8 N。\n(3) 加速度 a = 4 m/s²。\n(4) 2 秒後速度 8 m/s、移動距離 8 m。',
+    hint:'把重力沿斜面與垂直斜面分解：沿面 mg sinθ、垂直 mg cosθ。N=mg cosθ、f=μN，沿面 ΣF=ma。',
+    fig:'<svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg"><polygon points="30,140 270,140 30,60" fill="none" stroke="var(--ink)" stroke-width="2"/><rect x="120" y="95" width="30" height="20" fill="none" stroke="var(--ink)" stroke-width="2" transform="rotate(-18.43 135 105)"/><text x="55" y="132" font-size="12" fill="var(--ink)">37°</text><text x="150" y="80" font-size="12" fill="var(--ink)">m=4 kg</text><text x="160" y="120" font-size="12" fill="var(--ink)">μ=0.25</text><text x="180" y="150" font-size="12" fill="var(--red)">? 下滑加速度</text></svg>',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>將重力 mg=40 N 分解：垂直斜面分量 mg cosθ、沿斜面向下分量 mg sinθ。法向力平衡垂直分量：N = mg cosθ。</div></div><svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg"><polygon points="20,140 240,140 20,50" fill="none" stroke="var(--ink)" stroke-width="1.5"/><rect x="110" y="86" width="26" height="18" fill="none" stroke="var(--ink)" stroke-width="1.5" transform="rotate(-22 123 95)"/><line x1="123" y1="95" x2="123" y2="140" stroke="var(--red)" stroke-width="2"/><polygon points="123,146 117,134 129,134" fill="var(--red)"/><text x="128" y="138" font-size="11" fill="var(--red)">mg</text><line x1="123" y1="95" x2="160" y2="80" stroke="var(--accent)" stroke-width="2"/><polygon points="166,77 153,79 159,88" fill="var(--accent)"/><text x="150" y="72" font-size="10" fill="var(--accent)">N</text><line x1="123" y1="95" x2="158" y2="130" stroke="var(--green)" stroke-width="2"/><polygon points="163,135 151,131 155,124" fill="var(--green)"/><text x="150" y="126" font-size="10" fill="var(--green)">mg sinθ</text><line x1="123" y1="95" x2="88" y2="130" stroke="var(--gold)" stroke-width="2"/><text x="60" y="126" font-size="10" fill="var(--gold)">f</text></svg><div class="as-note">受力分解：綠＝沿斜面下推的 mg sinθ，金＝逆滑動方向的摩擦力 f，藍＝垂直支撐 N。</div><div class="as-f">N = mg cosθ = 4×10×0.8 = 32 N</div><div class="as-step"><div class="as-n">2</div><div>動摩擦力 f=μN，方向沿斜面向上（逆下滑）。</div></div><div class="as-f">f = μN = 0.25×32 = 8 N</div><div class="as-step"><div class="as-n">3</div><div>沿斜面方向 ΣF=ma：下推力 mg sinθ 減摩擦力 f。</div></div><div class="as-f">mg sinθ = 4×10×0.6 = 24 N ；a = (24 − 8)/4 = 16/4 = 4 m/s²</div><div class="as-step"><div class="as-n">4</div><div>由靜止 v₀=0，用 v=at、s=½at²。</div></div><div class="as-f">v = 4×2 = 8 m/s ；s = ½×4×2² = 8 m</div><div class="as-warn">⚠ 常見錯誤：把 sin 與 cos 用反（法向力配 cos、下滑分量配 sin）；或摩擦力用 μmg 而非 μN（在斜面上 N≠mg）。</div><div class="as-ans">答：(1) 32 N；(2) 8 N；(3) 4 m/s²；(4) 速度 8 m/s、距離 8 m。</div></div>'
+  },
+  {
+    type:'open',
+    q:'【進階實戰】光滑水平桌面上有一物體 A（質量 3 kg），用一條輕繩跨過桌邊的光滑滑輪，另一端連接懸在桌邊外的物體 B（質量 2 kg）。系統由靜止釋放，取 g=10 m/s²，繩不可伸長。求：(1) 系統的加速度。(2) 繩的張力 T。(3) 釋放後 B 下降 2 m 時的速度與所經時間。',
+    ans:'(1) 加速度 a = 4 m/s²。\n(2) 張力 T = 12 N。\n(3) B 下降 2 m 時速度 4 m/s、經時 1 s。',
+    hint:'A、B 加速度大小相同。對整個系統：驅動力=m_B g，總質量=m_A+m_B。再對單一物體回代求 T。',
+    fig:'<svg viewBox="0 0 300 170" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="70" x2="230" y2="70" stroke="var(--ink)" stroke-width="2"/><rect x="90" y="46" width="40" height="24" fill="none" stroke="var(--ink)" stroke-width="2"/><text x="100" y="62" font-size="12" fill="var(--ink)">A 3kg</text><circle cx="232" cy="70" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="130" y1="58" x2="232" y2="58" stroke="var(--ink)" stroke-width="1.5"/><line x1="240" y1="72" x2="240" y2="120" stroke="var(--ink)" stroke-width="1.5"/><rect x="222" y="120" width="36" height="26" fill="none" stroke="var(--ink)" stroke-width="2"/><text x="226" y="137" font-size="12" fill="var(--ink)">B 2kg</text><text x="150" y="40" font-size="12" fill="var(--ink)">光滑桌面</text><text x="70" y="120" font-size="12" fill="var(--red)">? 加速度 / 張力</text></svg>',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>繩不可伸長，A、B 同加速度 a。整個系統的驅動力＝B 的重力 m_B g，被拖動的總質量＝m_A+m_B（桌面光滑，無摩擦）。</div></div><svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg"><line x1="10" y1="55" x2="150" y2="55" stroke="var(--ink)" stroke-width="1.5"/><rect x="55" y="35" width="40" height="20" fill="none" stroke="var(--ink)" stroke-width="1.5"/><text x="60" y="49" font-size="10" fill="var(--ink)">A</text><line x1="95" y1="45" x2="140" y2="45" stroke="var(--accent)" stroke-width="2"/><polygon points="146,45 136,40 136,50" fill="var(--accent)"/><text x="118" y="38" font-size="10" fill="var(--accent)">T</text><rect x="175" y="70" width="34" height="26" fill="none" stroke="var(--ink)" stroke-width="1.5"/><text x="182" y="87" font-size="10" fill="var(--ink)">B</text><line x1="192" y1="68" x2="192" y2="34" stroke="var(--accent)" stroke-width="2"/><polygon points="192,28 186,40 198,40" fill="var(--accent)"/><text x="198" y="40" font-size="10" fill="var(--accent)">T</text><line x1="192" y1="96" x2="192" y2="132" stroke="var(--red)" stroke-width="2"/><polygon points="192,138 186,126 198,126" fill="var(--red)"/><text x="198" y="122" font-size="10" fill="var(--red)">m_B g</text></svg><div class="as-note">A 水平只被張力 T 拉動；B 鉛直受向下 m_B g 與向上 T。兩物加速度大小相同。</div><div class="as-f">a = m_B g / (m_A + m_B) = (2×10)/(3+2) = 20/5 = 4 m/s²</div><div class="as-step"><div class="as-n">2</div><div>回代單一物體求張力。對 A（水平方向只有 T）：T = m_A a。</div></div><div class="as-f">T = m_A a = 3×4 = 12 N<br>驗證 B：m_B g − T = 20 − 12 = 8 = m_B a = 2×4 ✓</div><div class="as-step"><div class="as-n">3</div><div>由靜止 v₀=0，B 下降距離 s=2 m，用 v²=2as 與 s=½at²。</div></div><div class="as-f">v² = 2×4×2 = 16 → v = 4 m/s ；2 = ½×4×t² → t² = 1 → t = 1 s</div><div class="as-warn">⚠ 常見錯誤：把張力當成等於 B 的重力 20 N（那樣 B 就不會加速）；或求整體加速度時分母只用 m_B。張力必介於 0 與 m_B g 之間。</div><div class="as-ans">答：(1) 4 m/s²；(2) 12 N；(3) 速度 4 m/s、經時 1 s。</div></div>'
+  },
+  {
+    type:'open',
+    q:'【進階實戰】甲車以 15 m/s 的速度沿直線道路等速行駛。在甲車經過路旁靜止的乙車那一瞬間（同一起點），乙車由靜止起步、以 3 m/s² 的等加速度沿同方向追趕。取 g=10 m/s²（本題用不到）。求：(1) 乙車追上甲車所需的時間。(2) 追上時乙車的速度。(3) 追上地點距離出發點的距離。',
+    ans:'(1) 10 秒後追上。\n(2) 追上時乙車速度 30 m/s。\n(3) 追上處距出發點 150 m。',
+    hint:'追上＝兩車位移相等。甲位移 x=v t（等速），乙位移 x=½at²（等加速）。令兩者相等解 t。',
+    fig:'<svg viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="100" x2="280" y2="100" stroke="var(--ink)" stroke-width="2"/><rect x="30" y="76" width="40" height="22" fill="none" stroke="var(--accent)" stroke-width="2"/><text x="38" y="91" font-size="11" fill="var(--accent)">甲</text><text x="24" y="70" font-size="11" fill="var(--accent)">15 m/s 等速</text><rect x="30" y="104" width="40" height="22" fill="none" stroke="var(--green)" stroke-width="2"/><text x="38" y="119" font-size="11" fill="var(--green)">乙</text><text x="80" y="132" font-size="11" fill="var(--green)">靜止起步 a=3 m/s²</text><text x="180" y="70" font-size="12" fill="var(--red)">? 何時何處追上</text></svg>',
+    explain:'<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>同起點同時出發。甲等速：x甲=15t。乙等加速由靜止：x乙=½×3×t²。追上時兩位移相等。</div></div><svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg"><line x1="30" y1="120" x2="240" y2="120" stroke="var(--ink)" stroke-width="1.5"/><line x1="30" y1="120" x2="30" y2="20" stroke="var(--ink)" stroke-width="1.5"/><line x1="30" y1="80" x2="210" y2="80" stroke="var(--accent)" stroke-width="2"/><line x1="30" y1="120" x2="210" y2="40" stroke="var(--green)" stroke-width="2"/><circle cx="150" cy="80" r="4" fill="var(--red)"/><line x1="150" y1="80" x2="150" y2="120" stroke="var(--red)" stroke-dasharray="3 3" stroke-width="1"/><text x="40" y="74" font-size="10" fill="var(--accent)">甲 15</text><text x="150" y="55" font-size="10" fill="var(--green)">乙(加速)</text><text x="138" y="134" font-size="10" fill="var(--red)">追上 t=10</text><text x="10" y="18" font-size="10" fill="var(--ink3)">v</text><text x="228" y="116" font-size="10" fill="var(--ink3)">t</text></svg><div class="as-note">v–t 圖：兩線下方面積（位移）相等時即追上；乙的速度線在此刻升到甲的兩倍（30 m/s）。</div><div class="as-f">x甲 = x乙 → 15t = ½×3×t² → 15t = 1.5t² → t = 15/1.5 = 10 s</div><div class="as-step"><div class="as-n">2</div><div>乙車速度 v=at（由靜止）。</div></div><div class="as-f">v乙 = 3×10 = 30 m/s（恰為甲速的兩倍，符合等加速由靜止追上時 v末=2v等速的性質）</div><div class="as-step"><div class="as-n">3</div><div>追上處距離＝任一車在 t=10 s 的位移，用甲較簡單。</div></div><div class="as-f">x = 15×10 = 150 m ；驗證乙 x=½×3×10² = 150 m ✓</div><div class="as-warn">⚠ 常見錯誤：以為「速度相等」就是追上（其實那時乙才追到相對速度最大，位置仍落後）；追上的條件是「位移相等」。</div><div class="as-ans">答：(1) 10 s；(2) 30 m/s；(3) 150 m。</div></div>'
+  }
+];
+
+/* 物理資料組裝（章名固定＝運動與力，key＝gp0_ch01） */
+var PHYS_questions={0:{},1:{},2:{}};
+PHYS_questions[0]['運動與力']=PHYS_BASIC.concat(PHYS_ADV);
+var PHYS_curriculum={
+  0:{label:'高一・物理 力學',books:[{name:'第一冊 力學',units:[
+    {num:'CH 01',name:'運動與力',sub:'位移速度加速度、等加速度運動、牛頓三大運動定律、力與摩擦',pct:0},
+    {num:'CH 02',name:'功與能量',sub:'即將推出',pct:0,locked:true},
+    {num:'CH 03',name:'動量與碰撞',sub:'即將推出',pct:0,locked:true}
+  ]}]},
+  1:{label:'高二・物理',books:[{name:'選修物理（上）',units:[
+    {num:'CH 01',name:'力學進階',sub:'即將推出',pct:0,locked:true}
+  ]}]},
+  2:{label:'高三・物理',books:[{name:'選修物理（下）',units:[
+    {num:'CH 01',name:'電磁與近代',sub:'即將推出',pct:0,locked:true}
+  ]}]}
+};
+var PHYS_details={};if(PHYS_COURSE)PHYS_details['gp0_ch01']=PHYS_COURSE;
+var PHYS_currTree={
+  0:{tracks:[{label:'物理',chapters:[{key:'gp0_ch01',num:'C1',name:'運動與力'}]}]},
+  1:{tracks:[{label:'物理',chapters:[]}]},
+  2:{tracks:[{label:'物理',chapters:[]}]}
+};
+var PHYS_notes={0:PHYS_NOTES,1:{pills:[],content:{}},2:{pills:[],content:{}}};
+var PHYS_flash={0:{'運動與力':PHYS_CARDS},1:{},2:{}};
+var PHYS_exam={0:[],1:[],2:[]};
+var PHYS_sols={0:[],1:[],2:[]};
+var PHYS_noteMap={0:{},1:{},2:{}};
+var PHYS_solOrder={0:['運動與力'],1:[],2:[]};
+
+/* 化學科（範本章「物質與原子結構」，key＝gc0_ch01） */
+/* 化學內容占位——整合起草 agent 產出後填入（CHEM_INJECT 區塊） */
+/* ══ 化學內容（起草+驗算 agent 產出，整合注入） ══ */
+// chem_conceptual.js — 化學高一「物質與原子結構」課程頁 + 重點筆記 + 速記卡
+// 三段：var CHEM_COURSE / var CHEM_NOTES / var CHEM_CARDS
+
+var CHEM_COURSE = {
+  num: 'CH 01',
+  name: '物質與原子結構',
+  book: '第一冊 基礎化學',
+  grade: '高一',
+  sub: '物質分類、原子構造、原子量分子量、莫耳與亞佛加厥數、化學計量',
+  tags: ['分科範圍', '必修', '先懂再背'],
+  sections: [
+    {
+      title: '🗣 白話導讀',
+      color: 'blue',
+      body: `<p class="c-intro">化學在研究「東西由什麼組成、又怎麼變」。把任何東西一直切下去，會遇到<span class="c-def">原子</span>——化學變化裡不能再分割的最小單位。這一章先學會兩件事：怎麼<span class="c-def">分類物質</span>，以及怎麼用<span class="c-def">莫耳</span>把「看不見的原子數量」換算成「秤得到的克數」。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">看得到</span>質量 m（克）</div><div class="c-op">↔</div><div class="c-block o"><span class="bk-tag">橋樑</span>莫耳 n</div><div class="c-op">↔</div><div class="c-block"><span class="bk-tag">看不到</span>粒子數 N（個）</div></div>
+<p class="c-intro">莫耳是全章的主角：它是一座橋，一端接得到的<span class="c-def">質量</span>，另一端接數不完的<span class="c-def">粒子數</span>，氣體時還多接一條<span class="c-def">體積</span>。學會在這三者之間走，計算題就通了。</p>
+<div class="c-warn">⚠ 莫耳不是重量單位，而是「數量」單位——就像「一打 = 12 個」，一莫耳 = 6.02×10²³ 個。</div>`
+    },
+    {
+      title: '⚛ 物質分類與原子構造',
+      color: 'green',
+      body: `<p class="c-intro">物質先分成<span class="c-def">純物質</span>與<span class="c-def">混合物</span>；純物質再分成<span class="c-def">元素</span>（只有一種原子，如 O₂、Fe）與<span class="c-def">化合物</span>（不同原子按固定比例結合，如 H₂O、CO₂）。混合物成分比例可變（如空氣、鹽水）。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<circle cx="120" cy="105" r="82" fill="none" stroke="var(--ink3)" stroke-width="1.5"/>
+<circle cx="120" cy="105" r="46" fill="none" stroke="var(--ink3)" stroke-width="1.5"/>
+<circle cx="120" cy="105" r="27" fill="var(--accent)"/>
+<text x="120" y="101" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3p⁺</text>
+<text x="120" y="118" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">4n</text>
+<circle cx="74" cy="105" r="6" fill="var(--green)"/>
+<circle cx="166" cy="105" r="6" fill="var(--green)"/>
+<circle cx="120" cy="23" r="6" fill="var(--green)"/>
+<text x="248" y="62" font-size="13" fill="var(--ink)">● 電子 e⁻（殼層）</text>
+<text x="248" y="108" font-size="13" fill="var(--ink)">■ 核 = p⁺ + n</text>
+<text x="248" y="154" font-size="13" fill="var(--ink)">Li：Z = 3、A = 7</text>
+</svg></div>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext">原子核在中心，裝著<b>質子 p⁺</b>（帶正電）和<b>中子 n</b>（不帶電），質量幾乎全在這裡。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext"><b>電子 e⁻</b>（帶負電）在核外殼層繞行，數量等於質子數，所以原子整體不帶電（中性）。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext"><b>原子序 Z</b> = 質子數（決定是哪種元素）；<b>質量數 A</b> = 質子 + 中子。</div></div>
+<div class="formula">Z = 質子數　　A = 質子數 + 中子數　　中子數 = A − Z</div>
+<div class="c-warn">⚠ 同位素：質子數相同、中子數（質量數）不同，如 ¹²C 與 ¹⁴C。是同一種元素，化學性質幾乎一樣。物理變化（熔化、溶解）不生新物質；化學變化（燃燒、生鏽）才生成新物質。</div>`
+    },
+    {
+      title: '⚖ 原子量、分子量與莫耳',
+      color: 'gold',
+      body: `<p class="c-intro"><span class="c-def">原子量</span>是拿碳-12 當基準比較出的相對質量（沒有單位）。<span class="c-def">分子量／式量</span>= 把分子裡各原子的原子量加起來。把這個數字加上單位 g/mol，就是<span class="c-def">莫耳質量 M</span>——一莫耳該物質有多少克。</p>
+<div class="formula">H₂O 的分子量 = 1×2 + 16 = 18　→　莫耳質量 M = 18 g/mol</div>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arA" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker></defs>
+<rect x="8" y="28" width="96" height="46" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="56" y="50" text-anchor="middle" font-size="13" fill="var(--ink)">質量 m</text>
+<text x="56" y="66" text-anchor="middle" font-size="11" fill="var(--ink3)">g</text>
+<rect x="142" y="28" width="96" height="46" rx="9" fill="var(--gold)" stroke="var(--gold)"/>
+<text x="190" y="50" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">莫耳 n</text>
+<text x="190" y="66" text-anchor="middle" font-size="11" fill="#fff">mol</text>
+<rect x="276" y="28" width="96" height="46" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="324" y="50" text-anchor="middle" font-size="13" fill="var(--ink)">粒子數 N</text>
+<text x="324" y="66" text-anchor="middle" font-size="11" fill="var(--ink3)">個</text>
+<line x1="106" y1="51" x2="140" y2="51" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arA)"/>
+<text x="123" y="44" text-anchor="middle" font-size="12" fill="var(--accent)">÷M</text>
+<line x1="240" y1="51" x2="274" y2="51" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arA)"/>
+<text x="257" y="44" text-anchor="middle" font-size="12" fill="var(--accent)">×Nᴀ</text>
+<rect x="142" y="140" width="96" height="46" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="190" y="162" text-anchor="middle" font-size="13" fill="var(--ink)">體積 V</text>
+<text x="190" y="178" text-anchor="middle" font-size="11" fill="var(--ink3)">L（STP）</text>
+<line x1="190" y1="76" x2="190" y2="138" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arA)"/>
+<text x="214" y="112" text-anchor="middle" font-size="12" fill="var(--green)">×22.4</text>
+</svg></div>
+<p class="c-intro">上圖是全章的地圖：<span class="c-def">先把已知量換成莫耳，再走到要求的量</span>。第一步幾乎都是「質量 ÷ M」。</p>
+<div class="fcard"><div class="fcard-f">n = m / M　（莫耳 = 質量 ÷ 莫耳質量）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>莫耳等於克數，除以「一莫耳的克數」。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>題目給「幾克」要換莫耳時。動手前先確認 M（分子量／式量，單位 g/mol）算對了沒。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>36 g 的水 H₂O（M = 18）→ n = 36 ÷ 18 = 2 mol。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 8 g 的 O₂（O = 16）是幾莫耳？<details><summary>看解法</summary><div class="ans">M（O₂）= 32，n = 8 ÷ 32 = 0.25 mol。</div></details>② 0.5 mol 的 CO₂（C = 12、O = 16）重幾克？<details><summary>看解法</summary><div class="ans">M = 44，m = n×M = 0.5 × 44 = 22 g。</div></details></div></div></div>`
+    },
+    {
+      title: '🔢 莫耳與粒子數、氣體體積',
+      color: 'blue',
+      body: `<p class="c-intro">一莫耳 = <span class="c-def">6.02×10²³ 個</span>（亞佛加厥數 Nᴀ），就像「一打 = 12」。有了 Nᴀ，就能在「莫耳」與「個數」之間換；氣體在標準狀況（STP）還多一條路：<span class="c-def">1 mol 氣體 = 22.4 L</span>。</p>
+<div class="fcard"><div class="fcard-f">n = N / Nᴀ　（Nᴀ = 6.02×10²³ /mol）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>莫耳等於粒子數，除以亞佛加厥數。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>在「莫耳」與「個數（原子／分子）」之間換算時。要問的是原子還是分子，先分清楚。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>3.01×10²³ 個水分子 → n = 3.01×10²³ ÷ 6.02×10²³ = 0.5 mol。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 2 mol 氦原子有幾個？<details><summary>看解法</summary><div class="ans">N = n×Nᴀ = 2 × 6.02×10²³ = 1.204×10²⁴ 個。</div></details>② 1 mol CO₂ 裡有幾個「原子」？<details><summary>看解法</summary><div class="ans">每分子 3 原子（1C + 2O）→ 3 mol 原子 = 1.806×10²⁴ 個。</div></details></div></div></div>
+<div class="fcard"><div class="fcard-f">V = n × 22.4 L　（STP，僅限氣體）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>在標準狀況，一莫耳氣體佔 22.4 升。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>只用在「氣體」在 STP 的體積換算；固體、液體不適用。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>0.5 mol 的 O₂ 在 STP → V = 0.5 × 22.4 = 11.2 L。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① STP 下 44.8 L 的 N₂ 是幾莫耳？<details><summary>看解法</summary><div class="ans">n = 44.8 ÷ 22.4 = 2 mol。</div></details>② STP 下 11.2 L 任何氣體有幾個分子？<details><summary>看解法</summary><div class="ans">n = 11.2 ÷ 22.4 = 0.5 mol → 0.5 × 6.02×10²³ = 3.01×10²³ 個。</div></details></div></div></div>
+<div class="c-warn">⚠ 22.4 L 只適用「氣體」且在 STP；固體、液體不能用。算原子數時，先算分子數，再乘每分子的原子數。</div>`
+    },
+    {
+      title: '✏️ 練習問題',
+      color: 'green',
+      body: `<div class="c-practice"><b>練習 1：</b>18 g 的水 H₂O（H = 1、O = 16）是幾莫耳？含幾個水分子？<details><summary>看解答</summary>M = 18 g/mol → n = 18 ÷ 18 = 1 mol；分子數 = 1 × 6.02×10²³ = 6.02×10²³ 個。</details></div>
+<div class="c-practice"><b>練習 2：</b>標準狀況下 5.6 L 的 O₂ 是幾莫耳？重幾克？（O = 16）<details><summary>看解答</summary>n = 5.6 ÷ 22.4 = 0.25 mol；M（O₂）= 32 → m = 0.25 × 32 = 8 g。</details></div>
+<div class="c-practice"><b>練習 3：</b>氯有 ³⁵Cl 佔 75%、³⁷Cl 佔 25%，原子量是多少？<details><summary>看解答</summary>加權平均 = 35 × 0.75 + 37 × 0.25 = 26.25 + 9.25 = 35.5。</details></div>`
+    }
+  ]
+};
+
+var CHEM_NOTES = {
+  pills: ['物質與原子結構'],
+  content: {
+    '物質與原子結構': [
+      {
+        title: '一張圖看懂原子與莫耳',
+        tag: '核心概念',
+        tagClass: 'blue',
+        open: true,
+        body: `<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arB" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker></defs>
+<rect x="8" y="28" width="96" height="46" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="56" y="50" text-anchor="middle" font-size="13" fill="var(--ink)">質量 m</text>
+<text x="56" y="66" text-anchor="middle" font-size="11" fill="var(--ink3)">g</text>
+<rect x="142" y="28" width="96" height="46" rx="9" fill="var(--gold)" stroke="var(--gold)"/>
+<text x="190" y="50" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">莫耳 n</text>
+<text x="190" y="66" text-anchor="middle" font-size="11" fill="#fff">mol</text>
+<rect x="276" y="28" width="96" height="46" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="324" y="50" text-anchor="middle" font-size="13" fill="var(--ink)">粒子數 N</text>
+<text x="324" y="66" text-anchor="middle" font-size="11" fill="var(--ink3)">個</text>
+<line x1="106" y1="51" x2="140" y2="51" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arB)"/>
+<text x="123" y="44" text-anchor="middle" font-size="12" fill="var(--accent)">÷M</text>
+<line x1="240" y1="51" x2="274" y2="51" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arB)"/>
+<text x="257" y="44" text-anchor="middle" font-size="12" fill="var(--accent)">×Nᴀ</text>
+<rect x="142" y="140" width="96" height="46" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="190" y="162" text-anchor="middle" font-size="13" fill="var(--ink)">體積 V</text>
+<text x="190" y="178" text-anchor="middle" font-size="11" fill="var(--ink3)">L（STP）</text>
+<line x1="190" y1="76" x2="190" y2="138" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arB)"/>
+<text x="214" y="112" text-anchor="middle" font-size="12" fill="var(--green)">×22.4</text>
+</svg></div>
+<div class="formula">n = m/M　=　N/Nᴀ　=　V/22.4</div>
+<p class="c-intro">圖上箭頭對照公式：<b>質量 ÷M</b> 到莫耳、<b>莫耳 ×Nᴀ</b> 到個數、<b>莫耳 ×22.4</b> 到氣體體積——<span class="c-def">莫耳是所有換算的中心</span>，反向就把運算倒過來（×M、÷Nᴀ、÷22.4）。</p>`
+      },
+      {
+        title: '原子結構速記',
+        tag: '核心概念',
+        tagClass: 'green',
+        open: false,
+        body: `<div class="formula">Z = 質子數　　A = 質子數 + 中子數　　中子數 = A − Z</div>
+<p class="c-intro">重點：<b>質子數決定元素種類</b>（Z 一變就換元素）；質量幾乎全在核（p⁺ + n）；電子數 = 質子數，故原子中性。</p>
+<p class="c-intro"><span class="c-def">同位素</span>：質子數同、中子數異（如 ¹²C 與 ¹⁴C），化學性質幾乎相同。<span class="c-def">離子</span>：原子得失電子後帶電，如 Na⁺（失 1e⁻）、Cl⁻（得 1e⁻）——質子數沒變，仍是同元素。</p>`
+      },
+      {
+        title: '物質分類與變化',
+        tag: '觀念釐清',
+        tagClass: 'gold',
+        open: false,
+        body: `<div class="c-blocks"><div class="c-block"><span class="bk-tag">純物質</span>元素 / 化合物</div><div class="c-op">vs</div><div class="c-block o"><span class="bk-tag">混合物</span>比例可變</div></div>
+<p class="c-intro"><b>元素</b>只有一種原子（O₂、Fe）；<b>化合物</b>不同原子固定比例結合（H₂O、CO₂）；<b>混合物</b>成分比例可變（空氣、鹽水），可用物理方法分開。</p>
+<p class="c-intro"><b>物理變化</b>不生新物質（熔化、溶解、研磨）；<b>化學變化</b>生成新物質（燃燒、生鏽、電解），常伴隨放熱、變色、氣泡、沉澱。</p>`
+      },
+      {
+        title: '必背公式卡（莫耳三角）',
+        tag: '必背公式',
+        tagClass: 'red',
+        open: false,
+        body: `<div class="fcard"><div class="fcard-f">n = m/M = N/Nᴀ = V/22.4　（莫耳是換算中心）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>莫耳一手牽質量、一手牽粒子數，氣體時再牽體積。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>任何化學計量題：先把已知換成莫耳，再從莫耳換到要求的量。Nᴀ = 6.02×10²³、STP 氣體 = 22.4 L/mol。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>22 g CO₂（M = 44）→ n = 0.5 mol → 分子數 = 3.01×10²³ 個、STP 體積 = 11.2 L。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 給質量求分子數，路怎麼走？<details><summary>看解法</summary><div class="ans">m ─÷M→ n ─×Nᴀ→ N（先到莫耳，再到個數）。</div></details>② 給 STP 體積求質量？<details><summary>看解法</summary><div class="ans">V ─÷22.4→ n ─×M→ m。</div></details></div></div></div>
+<div class="formula">原子量（含同位素）= Σ（各同位素質量 × 百分比）</div>`
+      }
+    ]
+  }
+};
+
+var CHEM_CARDS = [
+  { q: '原子序 Z 和質量數 A 差在哪？', a: 'Z = 質子數，決定是哪種元素。\nA = 質子數 + 中子數，質量幾乎全在核。\n中子數 = A − Z。' },
+  { q: '同位素是什麼？', a: '同一元素、質子數相同，但中子數（質量數）不同的原子。\n例：¹²C 與 ¹⁴C。\n化學性質幾乎相同。' },
+  { q: '莫耳三角的三條換算公式？', a: 'n = m/M（質量）\nn = N/Nᴀ（粒子數）\nn = V/22.4（STP 氣體體積）\n莫耳是中心，反向就倒過來算。' },
+  { q: '亞佛加厥數 Nᴀ 是多少？代表什麼？', a: 'Nᴀ = 6.02×10²³ /mol。\n1 莫耳任何粒子就有這麼多個（像「一打 = 12」）。' },
+  { q: 'STP 氣體莫耳體積是多少？', a: '22.4 L/mol。\n只適用氣體、標準狀況（STP）。\n1 mol 任何氣體都約佔 22.4 L。' },
+  { q: '有同位素時，原子量怎麼算？', a: '各同位素質量 × 其百分比 的加權平均。\n例：Cl 有 ³⁵Cl（75%）、³⁷Cl（25%）\n→ 35×0.75 + 37×0.25 = 35.5。' },
+  { q: '純物質 vs 混合物、物理 vs 化學變化？', a: '純物質 = 固定成分（元素 / 化合物）；混合物 = 多物質混合、比例可變。\n物理變化不生新物質（熔化）；化學變化生成新物質（燃燒）。' }
+];
+// chem_basic.js — 化學高一「物質與原子結構」14 基本題（單選10＋多選2＋選填2）
+var CHEM_BASIC = [
+  // 1. 物質分類（single, ans D）
+  {
+    q: '下列物質中，何者屬於「純物質」中的化合物？',
+    opts: ['空氣', '氧氣 O₂', '糖水', '水 H₂O'],
+    ans: 'D',
+    hint: '化合物＝由兩種以上元素以固定比例組成的純物質；空氣與糖水是混合物，O₂ 是元素。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先分純物質或混合物：空氣、糖水都是多種成分混合，屬混合物，先刪。</div></div><div class="as-f">混合物：空氣、糖水（成分比例可變）</div><div class="as-step"><div class="as-n">2</div><div>剩 O₂ 與 H₂O 都是純物質；O₂ 只含氧一種元素→元素；H₂O 含氫、氧兩種元素→化合物。</div></div><div class="as-f">O₂ ＝元素（單一元素）；H₂O ＝化合物（H＋O）</div><div class="as-warn">⚠ 「純物質」不等於「化合物」；元素也是純物質，別把 O₂ 誤選為化合物。</div><div class="as-ans">答：(D) 水 H₂O</div></div>'
+  },
+  // 2. 化學變化（multi, ans B/C/E）
+  {
+    type: 'multi',
+    q: '【多選】下列敘述中，何者屬於「化學變化」？',
+    opts: ['冰塊融化成水', '鐵釘生鏽', '木炭燃燒', '蔗糖溶解於水', '食物腐敗'],
+    ans: ['B', 'C', 'E'],
+    hint: '化學變化會生成新物質（組成改變）；只是狀態或分散形式改變的是物理變化。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>判準：變化後是否產生「新物質」。是→化學變化；否→物理變化。</div></div><div class="as-f">物理變化：融化、蒸發、溶解（只改狀態/分散，分子未變）</div><div class="as-step"><div class="as-n">2</div><div>逐項判：融冰（H₂O 仍是 H₂O，物理）、鐵生鏽（生成氧化鐵，化學）、木炭燃燒（生成 CO₂，化學）、蔗糖溶水（蔗糖分子未變，物理）、食物腐敗（生成新物質，化學）。</div></div><div class="as-f">新物質：鐵鏽、CO₂、腐敗產物 → B、C、E</div><div class="as-warn">⚠ 溶解常被誤當化學變化；蔗糖溶水後仍可蒸乾還原，屬物理變化。</div><div class="as-ans">答：(B) 鐵釘生鏽、(C) 木炭燃燒、(E) 食物腐敗</div></div>'
+  },
+  // 3. 原子構造：中子數（single, ans B）
+  {
+    q: '鈉原子的原子序 Z＝11、質量數 A＝23，則其原子核內的中子數為何？',
+    opts: ['11 個', '12 個', '23 個', '34 個'],
+    ans: 'B',
+    hint: '中子數＝質量數 A － 原子序 Z。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>原子序 Z＝質子數；質量數 A＝質子數＋中子數。</div></div><div class="as-f">中子數 ＝ A － Z</div><div class="as-step"><div class="as-n">2</div><div>代入：中子數 ＝ 23 － 11 ＝ 12。</div></div><div class="as-f">23 － 11 ＝ 12（個）</div><div class="as-warn">⚠ 別把質量數 23 當中子數；A 已含了 11 個質子。</div><div class="as-ans">答：(B) 12 個</div></div>'
+  },
+  // 4. 原子構造：離子電子數（single, ans D）
+  {
+    q: '鈉原子（Z＝11）失去 1 個電子形成 Na⁺，則此 Na⁺ 所含的電子數為何？',
+    opts: ['23 個', '11 個', '12 個', '10 個'],
+    ans: 'D',
+    hint: '中性原子電子數＝質子數；帶正電表示少了電子。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>中性鈉原子：電子數＝質子數＝Z＝11。</div></div><div class="as-f">中性原子：e⁻ 數 ＝ p⁺ 數 ＝ 11</div><div class="as-step"><div class="as-n">2</div><div>形成 Na⁺ 失去 1 個電子：11 － 1 ＝ 10。（質子數不變仍 11，故帶＋1）</div></div><div class="as-f">Na⁺：11 － 1 ＝ 10 個電子</div><div class="as-warn">⚠ 帶電變的是「電子」不是質子；質子數變了就變成別的元素了。</div><div class="as-ans">答：(D) 10 個</div></div>'
+  },
+  // 5. 原子構造：質量數（single, ans A）＋原子結構 SVG
+  {
+    q: '某原子含 8 個質子、8 個中子、8 個電子，則此原子的質量數 A 為何？',
+    opts: ['16', '8', '24', '4'],
+    ans: 'A',
+    hint: '質量數 A＝質子數＋中子數（電子質量極小，不計入質量數）。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>質量數只算核內粒子：A＝質子數＋中子數，電子不計。</div></div><div class="as-f">A ＝ p⁺ ＋ n ＝ 8 ＋ 8 ＝ 16</div><svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="80" r="60" fill="none" stroke="var(--ink3)"/><circle cx="100" cy="80" r="32" fill="none" stroke="var(--ink3)"/><circle cx="100" cy="80" r="17" fill="var(--accent)"/><text x="100" y="77" font-size="10" text-anchor="middle" fill="var(--bg)">8p</text><text x="100" y="89" font-size="10" text-anchor="middle" fill="var(--bg)">8n</text><circle cx="100" cy="48" r="4" fill="var(--green)"/><circle cx="100" cy="112" r="4" fill="var(--green)"/><circle cx="100" cy="20" r="4" fill="var(--green)"/><circle cx="152" cy="50" r="4" fill="var(--green)"/><circle cx="152" cy="110" r="4" fill="var(--green)"/><circle cx="100" cy="140" r="4" fill="var(--green)"/><circle cx="48" cy="110" r="4" fill="var(--green)"/><circle cx="48" cy="50" r="4" fill="var(--green)"/></svg><div class="as-note">氧原子 ¹⁶O：核內 8 質子＋8 中子（藍核），核外 2＋6＝8 電子（綠點）分佈於兩層殼層。</div><div class="as-warn">⚠ 電子數不算進質量數；8＋8＋8＝24 是錯的算法。</div><div class="as-ans">答：(A) 16</div></div>'
+  },
+  // 6. 同位素（multi, ans A/B/D）
+  {
+    type: 'multi',
+    q: '【多選】下列五種原子，何者彼此互為「同位素」？　甲：質子6中子6；乙：質子6中子8；丙：質子7中子7；丁：質子6中子7；戊：質子8中子8',
+    opts: ['甲（p6 n6）', '乙（p6 n8）', '丙（p7 n7）', '丁（p6 n7）', '戊（p8 n8）'],
+    ans: ['A', 'B', 'D'],
+    hint: '同位素＝質子數相同、中子數不同（同一元素的不同版本）。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>同位素判準：質子數（原子序）必須相同，中子數不同。先依質子數分組。</div></div><div class="as-f">p6：甲、乙、丁　｜　p7：丙　｜　p8：戊</div><div class="as-step"><div class="as-n">2</div><div>質子數都是 6 的甲、乙、丁 為同一元素（碳），中子數 6、8、7 各異→互為同位素。丙（p7）、戊（p8）各自不同元素。</div></div><div class="as-f">甲乙丁：質子皆 6、中子 6/8/7 → 碳的三種同位素</div><div class="as-warn">⚠ 同位素比的是「質子數同、中子數異」；若質量數相同但質子數不同（如丙與乙質量數都 14）不是同位素，是同量異位素。</div><div class="as-ans">答：(A) 甲、(B) 乙、(D) 丁</div></div>'
+  },
+  // 7. 原子量加權平均（fill, ans 35.5）
+  {
+    type: 'fill',
+    q: '【選填】自然界氯有兩種同位素：³⁵Cl 佔 75%、³⁷Cl 佔 25%（百分比為個數比）。則氯的原子量約為多少？（填數值）',
+    ans: '35.5',
+    acc: ['35.50', '35'],
+    hint: '原子量＝各同位素質量數 × 其所佔比例，再相加（加權平均）。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>原子量是同位素依「個數比例」做的加權平均。</div></div><div class="as-f">原子量 ＝ 35 × 0.75 ＋ 37 × 0.25</div><div class="as-step"><div class="as-n">2</div><div>計算：35 × 0.75 ＝ 26.25；37 × 0.25 ＝ 9.25；相加 ＝ 35.5。</div></div><div class="as-f">26.25 ＋ 9.25 ＝ 35.5</div><div class="as-warn">⚠ 不是把 35 與 37 直接平均成 36；要用各自比例加權，故偏向比例大的 35。</div><div class="as-ans">答：約 35.5</div></div>'
+  },
+  // 8. 分子量（single, ans A）
+  {
+    q: '已知 C＝12、O＝16，則二氧化碳 CO₂ 的分子量為何？',
+    opts: ['44', '28', '46', '32'],
+    ans: 'A',
+    hint: '分子量＝各原子的原子量乘以原子數後相加。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>CO₂ 含 1 個 C 與 2 個 O，分別乘原子量再相加。</div></div><div class="as-f">CO₂ ＝ 12 × 1 ＋ 16 × 2</div><div class="as-step"><div class="as-n">2</div><div>計算：12 ＋ 32 ＝ 44。</div></div><div class="as-f">12 ＋ 32 ＝ 44</div><div class="as-warn">⚠ 下標 2 只作用在 O，不要把 C 也乘 2；也別漏掉一個 O。</div><div class="as-ans">答：(A) 44</div></div>'
+  },
+  // 9. 式量／莫耳質量（single, ans D）
+  {
+    q: '已知 Ca＝40、C＝12、O＝16，則碳酸鈣 CaCO₃ 的式量（莫耳質量）為何？',
+    opts: ['82', '90', '116', '100'],
+    ans: 'D',
+    hint: '式量＝Ca ＋ C ＋ 3 個 O 的原子量總和。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>CaCO₃ 含 1 Ca、1 C、3 O，逐一乘原子量。</div></div><div class="as-f">CaCO₃ ＝ 40 ＋ 12 ＋ 16 × 3</div><div class="as-step"><div class="as-n">2</div><div>計算：16 × 3 ＝ 48；40 ＋ 12 ＋ 48 ＝ 100（g/mol）。</div></div><div class="as-f">40 ＋ 12 ＋ 48 ＝ 100</div><div class="as-warn">⚠ 有 3 個氧，別只算 1 個（會少 32，得 68）。</div><div class="as-ans">答：(D) 100</div></div>'
+  },
+  // 10. 莫耳換算 m/M（single, ans C）
+  {
+    q: '已知水的莫耳質量 M＝18 g/mol，則 36 g 的水為多少莫耳？',
+    opts: ['0.5 mol', '1 mol', '2 mol', '4 mol'],
+    ans: 'C',
+    hint: '莫耳數 n ＝ 質量 m ÷ 莫耳質量 M。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>質量換莫耳用 n＝m/M（單位：g ÷ g/mol ＝ mol）。</div></div><div class="as-f">n ＝ m ÷ M ＝ 36 g ÷ 18 g/mol</div><div class="as-step"><div class="as-n">2</div><div>計算：36 ÷ 18 ＝ 2 mol。</div></div><div class="as-f">36 ÷ 18 ＝ 2（mol）</div><div class="as-warn">⚠ 是「除以」M 不是乘；單位要對，g ÷ (g/mol) 才會得 mol。</div><div class="as-ans">答：(C) 2 mol</div></div>'
+  },
+  // 11. 莫耳換算 N/Nᴀ（single, ans A）
+  {
+    q: '亞佛加厥數 Nᴀ＝6.02×10²³ /mol。則 0.5 mol 的水分子共含幾個水分子？',
+    opts: ['3.01×10²³ 個', '1.505×10²³ 個', '6.02×10²³ 個', '1.204×10²⁴ 個'],
+    ans: 'A',
+    hint: '粒子數 N ＝ 莫耳數 n × Nᴀ。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>莫耳換粒子數用 N＝n×Nᴀ。</div></div><div class="as-f">N ＝ n × Nᴀ ＝ 0.5 × 6.02×10²³</div><div class="as-step"><div class="as-n">2</div><div>計算：0.5 × 6.02×10²³ ＝ 3.01×10²³ 個。</div></div><div class="as-f">0.5 × 6.02×10²³ ＝ 3.01×10²³</div><div class="as-warn">⚠ 0.5 mol 是「半個 Nᴀ」，數值減半而非指數變化；答案仍是 ×10²³。</div><div class="as-ans">答：(A) 3.01×10²³ 個</div></div>'
+  },
+  // 12. 莫耳換算 22.4 L（fill, ans 0.5）
+  {
+    type: 'fill',
+    q: '【選填】在標準狀況（STP，氣體莫耳體積 22.4 L/mol）下，11.2 L 的氧氣為多少莫耳？（填數值，單位 mol）',
+    ans: '0.5',
+    acc: ['0.50', '1/2', '½'],
+    hint: '氣體莫耳數 n ＝ 氣體體積 V ÷ 22.4（STP）。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>STP 下每 1 mol 氣體佔 22.4 L，故 n＝V÷22.4。</div></div><div class="as-f">n ＝ V ÷ 22.4 ＝ 11.2 ÷ 22.4</div><div class="as-step"><div class="as-n">2</div><div>計算：11.2 ÷ 22.4 ＝ 0.5 mol。</div></div><div class="as-f">11.2 ÷ 22.4 ＝ 0.5（mol）</div><div class="as-warn">⚠ 22.4 L/mol 只適用於「氣體」且「STP」；液體、固體不可用。</div><div class="as-ans">答：0.5 mol</div></div>'
+  },
+  // 13. 莫耳換算綜合 m→n→V（single, ans B）＋莫耳流程 SVG
+  {
+    q: '已知 C＝12、O＝16。在標準狀況（STP，22.4 L/mol）下，44 g 二氧化碳 CO₂ 所佔的體積為何？',
+    opts: ['11.2 L', '22.4 L', '44.8 L', '44 L'],
+    ans: 'B',
+    hint: '先用 n＝m/M 求莫耳，再用 V＝n×22.4 求體積。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先算 CO₂ 莫耳質量 M＝12＋16×2＝44 g/mol，再求莫耳數。</div></div><div class="as-f">n ＝ m ÷ M ＝ 44 ÷ 44 ＝ 1 mol</div><svg viewBox="0 0 380 80" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="26" width="92" height="30" rx="5" fill="none" stroke="var(--accent)"/><text x="54" y="45" font-size="11" text-anchor="middle" fill="var(--ink)">質量 44 g</text><line x1="100" y1="41" x2="150" y2="41" stroke="var(--ink3)"/><polygon points="150,41 142,37 142,45" fill="var(--ink3)"/><text x="125" y="34" font-size="10" text-anchor="middle" fill="var(--ink)">÷M</text><rect x="150" y="26" width="80" height="30" rx="5" fill="none" stroke="var(--green)"/><text x="190" y="45" font-size="11" text-anchor="middle" fill="var(--ink)">1 mol</text><line x1="230" y1="41" x2="284" y2="41" stroke="var(--ink3)"/><polygon points="284,41 276,37 276,45" fill="var(--ink3)"/><text x="257" y="34" font-size="10" text-anchor="middle" fill="var(--ink)">×22.4</text><rect x="284" y="26" width="88" height="30" rx="5" fill="none" stroke="var(--gold)"/><text x="328" y="45" font-size="11" text-anchor="middle" fill="var(--ink)">22.4 L</text></svg><div class="as-note">莫耳換算流程：質量 ─÷M→ 莫耳 ─×22.4→ STP 氣體體積。</div><div class="as-step"><div class="as-n">2</div><div>再換體積：V＝n×22.4＝1×22.4＝22.4 L。</div></div><div class="as-f">V ＝ 1 × 22.4 ＝ 22.4（L）</div><div class="as-warn">⚠ 不能用 44 g 直接乘 22.4；22.4 是「每莫耳」的體積，必須先換成莫耳。</div><div class="as-ans">答：(B) 22.4 L</div></div>'
+  },
+  // 14. 化學計量綜合 m→n→原子數（single, ans C）
+  {
+    q: '已知 H＝1、O＝16，Nᴀ＝6.02×10²³。則 9 g 水 H₂O 中共含有幾個「氫原子」？',
+    opts: ['1.204×10²⁴ 個', '3.01×10²³ 個', '6.02×10²³ 個', '1.806×10²⁴ 個'],
+    ans: 'C',
+    hint: '先求水的莫耳數，再乘每分子含 2 個 H，最後乘 Nᴀ。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>水的莫耳質量 M＝1×2＋16＝18 g/mol，先求莫耳數。</div></div><div class="as-f">n(H₂O) ＝ 9 ÷ 18 ＝ 0.5 mol</div><div class="as-step"><div class="as-n">2</div><div>每 1 個 H₂O 含 2 個 H，故 H 原子莫耳數＝0.5×2＝1 mol。</div></div><div class="as-f">n(H) ＝ 0.5 × 2 ＝ 1 mol</div><div class="as-step"><div class="as-n">3</div><div>再乘 Nᴀ 換成個數：1×6.02×10²³＝6.02×10²³ 個。</div></div><div class="as-f">N(H) ＝ 1 × 6.02×10²³ ＝ 6.02×10²³</div><div class="as-warn">⚠ 別忘了每個水分子有「2 個」氫；只算 0.5 mol 分子會少一半。</div><div class="as-ans">答：(C) 6.02×10²³ 個</div></div>'
+  }
+];
+var CHEM_ADV = [
+  {
+    type:'open',
+    q:`【進階實戰】取 22 g 二氧化碳 CO₂ 氣體（原子量 C＝12、O＝16；Nᴀ＝6.02×10²³）。試依序求：(1) 莫耳數 (2) CO₂ 分子數 (3) 所含原子總數 (4) 標準狀況 STP 下的體積。`,
+    ans:`(1) 0.5 mol　(2) 分子 3.01×10²³ 個　(3) 原子 9.03×10²³ 個　(4) 11.2 L`,
+    hint:`先算莫耳質量 M 求 n＝m/M，之後全部以 n 當樞紐往外換算；別忘了每個 CO₂ 有 3 個原子。`,
+    fig:`<svg viewBox="0 0 320 60" xmlns="http://www.w3.org/2000/svg"><text x="10" y="34" font-size="14" fill="var(--ink)">已知：m ＝ 22 g　M(CO₂) ＝ ?</text><text x="10" y="52" font-size="12" fill="var(--ink3)">求 n → 分子數 → 原子數 → V(STP)</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先求莫耳質量 M，再由 n＝m/M 得莫耳數。M(CO₂)＝12＋16×2＝44 g/mol。</div></div><div class="as-f">n ＝ 22 ÷ 44 ＝ 0.5 mol</div><div class="as-step"><div class="as-n">2</div><div>分子數＝莫耳數×Nᴀ。</div></div><div class="as-f">N(分子) ＝ 0.5 × 6.02×10²³ ＝ 3.01×10²³ 個</div><div class="as-step"><div class="as-n">3</div><div>一個 CO₂ 含 3 個原子（1 個 C＋2 個 O），故原子總數要再乘 3。</div></div><div class="as-f">N(原子) ＝ 3 × 3.01×10²³ ＝ 9.03×10²³ 個</div><div class="as-step"><div class="as-n">4</div><div>標準狀況下 V＝n×22.4。</div></div><div class="as-f">V ＝ 0.5 × 22.4 ＝ 11.2 L</div><svg viewBox="0 0 380 112" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="12" width="72" height="30" rx="5" fill="none" stroke="var(--accent)"/><text x="44" y="32" text-anchor="middle" font-size="13" fill="var(--ink)">質量 m</text><line x1="80" y1="27" x2="150" y2="27" stroke="var(--ink3)"/><text x="115" y="20" text-anchor="middle" font-size="11" fill="var(--green)">÷M</text><rect x="150" y="12" width="72" height="30" rx="5" fill="none" stroke="var(--gold)"/><text x="186" y="32" text-anchor="middle" font-size="13" fill="var(--ink)">莫耳 n</text><line x1="222" y1="27" x2="298" y2="27" stroke="var(--ink3)"/><text x="260" y="20" text-anchor="middle" font-size="11" fill="var(--green)">×Nᴀ</text><rect x="298" y="12" width="76" height="30" rx="5" fill="none" stroke="var(--accent)"/><text x="336" y="32" text-anchor="middle" font-size="12" fill="var(--ink)">粒子數 N</text><line x1="186" y1="42" x2="186" y2="82" stroke="var(--ink3)"/><text x="208" y="66" text-anchor="middle" font-size="11" fill="var(--green)">×22.4</text><rect x="150" y="82" width="72" height="26" rx="5" fill="none" stroke="var(--red)"/><text x="186" y="100" text-anchor="middle" font-size="12" fill="var(--ink)">體積 V</text></svg><div class="as-note">莫耳 n 是換算樞紐：質量、粒子數、氣體體積都要先回到 n 再往外走。</div><div class="as-warn">⚠ 最常見錯誤：把分子數當原子總數。CO₂ 一個分子有 3 個原子，第 3 步務必乘 3。</div><div class="as-ans">答：(1) 0.5 mol　(2) 3.01×10²³ 個分子　(3) 9.03×10²³ 個原子　(4) 11.2 L</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】硼 B 只有兩種同位素 ¹⁰B（相對原子質量 10）與 ¹¹B（相對原子質量 11），已知硼的原子量為 10.8。(1) 求兩同位素各自的天然含量百分比 (2) 說明為何原子量比較靠近 11 而不是 10。`,
+    ans:`(1) ¹⁰B 占 20%、¹¹B 占 80%　(2) 因 ¹¹B 含量遠多於 ¹⁰B，加權平均被 ¹¹B 拉近到 11 側`,
+    hint:`原子量＝各同位素（相對質量×分率）之和。設 ¹⁰B 分率為 x，列一元一次方程式解 x。`,
+    fig:`<svg viewBox="0 0 320 70" xmlns="http://www.w3.org/2000/svg"><circle cx="70" cy="34" r="22" fill="none" stroke="var(--accent)"/><text x="70" y="30" text-anchor="middle" font-size="12" fill="var(--ink)">¹⁰B</text><text x="70" y="45" text-anchor="middle" font-size="10" fill="var(--ink3)">質量10</text><circle cx="200" cy="34" r="22" fill="none" stroke="var(--gold)"/><text x="200" y="30" text-anchor="middle" font-size="12" fill="var(--ink)">¹¹B</text><text x="200" y="45" text-anchor="middle" font-size="10" fill="var(--ink3)">質量11</text><text x="270" y="38" font-size="12" fill="var(--ink3)">原子量 10.8</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>設 ¹⁰B 的天然分率為 x，則 ¹¹B 為 (1−x)。加權平均等於原子量。</div></div><div class="as-f">10x ＋ 11(1−x) ＝ 10.8</div><div class="as-step"><div class="as-n">2</div><div>展開化簡：11−x＝10.8，解得 x。</div></div><div class="as-f">11 − x ＝ 10.8　→　x ＝ 0.2</div><div class="as-step"><div class="as-n">3</div><div>換成百分比並求另一同位素。</div></div><div class="as-f">¹⁰B ＝ 20%　；　¹¹B ＝ 1−0.2 ＝ 80%</div><div class="as-step"><div class="as-n">4</div><div>加權平均會偏向含量高的那一個。¹¹B 占 80%，故平均值 10.8 貼近 11 側。</div></div><div class="as-warn">⚠ 別把「兩同位素質量相加除以 2」當原子量（那是假設各半）；必須用含量加權。</div><div class="as-ans">答：(1) ¹⁰B 20%、¹¹B 80%　(2) 因 ¹¹B 含量遠大於 ¹⁰B，加權平均被拉近 11。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】某有機化合物經分析，質量組成為碳 40.0%、氫 6.7%、氧 53.3%（原子量 C＝12、H＝1、O＝16）。(1) 求其實驗式（最簡整數比化學式）(2) 若此化合物分子量為 180，求其分子式。`,
+    ans:`(1) 實驗式 CH₂O　(2) 分子式 C₆H₁₂O₆`,
+    hint:`取 100 g 樣品，各元素質量÷原子量得莫耳數，再同除最小莫耳數化成最簡整數比。分子式＝實驗式×(分子量/式量)。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>取 100 g 樣品，各元素質量即等於百分比數值，分別除以原子量得莫耳數。</div></div><div class="as-f">C：40.0÷12 ＝ 3.33　H：6.7÷1 ＝ 6.7　O：53.3÷16 ＝ 3.33</div><div class="as-step"><div class="as-n">2</div><div>同除最小莫耳數 3.33，化成最簡整數比。</div></div><div class="as-f">C : H : O ＝ 3.33 : 6.7 : 3.33 ＝ 1 : 2 : 1</div><div class="as-step"><div class="as-n">3</div><div>故實驗式為 CH₂O，其式量＝12＋1×2＋16＝30。</div></div><div class="as-f">實驗式式量 ＝ 30</div><div class="as-step"><div class="as-n">4</div><div>分子量÷實驗式式量得倍數 n，實驗式各下標乘 n 得分子式。</div></div><div class="as-f">n ＝ 180 ÷ 30 ＝ 6　→　(CH₂O)×6 ＝ C₆H₁₂O₆</div><div class="as-warn">⚠ 實驗式只給「比」不給真正分子；要靠分子量才能定分子式。莫耳比別用質量比直接寫。</div><div class="as-ans">答：(1) CH₂O　(2) C₆H₁₂O₆</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】一容器裝甲烷 CH₄ 與氦氣 He 的混合氣體，在標準狀況 STP 下總體積 11.2 L，總質量為 5.0 g（原子量 C＝12、H＝1、He＝4；Nᴀ＝6.02×10²³）。求容器中 CH₄ 與 He 各幾莫耳。`,
+    ans:`CH₄ 0.25 mol、He 0.25 mol`,
+    hint:`先用 STP 體積算總莫耳數（÷22.4）；設 CH₄ 為 x mol、He 為 y mol，列「莫耳和」與「質量和」兩式聯立。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>STP 下總莫耳數＝總體積÷22.4。</div></div><div class="as-f">n(總) ＝ 11.2 ÷ 22.4 ＝ 0.5 mol</div><div class="as-step"><div class="as-n">2</div><div>設 CH₄ 為 x mol、He 為 y mol。莫耳質量：M(CH₄)＝16、M(He)＝4。列兩式。</div></div><div class="as-f">x ＋ y ＝ 0.5　；　16x ＋ 4y ＝ 5.0</div><div class="as-step"><div class="as-n">3</div><div>由第一式 y＝0.5−x 代入第二式。</div></div><div class="as-f">16x ＋ 4(0.5−x) ＝ 5.0　→　12x ＝ 3.0　→　x ＝ 0.25</div><div class="as-step"><div class="as-n">4</div><div>回代求 y。</div></div><div class="as-f">y ＝ 0.5 − 0.25 ＝ 0.25 mol</div><div class="as-warn">⚠ 氣體莫耳體積只看總莫耳數，與是哪種氣體無關；但質量要各自乘各自的莫耳質量，不能混用。</div><div class="as-ans">答：CH₄ 0.25 mol、He 0.25 mol。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】某氧氣 O₂ 樣品中共含有 1.204×10²⁴ 個氧原子（原子量 O＝16；Nᴀ＝6.02×10²³）。試求此樣品：(1) O₂ 的莫耳數 (2) O₂ 分子數 (3) 質量 (4) 標準狀況 STP 下的體積。`,
+    ans:`(1) 1 mol　(2) 6.02×10²³ 個　(3) 32 g　(4) 22.4 L`,
+    hint:`先由原子數÷Nᴀ得「氧原子莫耳數」，再因每個 O₂ 有 2 個原子，除以 2 得 O₂ 莫耳數，之後往外換算。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>氧原子莫耳數＝原子數÷Nᴀ。</div></div><div class="as-f">n(O 原子) ＝ 1.204×10²⁴ ÷ 6.02×10²³ ＝ 2 mol</div><div class="as-step"><div class="as-n">2</div><div>每個 O₂ 分子含 2 個氧原子，故 O₂ 莫耳數為原子莫耳數的一半。</div></div><div class="as-f">n(O₂) ＝ 2 ÷ 2 ＝ 1 mol</div><div class="as-step"><div class="as-n">3</div><div>分子數＝n×Nᴀ；質量＝n×M，M(O₂)＝32；體積＝n×22.4。</div></div><div class="as-f">N ＝ 1 × 6.02×10²³ ＝ 6.02×10²³ 個</div><div class="as-f">m ＝ 1 × 32 ＝ 32 g　；　V ＝ 1 × 22.4 ＝ 22.4 L</div><svg viewBox="0 0 380 66" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="18" width="96" height="30" rx="5" fill="none" stroke="var(--accent)"/><text x="54" y="38" text-anchor="middle" font-size="12" fill="var(--ink)">O 原子 2 mol</text><line x1="102" y1="33" x2="176" y2="33" stroke="var(--ink3)"/><text x="139" y="26" text-anchor="middle" font-size="11" fill="var(--red)">÷2</text><rect x="176" y="18" width="92" height="30" rx="5" fill="none" stroke="var(--gold)"/><text x="222" y="38" text-anchor="middle" font-size="12" fill="var(--ink)">O₂ 1 mol</text><line x1="268" y1="33" x2="330" y2="33" stroke="var(--ink3)"/><text x="299" y="26" text-anchor="middle" font-size="10" fill="var(--green)">×M/×22.4</text><rect x="330" y="18" width="44" height="30" rx="5" fill="none" stroke="var(--accent)"/><text x="352" y="38" text-anchor="middle" font-size="11" fill="var(--ink)">m,V</text></svg><div class="as-note">關鍵一步：原子↔分子要看「一分子幾原子」，O₂ 的因數是 2。</div><div class="as-warn">⚠ 別把 2 mol 氧原子直接當 2 mol O₂；氧是雙原子分子，要先除以 2。</div><div class="as-ans">答：(1) 1 mol　(2) 6.02×10²³ 個　(3) 32 g　(4) 22.4 L</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】硫酸銨 (NH₄)₂SO₄ 是常見氮肥（原子量 N＝14、H＝1、S＝32、O＝16；Nᴀ＝6.02×10²³）。(1) 求其式量 (2) 求氮的質量百分比 (3) 取 132 g 硫酸銨，求其中氮的質量與氮原子個數。`,
+    ans:`(1) 式量 132　(2) 含氮約 21.2%　(3) 含氮 28 g、氮原子 1.204×10²⁴ 個`,
+    hint:`式量＝各原子量×個數之和（注意銨根 NH₄ 有 2 個）。質量百分比＝該元素總質量／式量。132 g 恰為 1 mol。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>逐項算式量。分子含 N 2 個、H 8 個、S 1 個、O 4 個。</div></div><div class="as-f">式量 ＝ 14×2 ＋ 1×8 ＋ 32 ＋ 16×4 ＝ 28＋8＋32＋64 ＝ 132</div><div class="as-step"><div class="as-n">2</div><div>氮質量百分比＝氮總質量÷式量。氮總質量＝14×2＝28。</div></div><div class="as-f">%N ＝ 28 ÷ 132 ＝ 0.212 ＝ 21.2%</div><div class="as-step"><div class="as-n">3</div><div>132 g÷132＝1 mol；每 1 mol 硫酸銨含 2 mol 氮原子。</div></div><div class="as-f">m(N) ＝ 28 g　（或 132×21.2% ≈ 28 g）</div><div class="as-f">N(氮原子) ＝ 2 × 6.02×10²³ ＝ 1.204×10²⁴ 個</div><div class="as-warn">⚠ 銨根有 2 個，氮與氫的原子數別漏乘 2；求原子個數時是 2 mol 氮，不是 1 mol。</div><div class="as-ans">答：(1) 132　(2) 21.2%　(3) 氮 28 g、氮原子 1.204×10²⁴ 個</div></div>`
+  }
+];
+
+var CHEM_questions={0:{},1:{},2:{}};
+CHEM_questions[0]['物質與原子結構']=CHEM_BASIC.concat(CHEM_ADV);
+var CHEM_curriculum={
+  0:{label:'高一・化學 基礎',books:[{name:'第一冊 基礎化學',units:[
+    {num:'CH 01',name:'物質與原子結構',sub:'物質分類、原子構造、原子量分子量、莫耳與亞佛加厥數、化學計量',pct:0},
+    {num:'CH 02',name:'化學反應與計量',sub:'即將推出',pct:0,locked:true},
+    {num:'CH 03',name:'溶液與濃度',sub:'即將推出',pct:0,locked:true}
+  ]}]},
+  1:{label:'高二・化學',books:[{name:'選修化學（上）',units:[{num:'CH 01',name:'化學鍵與反應',sub:'即將推出',pct:0,locked:true}]}]},
+  2:{label:'高三・化學',books:[{name:'選修化學（下）',units:[{num:'CH 01',name:'有機化學',sub:'即將推出',pct:0,locked:true}]}]}
+};
+var CHEM_details={};if(CHEM_COURSE)CHEM_details['gc0_ch01']=CHEM_COURSE;
+var CHEM_currTree={
+  0:{tracks:[{label:'化學',chapters:[{key:'gc0_ch01',num:'C1',name:'物質與原子結構'}]}]},
+  1:{tracks:[{label:'化學',chapters:[]}]},
+  2:{tracks:[{label:'化學',chapters:[]}]}
+};
+var CHEM_notes={0:CHEM_NOTES,1:{pills:[],content:{}},2:{pills:[],content:{}}};
+var CHEM_flash={0:{'物質與原子結構':CHEM_CARDS},1:{},2:{}};
+var CHEM_exam={0:[],1:[],2:[]};
+var CHEM_sols={0:[],1:[],2:[]};
+var CHEM_noteMap={0:{},1:{},2:{}};
+var CHEM_solOrder={0:['物質與原子結構'],1:[],2:[]};
+
+/* registry：[0]=數學(現有全域指標), [1]=物理, [2]=化學 */
+var SUBJECTS=[
+  {prefix:'mathgo',name:'數學',curriculum:curriculum,questions:questions,curriculumDetails:curriculumDetails,currTree:currTree,solutionsData:solutionsData,flashcardData:flashcardData,notesData:notesData,examPapers:examPapers,noteCardMap:NOTE_CARD_MAP,solOrder:solOrder},
+  {prefix:'phygo',name:'物理',curriculum:PHYS_curriculum,questions:PHYS_questions,curriculumDetails:PHYS_details,currTree:PHYS_currTree,solutionsData:PHYS_sols,flashcardData:PHYS_flash,notesData:PHYS_notes,examPapers:PHYS_exam,noteCardMap:PHYS_noteMap,solOrder:PHYS_solOrder},
+  {prefix:'chemgo',name:'化學',curriculum:CHEM_curriculum,questions:CHEM_questions,curriculumDetails:CHEM_details,currTree:CHEM_currTree,solutionsData:CHEM_sols,flashcardData:CHEM_flash,notesData:CHEM_notes,examPapers:CHEM_exam,noteCardMap:CHEM_noteMap,solOrder:CHEM_solOrder}
+];
+var subjectIdx=0;
+function firstCurrKey(ct){var g=ct&&ct[0];if(!g)return '';for(var i=0;i<g.tracks.length;i++){if(g.tracks[i].chapters.length)return g.tracks[i].chapters[0].key;}return '';}
+function applySubject(i){
+  if(i===subjectIdx)return;
+  saveStats();saveExamHist();saveCards();saveDaily();
+  subjectIdx=i;var s=SUBJECTS[i];
+  curriculum=s.curriculum;questions=s.questions;curriculumDetails=s.curriculumDetails;currTree=s.currTree;
+  solutionsData=s.solutionsData;flashcardData=s.flashcardData;notesData=s.notesData;examPapers=s.examPapers;
+  NOTE_CARD_MAP=s.noteCardMap;solOrder=s.solOrder;STORE_PREFIX=s.prefix;
+  reloadStats();
+  gradeIdx=0;trackIdx=0;curQChapter='';curSol=0;curStep=0;curQIdx=0;qOrder=null;curPaper=null;
+  activeCurrKey=firstCurrKey(currTree);
+}
+function setSubject(i,el){
+  if(i===subjectIdx)return;
+  applySubject(i);
+  document.querySelectorAll('.subject-btn').forEach(function(b){b.classList.remove('active');});
+  if(el)el.classList.add('active');
+  document.querySelectorAll('.grade-btn').forEach(function(b,gi){b.classList.toggle('active',gi===0);});
+  go('home');
+}
+
 window.onload=function(){
   var hv=document.getElementById('hv-ver');if(hv)hv.textContent=APP_VER;
   renderHome();
