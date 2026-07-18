@@ -4930,7 +4930,7 @@ function loadCurrChapter(key){
   var html='<div class="curr-header"><div class="curr-ch-num">'+data.num+' · '+data.book+' · '+data.grade+'</div><div class="curr-ch-name">'+data.name+'</div><div class="curr-ch-sub">'+data.sub+'</div><div class="curr-tags">'+tagsHtml+'</div></div>';
   var mainSecs=[],pracSecs=[];
   (data.sections||[]).forEach(function(sec){(sec.title.indexOf('練習問題')>-1?pracSecs:mainSecs).push(sec);});
-  function secHtml(sec,open){var bdgCls=sec.badge&&(sec.badge.indexOf('必')>-1)?'must':sec.badge&&sec.badge.indexOf('概念')>-1?'core':'skill';return '<div class="curr-section"><div class="curr-sec-head'+(open?' open':'')+'" onclick="toggleCurrSec(this)"><div class="curr-sec-icon '+sec.color+'">'+sec.icon+'</div><div class="curr-sec-title">'+sec.title+'</div><div class="curr-sec-badge '+bdgCls+'">'+sec.badge+'</div><span class="curr-sec-arrow">▶</span></div><div class="curr-sec-body'+(open?' open':'')+'">'+sec.body+'</div></div>';}
+  function secHtml(sec,open){var bdgCls=sec.badge&&(sec.badge.indexOf('必')>-1)?'must':sec.badge&&sec.badge.indexOf('概念')>-1?'core':'skill';var iconHtml=sec.icon?'<div class="curr-sec-icon '+(sec.color||'')+'">'+sec.icon+'</div>':'';var badgeHtml=sec.badge?'<div class="curr-sec-badge '+bdgCls+'">'+sec.badge+'</div>':'';return '<div class="curr-section"><div class="curr-sec-head'+(open?' open':'')+'" onclick="toggleCurrSec(this)">'+iconHtml+'<div class="curr-sec-title">'+sec.title+'</div>'+badgeHtml+'<span class="curr-sec-arrow">▶</span></div><div class="curr-sec-body'+(open?' open':'')+'">'+sec.body+'</div></div>';}
   mainSecs.forEach(function(sec,i){html+=secHtml(sec,i===0);});
   /* 解題示範：從 solutionsData 依章名對應併入 */
   var sg=key.indexOf('g0')===0?0:(key.indexOf('g1')===0?1:2);
