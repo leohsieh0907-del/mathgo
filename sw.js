@@ -1,7 +1,8 @@
-var CACHE = 'mathgo-v21';
+var CACHE = 'mathgo-v22';
 var CORE = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
   'gsat/111a/fig_q3.png','gsat/111a/fig_q11.png','gsat/111a/fig_q14_sys.png','gsat/111a/fig_q14_mat.png','gsat/111a/fig_q15.png','gsat/111a/fig_q18.png',
-  'gsat/112a/fig_q2.png','gsat/112a/fig_q3.png','gsat/112a/fig_q5.png','gsat/112a/fig_q13.png','gsat/112a/fig_q17.png','gsat/112a/fig_q18.png'];
+  'gsat/112a/fig_q2.png','gsat/112a/fig_q3.png','gsat/112a/fig_q5.png','gsat/112a/fig_q13.png','gsat/112a/fig_q17.png','gsat/112a/fig_q18.png',
+  'gsat/113a/fig_q2.png','gsat/114a/fig_q1.png','gsat/114a/fig_q11.png','gsat/115a/fig_q18.png','gsat/115a/fig_q5.png','gsat/115a/fig_q8.png'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(CORE); }).then(function () { return self.skipWaiting(); }));
