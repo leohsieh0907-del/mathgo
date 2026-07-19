@@ -532,7 +532,7 @@ textarea.fill-input{min-height:96px;resize:vertical;line-height:1.7;font-family:
     <div class="sidebar-logo">
       <div class="app-name">數學通</div>
       <div class="app-tagline">108課綱・數學／物理／化學</div>
-      <div class="app-ver">v28・更新 2026-07-19（學測訓練加收 112 學測數A）</div>
+      <div class="app-ver">v29・更新 2026-07-19（學測訓練：111～115 數A 五年 100 題）</div>
     </div>
     <div class="sidebar-subject">
       <button class="subject-btn active" onclick="setSubject(0,this)">數學</button>
@@ -5027,7 +5027,7 @@ function setGrade(idx,el){
 function pickExam(el,g){el.parentElement.querySelectorAll('.exam-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');}
 function startExam(){alert('請從試卷列表選擇試卷開始作答');}
 
-var APP_VER='v28';
+var APP_VER='v29';
 function toggleInstall(){var g=document.getElementById('install-guide');if(!g)return;g.style.display=(g.style.display==='none'||!g.style.display)?'block':'none';}
 function forceUpdate(){
   var btn=document.getElementById('hv-btn'),st=document.getElementById('hv-status');
@@ -6437,6 +6437,1752 @@ var GSAT112A_SOL_20 = '<div class="adv-sol">'
 + '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>（1）<b>把「A 到直線 BQ 的距離」誤算成「A 到線段 BQ 端點的距離」或「A 到 Q 的距離」。</b>點到直線的距離一定是垂直距離，不是連到某個點的長度。<br>（2）算面積時把 AB = 3 當成梯形的高。AB 是 x 軸上的線段，它不垂直於兩底，<b>不是高</b>；高只能是 72/25。<br>（3）用 tan2θ 時把 2θ 誤寫成 2tanθ = 3/2。正切沒有這種倍角規則，正確是 tan2θ = sin2θ/cos2θ = (24/25)/(7/25) = 24/7。<br>（4）梯形面積忘記除以 2，寫成 3 × 72/25 = 216/25（剛好是正解的兩倍，很難自己察覺）。<br>（5）把四個點的順序搞錯（例如 P → A → Q → B）去跑鞋帶公式，會得到一個交叉的自相交多邊形，面積算出來是錯的。順序必須沿著四邊形的邊繞一圈。</div>'
 + '<div class="as-ans">答：A 到直線 BQ 的距離 = 72/25；四邊形 PABQ 的面積 = 108/25</div>'
 + '<div class="as-note"><b>自評指引（本題 6 分）</b><br>本題有兩個明確的小問，官方滿分參考答案也是兩段式，請分開對照：<br>① <b>A 到直線 BQ 的距離 = 72/25</b>——不論你走三角比（AB·sin2θ）還是點到直線公式，過程都要寫出來。特別檢查：有沒有交代「直線 BQ 與 x 軸夾角是 2θ」或「斜率是 tan2θ = 24/7」的依據？這個依據來自第 19 題，可以直接引用（寫「由前小題得 ∠OBQ = 2θ」即可），但不能憑空冒出來。<br>② <b>四邊形 PABQ 面積 = 108/25</b>——關鍵在你有沒有<b>說明它是梯形</b>。官方寫的是「因四邊形 PABQ 為兩底分別為 AP = 1、BQ = 2 的梯形」，這句話是拿分的核心；如果你直接套梯形公式卻沒說為什麼是梯形（AP ∥ BQ，由第 19 題），依評分原則屬於「過程不合理」，有被扣分的風險。<br>③ 若你是用鞋帶公式或拆成兩個三角形求面積而沒用梯形，只要過程完整正確一樣是滿分——官方明講「解法通常不只一種」。<br>④ 官方通則再強調一次：<b>計算錯誤酌給部分分數；只有答案對但觀念錯或過程不合理則不給分。</b>所以若你第 19 題的 Q 坐標算錯、但本題邏輯完全正確只是沿用了錯誤數字，通常仍可拿到大部分過程分（這叫「連帶錯誤」），不要因為前題錯就整題放空不寫。<br>⑤ 建議計分：兩小問各 3 分。距離答對且過程有依據給 3 分，答案對但沒寫依據給 1～2 分；面積答對且有說明梯形（或用其他完整方法）給 3 分，直接套公式沒說明為什麼是梯形給 2 分，忘記除以 2 給 1 分。</div>'
++ '</div>';
+
+/* ── 113 學測數A ── */
+/* 113 學測數學A（20題）— 追加進 GSAT_PAPERS
+   注意：本卷題組配分為 18題3分／19題4分／20題8分（與 111、112 不同） */
+GSAT_PAPERS.push({
+  id:'113A', year:113, subj:'數A', title:'113 學測・數學A',
+  time:100, total:100, numKeys:true,
+  groups:[[18,19,20]],
+  figBase:'gsat/113a/',
+  items:[
+    {no:1,type:'single',ch:'指數與對數',grade:0,score:5,
+     q:'研究顯示：服用某藥物後，在使用者體內的藥物殘留量隨時間呈指數型衰退。已知在服用某藥物 2 小時後，體內仍殘留有該藥物的一半劑量，試問下列哪一選項正確？',
+     opts:['服用 3 小時後，體內仍殘留有該藥物的 1/3 劑量','服用 4 小時後，體內仍殘留有該藥物的 1/4 劑量','服用 6 小時後，體內仍殘留有該藥物的 1/6 劑量','服用 8 小時後，體內仍殘留有該藥物的 1/8 劑量','服用 10 小時後，體內仍殘留有該藥物的 1/10 劑量'],
+     ans:'B'},
+
+    {no:2,type:'single',ch:'空間向量',grade:1,score:5,fig:'fig_q2.png',
+     q:'如圖，OABC–DEFG 為一正方體，試問向量外積 AD→ × AG→ 與下列哪一個向量平行？',
+     opts:['AE→','BE→','CE→','DE→','OE→'],ans:'E'},
+
+    {no:3,type:'single',ch:'多項式函數',grade:0,score:5,
+     q:'設 a ∈ {−6, −4, −2, 2, 4, 6}，已知 a 為實係數三次多項式 f(x) 的最高次項係數，若函數 y = f(x) 的圖形與 x 軸交於三點，且其 x 坐標成首項為 −7、公差為 a 的等差數列。試問共有幾個 a 使得 f(0) ＞ 0？',
+     opts:['1 個','2 個','3 個','4 個','5 個'],ans:'A'},
+
+    {no:4,type:'single',ch:'三角函數',grade:1,score:5,
+     q:'試問有多少個實數 x 滿足 sin(x + π/6) = sin x + sin(π/6) 且 0 ≤ x ＜ 2π？',
+     opts:['1 個','2 個','3 個','4 個','5 個（含）以上'],ans:'B'},
+
+    {no:5,type:'single',ch:'排列組合與機率',grade:0,score:5,
+     q:'將 1 到 50 這 50 個正整數平分成甲乙兩組，每組各 25 個數，使得甲組的中位數比乙組的中位數小 1。試問共有幾種分法？',
+     opts:['C(50,25)','C(48,24)','C(24,12)','(C(24,12))²','C(48,24)·C(24,12)'],ans:'D'},
+
+    {no:6,type:'single',ch:'三角比',grade:0,score:5,
+     q:'在同一平面上，相距 7 公里的 A, B 兩砲台，A 在 B 的正東方。某次演習時，A 向西偏北 θ 方向發射砲彈，B 則向東偏北 θ 方向發射砲彈，其中 θ 為銳角，觀測回報兩砲彈皆命中 9 公里外的同一目標 P。接著 A 改向西偏北 θ/2 方向發射砲彈，彈著點為 9 公里外的點 Q。試問砲台 B 與彈著點 Q 的距離 BQ 為何？',
+     opts:['4 公里','4.5 公里','5 公里','5.5 公里','6 公里'],ans:'C'},
+
+    {no:7,type:'multi',ch:'指數與對數',grade:0,score:5,
+     q:'令坐標平面上滿足 y = log x 的點 (x, y) 所成圖形為 Γ，試問滿足下列哪些關係式的 (x, y) 所成圖形與 Γ 完全相同？',
+     opts:['y + 1/2 = log(5x)','2y = log(x²)','3y = log(x³)','x = 10^y','x³ = 10^(y³)'],
+     ans:['C','D']},
+
+    {no:8,type:'multi',ch:'三角比',grade:0,score:5,
+     q:'對任一正整數 n ≥ 2，令 Tₙ 表示邊長為 n, n+1, n+2 的三角形。試選出正確的選項。<br>（註：若三角形的三邊長分別為 a, b, c，令 s = (a+b+c)/2，則三角形面積為 √(s(s−a)(s−b)(s−c))）',
+     opts:['Tₙ 皆為銳角三角形','T₂, T₃, T₄, …, T₁₀ 的周長形成等差數列','Tₙ 的面積隨 n 增大而增大','T₅ 的三高依序形成等差數列','T₃ 的最大角大於 T₂ 的最大角'],
+     ans:['B','C']},
+
+    {no:9,type:'multi',ch:'數據分析',grade:0,score:5,
+     q:'某實驗室蒐集了大量的 A、B 兩相似物種，記錄其身長為 x（單位：公分）與體重 y（單位：公克），得 A、B 兩物種的平均身長分別為 x̄_A = 5.2、x̄_B = 6，標準差分別為 0.3、0.1。令 A、B 兩物種的平均體重分別為 ȳ_A、ȳ_B。若 A、B 兩物種其體重 y 對身長 x 的迴歸直線分別為 L_A : y = 2x − 0.6、L_B : y = 1.5x + 0.4，相關係數分別為 0.6、0.3。今發現一隻身長 5.6 公分、體重 8.6 公克的個體 P，試選出正確的選項。',
+     opts:['ȳ_A ＜ ȳ_B','A 物種的體重標準差小於 B 物種的體重標準差','就 A 物種而言，個體 P 的體重與平均體重 ȳ_A 之差的絕對值大於一個標準差','點 (5.6, 8.6) 到直線 L_A 的距離小於其到直線 L_B 的距離','點 (5.6, 8.6) 與點 (x̄_A, ȳ_A) 的距離小於其與點 (x̄_B, ȳ_B) 的距離'],
+     ans:['C']},
+
+    {no:10,type:'multi',ch:'平面向量',grade:1,score:5,
+     q:'坐標平面上有一正方形與一正六邊形，正方形在正六邊形的右邊。已知兩正多邊形都有一邊在 x 軸上，且正方形中心 A 與正六邊形中心 B 都在 x 軸的上方，且兩多邊形恰有一個交點 P，又知正方形的邊長為 6，而點 P 到 x 軸的距離為 2√3。試選出正確的選項。',
+     opts:['點 A 到 x 軸的距離大於點 B 到 x 軸的距離','正六邊形的邊長為 6','BA→ = (7, 3 − 2√3)','AP ＞ √10','直線 AP 斜率大於 −1/√3'],
+     ans:['C','E']},
+
+    {no:11,type:'multi',ch:'排列組合與機率',grade:0,score:5,
+     q:'考慮二元一次方程組 { ax + 6y = 6 ； x + by = 1 }，其係數 a, b 之值分別由投擲一顆公正骰子與一枚均勻硬幣來決定。令 a 值為骰子出現之點數；若硬幣出現正面時 b 值為 1，若硬幣出現反面時 b 值為 2。試選出正確的選項。',
+     opts:['擲出 a = b 的機率為 1/3','此方程組無解的機率為 1/12','此方程組有唯一解的機率為 5/6','硬幣出現反面且此方程組有解的機率為 1/2','在硬幣出現反面且此方程組有解的條件下，x 值為正的機率為 2/5'],
+     ans:['B','C']},
+
+    {no:12,type:'multi',ch:'矩陣',grade:1,score:5,
+     q:'在坐標平面上給定三點 A(1,0)、B(0,1)、C(−1,0)，令 Γ 為 △ABC 經矩陣 T（第一列 3, 0；第二列 a, 1）變換後的圖形，其中 a 為實數。試選出正確的選項。',
+     opts:['若 a = 0，則 Γ 為等腰直角三角形','△ABC 的邊上至少有兩點經 T 變換後坐標不變','Γ 必有部分落在第四象限','平面上找得到一個圖形 Ω 經 T 變換後為 △ABC','Γ 的面積為定值'],
+     ans:['B','D','E']},
+
+    {no:13,type:'fill',ch:'數據分析',grade:0,score:5,
+     q:'某銷售站銷售甲、乙、丙三型手機，甲手機每支利潤 100 元，乙手機每支利潤 400 元，丙手機每支利潤 240 元。上年度甲、乙、丙手機各賣出 A, B, C 支，平均每支利潤為 260 元；且知銷售甲、乙兩型手機共 A + B 支的平均每支利潤為 280 元。則該站上年度售出的三型手機數量比為 A : B : C = ⑬-1 : ⑬-2 : ⑬-3。（化為最簡整數比）<br><span class="gsat-fillnote">作答格式：三個整數以冒號分隔，例如 1:2:3</span>',
+     ans:'2:3:5',acc:['2：3：5','2, 3, 5','2,3,5']},
+
+    {no:14,type:'fill',ch:'多項式函數',grade:0,score:5,
+     q:'已知 f(x)、g(x)、h(x) 皆為實係數三次多項式，且除以 x² − 2x + 3 的餘式分別為 x + 1、x − 3、−2。若 x·f(x) + a·g(x) + b·h(x) 可以被 x² − 2x + 3 整除，其中 a, b 為實數，則 a = ⑭-1⑭-2，b = ⑭-3。<br><span class="gsat-fillnote">作答格式：填「a,b」（a 含正負號），例如 -3,3</span>',
+     ans:'-3,3',acc:['−3,3','-3, 3','a=-3,b=3']},
+
+    {no:15,type:'fill',ch:'隨機變數',grade:2,score:5,
+     q:'某商場舉辦現場報名的摸彩箱抽獎活動，報名截止後，主持人依報名人數置入同數量的摸彩球，其中有 10 顆被標示為幸運獎，其獎項為 5000 元禮券及 8000 元禮券各 5 顆，每顆球被抽中的機率皆相同，抽後不放回。抽獎前，主辦單位依獎項個數與報名人數，主持人公告中獎機率為 0.4%。開始抽獎後，每人依序抽球，每個人只有一次抽獎機會。若前 100 位參加抽獎者，恰有 1 人抽中 5000 元禮券且沒有人抽中 8000 元禮券，則抽獎順序為第 101 號者可獲禮券金額的期望值為 ⑮-1⑮-2 元。<br><span class="gsat-fillnote">作答格式：兩位數，例如 25</span>',
+     ans:'25',acc:['25 元','25元']},
+
+    {no:16,type:'fill',ch:'平面向量',grade:1,score:5,
+     q:'坐標平面上，已知向量 v→ 在向量 (2,−3) 方向的正射影長比原長少 1，而在向量 (3,2) 方向的正射影長比原長少 2。若 v→ 與兩向量 (2,−3), (3,2) 的夾角皆為銳角，則 v→ 在向量 (4,7) 方向的正射影長為 ⑯-1√⑯-2 ／ ⑯-3。（化為最簡根式）<br><span class="gsat-fillnote">作答格式：如 2√5/5 請填 2sqrt5/5 或 2√5/5</span>',
+     ans:'2√5/5',acc:['2sqrt5/5','2 √5 / 5','2根號5/5']},
+
+    {no:17,type:'fill',ch:'直線與圓',grade:0,score:5,
+     q:'坐標平面上，在以 O(0,0), A(0,1), B(1,1), C(1,0) 為頂點的正方形（含邊界）內，令 R 為滿足下述條件的點 P(x, y) 所成區域：與點 P(x, y) 的距離為 |x − y| 之所有點所成圖形完全落在正方形 OABC（含邊界）內。則區域 R 的面積為 ⑰-1／⑰-2。（化為最簡分數）<br><span class="gsat-fillnote">作答格式：最簡分數，例如 1/3</span>',
+     ans:'1/3',acc:['1／3']},
+
+    {no:18,type:'single',ch:'空間中的平面與直線',grade:1,score:3,
+     stem:'坐標空間中，設 O 為原點，E 為平面 x − z = 4。試回答下列問題。',
+     q:'若原點 O 在平面 E 上的投影點為 Q，且向量 OQ→ 與向量 (1,0,0) 的夾角為 α，則 cosα 之值為下列哪一選項？（單選題，3 分）',
+     opts:['−√2/2','−1/2','1/2','√2/2','√3/2'],ans:'D'},
+
+    {no:19,type:'open',ch:'空間向量',grade:1,score:4,
+     stem:'（承 18 題同一題組）坐標空間中，O 為原點，E 為平面 x − z = 4。',
+     q:'已知空間中有一點 P(a,b,c) 滿足向量 OP→ 與向量 (1,0,0) 的夾角 θ ≤ π/6。試說明實數 a, b, c 滿足不等式 a² ≥ 3(b² + c²)。（非選擇題，4 分）',
+     ans:'由 cosθ = a／√(a²+b²+c²) ≥ cos(π/6) = √3/2，兩邊平方（並注意 a ＞ 0）得 4a² ≥ 3(a²+b²+c²)，整理即得 a² ≥ 3(b²+c²)。'},
+
+    {no:20,type:'open',ch:'空間中的平面與直線',grade:1,score:8,
+     stem:'（承 19 題同一題組）',
+     q:'承 19 題，已知點 P 在平面 E 上且 b = 0。試求 c 的最大可能範圍，並求線段 OP 的最小可能長度。（非選擇題，8 分）',
+     ans:'c 的最大可能範圍為 2 − 2√3 ≤ c ≤ 2 + 2√3。\nOP 的最小可能長度為 √(64 − 32√3) = 4(√3 − 1)。\n（關鍵：OP = √(2(c+2)²+8) 的無限制最小值在 c = −2，但 c = −2 不在允許範圍內，故最小值退到端點 c = 2 − 2√3。）'}
+  ]
+});
+
+var GSAT113A_SOL_1 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到「指數型衰退」＋「多久剩一半」，腦中要立刻浮現<b>半衰期</b>模型：每過一個半衰期，量就乘以 ½。這題半衰期＝2 小時，所以只要問「t 小時是幾個半衰期」就好，完全不必解對數。</div></div>'
++ '<div class="as-f">殘留比例 R(t) = (½)^(t ÷ 2)</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>驗算模型是否符合題意：t = 2 時應該剛好剩一半。</div></div>'
++ '<div class="as-f">R(2) = (½)^(2÷2) = (½)¹ = ½　✓ 與題目相符</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>把五個選項的時間逐一代進去。時間是 2 的倍數時最好算（指數是整數），先挑這些算。</div></div>'
++ '<div class="as-f">R(4) = (½)² = ¼<br>R(6) = (½)³ = ⅛<br>R(8) = (½)⁴ = 1/16<br>R(10) = (½)⁵ = 1/32</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>對照選項所宣稱的劑量：<br>(2) 說 4 小時剩 ¼ → 實際就是 ¼　<b>正確</b><br>(3) 說 6 小時剩 1/6 → 實際 ⅛ ≠ 1/6　錯<br>(4) 說 8 小時剩 ⅛ → 實際 1/16 ≠ ⅛　錯<br>(5) 說 10 小時剩 1/10 → 實際 1/32 ≠ 1/10　錯</div></div>'
++ '<div class="as-step"><div class="as-n">5</div><div>(1) 的 3 小時不是 2 的倍數，指數是分數，要估一下大小。</div></div>'
++ '<div class="as-f">R(3) = (½)^1.5 = 1 ÷ (2√2) = √2 ÷ 4 ≈ 0.354<br>而 1/3 ≈ 0.333，兩者不等 → (1) 錯</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：把「衰退」誤當成<b>線性</b>遞減。若以為「2 小時掉一半，4 小時就掉光、6 小時剩負的」，或反過來以為「t 小時剩 1/t」，就會被 (3)(4)(5) 這種「時間數字和分母數字剛好對應」的選項騙走。指數衰退的鐵則是<b>每過一個半衰期就再乘以 ½</b>（乘法，不是減法），所以剩餘量永遠是 ½、¼、⅛、1/16… 這串<b>2 的次方</b>，1/3、1/6、1/10 這種分母不是 2 的次方的，一律不可能出現在整數個半衰期上。</div>'
++ '<div class="as-ans">答：(2)</div>'
++ '</div>';
+
+var GSAT113A_SOL_2 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到正方體＋外積，最穩的做法不是憑空想像方向，而是<b>直接設坐標硬算</b>。正方體邊長取 1 最省事（外積只問「平行哪個向量」，跟邊長無關）。關鍵是先從圖把八個頂點的相對位置讀對。</div></div>'
++ '<div class="as-step"><div class="as-n">2</div><div>由命名 OABC–DEFG 可知：底面四邊形是 O→A→B→C（相鄰順序），上面四點 D、E、F、G 分別是 O、A、B、C 正上方的點。對照圖：O 在左後下（虛線＝被擋住）、A 在左前下、B 在右前下、C 在右後下；D 在 O 上方、E 在 A 上方、F 在 B 上方、G 在 C 上方，完全吻合。</div></div>'
++ '<div class="as-f">取 O = (0, 0, 0)，令 OA→ = (1,0,0)、OC→ = (0,1,0)、OD→ = (0,0,1)<br>則 A(1,0,0)　B(1,1,0)　C(0,1,0)<br>　　D(0,0,1)　E(1,0,1)　F(1,1,1)　G(0,1,1)</div>'
++ '<div class="as-note">檢查：B 是 A 與 C 的「合成」＝(1,1,0) ✓；E 在 A 正上方 ✓；G 在 C 正上方 ✓。八點都對得上圖。</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>把題目要的兩個向量寫出來（<b>終點減起點</b>，起點都是 A）。</div></div>'
++ '<div class="as-f">AD→ = D − A = (0,0,1) − (1,0,0) = (−1, 0, 1)<br>AG→ = G − A = (0,1,1) − (1,0,0) = (−1, 1, 1)</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>算外積。三階行列式展開，記得<b>中間那項要變號</b>。</div></div>'
++ '<div class="as-f">AD→ × AG→ = ( 0·1 − 1·1 ,　1·(−1) − (−1)·1 ,　(−1)·1 − 0·(−1) )<br>　　　　　　= ( 0 − 1 ,　−1 + 1 ,　−1 − 0 )<br>　　　　　　= (−1, 0, −1)</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>逐一比對五個選項，看誰是 (−1, 0, −1) 的<b>純量倍</b>（方向相反也算平行）。</div></div>'
++ '<div class="as-f">(1) AE→ = E − A = (0, 0, 1)　→ 第一項 0，無法配　✗<br>(2) BE→ = E − B = (0, −1, 1)　→ 第二項 −1 ≠ 0　✗<br>(3) CE→ = E − C = (1, −1, 1)　→ 第二項 −1 ≠ 0　✗<br>(4) DE→ = E − D = (1, 0, 0)　→ 第三項 0，無法配　✗<br>(5) OE→ = E − O = (1, 0, 1)　→ <b>(−1,0,−1) = (−1)·(1,0,1)</b>　✓ 平行</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>幾何上也說得通：外積必<b>同時垂直</b>於 AD→ 與 AG→，也就是垂直於 A、D、G 三點決定的平面 ADG。而 OE→ 正是這個平面的法向，可用內積再確認一次。</div></div>'
++ '<div class="as-f">OE→ · AD→ = (1)(−1) + 0 + (1)(1) = 0　✓<br>OE→ · AG→ = (1)(−1) + 0 + (1)(1) = 0　✓</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<b>頂點位置讀錯</b>。這種題把 D 誤看成 A 正上方（因為圖上 D、E 都在左邊、位置很近）是最常見的災難——一旦 D、E 對調，算出來會變成 (0,−1,−1)，就會誤選 (2) BE→。<b>務必用命名規則定位</b>：OABC–DEFG 代表第 1 點配第 1 點，即 D 在 O 上、E 在 A 上、F 在 B 上、G 在 C 上，別只靠肉眼看斜投影圖。另外外積展開時中間那一項<b>要變號</b>，漏掉負號會算出 (−1, −2, −1)，五個選項都對不上，這時應該立刻警覺是自己算錯而不是題目有問題。</div>'
++ '<div class="as-ans">答：(5) OE→</div>'
++ '</div>';
+
+var GSAT113A_SOL_3 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到「圖形與 x 軸交於三點」＋「最高次項係數 a」，要馬上想到三次式的<b>因式分解形式</b>：知道三根就能把 f(x) 整個寫出來。這題三根還是等差數列，直接用首項與公差表示，是最省力的路。</div></div>'
++ '<div class="as-f">三根（等差，首項 −7、公差 a）：<br>r₁ = −7，　r₂ = −7 + a，　r₃ = −7 + 2a</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>用「最高次項係數 × 各根的一次因式」把 f(x) 寫成完整形式。這一步是全題關鍵，寫出來後 f(0) 只是代 x = 0。</div></div>'
++ '<div class="as-f">f(x) = a (x − r₁)(x − r₂)(x − r₃)<br>　　　= a (x + 7)(x + 7 − a)(x + 7 − 2a)</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>代 x = 0，得到 f(0) 關於 a 的式子。</div></div>'
++ '<div class="as-f">f(0) = a (0 + 7)(7 − a)(7 − 2a) = 7a(7 − a)(7 − 2a)</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>7 是正數，不影響正負，所以問題化簡成：<b>a(7 − a)(7 − 2a) ＞ 0</b> 有幾個 a 成立。不必真的乘開，只<b>判斷每個因式的正負號</b>就好，快很多。</div></div>'
++ '<div class="as-f">只需判斷三個因式的符號：a、(7 − a)、(7 − 2a)</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>把 6 個候選值逐一檢查（負／正 各三個）。</div></div>'
++ '<div class="as-f">a = −6：(−) × (13＝+) × (19＝+) = <b>負</b>　✗<br>a = −4：(−) × (11＝+) × (15＝+) = <b>負</b>　✗<br>a = −2：(−) × (9＝+) × (11＝+) = <b>負</b>　✗<br>a = 2　：(+) × (5＝+) × (3＝+) = <b>正</b>　✓<br>a = 4　：(+) × (3＝+) × (−1＝−) = <b>負</b>　✗<br>a = 6　：(+) × (1＝+) × (−5＝−) = <b>負</b>　✗</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>三個負的 a 一次就能全部刷掉：a ＜ 0 時，7 − a ＞ 0 且 7 − 2a ＞ 0（減掉負數會變更大），所以三項是 (−)(+)(+)，必為負。真正要細算的只有 a = 2, 4, 6 三個。</div></div>'
++ '<div class="as-f">實際數值驗算：<br>a = 2 → f(0) = 7·2·5·3 = <b>210 ＞ 0</b>　✓<br>a = 4 → f(0) = 7·4·3·(−1) = −84<br>a = 6 → f(0) = 7·6·1·(−5) = −210</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：三個陷阱。① <b>f(0) 不等於常數項以外的東西</b>——有人把 f(0) 誤算成「三根乘積」而忘了前面的係數 a，或忘了根的一次因式是 (x − r) 而非 (x + r)，代 0 後會變成 −7·(−7+a)·(−7+2a)，正負號全翻。② <b>a 的雙重身分</b>：a 同時是最高次項係數<b>也是</b>公差，兩個地方都要用到，只用其中一個就會錯。③ 分辨符號時把 7 − 2a 在 a = 4 的值誤算成 +1（正確是 7 − 8 = −1），這一個小失誤就會把答案從 1 個變成 2 個，剛好掉進選項 (2) 的陷阱。</div>'
++ '<div class="as-ans">答：(1) 1 個（只有 a = 2）</div>'
++ '</div>';
+
+var GSAT113A_SOL_4 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>先認清這題在測什麼：sin(x + π/6) <b>不等於</b> sin x + sin(π/6)（正弦不是「可以拆開相加」的函數）。題目就是要你找出「剛好例外成立」的那幾個 x。看到 sin A − sin B 的結構，最快的路是<b>和差化積</b>。</div></div>'
++ '<div class="as-f">原式移項：sin(x + π/6) − sin x = sin(π/6) = ½</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>套和差化積公式 sin A − sin B = 2 cos((A+B)/2) · sin((A−B)/2)，這裡 A = x + π/6、B = x。</div></div>'
++ '<div class="as-f">A + B = 2x + π/6 → (A+B)/2 = x + π/12<br>A − B = π/6 → (A−B)/2 = π/12<br>所以　2 cos(x + π/12) · sin(π/12) = ½</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>解出 cos(x + π/12)。這裡有個漂亮的化簡：分母的 4 sin(π/12) 剛好可以用<b>二倍角</b>變成好看的數。</div></div>'
++ '<div class="as-f">cos(x + π/12) = 1 ÷ (4 sin(π/12))<br>而 4 sin(π/12) cos(π/12) = 2 · [2 sin(π/12) cos(π/12)] = 2 sin(π/6) = 2 · ½ = 1<br>故 1 ÷ (4 sin(π/12)) = cos(π/12)</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>方程式變成最乾淨的形式：兩邊都是餘弦，直接用「cos 相等」的通解。</div></div>'
++ '<div class="as-f">cos(x + π/12) = cos(π/12)<br>⇒ x + π/12 = ± π/12 + 2kπ　（k 為整數）</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>兩支各自解出 x，再篩掉不在 0 ≤ x ＜ 2π 的。</div></div>'
++ '<div class="as-f">取正號：x + π/12 = π/12 + 2kπ　⇒ x = 2kπ　⇒ 區間內取 <b>x = 0</b><br>取負號：x + π/12 = −π/12 + 2kπ ⇒ x = −π/6 + 2kπ ⇒ 區間內取 <b>x = 11π/6</b>（k = 1）</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>代回原式驗算（考場一定要做這一步，30 秒就能確認沒有算錯）。</div></div>'
++ '<div class="as-f">x = 0：左 = sin(π/6) = ½；右 = sin 0 + ½ = 0 + ½ = ½　✓<br>x = 11π/6：左 = sin(11π/6 + π/6) = sin 2π = 0；<br>　　　　　右 = sin(11π/6) + ½ = −½ + ½ = 0　✓</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>k 再往外取（x = 2π、x = −π/6）都已跑出 0 ≤ x ＜ 2π，所以區間內恰好 2 個解。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：① <b>x = 0 這個解最常被漏掉</b>——很多人展開後化成 (√3/2 − 1)sin x + (1/2)cos x = 1/2，看到 sin x 就急著除掉，等於偷偷假設 sin x ≠ 0，剛好把 x = 0 消失掉，答案就變成 1 個（選項 (1) 的陷阱）。<b>凡是要「除以某個含 x 的式子」，先問它會不會是 0</b>。② 區間是 <b>0 ≤ x ＜ 2π</b>：左端<b>閉</b>（x = 0 要算）、右端<b>開</b>（x = 2π 不算），兩邊搞反答案就變。③ 千萬別把 sin(x + π/6) 直接寫成 sin x + sin(π/6) 而得到「恆等式、無限多解」去選 (5)——那正是本題要打的錯誤觀念。</div>'
++ '<div class="as-ans">答：(2) 2 個（x = 0 與 x = 11π/6）</div>'
++ '</div>';
+// 113 學測 數學A — 第 5～8 題 adv-sol 詳解
+// 變數：GSAT113A_SOL_5 ～ GSAT113A_SOL_8
+
+var GSAT113A_SOL_5 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「中位數」先把它翻譯成「第幾小的數」。每組 25 個數是奇數個，中位數就是該組由小到大排第 13 個的數。所以題目條件其實是：甲組第 13 小的數，比乙組第 13 小的數少 1。</div></div>' +
+'<div class="as-f">設甲組中位數 = m，則乙組中位數 = m + 1</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>關鍵一步：先證明 m 只能是 25。方法是「數比它小的數夠不夠」。甲組裡比 m 小的數恰有 12 個；而乙組裡比 m + 1 小的數也恰有 12 個，這 12 個因為不可能是 m（m 已在甲組），所以它們也都比 m 小。</div></div>' +
+'<div class="as-f">比 m 小的數共有 m − 1 個 ≥ 12（甲）+ 12（乙）= 24　⇒　m ≥ 25</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>同樣的手法從大的那一端再做一次。乙組裡比 m + 1 大的數恰有 12 個；甲組裡比 m 大的數也恰有 12 個，這 12 個不可能是 m + 1（它在乙組），所以也都比 m + 1 大。</div></div>' +
+'<div class="as-f">比 m + 1 大的數共有 50 − (m + 1) = 49 − m 個 ≥ 12 + 12 = 24　⇒　m ≤ 25</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>兩邊夾擊得 m = 25，於是分組的樣子被完全鎖死：25 必在甲組、26 必在乙組。</div></div>' +
+'<div class="as-f">甲組中位數 = 25，乙組中位數 = 26</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>剩下的數分成兩堆各自分配。比 25 小的是 1～24 共 24 個，要挑 12 個給甲（湊滿甲的前 12 名），其餘 12 個自動給乙；比 26 大的是 27～50 也是 24 個，同樣挑 12 個給甲。兩件事互相獨立，用乘法原理。</div></div>' +
+'<div class="as-f">小的那半：C(24,12)　大的那半：C(24,12)</div>' +
+'<div class="as-f">總數 = C(24,12) × C(24,12) = (C(24,12))²</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>驗一下組別人數對不對：甲 = 12（小的）+ 1（數字 25）+ 12（大的）= 25 個，乙同理 25 個，符合「平分」。</div></div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>① 直接猜「中位數就是 25 跟 26」而不證明——考試要能講出理由，才不會遇到變化題就崩；夾擊法（比它小的至少 24 個、比它大的至少 24 個）是這類題的通用招式。<br>② 以為要再乘 2。甲、乙是<b>有名字的兩組</b>（題目說甲比乙小 1，已指定誰是誰），不是「隨便分成兩堆」，所以<b>不能</b>再乘 2 也不用除以 2。<br>③ 把中位數當成「第 12 或第 13 個」搞混：25 個數的中位數是第 13 個，左右各 12 個。</div>' +
+'<div class="as-ans">答：(4)　(C(24,12))²</div>' +
+'</div>';
+
+var GSAT113A_SOL_6 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>方位角題目先建座標。把 A 放原點、B 在正西方 7 公里處（因為 A 在 B 正東方）。「西偏北 θ」＝從正西方向往北轉 θ，方向向量 (−cos θ, sin θ)；「東偏北 θ」＝從正東往北轉 θ，方向向量 (cos θ, sin θ)。</div></div>' +
+'<div class="as-f">A(0, 0)、B(−7, 0)</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>兩顆砲彈都飛 9 公里且打中同一點 P，把 P 用兩種方式寫出來再讓它們相等，θ 就解得出來。</div></div>' +
+'<div class="as-f">由 A：P = (0, 0) + 9(−cos θ, sin θ) = (−9cos θ, 9sin θ)</div>' +
+'<div class="as-f">由 B：P = (−7, 0) + 9(cos θ, sin θ) = (−7 + 9cos θ, 9sin θ)</div>' +
+'<div class="as-f">−9cos θ = −7 + 9cos θ　⇒　18cos θ = 7　⇒　cos θ = 7/18</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>第二發是「θ 的一半」，看到半角就想到<b>二倍角公式</b>：cos θ = 2cos²(θ/2) − 1，反過來就能由 cos θ 求 cos(θ/2)。因為 θ 是銳角，θ/2 也是銳角，cos(θ/2) 取正值。</div></div>' +
+'<div class="as-f">7/18 = 2cos²(θ/2) − 1　⇒　2cos²(θ/2) = 25/18　⇒　cos²(θ/2) = 25/36</div>' +
+'<div class="as-f">cos(θ/2) = 5/6（θ/2 為銳角取正）</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>算 BQ 不必再求 Q 的座標，直接在 △ABQ 用<b>餘弦定理</b>最快：已知 AB = 7、AQ = 9，而 ∠QAB 就是 AQ 與「A 指向 B（正西方）」的夾角，正好是 θ/2。</div></div>' +
+'<div class="as-f">BQ² = AB² + AQ² − 2·AB·AQ·cos(θ/2)</div>' +
+'<div class="as-f">BQ² = 7² + 9² − 2 × 7 × 9 × (5/6) = 49 + 81 − 105 = 25</div>' +
+'<div class="as-f">BQ = 5（公里）</div>' +
+'<svg viewBox="0 0 300 235" style="width:100%;max-width:420px;display:block;margin:8px auto">' +
+'<line x1="80" y1="200" x2="220" y2="200" stroke="var(--ink3)" stroke-width="2"/>' +
+'<line x1="220" y1="200" x2="150" y2="34" stroke="var(--accent)" stroke-width="2"/>' +
+'<line x1="80" y1="200" x2="150" y2="34" stroke="var(--accent)" stroke-width="2"/>' +
+'<line x1="220" y1="200" x2="70" y2="100" stroke="var(--green)" stroke-width="2"/>' +
+'<line x1="80" y1="200" x2="70" y2="100" stroke="var(--red)" stroke-width="2" stroke-dasharray="5 4"/>' +
+'<line x1="34" y1="60" x2="34" y2="26" stroke="var(--ink3)" stroke-width="1.5"/>' +
+'<polygon points="34,20 30,30 38,30" fill="var(--ink3)"/>' +
+'<text x="42" y="34" font-size="12" fill="var(--ink3)">北</text>' +
+'<circle cx="220" cy="200" r="4" fill="var(--ink)"/><circle cx="80" cy="200" r="4" fill="var(--ink)"/>' +
+'<circle cx="150" cy="34" r="4" fill="var(--accent)"/><circle cx="70" cy="100" r="4" fill="var(--green)"/>' +
+'<text x="228" y="214" font-size="14" fill="var(--ink)">A</text>' +
+'<text x="66" y="214" font-size="14" fill="var(--ink)">B</text>' +
+'<text x="156" y="28" font-size="14" fill="var(--accent)">P</text>' +
+'<text x="44" y="96" font-size="14" fill="var(--green)">Q</text>' +
+'<text x="140" y="216" font-size="12" fill="var(--ink3)">7</text>' +
+'<text x="196" y="120" font-size="12" fill="var(--accent)">9</text>' +
+'<text x="100" y="120" font-size="12" fill="var(--accent)">9</text>' +
+'<text x="140" y="164" font-size="12" fill="var(--green)">9</text>' +
+'<text x="52" y="156" font-size="13" fill="var(--red)">?</text>' +
+'</svg>' +
+'<div class="as-note">圖依實際數值繪製（cos θ = 7/18、cos(θ/2) = 5/6）：藍色兩段是第一次射擊 AP = BP = 9，綠色是第二次射擊 AQ = 9（方向由西偏北 θ 縮成 θ/2，所以 Q 比 P 更偏西、更低），紅色虛線即所求 BQ。可看出 Q 落在 B 的左上方，BQ 約為 AB 的 5/7，與答案 5 公里吻合。</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>① <b>方位詞讀錯</b>。「西偏北 θ」是<b>以西方為基準</b>往北轉 θ（與正北的夾角是 90° − θ），不是「北偏西」；讀成北偏西整題全錯。<br>② 看到 AP = BP = 9、AB = 7 就急著用海龍公式算面積——沒必要，題目真正要的是 cos θ。<br>③ 求 cos(θ/2) 時忘了判斷正負：因為 θ 是銳角，θ/2 在第一象限，只能取 +5/6。<br>④ 想硬求 Q 的座標再算距離也可以（Q = (−7.5, 3√11/2)），但餘弦定理快得多，且不必算 sin(θ/2)。</div>' +
+'<div class="as-ans">答：(3)　5 公里</div>' +
+'</div>';
+
+var GSAT113A_SOL_7 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>這題問的是「圖形<b>完全相同</b>」，不是「式子能不能化簡成一樣」。所以每個選項要檢查<b>兩件事</b>：(a) 定義域（x 可以取到哪些值）(b) 對應關係（同一個 x 得到的 y 是否相同）。<b>兩者都吻合才算相同</b>——這題的陷阱幾乎全在定義域。</div></div>' +
+'<div class="as-f">Γ：y = log x，定義域 x ＞ 0，值域為全體實數</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>(1) 把 log(5x) 拆開看它到底平移了多少。</div></div>' +
+'<div class="as-f">y = log(5x) − ½ = log x + log 5 − ½</div>' +
+'<div class="as-f">log 5 = 1 − log 2 ≈ 0.699 ≠ ½　⇒　y ≈ log x + 0.199</div>' +
+'<div class="as-f">反例：x = 1 時 Γ 給 y = 0，本式給 y = log 5 − ½ ≈ 0.199 ≠ 0</div>' +
+'<div class="as-f">(1) 錯（整條圖形往上平移了約 0.199）</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>(2) 定義域陷阱的主角。log(x²) 只要求 x² ＞ 0，也就是 x ≠ 0，<b>負的 x 也合法</b>。</div></div>' +
+'<div class="as-f">2y = log(x²) ⇒ y = ½·log(x²) = log|x|，定義域 x ≠ 0</div>' +
+'<div class="as-f">反例：x = −10 時本式有 y = log 10 = 1，但 Γ 在 x = −10 根本沒有點</div>' +
+'<div class="as-f">(2) 錯（多出一條 x ＜ 0 的分支，圖形比 Γ 多一半）</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>(3) 換成三次方就不一樣了：x³ 要落在 log 的定義域內必須 x³ ＞ 0，而 x³ ＞ 0 等價於 x ＞ 0，定義域自動收回來。</div></div>' +
+'<div class="as-f">3y = log(x³) = 3log x（此處已隱含 x ＞ 0）　⇒　y = log x，定義域 x ＞ 0</div>' +
+'<div class="as-f">(3) 對</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>(4) 這是對數的定義本身：指數式與對數式互換。注意 10^y 對任意實數 y 都是<b>正數</b>，所以 x 自動只跑正的部分，定義域也吻合。</div></div>' +
+'<div class="as-f">x = 10^y　⟺　y = log x，且 x = 10^y ＞ 0</div>' +
+'<div class="as-f">(4) 對</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>(5) 別被「兩邊都是三次方」騙了——(3) 是把<b>底數</b>三次方，這裡是把<b>指數</b>三次方，意義完全不同。取常用對數整理看看。</div></div>' +
+'<div class="as-f">x³ = 10^(y³)（x ＞ 0）⇒ log(x³) = y³ ⇒ 3log x = y³</div>' +
+'<div class="as-f">反例：x = 10 ⇒ y³ = 3 ⇒ y = ∛3 ≈ 1.442，但 Γ 在 x = 10 給 y = 1</div>' +
+'<div class="as-f">(5) 錯（除了 y = 0, ±√3 三個交點外都不一樣）</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>① <b>(2) 與 (3) 的差別就是這題的命題核心</b>：log(x²) 的 x 可以是負的（偶次方把負數變正），log(x³) 的 x 不能是負的（奇次方保留正負號）。所以 ½log(x²) = log|x| 而不是 log x——<b>偶次方開回來要加絕對值</b>。<br>② (1) 誤以為 log 5 = ½。log√10 才是 ½；log 5 ≈ 0.699。考場若一時無法判斷，直接代 x = 1 檢驗最快。<br>③ (4) 覺得「這不就是同一件事嗎，太簡單一定有詐」而不敢選——對數式與指數式互換就是等價的，定義域也自動一致，放心選。<br>④ 檢查「圖形是否相同」時只比對式子不比對定義域，(2) 就會被誤判成對。</div>' +
+'<div class="as-ans">答：(3)(4)</div>' +
+'</div>';
+
+var GSAT113A_SOL_8 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先把通用資料整理好，後面五個選項都靠它。三邊 n, n+1, n+2，先算半周長與海龍公式的四個因式（這種「先算一次、五個選項共用」的整理，是多選題省時間的關鍵）。</div></div>' +
+'<div class="as-f">周長 = n + (n+1) + (n+2) = 3n + 3，s = (3n+3)/2</div>' +
+'<div class="as-f">s − n = (n+3)/2，s − (n+1) = (n+1)/2，s − (n+2) = (n−1)/2</div>' +
+'<div class="as-f">面積² = (3n+3)/2 · (n+3)/2 · (n+1)/2 · (n−1)/2 = 3(n+1)²(n+3)(n−1) / 16</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>(1) 「皆為銳角三角形」是全稱敘述，<b>找一個反例就打掉</b>。最小的 n = 2 通常最極端，先試它。最大角對著最大邊 n + 2，用餘弦定理看它的 cos 是正是負。</div></div>' +
+'<div class="as-f">T₂：邊長 2, 3, 4，最大角 C 對邊 4</div>' +
+'<div class="as-f">cos C = (2² + 3² − 4²)/(2·2·3) = (4 + 9 − 16)/12 = −3/12 = −¼ ＜ 0</div>' +
+'<div class="as-f">(1) 錯（T₂ 是鈍角三角形，最大角約 104.5°）</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>(2) 周長已經算出來是 3n + 3，直接看它是不是 n 的一次式——一次式代入連續整數就是等差數列。</div></div>' +
+'<div class="as-f">周長 = 3n + 3：n = 2, 3, …, 10 得 9, 12, 15, …, 33</div>' +
+'<div class="as-f">後項 − 前項 = 3(n+1) − 3n = 3（定值）</div>' +
+'<div class="as-f">(2) 對（公差 3 的等差數列）</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>(3) 面積是否遞增，<b>比較面積的平方就好</b>（面積為正，平方遞增等價於本身遞增），省掉開根號。看步驟 1 的式子：把它拆成幾個因式，每個因式在 n ≥ 2 時都是正的且隨 n 遞增。</div></div>' +
+'<div class="as-f">面積² = 3(n+1)²(n+3)(n−1)/16，其中 (n+1)²、(n+3)、(n−1) 在 n ≥ 2 皆為正且遞增</div>' +
+'<div class="as-f">故面積² 遞增 ⇒ 面積遞增</div>' +
+'<div class="as-f">驗算：T₂ 面積 = √(135/16) ≈ 2.90，T₃（3,4,5）= 6，T₄（4,5,6）= √(3·25·7·3/16) = √(1575/16) ≈ 9.92</div>' +
+'<div class="as-f">(3) 對</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>(4) 三高。同一個三角形面積固定，所以「高」與「對應的底邊」成<b>反比</b>：h = 2K / 底。底邊是 5, 6, 7（等差），高就跟 1/5, 1/6, 1/7 成正比——<b>倒數的等差是調和數列，不是等差數列</b>。</div></div>' +
+'<div class="as-f">T₅：邊 5, 6, 7，s = 9，面積 K = √(9·4·3·2) = √216 = 6√6</div>' +
+'<div class="as-f">三高 = 2K/5, 2K/6, 2K/7 = 12√6/5, 2√6, 12√6/7</div>' +
+'<div class="as-f">差1 = 2√6 − 12√6/5 = −2√6/5，差2 = 12√6/7 − 2√6 = −2√6/7</div>' +
+'<div class="as-f">−2√6/5 ≠ −2√6/7　⇒　(4) 錯</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>(5) 直接把 T₂ 與 T₃ 的最大角算出來比大小。cos 在 0° 到 180° 之間<b>遞減</b>，所以 cos 比較小的角比較大。</div></div>' +
+'<div class="as-f">T₂（2,3,4）最大角：cos = −¼ ⇒ 約 104.5°</div>' +
+'<div class="as-f">T₃（3,4,5）最大角：cos = (3² + 4² − 5²)/(2·3·4) = 0/24 = 0 ⇒ 90°</div>' +
+'<div class="as-f">90° ＜ 104.5°　⇒　T₃ 的最大角<b>小於</b> T₂ 的最大角，(5) 錯</div>' +
+'<div class="as-note">補充規律：邊長 n, n+1, n+2 的三角形，最大角 cos = (n − 3)/(2n)，隨 n 遞增（n = 2 時 −¼、n = 3 時 0、n = 4 時 ⅛…），所以最大角其實是<b>越來越小</b>，且從 n = 4 起全部變銳角三角形。這同時解釋了 (1) 與 (5) 都錯。</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>① (1) 這種「皆為…」的全稱句，一定要從<b>邊界值 n = 2</b> 試起，不要隨手代 n = 5 看到是銳角就打勾。<br>② (4) 最典型的陷阱：<b>底邊等差 ⇏ 高等差</b>。高與底成反比，反比的結果是調和數列。真的要驗就把三個高寫出來相減，別憑感覺。<br>③ (5) 方向搞反：邊長變大形狀更接近正三角形，最大角是<b>變小</b>不是變大；而且 cos 值越大角越小，比較時容易顛倒。<br>④ (3) 別去硬開根號比大小，比面積的平方即可。</div>' +
+'<div class="as-ans">答：(2)(3)</div>' +
+'</div>';
+// 113 學測 數A — 第 9~12 題 adv-sol 詳解（皆為多選題）
+// 官方答案：Q9 (3)／Q10 (3)(5)／Q11 (2)(3)／Q12 (2)(4)(5)
+
+var GSAT113A_SOL_9 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先想「迴歸題給了什麼、能反推什麼」。迴歸直線一定通過中心點 (x̄, ȳ)，所以把 x̄ 代進去就得到 ȳ；再由迴歸係數公式 b = r·(s_y/s_x) 可以反推出體重的標準差 s_y。這兩件事是本題五個選項的共同鑰匙，一開始就先算好。</div></div>' +
+'<div class="as-f">ȳ_A = 2(5.2) − 0.6 = 10.4 − 0.6 = 9.8　　ȳ_B = 1.5(6) + 0.4 = 9 + 0.4 = 9.4</div>' +
+'<div class="as-f">s_y(A) = b·s_x / r = 2 × 0.3 / 0.6 = 1　　s_y(B) = 1.5 × 0.1 / 0.3 = 0.5</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>選項 (1)：比較兩個平均體重。</div></div>' +
+'<div class="as-f">ȳ_A = 9.8，ȳ_B = 9.4 → ȳ_A ＞ ȳ_B，並非 ȳ_A &lt; ȳ_B。(1) 錯</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>選項 (2)：比較兩個體重標準差，用第 1 步反推的值。</div></div>' +
+'<div class="as-f">s_y(A) = 1，s_y(B) = 0.5 → A 的體重標準差反而比較大。(2) 錯</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>選項 (3)：把個體 P 的體重 8.6 拿去和 A 的平均體重比，看差幾個標準差（這就是 z 分數的概念）。</div></div>' +
+'<div class="as-f">|8.6 − ȳ_A| = |8.6 − 9.8| = 1.2 ＞ s_y(A) = 1 → 確實超過一個標準差。(3) 對</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>選項 (4)：點到直線距離，兩條線都用公式 |Ax₀+By₀+C| / √(A²+B²) 算。注意分母不同，不能只比分子。</div></div>' +
+'<div class="as-f">L_A：2x − y − 0.6 = 0，d_A = |2(5.6) − 8.6 − 0.6| / √(2²+1²) = |11.2 − 9.2| / √5 = 2/√5 ≈ 0.894</div>' +
+'<div class="as-f">L_B：1.5x − y + 0.4 = 0，d_B = |8.4 − 8.6 + 0.4| / √(1.5²+1²) = 0.2 / √3.25 ≈ 0.111</div>' +
+'<div class="as-f">d_A ≈ 0.894 ＞ d_B ≈ 0.111 → 反了。(4) 錯</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>選項 (5)：兩個中心點的坐標分別是 (5.2, 9.8) 與 (6, 9.4)，直接算 P(5.6, 8.6) 到它們的距離（比平方即可，免開根號）。</div></div>' +
+'<div class="as-f">到 (x̄_A, ȳ_A)：(5.6−5.2)² + (8.6−9.8)² = 0.16 + 1.44 = 1.6 → 距離 ≈ 1.265</div>' +
+'<div class="as-f">到 (x̄_B, ȳ_B)：(5.6−6)² + (8.6−9.4)² = 0.16 + 0.64 = 0.8 → 距離 ≈ 0.894</div>' +
+'<div class="as-f">1.6 ＞ 0.8 → P 離 A 的中心比較遠，不是比較近。(5) 錯</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 題目給的 0.3、0.1 是「身長」的標準差 s_x，不是體重的 s_y，直接拿去和 1.2 比就會誤判 (3)；體重標準差必須用 b = r·s_y/s_x 反推。(2) 選項 (4) 是點到「直線」的距離，分母 √(A²+B²) 兩條線不一樣（√5 vs √3.25），只比分子 2 與 0.2 雖然這題結論碰巧相同，但觀念錯了下次就會中招。(3) 選項 (5) 比的是點到「中心點」的距離，和 (4) 的點到直線是兩回事，別混用。</div>' +
+'<div class="as-ans">答：(3)</div>' +
+'</div>';
+
+var GSAT113A_SOL_10 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先建立座標與「正六邊形的關鍵長度」。正六邊形一邊在 x 軸上、邊長設為 s，把它的中心 B 放在 y 軸上，則六個頂點是 (±s/2, 0)、(±s, √3s/2)、(±s/2, √3s)。最右邊那一點是「腰上的頂點」(s, √3s/2)，中心 B 到 x 軸的距離就是邊心距 √3s/2。</div></div>' +
+'<div class="as-f">正六邊形頂點：(±s/2, 0)、(±s, √3s/2)、(±s/2, √3s)；最右點 = (s, √3s/2)，B = (0, √3s/2)</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>正方形在右邊、兩形「恰有一個交點」，代表六邊形最右的那個頂點剛好碰到正方形的左邊（一個頂點碰一條鉛直線，交集恰是一點）。所以 P 就是 (s, √3s/2)，用 P 到 x 軸距離 2√3 解出 s。</div></div>' +
+'<div class="as-f">√3s/2 = 2√3 → s = 4，故 P = (4, 2√3)，B = (0, 2√3)</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>定出正方形。它的左邊就是鉛直線 x = 4，邊長 6、底邊在 x 軸上，所以佔 4 ≤ x ≤ 10、0 ≤ y ≤ 6，中心 A 是這個範圍的正中央。（順帶檢查：P 的高 2√3 ≈ 3.46 落在 0~6 之間，確實碰得到。）</div></div>' +
+'<div class="as-f">正方形：4 ≤ x ≤ 10，0 ≤ y ≤ 6　→　A = (7, 3)</div>' +
+'<svg viewBox="0 0 356 185" width="100%" style="max-width:420px">' +
+'<line x1="10" y1="165" x2="345" y2="165" stroke="var(--ink3)" stroke-width="1.5"/>' +
+'<polygon points="66,165 154,165 198,88.8 154,12.6 66,12.6 22,88.8" fill="none" stroke="var(--accent)" stroke-width="2"/>' +
+'<polygon points="198,165 330,165 330,33 198,33" fill="none" stroke="var(--green)" stroke-width="2"/>' +
+'<circle cx="110" cy="88.8" r="3" fill="var(--accent)"/>' +
+'<circle cx="264" cy="99" r="3" fill="var(--green)"/>' +
+'<circle cx="198" cy="88.8" r="4" fill="var(--red)"/>' +
+'<text x="98" y="84" font-size="13" fill="var(--ink)">B</text>' +
+'<text x="270" y="95" font-size="13" fill="var(--ink)">A</text>' +
+'<text x="203" y="82" font-size="13" fill="var(--red)">P</text>' +
+'<text x="88" y="103" font-size="11" fill="var(--ink3)">(0, 2√3)</text>' +
+'<text x="252" y="115" font-size="11" fill="var(--ink3)">(7, 3)</text>' +
+'<text x="203" y="70" font-size="11" fill="var(--red)">(4, 2√3)</text>' +
+'<text x="255" y="180" font-size="11" fill="var(--ink3)">邊長 6</text>' +
+'<text x="95" y="180" font-size="11" fill="var(--ink3)">邊長 4</text>' +
+'</svg>' +
+'<div class="as-note">圖為按實際比例繪製：正六邊形邊長 4（中心 B 高 2√3 ≈ 3.46），正方形邊長 6（中心 A 高 3），兩者只在 P(4, 2√3) 相碰。可以看出 B 其實比 A 高一點點。</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>選項 (1)：比 A、B 到 x 軸的高度。</div></div>' +
+'<div class="as-f">A 高 = 3，B 高 = 2√3 ≈ 3.464 → A 比較低。(1) 錯</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>選項 (2)：第 2 步已算出邊長。</div></div>' +
+'<div class="as-f">s = 4 ≠ 6。(2) 錯</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>選項 (3)：向量 BA→ = A − B（注意是終點減起點）。</div></div>' +
+'<div class="as-f">BA→ = (7, 3) − (0, 2√3) = (7, 3 − 2√3)。(3) 對</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>選項 (4)：算 AP 長度，和 √10 比。比平方最快。</div></div>' +
+'<div class="as-f">AP² = (7−4)² + (3 − 2√3)² = 9 + (3 − 2√3)²，其中 3 − 2√3 ≈ −0.464</div>' +
+'<div class="as-f">AP² ≈ 9 + 0.215 = 9.215 &lt; 10 → AP ≈ 3.036 &lt; √10 ≈ 3.162。(4) 錯</div>' +
+'<div class="as-step"><div class="as-n">8</div><div>選項 (5)：算直線 AP 的斜率，和 −1/√3 比（−1/√3 ≈ −0.577）。</div></div>' +
+'<div class="as-f">斜率 = (3 − 2√3) / (7 − 4) = (3 − 2√3)/3 ≈ −0.464/3 ≈ −0.155</div>' +
+'<div class="as-f">−0.155 ＞ −0.577。(5) 對</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1)「恰有一個交點」是解題起點，不是附帶條件——它逼你認定「六邊形最右的頂點碰正方形左邊」，若誤以為是兩形的邊重疊或角碰角，邊長就解錯，後面五個選項全垮。(2) 正六邊形中心到 x 軸是「邊心距 √3s/2」不是邊長 s，很多人直接寫 2√3 = s。(3) 負數比大小：3 − 2√3 ≈ −0.464，−0.155 ＞ −0.577 是對的，但絕對值反而較小，看到負號就慌很容易判反 (5)。</div>' +
+'<div class="as-ans">答：(3)(5)</div>' +
+'</div>';
+
+var GSAT113A_SOL_11 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「方程組解的個數 + 機率」，第一件事一定是先寫出行列式（判別式），把 6 × 2 = 12 種 (a, b) 組合分成「唯一解／無解／無限多解」三類，再去數機率。a 有 1~6 六種、b 有 1 或 2 兩種，每組出現機率都是 1/6 × 1/2 = 1/12。</div></div>' +
+'<div class="as-f">Δ = a·b − 6·1 = ab − 6；Δ ≠ 0 ⇔ 唯一解</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>找出 Δ = 0 的例外情形，再逐一判斷這些例外到底是「無解」還是「無限多解」。方法：把第二式乘以 a，和第一式對照。</div></div>' +
+'<div class="as-f">ab = 6 只有 (a, b) = (6, 1) 與 (3, 2) 兩組</div>' +
+'<div class="as-f">第二式 ×a：ax + aby = a，因 ab = 6 得 ax + 6y = a；第一式為 ax + 6y = 6</div>' +
+'<div class="as-f">(6, 1)：a = 6 = 6 → 兩式同一條線，無限多解</div>' +
+'<div class="as-f">(3, 2)：a = 3 ≠ 6 → 兩式平行不重合，無解</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>選項 (1)：a = b 只可能 a、b 同為 1 或同為 2（a 雖有 1~6，但 b 只有 1、2）。</div></div>' +
+'<div class="as-f">P(a = b) = P(1,1) + P(2,2) = 1/12 + 1/12 = 1/6 ≠ 1/3。(1) 錯</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>選項 (2)：無解只有 (3, 2) 一種。</div></div>' +
+'<div class="as-f">P(無解) = 1/12。(2) 對</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>選項 (3)：唯一解 = 12 種扣掉 (6,1) 與 (3,2) 兩種。</div></div>' +
+'<div class="as-f">P(唯一解) = (12 − 2)/12 = 10/12 = 5/6。(3) 對</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>選項 (4)：反面即 b = 2，此時 a = 1~6 共 6 種，其中只有 a = 3 無解，其餘 5 種有解（含唯一解）。</div></div>' +
+'<div class="as-f">P(b = 2 且有解) = 5 × 1/12 = 5/12 ≠ 1/2。(4) 錯</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>選項 (5)：條件機率。條件是「b = 2 且有解」共 5 種等可能情形（a = 1, 2, 4, 5, 6）。要把 x 解出來看正負：b = 2 時第二式為 x + 2y = 1。</div></div>' +
+'<div class="as-f">由 x + 2y = 1 得 y = (1 − x)/2，代入 ax + 6y = 6：ax + 3(1 − x) = 6</div>' +
+'<div class="as-f">(a − 3)x = 3　→　x = 3/(a − 3)</div>' +
+'<div class="as-f">a = 1 → x = −1.5；a = 2 → x = −3；a = 4 → x = 3；a = 5 → x = 1.5；a = 6 → x = 1</div>' +
+'<div class="as-f">x ＞ 0 者為 a = 4, 5, 6 共 3 個 → 條件機率 = 3/5 ≠ 2/5。(5) 錯</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1)「Δ = 0」只代表「不是唯一解」，還要再判斷是無解還是無限多解——本題兩個例外剛好一個一種，若把 (6,1) 也算成無解，(2) 就會誤答 2/12。(2) 選項 (4) 問的是「反面 **且** 有解」的機率（分母是全部 12 種），不是「反面條件下有解」的條件機率（那才是 5/6），一字之差答案差很多。(3) 選項 (5) 的條件機率分母是 5 不是 6，要先把無解的 a = 3 剔除再數。</div>' +
+'<div class="as-ans">答：(2)(3)</div>' +
+'</div>';
+
+var GSAT113A_SOL_12 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>矩陣變換題先把「像」算出來。T 作用在點 (x, y) 上是 T(x, y) = (3x, ax + y)，把 A、B、C 三個頂點各算一次，就得到 Γ 的三個頂點。同時先算行列式，因為它掌管「面積倍率」與「可不可逆」。</div></div>' +
+'<div class="as-f">T(x, y) = (3x, ax + y)；det T = 3×1 − 0×a = 3</div>' +
+'<div class="as-f">A(1,0) → (3, a)　B(0,1) → (0, 1)　C(−1,0) → (−3, −a)</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>選項 (1)：代 a = 0 把三頂點寫出來，檢查是否「等腰」且「直角」。兩個條件都要成立。</div></div>' +
+'<div class="as-f">a = 0 時 Γ 的頂點為 (3, 0)、(0, 1)、(−3, 0)</div>' +
+'<div class="as-f">兩腰長皆 √(3²+1²) = √10 → 等腰成立；底邊長 6</div>' +
+'<div class="as-f">頂角在 (0,1)：向量 (3,−1)·(−3,−1) = −9 + 1 = −8 ≠ 0 → 不是直角</div>' +
+'<div class="as-f">另兩角也非直角（√10² + 6² ≠ √10²）。(1) 錯</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>選項 (2)：「坐標不變」＝找 T 的不動點，解 T(x, y) = (x, y)。解出不動點集合後，再看它和 △ABC 的邊有幾個交點。</div></div>' +
+'<div class="as-f">3x = x → x = 0；ax + y = y → 代 x = 0 恆成立</div>' +
+'<div class="as-f">故不動點為整條 y 軸（x = 0 的所有點）</div>' +
+'<div class="as-f">y 軸與 △ABC 的邊相交於：頂點 B(0, 1)，以及底邊 AC 上的 (0, 0) → 至少兩點。(2) 對</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>選項 (3)：「必有」是全稱敘述，只要找到一個 a 讓 Γ 完全不進第四象限就推翻它。最好試的就是 a = 0。</div></div>' +
+'<div class="as-f">a = 0 時 Γ 頂點為 (3,0)、(0,1)、(−3,0)，整個三角形都在 y ≥ 0</div>' +
+'<div class="as-f">第四象限需 x ＞ 0 且 y &lt; 0，此時 Γ 一點也沒有 → 反例成立。(3) 錯</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>選項 (4)：問「找不找得到 Ω 使 T(Ω) = △ABC」，等價於問 T 可不可逆——可逆就取 Ω = T⁻¹(△ABC)。判斷標準就是 det T 是否為 0。</div></div>' +
+'<div class="as-f">det T = 3 ≠ 0 → T 可逆，T⁻¹ 存在</div>' +
+'<div class="as-f">取 Ω = T⁻¹(△ABC)（是個三角形），則 T(Ω) = △ABC。(4) 對</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>選項 (5)：線性變換後面積 = |det T| × 原面積，與 a 無關。也可以直接用第 1 步的三個頂點算一次驗證。</div></div>' +
+'<div class="as-f">△ABC 面積 = ½ × 底 AC(=2) × 高(=1) = 1</div>' +
+'<div class="as-f">Γ 面積 = |det T| × 1 = 3（與 a 無關）</div>' +
+'<div class="as-f">驗算：Γ 頂點 (3,a)、(0,1)、(−3,−a)，底為 (3,a) 到 (−3,−a)，面積 = ½|3(1−(−a)) + 0(−a−a) + (−3)(a−1)| = ½|3 + 3a − 3a + 3| = 3 ✓。(5) 對</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 選項 (2) 的「坐標不變」是找**不動點**（解 T(P) = P），不是找「不動的邊」或「行列式為 1」，很多人看到 a 出現就以為要討論 a——其實不動點集合恆為 y 軸，與 a 完全無關。(2) 選項 (4) 是問「T 有沒有反像」＝可不可逆，只要看 det ≠ 0，別誤以為要真的把 Ω 畫出來。(3) 選項 (1) 只驗了等腰就打勾——「等腰直角」兩個條件缺一不可，這題正是等腰但不直角的陷阱。(4) 選項 (3) 的「必有」只要一個反例（a = 0）就推翻，不必對所有 a 討論。</div>' +
+'<div class="as-ans">答：(2)(4)(5)</div>' +
+'</div>';
+// 113 學測數A 選填題 13～17 詳解（adv-sol）
+
+var GSAT113A_SOL_13 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到「平均每支利潤」就要翻譯成加權平均：總利潤 ÷ 總支數。題目給了兩個平均，就是兩個方程式。先把它們寫成「總利潤」的形式，不要留分數。</div></div>'
++ '<div class="as-f">全部三型：100A + 400B + 240C = 260(A + B + C)　……①<br>只看甲乙：100A + 400B = 280(A + B)　……②</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>先解只含 A、B 的②，一口氣定出 A : B。這題的關鍵順序是「先②後①」——②只有兩個未知數，最好處理。</div></div>'
++ '<div class="as-f">100A + 400B = 280A + 280B<br>→ 120B = 180A<br>→ B / A = 180 / 120 = 3 / 2<br>→ A : B = 2 : 3</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>把①整理，用 A、B 表示 C。移項時把 260 分配到三項上。</div></div>'
++ '<div class="as-f">100A + 400B + 240C = 260A + 260B + 260C<br>→ (100 − 260)A + (400 − 260)B + (240 − 260)C = 0<br>→ −160A + 140B − 20C = 0<br>兩邊同除 20：−8A + 7B − C = 0<br>→ C = 7B − 8A</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>比是齊次的，可直接令 A = 2、B = 3 代進去（因為 A : B = 2 : 3，取一組代表值即可）。</div></div>'
++ '<div class="as-f">C = 7 × 3 − 8 × 2 = 21 − 16 = 5<br>→ A : B : C = 2 : 3 : 5</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>驗算：拿 A = 2、B = 3、C = 5 回代原始敘述，兩個平均都要對得起來。</div></div>'
++ '<div class="as-f">總利潤 = 100×2 + 400×3 + 240×5 = 200 + 1200 + 1200 = 2600<br>總支數 = 2 + 3 + 5 = 10 → 平均 = 2600 / 10 = 260 ✓<br>甲乙：(200 + 1200) / (2 + 3) = 1400 / 5 = 280 ✓</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>答案格式：三格各填一個整數，且必須是**最簡整數比**。2 : 3 : 5 的最大公因數是 1，已經最簡，不能填 4 : 6 : 10。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>(1) 只列①一條式子就想解三個未知數 → 解不出來。要看出「甲乙合計平均 280」是第二條情報，而且它只含 A、B，是突破口。<br>(2) 把「平均每支利潤 260」誤寫成 (100 + 400 + 240) / 3 = 246.67 那種「三型利潤的平均」——題目問的是**每支手機**的平均，權重是賣出支數，不是三個型號等權。<br>(3) 算出 A : B : C = 4 : 6 : 10 沒約分就填 → 格子只有一位，且題目明講「化為最簡整數比」，直接零分。</div>'
++ '<div class="as-ans">答：⑬-1 = 2，⑬-2 = 3，⑬-3 = 5，即 A : B : C = 2 : 3 : 5</div>'
++ '</div>';
+
+var GSAT113A_SOL_14 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到「除以某個二次式的餘式」就想**餘式運算**：兩個多項式相加、相乘後再取餘式，等於先各自取餘式再運算、最後再取一次餘式。用「≡」表示「除以 x² − 2x + 3 同餘」。</div></div>'
++ '<div class="as-f">令 d(x) = x² − 2x + 3<br>f(x) ≡ x + 1，g(x) ≡ x − 3，h(x) ≡ −2　（皆為 mod d(x)）</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>「可以被 d(x) 整除」= 餘式為 0。所以把整個 x·f(x) + a·g(x) + b·h(x) 的餘式算出來，令它恆等於 0。</div></div>'
++ '<div class="as-f">x·f(x) + a·g(x) + b·h(x) ≡ x(x + 1) + a(x − 3) + b(−2)</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>**這題唯一的陷阱在這裡**：x(x + 1) = x² + x 是二次式，次數和除式 d(x) 一樣高，還不是餘式，必須再對 d(x) 取一次餘。方法是由 d(x) = 0 得 x² = 2x − 3，把 x² 換掉降次。</div></div>'
++ '<div class="as-f">x² − 2x + 3 ≡ 0　→　x² ≡ 2x − 3<br>x·f(x) ≡ x² + x ≡ (2x − 3) + x = 3x − 3</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>三項餘式相加，合併成 (一次項)x + (常數)，這是真正的餘式（次數必須低於 2）。</div></div>'
++ '<div class="as-f">總餘式 = (3x − 3) + a(x − 3) − 2b<br>　　　 = (3 + a)x + (−3 − 3a − 2b)</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>餘式為 0 代表**每個係數都是 0**（不是「某個 x 代進去等於 0」），兩式聯立。</div></div>'
++ '<div class="as-f">x 的係數：3 + a = 0　→　a = −3<br>常數項：−3 − 3a − 2b = 0<br>代 a = −3：−3 − 3(−3) − 2b = 0<br>→ −3 + 9 − 2b = 0<br>→ 2b = 6　→　b = 3</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>驗算：把 a = −3、b = 3 代回第 4 步的總餘式，確認真的是 0。</div></div>'
++ '<div class="as-f">(3 + (−3))x + (−3 − 3(−3) − 2×3)<br>= 0·x + (−3 + 9 − 6) = 0 ✓</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>答案格式：⑭-1 是**正負號欄位**（填「−」或「+」），⑭-2 才填數字。a = −3 → ⑭-1 填「−」、⑭-2 填「3」。b = 3 是正數，⑭-3 直接填 3。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>(1) **忘記把 x·f(x) 的餘式再降一次次數**，直接寫成 x² + x 就去比係數 → 得到錯的 a、b。凡是餘式乘上 x（或乘上另一個餘式），乘完次數會升高，一定要再對除式取一次餘。<br>(2) 用 x² ≡ 2x − 3 時符號抄錯：由 x² − 2x + 3 = 0 移項是 x² = 2x − 3，不是 2x + 3。<br>(3) 「f(x) 是三次多項式」是煙霧彈——整題完全用不到次數，只要餘式。不要真的去設 f(x) = ax³ + …，會算到天荒地老。<br>(4) 忘了 ⑭-1 是符號格，把「−3」硬塞成兩格數字，或漏填負號 → 答案變 3，零分。</div>'
++ '<div class="as-ans">答：⑭-1 = −，⑭-2 = 3，⑭-3 = 3，即 a = −3，b = 3</div>'
++ '</div>';
+
+var GSAT113A_SOL_15 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>這題要分兩段：**先反推總球數**（靠公告的中獎機率），**再算第 101 人的期望值**（靠剩下的球）。看到「公告中獎機率 0.4%」就要意識到這是給你解報名人數用的，不是拿來直接算期望值。</div></div>'
++ '<div class="as-f">設報名人數 = 摸彩球總數 = N<br>幸運獎共 10 顆（5000 元 5 顆、8000 元 5 顆）<br>抽獎前每人中獎機率 = 10 / N = 0.4% = 0.004</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>解出 N。這一步就是把百分比化成分數。</div></div>'
++ '<div class="as-f">10 / N = 4 / 1000<br>→ 4N = 10000<br>→ N = 2500（共 2500 顆球、2500 人報名）</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>處理「前 100 人抽完」後的狀態。抽後不放回，所以球數減少；題目告訴你這 100 人中「恰有 1 人抽中 5000 元、沒有人抽中 8000 元」，所以獎球的消耗是確定的。</div></div>'
++ '<div class="as-f">已抽走球數 = 100 → 剩餘球數 = 2500 − 100 = 2400<br>剩餘 5000 元球 = 5 − 1 = 4 顆<br>剩餘 8000 元球 = 5 − 0 = 5 顆<br>剩餘無獎球 = 2400 − 4 − 5 = 2391 顆</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>第 101 號者從剩下 2400 顆中抽一顆，每顆機率相同。期望值 = Σ(獎金 × 機率)。</div></div>'
++ '<div class="as-f">P(抽中 5000 元) = 4 / 2400<br>P(抽中 8000 元) = 5 / 2400<br>P(沒中) = 2391 / 2400（獎金 0，不必算）</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>代入計算。分子先加起來再除，數字比較好整理。</div></div>'
++ '<div class="as-f">E = 5000 × (4 / 2400) + 8000 × (5 / 2400) + 0 × (2391 / 2400)<br>= (20000 + 40000) / 2400<br>= 60000 / 2400<br>= 25（元）</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>答案格式：⑮-1⑮-2 是兩格數字組成的整數，25 → ⑮-1 = 2、⑮-2 = 5。剛好兩位數，不必補零。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>(1) **把 0.4% 當成第 101 人的中獎機率**直接算 → 算成 0.004 × 某獎金。0.4% 是「抽獎前、球都還在」時的機率；前 100 人已經抽走 100 顆球且拿走 1 顆 5000 元，母數和分子都變了。<br>(2) 分母寫 2500 沒扣掉已抽走的 100 顆 → 抽後**不放回**是關鍵字。<br>(3) 只扣 5000 元的球、忘了球總數也要減 100；或反過來扣了總數卻沒扣 5000 元球（仍寫 5 顆）。<br>(4) 忽略「沒有人抽中 8000 元」這句 → 8000 元的球仍是滿的 5 顆，這句話是有用資訊不是廢話。<br>(5) 有人會擔心「第 101 人的機率要不要考慮前面誰抽到什麼」——題目已經把前 100 人的結果講死了，這是**條件機率下的確定狀態**，直接用剩餘球數算即可。</div>'
++ '<div class="as-ans">答：⑮-1 = 2，⑮-2 = 5，即期望值為 25 元</div>'
++ '</div>';
+
+var GSAT113A_SOL_16 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>拿到這種正射影題，**第一件事是檢查兩個方向向量是不是互相垂直**。這題 (2,−3) 與 (3,2) 內積為 0，垂直！垂直就代表它們是一組正交方向，v→ 可以拆成這兩個方向的分量，直接套畢氏定理。</div></div>'
++ '<div class="as-f">(2,−3)·(3,2) = 2×3 + (−3)×2 = 6 − 6 = 0　→　兩向量垂直<br>|(2,−3)| = √(4 + 9) = √13，|(3,2)| = √(9 + 4) = √13</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>設 v→ 的長度為 L。「正射影長比原長少 1」就是投影長 = L − 1；另一個是 L − 2。因為兩方向垂直，兩個投影長就是 v→ 在互相垂直的兩軸上的分量長，平方和 = L²。</div></div>'
++ '<div class="as-f">設 |v→| = L<br>在 (2,−3) 方向的正射影長 p = L − 1<br>在 (3,2) 方向的正射影長 q = L − 2<br>兩方向垂直 → p² + q² = L²</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>解這個一元二次方程式求 L。</div></div>'
++ '<div class="as-f">(L − 1)² + (L − 2)² = L²<br>(L² − 2L + 1) + (L² − 4L + 4) = L²<br>2L² − 6L + 5 = L²<br>L² − 6L + 5 = 0<br>(L − 1)(L − 5) = 0　→　L = 1 或 L = 5</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>**檢驗要捨哪一根**：夾角皆為銳角 → 兩個正射影長都必須是正數。L = 1 時 q = 1 − 2 = −1 &lt; 0，不合，捨去。</div></div>'
++ '<div class="as-f">L = 1 → q = −1 &lt; 0，與「夾角為銳角」矛盾，捨<br>L = 5 → p = 4 &gt; 0，q = 3 &gt; 0 ✓<br>故 |v→| = 5，p = 4，q = 3</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>要求在 (4,7) 方向的正射影，(4,7) 和前兩個都不垂直，所以得把 v→ 的座標真的解出來。由投影長公式 p = (v→·u→) / |u→| 反推內積。</div></div>'
++ '<div class="as-f">設 v→ = (x, y)<br>v→·(2,−3) / √13 = 4　→　2x − 3y = 4√13　……①<br>v→·(3,2) / √13 = 3　→　3x + 2y = 3√13　……②</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>解聯立。①×2 + ②×3 消去 y。</div></div>'
++ '<div class="as-f">①×2：4x − 6y = 8√13<br>②×3：9x + 6y = 9√13<br>相加：13x = 17√13　→　x = 17√13 / 13<br>代回②：2y = 3√13 − 3 × (17√13 / 13) = (39√13 − 51√13) / 13 = −12√13 / 13<br>→ y = −6√13 / 13<br>故 v→ = (17√13 / 13, −6√13 / 13)</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>驗算長度，確認 |v→| = 5，避免前面算錯白費工。</div></div>'
++ '<div class="as-f">|v→|² = (17² + 6²) × 13 / 13² = (289 + 36) / 13 = 325 / 13 = 25<br>→ |v→| = 5 ✓</div>'
++ '<div class="as-step"><div class="as-n">8</div><div>套正射影長公式：|v→·u→| / |u→|，其中 u→ = (4,7)。</div></div>'
++ '<div class="as-f">v→·(4,7) = 4 × (17√13 / 13) + 7 × (−6√13 / 13)<br>= (68√13 − 42√13) / 13 = 26√13 / 13 = 2√13<br>|(4,7)| = √(16 + 49) = √65<br>正射影長 = 2√13 / √65 = 2 / √5 = 2√5 / 5</div>'
++ '<div class="as-step"><div class="as-n">9</div><div>答案格式：⑯-1√⑯-2 ／ ⑯-3 的分式根式，且要**最簡根式**（分母有理化、根號內無平方因數）。2√5 / 5 → ⑯-1 = 2、⑯-2 = 5、⑯-3 = 5。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>(1) **沒發現 (2,−3) ⊥ (3,2)** → 硬設 v→ = (x,y) 去解兩個含絕對值與根號的方程式，會卡死。看到兩個方向向量，先算內積是本題的鑰匙。<br>(2) 解出 L = 1 和 L = 5 **兩根都留或選錯**。要用「夾角為銳角 → 正射影長必為正」去篩，L = 1 會讓 (3,2) 方向的投影長變 −1，不合。<br>(3) 把 p² + q² = L² 誤用在**不垂直**的方向上——這個關係只有在兩方向正交時才成立。<br>(4) 最後忘了分母有理化：2 / √5 沒化成 2√5 / 5，格子填不進去。<br>(5) 誤以為「正射影長」可以是負的。正射影**長**是長度，恆為非負；有正負號的是「純量投影」。本題兩角皆銳角，兩者一致。</div>'
++ '<div class="as-ans">答：⑯-1 = 2，⑯-2 = 5，⑯-3 = 5，即正射影長為 2√5 / 5</div>'
++ '</div>';
+
+var GSAT113A_SOL_17 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>先把題目那句拗口的話翻譯成幾何：「與點 P 的距離為 |x − y| 的所有點所成圖形」＝**以 P 為圓心、半徑 r = |x − y| 的圓**。條件是這個圓完全落在正方形內。</div></div>'
++ '<div class="as-f">P = (x, y)，半徑 r = |x − y|<br>正方形：0 ≤ x ≤ 1，0 ≤ y ≤ 1</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>「圓完全在正方形內」的充要條件是：**圓心到四條邊的距離都 ≥ 半徑**。四條邊是 x = 0、x = 1、y = 0、y = 1，距離分別是 x、1 − x、y、1 − y。</div></div>'
++ '<div class="as-f">r ≤ x　且　r ≤ 1 − x　且　r ≤ y　且　r ≤ 1 − y<br>即 |x − y| ≤ min(x, 1 − x, y, 1 − y)</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>有絕對值就**分區討論**。這裡有個省力技巧：整個條件對直線 y = x 對稱（把 x、y 互換，|x − y| 不變，四個距離也只是配對交換）。所以先算 x ≥ y 那一半，再乘 2。</div></div>'
++ '<div class="as-f">先討論 x ≥ y，此時 r = x − y ≥ 0，四個不等式變成：<br>(i) x − y ≤ x　→　y ≥ 0（正方形內自動成立）<br>(ii) x − y ≤ 1 − x　→　2x − y ≤ 1<br>(iii) x − y ≤ y　→　x ≤ 2y<br>(iv) x − y ≤ 1 − y　→　x ≤ 1（自動成立）</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>只剩兩條有效限制。加上 x ≥ y，這一半的區域是由三條直線 y = x、x = 2y、2x − y = 1 圍成的三角形。求出三個頂點。</div></div>'
++ '<div class="as-f">有效條件：y ≤ x ≤ 2y 且 2x − y ≤ 1<br>y = x 交 x = 2y：x = 2x → x = 0 → 頂點 (0, 0)<br>y = x 交 2x − y = 1：2x − x = 1 → x = 1 → 頂點 (1, 1)<br>x = 2y 交 2x − y = 1：4y − y = 1 → y = 1/3, x = 2/3 → 頂點 (2/3, 1/3)</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>用行列式（鞋帶公式）算這個三角形面積。</div></div>'
++ '<div class="as-f">頂點 (0,0)、(1,1)、(2/3, 1/3)<br>面積 = ½ |x₁(y₂ − y₃) + x₂(y₃ − y₁) + x₃(y₁ − y₂)|<br>= ½ |0(1 − 1/3) + 1(1/3 − 0) + (2/3)(0 − 1)|<br>= ½ |1/3 − 2/3| = ½ × 1/3 = 1/6</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>由 y = x 的對稱性，x ≤ y 的另一半面積也是 1/6，相加得總面積。（兩半只交於線段 y = x，面積為 0，不會重複計算。）</div></div>'
++ '<div class="as-f">面積 R = 1/6 + 1/6 = 1/3</div>'
++ '<svg viewBox="0 0 320 290" width="100%" style="max-width:340px">'
++ '<rect x="40" y="20" width="240" height="240" fill="none" stroke="var(--ink3)" stroke-width="1.5"/>'
++ '<line x1="40" y1="260" x2="280" y2="20" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 3"/>'
++ '<polygon points="40,260 200,180 280,20 120,100" fill="var(--accent)" fill-opacity="0.28" stroke="var(--accent)" stroke-width="2"/>'
++ '<circle cx="40" cy="260" r="3.5" fill="var(--ink)"/>'
++ '<circle cx="280" cy="20" r="3.5" fill="var(--ink)"/>'
++ '<circle cx="200" cy="180" r="3.5" fill="var(--red)"/>'
++ '<circle cx="120" cy="100" r="3.5" fill="var(--red)"/>'
++ '<text x="22" y="278" font-size="13" fill="var(--ink)">O(0,0)</text>'
++ '<text x="252" y="14" font-size="13" fill="var(--ink)">B(1,1)</text>'
++ '<text x="208" y="196" font-size="13" fill="var(--red)">(2/3, 1/3)</text>'
++ '<text x="42" y="98" font-size="13" fill="var(--red)">(1/3, 2/3)</text>'
++ '<text x="236" y="252" font-size="13" fill="var(--ink3)">C(1,0)</text>'
++ '<text x="46" y="36" font-size="13" fill="var(--ink3)">A(0,1)</text>'
++ '<text x="150" y="150" font-size="14" fill="var(--accent)">R</text>'
++ '</svg>'
++ '<div class="as-note">著色的箏形（風箏形）就是區域 R，四個頂點為 (0,0)、(2/3,1/3)、(1,1)、(1/3,2/3)。虛線是對稱軸 y = x；R 被它切成上下兩個全等三角形，各佔面積 1/6，合計 1/3。注意 R 沿著對角線細長分布——愈靠近 y = x 半徑 |x − y| 愈小，圓愈容易塞進正方形。</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>抽樣驗算：取 R 內一點與 R 外一點各檢查一次。</div></div>'
++ '<div class="as-f">取 P(0.5, 0.35)：r = 0.15，min(0.5, 0.5, 0.35, 0.65) = 0.35 ≥ 0.15 ✓ 在 R 內<br>取 P(0.9, 0.2)：r = 0.7，min(0.9, 0.1, 0.2, 0.8) = 0.1 &lt; 0.7 ✗ 不在 R 內</div>'
++ '<div class="as-step"><div class="as-n">8</div><div>答案格式：⑰-1／⑰-2 為最簡分數，1/3 已最簡 → ⑰-1 = 1、⑰-2 = 3。不可填 2/6。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>(1) 沒把「與 P 的距離為 |x − y| 的所有點」讀成**圓**，誤以為只是某幾個點或某條線段。「與定點距離為定值的所有點」就是圓，這是圓的定義。<br>(2) 只寫「圓心在正方形內」就當條件 → 那是必要不充分。要的是**圓心到四邊距離都 ≥ 半徑**，四個不等式一個都不能少。<br>(3) 忘了拆絕對值，或只做 x ≥ y 一半就交卷 → 答案會變 1/6（少一半）。<br>(4) 算頂點時把 x = 2y 和 2x − y = 1 的交點解成 (1/3, 2/3)（x、y 對調）→ 面積會算錯。代回檢查：x = 2y 表示 x 是 y 的兩倍，所以是 (2/3, 1/3)。<br>(5) 半徑可以是 0（P 在 y = x 上時），此時「圓」退化成一點，仍落在正方形內，所以整條對角線都屬於 R，不要排除。</div>'
++ '<div class="as-ans">答：⑰-1 = 1，⑰-2 = 3，即區域 R 的面積為 1/3</div>'
++ '</div>';
+var GSAT113A_SOL_18 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到「某點在平面上的投影點」，先想的不是解方程組，而是<b>投影點一定在「過原點、沿法向量」的那條直線上</b>。平面 x − z = 4 的法向量直接讀係數就好：n→ = (1, 0, −1)。</div></div>'
++ '<div class="as-f">E: x − z = 4　⇒　n→ = (1, 0, −1)</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>所以投影點 Q 可以寫成 Q = O + t·n→ = (t, 0, −t)，只剩一個未知數 t。這比設 Q(x,y,z) 再解「在平面上 + OQ→ 垂直平面」兩個條件快很多。</div></div>'
++ '<div class="as-f">Q = (t, 0, −t)</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>把 Q 代進平面方程式，把 t 解出來。</div></div>'
++ '<div class="as-f">t − (−t) = 4　⇒　2t = 4　⇒　t = 2　⇒　Q(2, 0, −2)</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>再用內積公式算 OQ→ 與 (1,0,0) 的夾角餘弦。注意 (1,0,0) 是單位向量，分母只要算 |OQ→|。</div></div>'
++ '<div class="as-f">OQ→ = (2, 0, −2)，|OQ→| = √(2² + 0² + (−2)²) = √8 = 2√2</div>'
++ '<div class="as-f">OQ→ · (1,0,0) = 2</div>'
++ '<div class="as-f">cosα = 2 / (2√2 × 1) = 1/√2 = √2/2</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>快速檢查：cosα = √2/2 代表 α = 45°，而 OQ→ = (2,0,−2) 在 xz 平面上與 x 軸確實成 45°，合理。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：① 把法向量寫成 (1, 0, 1)——平面是 x − z = 4，z 的係數是 <b>−1</b> 不是 1，符號抄錯 cosα 不會變（因為只差正負 z），但在 19、20 題同樣的粗心會直接算錯。② 有人會誤以為「夾角是鈍角所以取負號」而選 (1)：α 是兩向量的夾角，內積 2 &gt; 0 就是銳角，cosα 必為正。③ 別去背什麼投影點公式，記住「投影點 = 原點 + t×法向量」這個做法就好，任何類似題都能用。</div>'
++ '<div class="as-ans">答：(4) √2/2</div>'
++ '</div>';
+
+var GSAT113A_SOL_19 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>先看題目要什麼：條件是「<b>角度</b>的不等式 θ ≤ π/6」，結論是「<b>坐標</b>的不等式 a² ≥ 3(b²+c²)」。角度和坐標之間唯一的橋樑就是<b>內積的夾角公式</b>——所以第一步一定是把 cosθ 用 a, b, c 寫出來。</div></div>'
++ '<div class="as-f">cosθ = (OP→ · (1,0,0)) / (|OP→| × |(1,0,0)|) = a / √(a² + b² + c²)</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>這一步是全題的關鍵，也是評分原則特別要求「說明」的地方：條件是 θ ≤ π/6，但我們手上握的是 cosθ，<b>不等式方向會不會翻過來？</b>兩向量夾角的範圍是 0 ≤ θ ≤ π，而 cos 在這個範圍上是<b>遞減</b>的。角度變小 → 餘弦變大，所以 θ ≤ π/6 要改寫成 cosθ ≥ cos(π/6)，<b>不等號方向要反過來</b>。</div></div>'
++ '<div class="as-f">θ ≤ π/6，cos 在 [0, π] 遞減　⇒　cosθ ≥ cos(π/6) = √3/2</div>'
++ '<div class="as-f">a / √(a² + b² + c²) ≥ √3/2</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>要去掉根號就得平方，但平方前<b>必須確定兩邊都非負</b>，否則平方會出錯。這裡右邊 √3/2 &gt; 0，而左邊 ≥ √3/2 也就跟著 &gt; 0（順帶得到 a &gt; 0，這個資訊第 20 題會用到），所以可以安心兩邊平方。分母是 |OP→|，P 不是原點時它恆正，交叉相乘也不會變號。</div></div>'
++ '<div class="as-f">2a ≥ √3 · √(a² + b² + c²)　（兩邊皆 &gt; 0）</div>'
++ '<div class="as-f">4a² ≥ 3(a² + b² + c²)</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>最後只是把含 a² 的項移到同一邊整理，就得到題目要的形式。</div></div>'
++ '<div class="as-f">4a² − 3a² ≥ 3(b² + c²)</div>'
++ '<div class="as-f">a² ≥ 3(b² + c²)　　得證</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>回頭理解這個結論的幾何意義：a² ≥ 3(b²+c²) 描述的是一個以 x 軸正向為中心軸、半頂角 30° 的<b>圓錐內部</b>。P 只要落在這個錐體裡，OP→ 和 x 軸的夾角就不會超過 30°。看懂這件事，第 20 題「在錐體與平面的交線上找離原點最近的點」就有畫面了。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<b>不等號方向</b>。看到 θ ≤ π/6 就順手寫 cosθ ≤ √3/2 是本題最常見的死法，後面全部連錯。務必寫出「因為 cos 在 [0, π] 上遞減」這句話——評分原則白紙黑字要求「根據題意知道 cosθ 於 0 ≤ θ ≤ π/2 間遞減」，寫了才拿得到這一段的分。另外，非選題<b>只寫算式沒有理由是會被扣分的</b>，「遞減所以反向」「兩邊為正才能平方」這兩句一定要寫進去。</div>'
++ '<div class="as-note"><b>自評指引（本題 4 分，建議配分）</b><br>'
++ '① 寫出 cosθ = a / √(a²+b²+c²)：<b>1 分</b>（有正確用內積夾角公式把角度轉成坐標）<br>'
++ '② 說明 cos 在 0 ≤ θ ≤ π（或 0 ≤ θ ≤ π/2）遞減，因此由 θ ≤ π/6 得 cosθ ≥ √3/2：<b>1 分</b>（<b>只寫結果沒寫遞減理由，這 1 分要扣掉</b>）<br>'
++ '③ 正確寫出 a / √(a²+b²+c²) ≥ √3/2 並平方整理成 4a² ≥ 3(a²+b²+c²)：<b>1 分</b><br>'
++ '④ 推得 a² ≥ 3(b²+c²)，過程完整無跳步：<b>1 分</b><br>'
++ '對照官方評分原則的一句話：「知道 cosθ 遞減、寫出 a/√(a²+b²+c²) ≥ √3/2、且過程推論正確、推得 a² ≥ 3(b²+c²)」——四個要素剛好對應上面四項。<b>不等號寫反者，②③④ 全部不給分</b>，因為後續推論已經不成立。</div>'
++ '<div class="as-ans">答：由 cosθ = a/√(a²+b²+c²) ≥ cos(π/6) = √3/2，平方得 4a² ≥ 3(a²+b²+c²)，故 a² ≥ 3(b²+c²)</div>'
++ '</div>';
+
+var GSAT113A_SOL_20 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>先把題目給的三個條件全部翻成式子，並且<b>用它們把未知數減到只剩一個</b>。這是所有「求範圍、求極值」題的第一步：<br>‧ P 在平面 E 上　⇒　a − c = 4　⇒　<b>a = c + 4</b><br>‧ b = 0<br>‧ 承第 19 題　⇒　a² ≥ 3(b² + c²)<br>三個一併使用後，全題就只剩 c 一個變數了。</div></div>'
++ '<div class="as-f">a = c + 4，b = 0</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>把 a = c+4、b = 0 代入第 19 題的不等式，解出 c 的範圍。這就是題目說的「c 的最大可能範圍」——意思是「c 所能取到的所有值形成的區間」。</div></div>'
++ '<div class="as-f">(c + 4)² ≥ 3(0² + c²) = 3c²</div>'
++ '<div class="as-f">c² + 8c + 16 ≥ 3c²　⇒　−2c² + 8c + 16 ≥ 0　⇒　c² − 4c − 8 ≤ 0</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>c² − 4c − 8 因式分解不掉，直接用公式解求兩根，再判斷不等式方向：二次項係數為正，開口向上，<b>「≤ 0」取的是兩根之間</b>。</div></div>'
++ '<div class="as-f">c = (4 ± √(16 + 32)) / 2 = (4 ± √48) / 2 = (4 ± 4√3) / 2 = 2 ± 2√3</div>'
++ '<div class="as-f">2 − 2√3 ≤ c ≤ 2 + 2√3　（約 −1.46 ≤ c ≤ 5.46）</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>接著求 OP 的最小值。把 OP 也寫成只含 c 的式子，然後<b>配方</b>——配方的目的不只是求最小值，更重要的是<b>看出這個二次式的對稱軸在哪、開口向上</b>，這樣才能判斷它在區間上是遞增還是遞減。</div></div>'
++ '<div class="as-f">OP = √(a² + b² + c²) = √((c + 4)² + c²) = √(2c² + 8c + 16)</div>'
++ '<div class="as-f">= √(2(c² + 4c + 8)) = √(2((c + 2)² + 4)) = √(2(c + 2)² + 8)</div>'
++ '<div class="as-step"><div class="as-n">5</div><div><b>★ 本題的核心觀念：受限極值一定要檢查頂點在不在範圍內。</b><br>配方後看起來「c = −2 時 OP 最小 = √8 = 2√2」，但是——<b>c = −2 根本不是合法的點</b>！因為第 3 步算出 c 只能落在 2 − 2√3 ≈ −1.46 以上，而 −2 &lt; −1.46，已經<b>掉出範圍外</b>了。<br>頂點不在範圍內時該怎麼辦？看單調性：OP 是開口向上的二次式開根號，對稱軸在 c = −2，所以<b>在 c &gt; −2 的區域它是遞增的</b>。我們的可行範圍 [2 − 2√3, 2 + 2√3] 整段都在 −2 的右邊，因此 OP 在整段上一路遞增，<b>最小值必定發生在最左端點 c = 2 − 2√3</b>。</div></div>'
++ '<div class="as-f">對稱軸 c = −2，但 −2 &lt; 2 − 2√3 ≈ −1.46　⇒　頂點不可用</div>'
++ '<div class="as-f">範圍整段位於對稱軸右側 ⇒ OP 遞增 ⇒ 最小值在左端點 c = 2 − 2√3</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>把 c = 2 − 2√3 代回去。此時 c + 2 = 4 − 2√3。</div></div>'
++ '<div class="as-f">(4 − 2√3)² = 16 − 16√3 + 12 = 28 − 16√3</div>'
++ '<div class="as-f">OP = √(2(28 − 16√3) + 8) = √(56 − 32√3 + 8) = √(64 − 32√3)</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>√(64 − 32√3) 是雙重根號，要化簡成最簡形式。訣竅：猜它等於 k(√3 − 1) 這種形式，反推驗證。因為 (√3 − 1)² = 4 − 2√3，而 64 − 32√3 = 16(4 − 2√3)，所以剛好是 16 × (√3 − 1)²。</div></div>'
++ '<div class="as-f">64 − 32√3 = 16(4 − 2√3) = 16(√3 − 1)²　　（因 (√3−1)² = 3 − 2√3 + 1 = 4 − 2√3）</div>'
++ '<div class="as-f">OP = √(16(√3 − 1)²) = 4(√3 − 1)　　（√3 − 1 &gt; 0，開根號取正）</div>'
++ '<div class="as-f">數值檢核：4(1.732 − 1) ≈ 2.93，而 √(64 − 32×1.732) = √8.57 ≈ 2.93　✓</div>'
++ '<div class="as-step"><div class="as-n">8</div><div><b>【官方另解，更快】</b>最小值發生在<b>端點</b>，而端點正是不等式 a² ≥ 3(b²+c²) 取<b>等號</b>的時候（端點就是從不等式解出來的邊界）。所以在那一點 a² = 3c²，可以直接代掉 a²：</div></div>'
++ '<div class="as-f">OP = √(a² + c²) = √(3c² + c²) = √(4c²) = 2|c|</div>'
++ '<div class="as-f">c = 2 − 2√3 &lt; 0 ⇒ |c| = 2√3 − 2 ⇒ OP = 2(2√3 − 2) = 4(√3 − 1)　✓ 與上面一致</div>'
++ '<div class="as-step"><div class="as-n">9</div><div>幾何上再確認一次：a² ≥ 3(b²+c²) 是一個半頂角 30° 的圓錐內部（第 19 題末已說明），而 b = 0 把場景壓回 xz 平面。所以我們其實是在「平面 x − z = 4 這條直線上、且落在錐體張角內的那一段」上找離原點最近的點。這一段的兩個端點就是直線與錐面的交點，最近點落在其中一端——這正好呼應「端點取等號」的代數結果。順帶檢查 a = c + 4 = 6 − 2√3 ≈ 2.54 &gt; 0，符合第 19 題推出的 a &gt; 0，答案合理。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分（這題丟分幾乎都在這一點）：<b>配方後直接寫「c = −2 時 OP 最小 = 2√2」</b>。配方求極值是高一就會的動作，手太順就忘了先問一句「這個 c 合法嗎？」<b>凡是題目先解出一個範圍、再要你求最值，就一定要檢查對稱軸（或臨界點）在不在範圍內</b>；不在的話，答案必在<b>端點</b>。而且評分原則明文要求「<b>說明</b>因 c = −2 不在範圍間」——這句話沒寫出來，就算最後數字對也會被扣分，因為閱卷老師看不出你是想清楚了還是矇到的。<br>次要陷阱：① 解 c² − 4c − 8 ≤ 0 時開口向上取「兩根之間」，寫成「兩根之外」就全錯；② √(64 − 32√3) 不化簡雖然官方也接受，但兩端點都要比較的話不化簡很難比大小；③ 別忘了 b = 0，若漏掉 b 這一項會多一個變數而解不出來。</div>'
++ '<div class="as-note"><b>自評指引（本題 8 分，建議配分）</b><br>'
++ '<b>第一部分：求 c 的範圍（4 分）</b><br>'
++ '① 由 P 在平面 E 上寫出 a − c = 4（即 a = c + 4），並帶入 b = 0：<b>1 分</b><br>'
++ '② 正確代入第 19 題不等式得 (c+4)² ≥ 3c²：<b>1 分</b><br>'
++ '③ 整理成 c² − 4c − 8 ≤ 0：<b>1 分</b><br>'
++ '④ 正確解得 2 − 2√3 ≤ c ≤ 2 + 2√3（開口向上取兩根之間）：<b>1 分</b><br>'
++ '<b>第二部分：求 OP 最小值（4 分）</b><br>'
++ '⑤ 寫出 OP = √((c+4)² + c²) 並配方成 √(2(c+2)² + 8)：<b>1 分</b><br>'
++ '⑥ <b>明確說明</b> c = −2 不在 c 的可能範圍內，所以不能取頂點：<b>1 分</b>（<b>這句沒寫就扣，是本題評分原則第 2 點的核心</b>）<br>'
++ '⑦ 判斷出最小值發生在端點 c = 2 − 2√3（有說明遞增或有比較兩端點）：<b>1 分</b><br>'
++ '⑧ 算出 OP = √(64 − 32√3) 或 4(√3 − 1)：<b>1 分</b>（兩種寫法官方皆接受，不化簡不扣分）<br>'
++ '對照官方評分原則兩點：第 1 點對應 ①～④，第 2 點對應 ⑤～⑧。<br>'
++ '<b>常見自評誤區</b>：如果你寫的是「c = −2，OP 最小 = 2√2」，第二部分 4 分只能拿 ⑤ 的 1 分，⑥⑦⑧ 全失——因為題目真正在考的就是這個檢查動作。如果你用了官方另解（端點取等號 ⇒ a² = 3c² ⇒ OP = 2|c|），⑤ 可以用「有正確判斷 OP 隨 c 的變化方向」替代計分，⑥⑦⑧ 照給。</div>'
++ '<div class="as-ans">答：c 的最大可能範圍為 2 − 2√3 ≤ c ≤ 2 + 2√3；OP 的最小可能長度為 √(64 − 32√3) = 4(√3 − 1)</div>'
++ '</div>';
+
+/* ── 114 學測數A ── */
+/* 114 學測數學A（20題）— 追加進 GSAT_PAPERS
+   題組配分：18題3分／19題6分／20題6分 */
+GSAT_PAPERS.push({
+  id:'114A', year:114, subj:'數A', title:'114 學測・數學A',
+  time:100, total:100, numKeys:true,
+  groups:[[18,19,20]],
+  figBase:'gsat/114a/',
+  items:[
+    {no:1,type:'single',ch:'排列組合與機率',grade:0,score:5,fig:'fig_q1.png',
+     q:'不透明袋中有藍、綠色球各若干顆，且球上皆有 1 或 2 的編號，其顆數如下表（例如標有 1 號的藍色球有 2 顆）。從此袋中隨機抽取一球（每顆球被抽到的機率相等），若已知抽到藍色球的事件與抽到 1 號球的事件互相獨立，試問 k 值為何？',
+     opts:['2','3','4','5','6'],ans:'E'},
+
+    {no:2,type:'single',ch:'直線與圓',grade:0,score:5,
+     q:'坐標平面上，P(a, 0) 為 x 軸上一點，其中 a ＞ 0。令 L₁、L₂ 為通過 P 點，斜率分別為 −4/3、−3/2 的直線。已知 L₁、L₂ 分別與兩坐標軸圍成的兩個直角三角形的面積差為 3，試問 a 值為何？',
+     opts:['3√2','6','6√2','9','8√2'],ans:'B'},
+
+    {no:3,type:'single',ch:'排列組合與機率',grade:0,score:5,
+     q:'某校舉辦音樂會，包含鋼琴表演 5 個、小提琴表演 4 個、歌唱表演 3 個等三類表演共 12 個不同曲目。該校想將同類表演排在一起，且歌唱必須排在鋼琴之後或是小提琴之後。試問這場音樂會可能的曲目排列方式共有幾種？',
+     opts:['5!×4!×3!','2×5!×4!×3!','3×5!×4!×3!','4×5!×4!×3!','6×5!×4!×3!'],ans:'D'},
+
+    {no:4,type:'single',ch:'指數與對數',grade:0,score:5,
+     q:'坐標平面上，x 坐標與 y 坐標均為整數的點稱為格子點。試問在函數圖形 y = log₂x、x 軸與直線 x = 61/2 所圍有界區域的內部（不含邊界）共有多少個格子點？',
+     opts:['88','89','90','91','92'],ans:'C'},
+
+    {no:5,type:'single',ch:'三角函數',grade:1,score:5,
+     q:'設 0 ≤ θ ≤ 2π。已知所有滿足 sin2θ ＞ sinθ 且 cos2θ ＞ cosθ 的 θ 可表為 aπ ＜ θ ＜ bπ，其中 a, b 為實數，試問 b − a 值為何？',
+     opts:['1/3','1/2','2/3','3/4','1'],ans:'A'},
+
+    {no:6,type:'single',ch:'空間向量',grade:1,score:5,
+     q:'坐標空間中有三個彼此互相垂直之向量 u→, v→, w→。已知 u→ − v→ = (2, −1, 0)，且 v→ − w→ = (−1, 2, 3)。試問由 u→, v→, w→ 所張出的平行六面體之體積為何？',
+     opts:['2√5','5√2','2√10','4√5','4√10'],ans:'C'},
+
+    {no:7,type:'multi',ch:'數列與級數',grade:0,score:5,
+     q:'已知數列 ⟨aₙ⟩ 滿足 3aₙ₊₁ = aₙ + n（對任意正整數 n 都成立）且 a₁ = 2。令數列 ⟨bₙ⟩ 滿足 bₙ = aₙ − n/2 + 3/4。試選出正確的選項。',
+     opts:['a₂ = 2','b₂ = 3/4','數列 ⟨bₙ⟩ 是公比為 2/3 的等比數列','對於任意正整數 n，3ⁿaₙ 皆為正整數','b₁₀ ＜ 10⁻⁴'],
+     ans:['B','D']},
+
+    {no:8,type:'multi',ch:'指數與對數',grade:0,score:5,
+     q:'考慮坐標平面上滿足方程式 2^(x²) ／ 8 = 4ˣ ／ 2^(y²) 的點 P(x, y)，試選出正確的選項。',
+     opts:['當 x = 3 時，滿足此方程式的解有相異 2 個','若點 (a, b) 滿足此方程式，則點 (−a, −b) 也滿足此方程式','所有可能的點 P(x, y) 構成的圖形為一個圓','點 P(x, y) 可能在直線 x + y = 4 上','對於所有可能的點 P(x, y)，其 x − y 的最大值為 1 + 2√2'],
+     ans:['C','E']},
+
+    {no:9,type:'multi',ch:'多項式函數',grade:0,score:5,
+     q:'設 b、c 為實數。已知二次方程式 x² + bx + c = 0 有實根，但二次方程式 x² + (b+2)x + c = 0 沒有實根。試選出正確的選項。',
+     opts:['c ＜ 0','b ＜ 0','x² + (b+1)x + c = 0 有實根','x² + (b+2)x − c = 0 有實根','x² + (b−2)x + c = 0 有實根'],
+     ans:['B','D','E']},
+
+    {no:10,type:'multi',ch:'三角函數',grade:1,score:5,
+     q:'令 Γ 為坐標平面上 y = sin πx 在 0 ≤ x ≤ 3 內之函數圖形。一水平直線 L : y = k 與 Γ 相交，其中三交點 P(x₁, k), Q(x₂, k), R(x₃, k) 滿足 x₁ ＜ x₂ ＜ 1 ＜ x₃。試選出正確的選項。',
+     opts:['k ＞ 0','L 與 Γ 恰有 3 個交點','x₁ + x₂ ＜ 1','若 2·PQ = QR，則 k = 1/2','L 與 Γ 所有交點的 x 坐標之和大於 5'],
+     ans:['A','D','E']},
+
+    {no:11,type:'multi',ch:'平面向量',grade:1,score:5,fig:'fig_q11.png',
+     q:'在 △ABC 中，AB = 6, AC = 5, BC = 4。令 AB 中點為 D，P 為 ∠ABC 之角平分線與 CD 之交點，如圖所示。試選出正確的選項。',
+     opts:['CP→ = (3/7)·CD→','AP→ = (3/7)·AB→ + (2/7)·AC→','cos∠BAC = 3/4','△ACP 面積為 (15/14)√7','AP→ · AC→ = 120/7'],
+     ans:['C','D','E']},
+
+    {no:12,type:'multi',ch:'數據分析',grade:0,score:5,
+     q:'某種合金由甲和乙兩種金屬組成，某生想知道其中金屬比例與合金的波長關係。他做實驗測量「甲占比為 x% 的合金所對應的波長 y（單位：奈米）」，並將得到的 20 筆數據 (xₖ, yₖ)，k = 1, …, 20，在 xy 平面上標出對應的點，其迴歸直線（最適直線）為 y = 21.3x − 40。為符合投稿規範，須將報告描述為「乙占比為 u% 的合金所對應的波長 v（單位：微米）」，他將數據 (xₖ, yₖ) 轉換為 (uₖ, vₖ)，得到在 uv 平面的迴歸直線為 v = au + b。已知 1 奈米 = 10⁻⁹ 公尺，1 微米 = 10⁻⁶ 公尺。試選出正確的選項。',
+     opts:['uₖ = 100 − xₖ，k = 1, …, 20','vₖ = 1000yₖ，k = 1, …, 20','u₁, …, u₂₀ 的標準差等於 x₁, …, x₂₀ 的標準差','b = 2.09','某生發現有另一筆數據 (u₂₁, v₂₁) 滿足 v₂₁ = au₂₁ + b；若將這 21 筆數據標出，則其迴歸直線仍為 v = au + b'],
+     ans:['A','C','D','E']},
+
+    {no:13,type:'fill',ch:'多項式函數',grade:0,score:5,
+     q:'已知實係數三次多項式 f(x) 除以 x + 6 得商式 q(x) 和餘式 3。若 q(x) 在 x = −6 有最大值 8，則 y = f(x) 圖形的對稱中心坐標為 ( ⑬-1⑬-2 , ⑬-3 )。（⑬-1 為正負號欄位）<br><span class="gsat-fillnote">作答格式：填坐標，例如 -6,3</span>',
+     ans:'-6,3',acc:['(-6,3)','−6,3','(−6, 3)','-6, 3']},
+
+    {no:14,type:'fill',ch:'空間中的平面與直線',grade:1,score:5,
+     q:'坐標空間中，已知點 A 的坐標為 (a, b, c)，其中 a, b, c 皆為小於 0 的實數，且知點 A 與三平面 E₁ : 4y + 3z = 2、E₂ : 3y + 4z = −5、E₃ : x + 2y + 2z = −2 的距離都是 6，則 a + b + c = ⑭-1⑭-2⑭-3。（⑭-1 為正負號欄位）<br><span class="gsat-fillnote">作答格式：含正負號的整數，例如 -11</span>',
+     ans:'-11',acc:['−11']},
+
+    {no:15,type:'fill',ch:'隨機變數',grade:2,score:5,
+     q:'假日市集有個攤位推出「試試手氣，定價 480 元的可愛玩偶最低只要 240 元」。規則為：顧客投擲一枚均勻硬幣至多 5 次，前 3 次連續擲得 3 個正面者則只能以 240 元購得一個玩偶，擲到第 4 次才累積得 3 個正面者則只能以 320 元購得一個，擲到第 5 次才累積得 3 個正面者則只能以 400 元購得一個；5 次投完仍未累積 3 個正面者則只能以 480 元購得一個。參與此遊戲的顧客購得一個玩偶所花金額的期望值為 ⑮-1⑮-2⑮-3 元。<br><span class="gsat-fillnote">作答格式：三位數，例如 405</span>',
+     ans:'405',acc:['405 元','405元']},
+
+    {no:16,type:'fill',ch:'直線與圓',grade:0,score:5,
+     q:'坐標平面上，設 L₁、L₂ 為通過點 (3, 1) 且斜率分別為 m、−m 的兩條直線，其中 m 為一實數。另設 Γ 為圓心在原點的一個圓。已知 Γ 與 L₁ 交於相異兩點 A、B，且知圓心到 L₁ 的距離為 1，又 Γ 與 L₂ 相切，則弦 AB 的長度為 ⑯-1⑯-2 ／ ⑯-3。（化為最簡分數）<br><span class="gsat-fillnote">作答格式：最簡分數，例如 24/5</span>',
+     ans:'24/5',acc:['24／5']},
+
+    {no:17,type:'fill',ch:'三角比',grade:0,score:5,
+     q:'△ABC 中，已知 AB = BC = 3，cos∠ABC = −1/8。在 △ABC 的外接圓上有一點 D 滿足 BD = 4，且 AD ≤ CD，則 CD = ⑰-1 + √⑰-2。（化為最簡根式）<br><span class="gsat-fillnote">作答格式：如 3+√2 請填 3+sqrt2 或 3+√2</span>',
+     ans:'3+√2',acc:['3+sqrt2','3 + √2','3+根號2']},
+
+    {no:18,type:'single',ch:'矩陣',grade:1,score:3,
+     stem:'已知 A（第一列 a₁, a₂；第二列 a₃, a₄）、B（第一列 b₁, b₂；第二列 b₃, b₄）皆為坐標平面上以原點 O 為中心、逆時針旋轉一銳角的旋轉矩陣，且滿足 A² = B³ =（第一列 0, c；第二列 1, d），其中 c, d 為實數。設點 P(1, 1) 經 A³ 變換後為點 Q，且點 Q 經 B⁴ 變換後為點 R。',
+     q:'試問 c 之值為何？（單選題，3 分）',
+     opts:['0','−1','1','−1/2','1/2'],ans:'B'},
+
+    {no:19,type:'open',ch:'矩陣',grade:1,score:6,
+     stem:'（承 18 題同一題組）A、B 皆為逆時針旋轉銳角的旋轉矩陣，A² = B³ =（第一列 0, c；第二列 1, d）；P(1,1) 經 A³ 變換為 Q，Q 經 B⁴ 變換為 R。',
+     q:'試求點 Q 的坐標，以及 OR→ 與向量 (1, 0) 的夾角。（非選擇題，6 分）',
+     ans:'Q 的坐標為 (−√2, 0)。\nOR→ 與 (1,0) 的夾角為 60°。\n（A 為旋轉 45°、B 為旋轉 30°；A³ 為旋轉 135°、B⁴ 為旋轉 120°，OR→ 方向角 = 45°+135°+120° = 300°。）'},
+
+    {no:20,type:'open',ch:'矩陣',grade:1,score:6,
+     stem:'（承 19 題同一題組）',
+     q:'設 L 為過點 P 且與直線 OQ 平行的直線，點 S 為 L 和直線 OR 的交點，試求 ∠OSP，並求點 S 的坐標。（非選擇題，6 分）',
+     ans:'∠OSP = 60°。\nS 的坐標為 (−√3/3, 1)。\n（直線 OR：y = −√3x；L 為過 (1,1) 的水平線 y = 1，兩者交點即 S。∠OSP 亦可由 L 平行 OQ 用同位角直接得 60°。）'}
+  ]
+});
+
+// 114 學測數A — 第 1~4 題 adv-sol 詳解
+// 變數前綴 GSAT114A_SOL_
+
+var GSAT114A_SOL_1 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「兩事件獨立」先寫下獨立的定義式。獨立不是「互斥」、也不是憑感覺，它只有一條算式：P(A∩B) = P(A)×P(B)。所以先把三個機率各自算出來。</div></div>' +
+'<div class="as-f">設 A =「抽到藍球」，B =「抽到 1 號球」<br>獨立 ⟺ P(A∩B) = P(A)·P(B)</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>把表格加總。總球數含未知數 k，四格分別是藍1號 2、綠1號 4、藍2號 3、綠2號 k。</div></div>' +
+'<div class="as-f">總球數 N = 2 + 4 + 3 + k = 9 + k<br>藍球 = 2 + 3 = 5　→　P(A) = 5/(9+k)<br>1號球 = 2 + 4 = 6　→　P(B) = 6/(9+k)<br>藍色且1號 = 2　→　P(A∩B) = 2/(9+k)</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>代入獨立式解 k。注意兩邊分母不同（左邊一次方、右邊平方），乘開後 (9+k) 可以約掉一個。</div></div>' +
+'<div class="as-f">2/(9+k) = [5/(9+k)]·[6/(9+k)] = 30/(9+k)²<br>兩邊同乘 (9+k)²：　2(9+k) = 30<br>9 + k = 15　→　k = 6</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>回頭驗算，確認真的獨立。這一步 30 秒就能做完，強烈建議在考場做。</div></div>' +
+'<div class="as-f">k = 6 時 N = 15<br>P(A) = 5/15 = 1/3，P(B) = 6/15 = 2/5<br>P(A)·P(B) = (1/3)(2/5) = 2/15<br>P(A∩B) = 2/15 ✓ 相等，確實獨立</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：把「獨立」錯當成「互斥」而去列 P(A∪B) = P(A)+P(B)，那會解出完全不同的 k。另一個常見錯誤是分母忘了含 k，直接把總數當成 9 或 12——k 也是袋中的球，一定要算進總球數。還有人只比對「藍:綠 = 1號:2號」的比例卻抓錯配對方向，穩妥做法就是老老實實代 P(A∩B) = P(A)·P(B)。</div>' +
+'<div class="as-ans">答：(5) k = 6</div>' +
+'</div>';
+
+var GSAT114A_SOL_2 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先想清楚「與兩坐標軸圍成的直角三角形」是什麼：兩股就是 x 截距與 y 截距的長度。兩條線都過 P(a, 0)，所以 x 截距都是 a（底邊共用），差別只在 y 截距——這題其實只要把兩個 y 截距算出來。</div></div>' +
+'<div class="as-f">過 P(a, 0) 斜率 m 的直線：y = m(x − a)<br>令 x = 0 得 y 截距 = −ma<br>兩股長 = |a| 與 |−ma| = |m|·|a|<br>面積 = ½ · |a| · |m|·|a| = ½ |m| a²　（因 a ＞ 0）</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>把兩個斜率分別代進去。斜率取絕對值即可，因為面積不看正負號。</div></div>' +
+'<div class="as-f">L₁：|m| = 4/3　→　面積 S₁ = ½ · (4/3) · a² = (2/3)a²<br>L₂：|m| = 3/2　→　面積 S₂ = ½ · (3/2) · a² = (3/4)a²</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>比大小再相減。3/4 ＞ 2/3，所以 S₂ 比較大，面積差 = S₂ − S₁。</div></div>' +
+'<div class="as-f">S₂ − S₁ = (3/4)a² − (2/3)a² = (9/12 − 8/12)a² = a²/12<br>依題意 a²/12 = 3　→　a² = 36<br>因 a ＞ 0，故 a = 6</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>驗算：把 a = 6 代回兩個面積。</div></div>' +
+'<div class="as-f">S₁ = (2/3)·36 = 24，S₂ = (3/4)·36 = 27<br>27 − 24 = 3 ✓ 與題目相符</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 斜率是負的，y 截距 −ma 也是負值，算面積時務必取絕對值，否則會得到「面積差 = 負數」而去解錯的方程式；(2) 兩個面積誰減誰要先比大小——如果寫成 S₁ − S₂ = 3 會得到 a² = −36 無解，這時不要慌著改題目，改成 S₂ − S₁ 即可；(3) 這題答案是整數 6，選項刻意放了 3√2、6√2、8√2 誘導你以為要開根號帶 √2，看到 a² = 36 就直接開出 6，不要自己多乘一個 √2。</div>' +
+'<div class="as-ans">答：(2) a = 6</div>' +
+'</div>';
+
+var GSAT114A_SOL_3 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「同類必須排在一起」，標準解法是<b>捆綁法</b>：把每一類先綁成一個大包裹，先排包裹（外部順序），再排包裹內部（內部順序），最後相乘。</div></div>' +
+'<div class="as-f">三個包裹：鋼 P（5 個曲目）、提 V（4 個）、唱 S（3 個）<br>內部排法 = 5! × 4! × 3!（固定不變）<br>總數 = （合法的包裹順序數）× 5! × 4! × 3!<br>所以整題只要數「包裹順序有幾種」</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>三個包裹全排列共 3! = 6 種。條件是「歌唱必須排在鋼琴之後<b>或</b>小提琴之後」——數學上的「或」是<b>至少一個成立</b>，不是二選一。所以只要 S 不是排在最前面（S 只要有任何一類在它前面），就合法。</div></div>' +
+'<div class="as-f">6 種順序逐一檢查（左為先演出）：<br>① P V S：S 在 P 後 ✓ 也在 V 後 ✓ → 合法<br>② P S V：S 在 P 後 ✓ → 合法<br>③ V P S：S 在 V 後 ✓ → 合法<br>④ V S P：S 在 V 後 ✓ → 合法<br>⑤ S P V：S 最前，兩者都不在它前面 ✗<br>⑥ S V P：S 最前 ✗</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>用「反面思考」再驗一次會更快：不合法只有「S 排第一」這一種情況。</div></div>' +
+'<div class="as-f">S 排第一的順序數 = 剩下 P、V 全排列 = 2! = 2<br>合法順序數 = 3! − 2! = 6 − 2 = 4 ✓ 與逐一檢查一致</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>合併答案。</div></div>' +
+'<div class="as-f">總排列數 = 4 × 5! × 4! × 3!</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：把「A 之後<b>或</b> B 之後」誤讀成「恰好只在其中一個之後」而漏掉 PVS 這種同時成立的情形，答成 3×5!×4!×3!（選項 (3) 就是這個陷阱）。另一個陷阱是把「或」看成「且」（S 必須同時在 P 和 V 之後），那只剩 PVS、VPS 兩種，答成 2×5!×4!×3!（選項 (2)）。記住集合語言：「或」＝聯集＝至少一個；「且」＝交集＝兩個都要。此外別忘了三個包裹的內部順序本來就固定寫成 5!·4!·3!，不要再多乘一次 3!。</div>' +
+'<div class="as-ans">答：(4) 4 × 5! × 4! × 3!</div>' +
+'</div>';
+
+var GSAT114A_SOL_4 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先把區域看清楚。y = log₂x 在 x = 1 時 y = 0，也就是曲線與 x 軸交在 (1, 0)。右邊界是鉛直線 x = 61/2 = 30.5。所以圍出的有界區域是「x 從 1 到 30.5、y 從 0 到 log₂x」這一塊。</div></div>' +
+'<div class="as-f">區域內部（嚴格不含邊界）的條件：<br>1 &lt; x &lt; 30.5　且　0 &lt; y &lt; log₂x</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>格子點的 x、y 都是整數，所以策略是<b>逐行（逐個整數 x）數 y</b>。x 可取的整數是 2 到 30。對每個 x，y 要滿足 1 ≤ y 且 y &lt; log₂x，個數就是「小於 log₂x 的最大正整數個數」。</div></div>' +
+'<div class="as-f">每個 x 的 y 個數 n(x)：<br>若 log₂x 不是整數 → n(x) = ⌊log₂x⌋<br>若 log₂x 是整數（x = 2, 4, 8, 16）→ 因不含邊界，n(x) = log₂x − 1</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>用 2 的冪次分段，同一段內 n(x) 相同，不必一個一個算對數。</div></div>' +
+'<div class="as-f">x = 2（log₂2 = 1，y &lt; 1 無正整數）：0 個<br>x = 3（log₂3 ≈ 1.58）：y = 1 → 1 個<br>x = 4（log₂4 = 2，y &lt; 2）：y = 1 → 1 個<br>x = 5, 6, 7（2 &lt; log₂x &lt; 3）：y = 1, 2 → 2 個 × 3 = 6<br>x = 8（log₂8 = 3，y &lt; 3）：y = 1, 2 → 2 個<br>x = 9 ~ 15（3 &lt; log₂x &lt; 4）：3 個 × 7 = 21<br>x = 16（log₂16 = 4，y &lt; 4）：y = 1, 2, 3 → 3 個<br>x = 17 ~ 30（4 &lt; log₂x &lt; 5，因 log₂30 ≈ 4.91）：4 個 × 14 = 56</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>全部加起來。</div></div>' +
+'<div class="as-f">0 + 1 + 1 + 6 + 2 + 21 + 3 + 56<br>= 2 + 6 + 2 + 21 + 3 + 56<br>= 90</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1)「內部、不含邊界」是本題全部的關鍵——x = 2, 4, 8, 16 這四個點上 log₂x 剛好是整數，若誤用 ≤ 會各多算 1 個，總數變成 94；y = 0（x 軸上）也在邊界上必須排除，很多人會多算一整排。(2) 右邊界寫成 61/2 而不是 30，就是要你注意 x 可以取到 30（30 &lt; 30.5），少算 x = 30 那一行會漏掉 4 個變成 86。(3) 別忘了 x = 2 這一行其實一個點都沒有（y 要 &lt; 1 又要 ≥ 1，不存在），習慣性寫成 1 個就會多算。(4) 上界要確認 log₂30 ≈ 4.91 &lt; 5，所以 x = 17~30 每行是 4 個不是 5 個。</div>' +
+'<div class="as-ans">答：(3) 90 個</div>' +
+'</div>';
+// 114 學測數A 第5-8題 adv-sol 詳解
+var GSAT114A_SOL_5 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到「二倍角 ＞ 一倍角」的不等式，第一件事是把它移項成 一邊為 0，再用二倍角公式因式分解成「兩個東西相乘 ＞ 0」。千萬不要想著直接解，因為兩個不等式要同時成立，一定要先各自化簡成可比較的區間。</div></div>'
++ '<div class="as-f">sin2θ − sinθ = 2sinθcosθ − sinθ = sinθ(2cosθ − 1) &gt; 0</div>'
++ '<div class="as-f">cos2θ − cosθ = (2cos²θ − 1) − cosθ = (2cosθ + 1)(cosθ − 1) &gt; 0</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>先解「比較好解」的那一條。cos 這條有個超好用的性質：cosθ ≤ 1，所以因式 (cosθ − 1) 永遠 ≤ 0。要讓兩因式相乘為正，只剩一種可能——兩個都是負的。</div></div>'
++ '<div class="as-f">cosθ − 1 &lt; 0 且 2cosθ + 1 &lt; 0　⟹　cosθ &lt; −½</div>'
++ '<div class="as-f">在 0 ≤ θ ≤ 2π 中：⅔π &lt; θ &lt; 4/3π</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>把這個範圍帶回 sin 那一條。在 ⅔π &lt; θ &lt; 4/3π 裡，cosθ 已經比 −½ 還小，所以 2cosθ − 1 &lt; −2 恆為負。既然一個因式恆負，要讓乘積為正，就必須 sinθ 也是負的。</div></div>'
++ '<div class="as-f">2cosθ − 1 &lt; 2(−½) − 1 = −2 &lt; 0（恆負）</div>'
++ '<div class="as-f">故需 sinθ &lt; 0　⟹　π &lt; θ &lt; 2π</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>兩個條件取交集，就是題目說的 aπ &lt; θ &lt; bπ。</div></div>'
++ '<div class="as-f">(⅔π , 4/3π) ∩ (π , 2π) = (π , 4/3π)</div>'
++ '<div class="as-f">a = 1、b = 4/3　⟹　b − a = 4/3 − 1 = ⅓</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>回頭抽檢一個點確認沒算錯。取 θ = 7π/6（在 π 與 4/3π 之間）：</div></div>'
++ '<div class="as-f">sin2θ = sin(7π/3) = √3/2 ＞ sinθ = −½　✓</div>'
++ '<div class="as-f">cos2θ = cos(7π/3) = ½ ＞ cosθ = −√3/2　✓</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：① cos2θ 有三種寫法，這題一定要選 2cos²θ − 1（全部換成 cos 才能和右邊的 cosθ 因式分解）；用 1 − 2sin²θ 會變成 sin、cos 混在一起，解不下去。② 分解出 (2cosθ+1)(cosθ−1) &gt; 0 後，習慣性地寫「兩式皆正 或 兩式皆負」——但「兩式皆正」需要 cosθ ＞ 1，根本不可能，這一支要直接刪掉，不是拿去算。③ 第二條的答案是 cosθ &lt; −½，不是 cosθ ＞ −½，畫單位圓確認方向。</div>'
++ '<div class="as-ans">答：(1)　b − a = ⅓</div>'
++ '</div>';
+
+var GSAT114A_SOL_6 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>先抓住「彼此互相垂直」這五個字帶來的兩個大禮物：<br>① 平行六面體變成長方體，體積直接就是三邊長相乘 V = |u→||v→||w→|，不必算三重積行列式。<br>② 內積全為 0，所以差向量的長度平方會乾淨地拆成畢氏定理。這題整題就靠這兩點。</div></div>'
++ '<div class="as-f">u→·v→ = v→·w→ = u→·w→ = 0</div>'
++ '<div class="as-f">|u→ − v→|² = |u→|² − 2(u→·v→) + |v→|² = |u→|² + |v→|²</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>三個未知數（三個長度平方）需要三條方程式，但題目只給兩個差向量。第三條要自己組：兩個已知的差相加，中間的 v→ 就消掉了。</div></div>'
++ '<div class="as-f">u→ − w→ = (u→ − v→) + (v→ − w→) = (2, −1, 0) + (−1, 2, 3) = (1, 1, 3)</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>三條差向量各取長度平方，得到三元一次聯立（把 |u→|²、|v→|²、|w→|² 當成三個未知數）。</div></div>'
++ '<div class="as-f">|u→|² + |v→|² = 2² + (−1)² + 0² = 5　……①</div>'
++ '<div class="as-f">|v→|² + |w→|² = (−1)² + 2² + 3² = 14　……②</div>'
++ '<div class="as-f">|u→|² + |w→|² = 1² + 1² + 3² = 11　……③</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>這種「兩兩相加」型的聯立，標準解法是三式全加再除以 2，一次得到總和，再各自扣掉。</div></div>'
++ '<div class="as-f">(① + ② + ③) ÷ 2：|u→|² + |v→|² + |w→|² = (5 + 14 + 11) ÷ 2 = 15</div>'
++ '<div class="as-f">|w→|² = 15 − ① = 15 − 5 = 10　⟹　|w→| = √10</div>'
++ '<div class="as-f">|u→|² = 15 − ② = 15 − 14 = 1　⟹　|u→| = 1</div>'
++ '<div class="as-f">|v→|² = 15 − ③ = 15 − 11 = 4　⟹　|v→| = 2</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>三邊長相乘即為長方體體積。</div></div>'
++ '<div class="as-f">V = |u→| × |v→| × |w→| = 1 × 2 × √10 = 2√10</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>驗算：把長度平方代回去檢查三條式子。</div></div>'
++ '<div class="as-f">1 + 4 = 5 ✓　4 + 10 = 14 ✓　1 + 10 = 11 ✓</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：① 看到「平行六面體體積」就反射去列 3×3 行列式——但這題三個向量的座標根本沒給、也不需要，「互相垂直」就是要你走長方體捷徑。② 只用題目給的兩條差向量硬解，會少一條方程式而卡住；一定要自己補出 u→ − w→ =（前兩者相加）。③ 求出的是長度「平方」，最後別忘了開根號再相乘，很多人算到 |w→|² = 10 就寫成體積 1×4×10。</div>'
++ '<div class="as-ans">答：(3)　體積 = 2√10</div>'
++ '</div>';
+
+var GSAT114A_SOL_7 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到「遞迴式 + 另外定義一個 bₙ = aₙ 減掉一次式」，這是課本標準劇本：出題者把 bₙ 設計成等比數列，好讓你求出 aₙ 的一般式。所以第一步就是把 bₙ₊₁ 用 bₙ 表示，驗證它真的是等比、公比是多少。先把遞迴式整理成 aₙ₊₁ 的樣子。</div></div>'
++ '<div class="as-f">3aₙ₊₁ = aₙ + n　⟹　aₙ₊₁ = (aₙ + n)/3</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>【選項(1)】直接代 n = 1 算 a₂。</div></div>'
++ '<div class="as-f">3a₂ = a₁ + 1 = 2 + 1 = 3　⟹　a₂ = 1 ≠ 2</div>'
++ '<div class="as-f">(1) 錯。陷阱：題目給 a₁ = 2，很多人誤以為代進去 a₂ 也會是 2，其實是 1。</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>【選項(2)】用剛算出的 a₂ = 1 代入 bₙ 的定義，n = 2。</div></div>'
++ '<div class="as-f">b₂ = a₂ − 2/2 + ¾ = 1 − 1 + ¾ = ¾</div>'
++ '<div class="as-f">(2) 對。</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>【選項(3)】這是本題核心。把 bₙ₊₁ 展開，代入 aₙ₊₁ = (aₙ + n)/3，看能不能整理回 bₙ 的形狀。</div></div>'
++ '<div class="as-f">bₙ₊₁ = aₙ₊₁ − (n+1)/2 + ¾ = (aₙ + n)/3 − (n+1)/2 + ¾</div>'
++ '<div class="as-f">= aₙ/3 + n/3 − n/2 − ½ + ¾ = aₙ/3 − n/6 + ¼</div>'
++ '<div class="as-f">= ⅓(aₙ − n/2 + ¾) = ⅓ bₙ</div>'
++ '<div class="as-f">公比是 ⅓，不是 ⅔ ⟹ (3) 錯。</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>順手把首項與一般式寫出來（後面 (4)(5) 都要用）。</div></div>'
++ '<div class="as-f">b₁ = a₁ − ½ + ¾ = 2 + ¼ = 9/4</div>'
++ '<div class="as-f">bₙ = (9/4)·(⅓)ⁿ⁻¹ = (27/4)·(⅓)ⁿ</div>'
++ '<div class="as-f">驗證 b₂ = (9/4)(⅓) = ¾ ✓ 與第 3 步一致</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>【選項(4)】由 bₙ 反推 aₙ，再乘上 3ⁿ 看是不是正整數。關鍵是要同時檢查「是整數」和「是正的」兩件事。</div></div>'
++ '<div class="as-f">aₙ = bₙ + n/2 − ¾ = (27/4)·3⁻ⁿ + n/2 − ¾</div>'
++ '<div class="as-f">3ⁿaₙ = 27/4 + 3ⁿ(n/2 − ¾) = [27 + 3ⁿ(2n − 3)] / 4</div>'
++ '<div class="as-f">是整數？看 27 + 3ⁿ(2n−3) 除以 4 的餘數：<br>n 為奇數時 3ⁿ ≡ 3、2n−3 ≡ 3 (mod 4) ⟹ 27 + 3·3 ≡ 3 + 1 = 4 ≡ 0<br>n 為偶數時 3ⁿ ≡ 1、2n−3 ≡ 1 (mod 4) ⟹ 27 + 1·1 ≡ 3 + 1 = 4 ≡ 0</div>'
++ '<div class="as-f">是正的？n = 1 時 27 + 3(−1) = 24 &gt; 0；n ≥ 2 時 2n − 3 ≥ 1 使整串恆正</div>'
++ '<div class="as-f">實際驗算：n=1→24/4=6、n=2→(27+9)/4=9、n=3→(27+81)/4=27、n=4→(27+405)/4=108，全為正整數</div>'
++ '<div class="as-f">(4) 對。</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>【選項(5)】把 n = 10 代入 bₙ，跟 10⁻⁴ 比大小。不要用估的，直接算成分數再化成小數。</div></div>'
++ '<div class="as-f">b₁₀ = (9/4)·(⅓)⁹ = 9 / (4 × 19683) = 9 / 78732 = 1/8748</div>'
++ '<div class="as-f">1/8748 ≈ 0.00011431 = 1.1431 × 10⁻⁴</div>'
++ '<div class="as-f">1.1431 × 10⁻⁴ ＞ 1 × 10⁻⁴ ⟹ (5) 錯（差一點點，方向相反）</div>'
++ '<div class="as-f">快速判法：b₁₀ &lt; 10⁻⁴ ⟺ 8748 ＞ 10000，但 8748 &lt; 10000，所以不成立</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：① (3) 是最毒的誘答——3aₙ₊₁ = aₙ + n 裡面看到 3，很多人直覺公比是 ⅔ 或 3，一定要老老實實推 bₙ₊₁ = ⅓bₙ。② (5) 只差一點點（1.14 × 10⁻⁴ vs 1 × 10⁻⁴），用「(⅓)⁹ 很小所以一定小於 10⁻⁴」這種感覺去猜必錯，要算到 1/8748 這個確切值，並記住比較分數大小時分母越大值越小。③ (4) 只驗 n = 1、2 就打勾很危險，要用 mod 4 說明對所有 n 都成立；而且「正整數」要正、要整數兩個都查。</div>'
++ '<div class="as-ans">答：(2)(4)</div>'
++ '</div>';
+
+var GSAT114A_SOL_8 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到等號兩邊都是 2 或 4 或 8 的次方，第一步一定是「全部化成同底 2」，再用指數律把分母搬上來。因為底數 2 ＞ 1 是一對一函數，兩邊底數相同時可以直接把指數畫上等號——這就是把指對數題變成代數題的鑰匙。</div></div>'
++ '<div class="as-f">左式 = 2^(x²) / 8 = 2^(x²) / 2³ = 2^(x² − 3)</div>'
++ '<div class="as-f">右式 = 4ˣ / 2^(y²) = 2^(2x) / 2^(y²) = 2^(2x − y²)</div>'
++ '<div class="as-f">底數相同 ⟹ x² − 3 = 2x − y²</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>整理並對 x 配方，看出圖形的真面目。</div></div>'
++ '<div class="as-f">x² − 2x + y² = 3　⟹　(x² − 2x + 1) + y² = 3 + 1</div>'
++ '<div class="as-f">(x − 1)² + y² = 4　⟹　圓心 (1, 0)、半徑 r = 2 的圓</div>'
++ '<svg viewBox="0 0 360 280" width="100%" style="max-width:400px;display:block;margin:8px auto">'
++ '<line x1="20" y1="150" x2="345" y2="150" stroke="var(--ink3)" stroke-width="1"/>'
++ '<line x1="110" y1="12" x2="110" y2="272" stroke="var(--ink3)" stroke-width="1"/>'
++ '<text x="336" y="166" font-size="12" fill="var(--ink3)">x</text>'
++ '<text x="94" y="22" font-size="12" fill="var(--ink3)">y</text>'
++ '<circle cx="140" cy="150" r="60" fill="none" stroke="var(--accent)" stroke-width="2"/>'
++ '<circle cx="140" cy="150" r="3" fill="var(--accent)"/>'
++ '<text x="146" y="144" font-size="12" fill="var(--accent)">(1, 0)</text>'
++ '<text x="150" y="196" font-size="12" fill="var(--accent)">r = 2</text>'
++ '<line x1="140" y1="150" x2="140" y2="210" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3,3"/>'
++ '<line x1="110" y1="30" x2="260" y2="180" stroke="var(--red)" stroke-width="2"/>'
++ '<text x="236" y="46" font-size="12" fill="var(--red)">x + y = 4</text>'
++ '<line x1="122" y1="252" x2="242" y2="132" stroke="var(--green)" stroke-width="2"/>'
++ '<circle cx="182" cy="192" r="3.5" fill="var(--green)"/>'
++ '<text x="248" y="132" font-size="12" fill="var(--green)">x − y = 1 + 2√2</text>'
++ '<circle cx="200" cy="150" r="3" fill="var(--gold)"/>'
++ '<text x="192" y="142" font-size="12" fill="var(--gold)">(3, 0)</text>'
++ '</svg>'
++ '<div class="as-note">圖：整理後的圖形是圓心 (1, 0)、半徑 2 的圓。紅線 x + y = 4 完全在圓外（與圓沒有交點），綠線 x − y = 1 + 2√2 恰好與圓相切（綠點為切點），黃點 (3, 0) 是圓上 x = 3 的唯一一點。這張圖同時把 (1)(4)(5) 三個選項的答案都畫出來了。</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>【選項(1)】x = 3 代入圓方程式，看 y 有幾個解。</div></div>'
++ '<div class="as-f">(3 − 1)² + y² = 4　⟹　4 + y² = 4　⟹　y² = 0　⟹　y = 0（重根，只有 1 個）</div>'
++ '<div class="as-f">(1) 錯。x = 3 正好是圓最右端的切點，只有 1 組解不是 2 組。</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>【選項(2)】「(a,b) 在圖形上 ⟹ (−a,−b) 也在」等於是說圖形對「原點」對稱。但這個圓的圓心在 (1, 0) 不是原點，所以不會對稱。找一個具體反例最快。</div></div>'
++ '<div class="as-f">取 (a, b) = (3, 0)：(3−1)² + 0² = 4 ✓ 在圓上</div>'
++ '<div class="as-f">則 (−a, −b) = (−3, 0)：(−3−1)² + 0² = 16 ≠ 4 ✗ 不在圓上</div>'
++ '<div class="as-f">(2) 錯。此圓只對 x 軸對稱（y 換成 −y 不變），對原點不對稱。</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>【選項(3)】第 2 步已經配方完成，(x−1)² + y² = 4 右邊是正數 4，確實是一個真正的圓（不是一點也不是空集合）。</div></div>'
++ '<div class="as-f">(x − 1)² + y² = 2² ⟹ 圓心 (1,0)、半徑 2 的圓　(3) 對。</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>【選項(4)】問直線與圓有沒有交點，標準做法是比較「圓心到直線的距離」與「半徑」。</div></div>'
++ '<div class="as-f">直線 x + y − 4 = 0，圓心 (1, 0)：d = |1 + 0 − 4| / √(1² + 1²) = 3/√2 = 3√2/2</div>'
++ '<div class="as-f">3√2/2 ≈ 2.121 ＞ r = 2　⟹　直線與圓不相交</div>'
++ '<div class="as-f">(4) 錯。圓上找不到任何點落在 x + y = 4 上（見上圖紅線）。</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>【選項(5)】求 x − y 的最大值：把 x − y = k 看成一族斜率固定的平行線，k 最大就是這條線「往右下推到剛好與圓相切」的時候。條件仍然是圓心到直線的距離 = 半徑。</div></div>'
++ '<div class="as-f">設 x − y = k，即 x − y − k = 0，與圓有交點 ⟺ d ≤ r</div>'
++ '<div class="as-f">d = |1 − 0 − k| / √(1² + (−1)²) = |1 − k| / √2 ≤ 2</div>'
++ '<div class="as-f">|1 − k| ≤ 2√2　⟹　1 − 2√2 ≤ k ≤ 1 + 2√2</div>'
++ '<div class="as-f">最大值 k = 1 + 2√2　(5) 對。</div>'
++ '<div class="as-f">（另解：圓的參數式 x = 1 + 2cosθ、y = 2sinθ，x − y = 1 + 2cosθ − 2sinθ = 1 + 2√2·cos(θ + ¼π)，最大值 1 + 2√2，同樣答案）</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：① 化簡時 8 = 2³ 在分母，指數要用「減 3」不是「加 3」；4ˣ = 2^(2x) 也常被寫成 2^(x²)。指數一動全盤皆錯。② (1) 的 x = 3 是切點（y² = 0 是重根），答案是 1 個不是 2 個——只要看到 y² = 0 就要警覺。③ (2) 要分清楚「對 x 軸對稱」和「對原點對稱」：這個圓因為圓心不在原點，只有前者。舉一個具體反例遠比講理由保險。④ (4)(5) 都是「點到直線距離 vs 半徑」的同一招，(4) 問有沒有交點（比大小），(5) 問極值（取相切的臨界值），不要把 (5) 的最大值誤寫成切點座標。</div>'
++ '<div class="as-ans">答：(3)(5)</div>'
++ '</div>';
+// 114 學測 數A — Q9～Q12 adv-sol 詳解（全為多選題）
+// 變數前綴 GSAT114A_SOL_
+
+var GSAT114A_SOL_9 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到「有實根／沒有實根」，第一件事就是把兩句話翻成判別式的不等式。這題五個選項全部都是同一招：把選項的判別式跟已知的兩個不等式比大小。</div></div>'
++ '<div class="as-f">x² + bx + c = 0 有實根 → b² − 4c ≥ 0<br>x² + (b+2)x + c = 0 沒有實根 → (b+2)² − 4c &lt; 0</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>把兩式串起來，夾出 b 與 c 的範圍。這一步是整題的鑰匙。</div></div>'
++ '<div class="as-f">(b+2)² &lt; 4c ≤ b²<br>→ (b+2)² &lt; b²<br>→ b² + 4b + 4 &lt; b²　→　4b &lt; −4　→　<b>b &lt; −1</b></div>'
++ '<div class="as-step"><div class="as-n">3</div><div>同一串式子也順便夾出 c：因為 4c 比一個平方數還大。</div></div>'
++ '<div class="as-f">4c &gt; (b+2)² ≥ 0　→　<b>c &gt; 0</b></div>'
++ '<div class="as-step"><div class="as-n">4</div><div>(1) c &lt; 0：第 3 步已經證明 c &gt; 0，直接矛盾。<b>錯</b>。</div></div>'
++ '<div class="as-f">c &gt; 0 恆成立，故 c &lt; 0 不可能</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>(2) b &lt; 0：第 2 步得 b &lt; −1，比 0 還小。<b>對</b>。</div></div>'
++ '<div class="as-f">b &lt; −1 &lt; 0　✓</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>(3) x² + (b+1)x + c = 0 有實根？需要 (b+1)² ≥ 4c。b+1 剛好夾在 b 與 b+2 中間，但 4c 也夾在中間，兩者誰大誰小<b>不一定</b>——找一組反例即可。</div></div>'
++ '<div class="as-f">取 b = −3、c = 2：<br>b² − 4c = 9 − 8 = 1 ≥ 0　✓（原式有實根）<br>(b+2)² − 4c = 1 − 8 = −7 &lt; 0　✓（第二式無實根）<br>但 (b+1)² − 4c = (−2)² − 8 = 4 − 8 = −4 &lt; 0　→ 無實根<br>故 (3) <b>錯</b></div>'
++ '<div class="as-step"><div class="as-n">7</div><div>(4) x² + (b+2)x − c = 0 有實根？注意常數項變成 <b>−c</b>，判別式的 −4c 會翻成 +4c，而我們已知 c &gt; 0，所以判別式必為正。<b>對</b>。</div></div>'
++ '<div class="as-f">判別式 = (b+2)² − 4·(−c) = (b+2)² + 4c<br>(b+2)² ≥ 0 且 4c &gt; 0　→　判別式 &gt; 0　→ 必有實根　✓</div>'
++ '<div class="as-step"><div class="as-n">8</div><div>(5) x² + (b−2)x + c = 0 有實根？一次項係數往<b>負的方向</b>走，而 b 本來就是負的，平方只會變更大，所以判別式一定夠大。<b>對</b>。</div></div>'
++ '<div class="as-f">(b−2)² − b² = −4b + 4 = 4(1 − b)<br>因 b &lt; −1 &lt; 1，故 4(1 − b) &gt; 0　→　(b−2)² &gt; b² ≥ 4c<br>→ (b−2)² − 4c &gt; 0　→ 有實根　✓</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>① 「有實根」是 <b>≥ 0</b>（含重根），「沒有實根」是 <b>&lt; 0</b>，兩個等號位置不能寫反，否則第 2 步夾不出 b &lt; −1。<br>② (4) 的常數項是 <b>−c</b> 不是 c，很多人照抄成 (b+2)² − 4c 就誤判成「無實根」而漏勾。判別式看到「減負數」要警覺。<br>③ (3) 直覺會以為「b+1 介於 b 和 b+2 之間，所以判別式也介於中間、應該還有實根」——這是錯的直覺，(b+1)² 未必大於 4c，一定要動手找反例。</div>'
++ '<div class="as-ans">答：(2)(4)(5)</div>'
++ '</div>';
+
+var GSAT114A_SOL_10 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>先把 y = sin πx 在 0 ≤ x ≤ 3 的長相畫出來。<b>週期 = 2π ÷ π = 2</b>，所以 0～3 剛好是一個半週期組：[0,1] 一個正的山峰、[1,2] 一個負的山谷、[2,3] 又一個正的山峰。所有交點都靠這張圖判斷。</div></div>'
++ '<svg viewBox="0 0 420 190" style="width:100%;max-width:460px;height:auto">'
++ '<line x1="30" y1="90" x2="395" y2="90" stroke="var(--ink3)" stroke-width="1"/>'
++ '<line x1="40" y1="10" x2="40" y2="175" stroke="var(--ink3)" stroke-width="1"/>'
++ '<polyline fill="none" stroke="var(--accent)" stroke-width="2" points="40,90 54.2,63.2 68.3,40.5 82.5,25.3 96.7,20 110.8,25.3 125,40.5 139.2,63.2 153.3,90 167.5,116.8 181.7,139.5 195.8,154.7 210,160 224.2,154.7 238.3,139.5 252.5,116.8 266.7,90 280.8,63.2 295,40.5 309.2,25.3 323.3,20 337.5,25.3 351.7,40.5 365.8,63.2 380,90"/>'
++ '<line x1="30" y1="55" x2="395" y2="55" stroke="var(--red)" stroke-width="1.6" stroke-dasharray="5,3"/>'
++ '<text x="398" y="59" font-size="11" fill="var(--red)">y=k</text>'
++ '<circle cx="58.9" cy="55" r="3.5" fill="var(--green)"/><text x="52" y="46" font-size="11" fill="var(--green)">P</text>'
++ '<circle cx="134.4" cy="55" r="3.5" fill="var(--green)"/><text x="130" y="46" font-size="11" fill="var(--green)">Q</text>'
++ '<circle cx="285.6" cy="55" r="3.5" fill="var(--green)"/><text x="280" y="46" font-size="11" fill="var(--green)">R</text>'
++ '<circle cx="361.1" cy="55" r="3.5" fill="var(--gold)"/><text x="356" y="46" font-size="11" fill="var(--gold)">第4點</text>'
++ '<text x="150" y="103" font-size="11" fill="var(--ink3)">1</text>'
++ '<text x="263" y="103" font-size="11" fill="var(--ink3)">2</text>'
++ '<text x="377" y="103" font-size="11" fill="var(--ink3)">3</text>'
++ '<text x="24" y="24" font-size="11" fill="var(--ink3)">1</text>'
++ '<text x="20" y="164" font-size="11" fill="var(--ink3)">−1</text>'
++ '</svg>'
++ '<div class="as-note">圖中畫的是 k = ½ 的情形。題目說有兩個交點 P、Q 的 x 坐標都小於 1，代表水平線必須切進 [0,1] 這座<b>正的</b>山峰，所以 0 &lt; k &lt; 1；此時 [2,3] 那座一模一樣的山峰也一定被切出兩點，所以交點總共是 <b>4 個</b>，不是 3 個。</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>把四個交點的 x 坐標用一個參數表示出來，後面三個選項全靠它。設 [0,1] 上較小的交點為 x₁ = t，其中 sin πt = k、0 &lt; t &lt; ½。</div></div>'
++ '<div class="as-f">[0,1] 山峰對稱軸 x = ½　→　x₁ = t，x₂ = 1 − t<br>[2,3] 山峰對稱軸 x = 5/2，且 sin π(2+t) = sin πt = k<br>→ x₃ = 2 + t，第四點 x₄ = 3 − t</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>(1) k &gt; 0：P、Q 兩點都落在 x &lt; 1 的那段圖形上，而 y = sin πx 在 0 &lt; x &lt; 1 全部是正值；又要「兩個」交點就不能是頂點 k = 1。<b>對</b>。</div></div>'
++ '<div class="as-f">0 &lt; x &lt; 1 時 sin πx &gt; 0　→　k = sin πx₁ &gt; 0<br>（且 k &lt; 1，否則只交於 x = ½ 一點，湊不出 x₁ &lt; x₂）</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>(2) 恰有 3 個交點：由第 2 步，[0,1] 兩點、[2,3] 兩點，[1,2] 因為 y ≤ 0 而 k &gt; 0 所以無交點，合計 4 個。<b>錯</b>。</div></div>'
++ '<div class="as-f">交點 = {t, 1−t, 2+t, 3−t}，共 <b>4</b> 個（例如 k = ½ 時為 1/6, 5/6, 13/6, 17/6）</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>(3) x₁ + x₂ &lt; 1：x₁、x₂ 對稱於山峰的對稱軸 x = ½，兩數之和<b>剛好等於 1</b>，不是小於 1。<b>錯</b>。</div></div>'
++ '<div class="as-f">x₁ + x₂ = t + (1 − t) = 1，恆等於 1，不小於 1</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>(4) 若 2·PQ = QR 則 k = ½：三點同高，所以 PQ、QR 就是 x 坐標的差，直接列方程解 t。</div></div>'
++ '<div class="as-f">PQ = x₂ − x₁ = (1 − t) − t = 1 − 2t<br>QR = x₃ − x₂ = (2 + t) − (1 − t) = 1 + 2t<br>2(1 − 2t) = 1 + 2t　→　2 − 4t = 1 + 2t　→　6t = 1　→　t = 1/6<br>k = sin(π/6) = <b>½</b>　✓ <b>對</b></div>'
++ '<div class="as-step"><div class="as-n">7</div><div>(5) 所有交點 x 坐標之和大於 5：把四個交點加起來，t 會全部消掉，是個定值。</div></div>'
++ '<div class="as-f">t + (1 − t) + (2 + t) + (3 − t) = <b>6</b><br>6 &gt; 5　✓ <b>對</b>（而且與 k 無關，恆為 6）</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>① 題目只說「其中三交點滿足 x₁ &lt; x₂ &lt; 1 &lt; x₃」，<b>沒有說只有三個交點</b>——這正是 (2) 的陷阱。只要 0 &lt; k &lt; 1，[2,3] 的山峰一定也被切成兩點。<br>② (5) 若誤以為只有 3 個交點，會算成 t + (1−t) + (2+t) = 3 + t &lt; 3.5，就會判成「錯」。交點的<b>個數先數對</b>再求和。<br>③ (3) 是典型「差一點」陷阱：答案是恰好等於 1，不是小於 1。看到對稱圖形要先想對稱軸。<br>④ 週期別算錯：y = sin πx 的週期是 2 不是 2π，畫成 2π 整張圖就全錯。</div>'
++ '<div class="as-ans">答：(1)(4)(5)</div>'
++ '</div>';
+
+var GSAT114A_SOL_11 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到「兩條線的交點」＋「用 AB→、AC→ 表示」，標準做法是<b>以 A 為原點設向量</b>：令 AB→ = b→、AC→ = c→，把 P 同時寫成「B 的角平分線上的點」與「線段 CD 上的點」，再比對係數。這一招做完，(1)(2)(4)(5) 全部一次解決。</div></div>'
++ '<div class="as-f">AB→ = b→（|b→| = 6），AC→ = c→（|c→| = 5），BC = 4<br>D 為 AB 中點　→　AD→ = ½ b→</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>先寫 ∠ABC 角平分線的方向。角平分線的方向 = <b>兩邊的單位向量相加</b>（菱形對角線原理）。</div></div>'
++ '<div class="as-f">從 B 出發的兩邊：BA→ = −b→（長 6）、BC→ = c→ − b→（長 4）<br>方向 d→ = (−b→)/6 + (c→ − b→)/4 = −(5/12) b→ + ¼ c→<br>角平分線上的點：AP→ = b→ + s·d→ = (1 − 5s/12) b→ + (s/4) c→</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>再寫線段 CD 上的點，用參數 r 表示（r 就是 CP→ 佔 CD→ 的比例，(1) 直接看它）。</div></div>'
++ '<div class="as-f">AP→ = AC→ + r·CD→ = c→ + r(½ b→ − c→) = (r/2) b→ + (1 − r) c→</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>b→、c→ 不平行，兩種寫法的係數必須一一相等，解聯立。</div></div>'
++ '<div class="as-f">b→ 的係數：1 − 5s/12 = r/2<br>c→ 的係數：s/4 = 1 − r　→　r = 1 − s/4<br>代入：1 − 5s/12 = ½ − s/8　→　½ = 5s/12 − s/8 = 7s/24<br>→ s = 12/7，<b>r = 1 − 3/7 = 4/7</b><br>→ AP→ = (2/7) b→ + (3/7) c→</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>(1) CP→ = (3/7) CD→：由第 4 步 r = 4/7。<b>錯</b>（正確是 4/7）。</div></div>'
++ '<div class="as-f">CP→ = r·CD→ = <b>(4/7) CD→</b> ≠ (3/7) CD→<br>（順帶得 P 分 CD 為 CP : PD = 4 : 3）</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>(2) AP→ = (3/7) AB→ + (2/7) AC→：係數<b>寫反了</b>。<b>錯</b>。</div></div>'
++ '<div class="as-f">正解 AP→ = <b>(2/7) AB→ + (3/7) AC→</b>，兩係數位置相反</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>(3) cos∠BAC：∠BAC 的對邊是 BC = 4，三邊都知道，直接餘弦定理。</div></div>'
++ '<div class="as-f">cos∠BAC = (AB² + AC² − BC²) / (2·AB·AC)<br>= (36 + 25 − 16) / (2·6·5) = 45/60 = <b>¾</b>　✓ <b>對</b><br>→ sin∠BAC = √(1 − 9/16) = √7/4</div>'
++ '<div class="as-step"><div class="as-n">8</div><div>(4) △ACP 面積：不必再算高。△ACP 與 △ACB 同以 AC 為底，AP→ 中<b>只有 b→ 的分量</b>會貢獻高度，所以面積比就是 b→ 的係數 2/7。</div></div>'
++ '<div class="as-f">△ABC 面積 = ½·6·5·(√7/4) = 15√7/4<br>AP→ = (2/7) b→ + (3/7) c→，(3/7)c→ 與 AC→ 同向不貢獻高<br>[ACP] = (2/7)·[ACB] = (2/7)·(15√7/4) = 30√7/28 = <b>(15/14)√7</b>　✓ <b>對</b></div>'
++ '<div class="as-step"><div class="as-n">9</div><div>(5) AP→ · AC→：把第 4 步的結果直接內積展開，需要 b→·c→ 與 |c→|²。</div></div>'
++ '<div class="as-f">b→ · c→ = |b→||c→| cos∠BAC = 6·5·¾ = 45/2，|c→|² = 25<br>AP→ · AC→ = ((2/7) b→ + (3/7) c→) · c→<br>= (2/7)(45/2) + (3/7)(25) = 45/7 + 75/7 = <b>120/7</b>　✓ <b>對</b></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>① 角平分線方向要用<b>單位向量</b>相加，直接寫 (−b→) + (c→ − b→) 是錯的（那是兩邊等長才成立），這題 6 ≠ 4 一定要先除以邊長。<br>② (1)(2) 是同一組數字 2/7、3/7、4/7 的<b>洗牌陷阱</b>：CP→ 對 CD→ 是 4/7，AP→ 對 AB→ 是 2/7、對 AC→ 是 3/7。算出一組就急著勾，很容易對錯位置。<br>③ (4) 別傻傻去求 P 的坐標再算面積，用「面積比 = 另一邊向量的係數」三行就結束。<br>④ 內積要用 cos∠BAC = ¾，不要拿 sin 進去乘。</div>'
++ '<div class="as-ans">答：(3)(4)(5)</div>'
++ '</div>';
+
+var GSAT114A_SOL_12 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>這題考的是<b>迴歸直線在變數做線性變換後會怎麼變</b>。策略很固定：先把 u 與 x、v 與 y 的關係式寫清楚，再把舊迴歸式整個「換裝」成新變數，不要重新去算 Sᵤᵥ。</div></div>'
++ '<div class="as-f">原迴歸直線：y = 21.3x − 40<br>目標：v = au + b</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>(1) uₖ = 100 − xₖ：合金<b>只由甲和乙兩種金屬組成</b>，兩者占比加起來就是 100%。<b>對</b>。</div></div>'
++ '<div class="as-f">甲占比 x% + 乙占比 u% = 100%　→　u = 100 − x　✓</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>(2) vₖ = 1000yₖ：單位從奈米換成微米。1 微米 = 10⁻⁶ 公尺、1 奈米 = 10⁻⁹ 公尺，所以 <b>1 微米 = 1000 奈米</b>。微米是<b>比較大</b>的單位，同一段長度換成微米後數字要<b>變小</b>。<b>錯</b>。</div></div>'
++ '<div class="as-f">1 微米 = 10⁻⁶ ÷ 10⁻⁹ = 1000 奈米<br>y 奈米 = (y/1000) 微米　→　<b>v = y/1000</b>，不是 1000y<br>（檢查：500 奈米 = 0.5 微米，數字確實變小）</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>(3) u 的標準差 = x 的標準差：u = 100 − x 是「平移 + 變號」。標準差量的是<b>資料的離散程度</b>，平移不影響、變號也不影響（差了絕對值 1 倍）。<b>對</b>。</div></div>'
++ '<div class="as-f">若 u = px + q，則 σᵤ = |p|·σₓ<br>此處 p = −1、q = 100　→　σᵤ = |−1|·σₓ = <b>σₓ</b>　✓<br>（但平均數會變：ū = 100 − x̄）</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>(4) b = 2.09：把 x = 100 − u 代回舊迴歸式，得到 y 對 u 的式子，再整條除以 1000 換成 v。</div></div>'
++ '<div class="as-f">x = 100 − u 代入 y = 21.3x − 40：<br>y = 21.3(100 − u) − 40 = 2130 − 21.3u − 40 = 2090 − 21.3u<br>再由 v = y/1000：<br>v = 2.09 − 0.0213u<br>→ a = −0.0213，<b>b = 2.09</b>　✓ <b>對</b></div>'
++ '<div class="as-step"><div class="as-n">6</div><div>補充理解（考場可省，但要知道為什麼可以這樣代）：迴歸直線在<b>兩軸都是線性變換</b>時，可以直接把舊方程式換元，不需重算。斜率被 x 的變號帶負號、再被 y 的 1/1000 縮小；相關係數的<b>大小不變、正負號翻轉</b>（因為 u 對 x 是負向、v 對 y 是正向，只翻一次）。</div></div>'
++ '<div class="as-f">a = 21.3 × (−1) × (1/1000) = −0.0213（斜率變負）<br>r(u, v) = −r(x, y)（相關係數只有正負號改變）</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>(5) 加一筆<b>剛好落在迴歸直線上</b>的資料，迴歸直線不變？迴歸直線的定義是「讓各點到直線的鉛直距離平方和最小」。想法：新資料的殘差是 0，是它能貢獻的最小值，而原直線本來就已經讓前 20 點的平方和最小，所以它同時讓 21 點的總和最小。<b>對</b>。</div></div>'
++ '<div class="as-f">對任一直線 ℓ：SSE₂₁(ℓ) = SSE₂₀(ℓ) + (第21點的殘差)²<br>取 ℓ₀ : v = au + b 時<br>　SSE₂₀(ℓ₀) 已是所有直線中的最小值（原迴歸直線的定義）<br>　且第21點殘差 = v₂₁ − (au₂₁ + b) = 0，也是最小值<br>→ 兩項同時取到最小　→　ℓ₀ 仍是 21 點的迴歸直線　✓</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<br>① <b>單位換算方向搞反</b>是本題最大殺手。「奈米 → 微米」是小單位換大單位，數值要<b>除以</b> 1000。判斷法：拿 500 奈米試算，答案該是 0.5 微米。<br>② (4) 只算了 u 的代換卻忘了除以 1000，會得到 b = 2090；或只除 1000 卻忘了 u = 100 − x，會得到 b = −0.04。<b>兩個變換都要做</b>。<br>③ 標準差與平均數的行為不同：u = 100 − x 讓<b>平均數大改、標準差不變</b>，別把兩者混在一起。<br>④ (5) 不要用「多一點資料一定會拉動直線」的直覺——只要那一點<b>恰在線上</b>，直線就不動；若那點不在線上才會被拉走。</div>'
++ '<div class="as-ans">答：(1)(3)(4)(5)</div>'
++ '</div>';
+var GSAT114A_SOL_13 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「三次多項式的對稱中心」要先想起一個事實：三次函數的圖形一定對稱於它的反曲點。只要能把 f(x) 整理成 f(x) = a(x−h)³ + b(x−h) + k（沒有二次項）的樣子，對稱中心就直接是 (h, k)。所以這題的目標不是解出 f(x) 的每個係數，而是想辦法把 f(x) 寫成以某一點為中心的形式。</div></div>' +
+'<div class="as-f">三次函數 y = a(x−h)³ + b(x−h) + k 的對稱中心 = (h, k)</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>先把「除以 x+6 得商式 q(x)、餘式 3」翻成算式。f(x) 是三次、除式是一次，所以商 q(x) 是二次多項式。</div></div>' +
+'<div class="as-f">f(x) = (x + 6)·q(x) + 3　，q(x) 為二次多項式</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>再用「q(x) 在 x = −6 有最大值 8」這個條件。二次函數在某點有最大值，代表那一點就是頂點、而且開口向下。頂點在 x = −6、頂點值 8，用頂點式直接寫出來。</div></div>' +
+'<div class="as-f">q(x) = a(x + 6)² + 8　，其中 a &lt; 0（開口向下才會有最大值）</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>把 q(x) 代回去。注意這裡的關鍵巧合：除式是 x+6、頂點也在 x = −6，兩邊都是 (x+6)，乘起來自然全部變成 (x+6) 的次方——這就是題目設計好要你看到的。</div></div>' +
+'<div class="as-f">f(x) = (x + 6)·[ a(x + 6)² + 8 ] + 3 = a(x + 6)³ + 8(x + 6) + 3</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>對照第 1 步的標準式：這裡 h = −6、k = 3（而 b = 8）。式子裡完全沒有 (x+6)² 這一項，所以 x = −6 就是反曲點的位置，f(−6) = a·0 + 8·0 + 3 = 3。對稱中心就出來了。</div></div>' +
+'<div class="as-f">f(x) = a(x−(−6))³ + 8(x−(−6)) + 3　→　對稱中心 (−6, 3)</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>驗算：對稱中心的意思是 f(−6+t) + f(−6−t) = 2·f(−6) 對任意 t 都成立。代進去：[at³ + 8t + 3] + [−at³ − 8t + 3] = 6 = 2×3，確實成立，而且和 a 是多少無關（a 不唯一，但對稱中心唯一，這正是這題能有唯一答案的原因）。</div></div>' +
+'<div class="as-f">f(−6+t) + f(−6−t) = 6 = 2·f(−6)　✓</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>填答案格式：坐標寫成 ( ⑬-1⑬-2 , ⑬-3 )，其中 ⑬-1 是「正負號欄位」，⑬-2、⑬-3 是數字欄位。x 坐標 −6 要拆成「符號 −」放 ⑬-1、「數字 6」放 ⑬-2；y 坐標 3 是正的，直接把 3 填在 ⑬-3。</div></div>' +
+'<div class="as-f">⑬-1 = −　，⑬-2 = 6　，⑬-3 = 3</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 看到「最大值 8」就急著把 8 當成答案的一部分填進 y 坐標——8 是 q(x) 的最大值，不是 f 的對稱中心高度，對稱中心的 y 是餘式 3。(2) 忘了三次函數的對稱中心就是反曲點，改去硬解 f(x) 的四個係數，會發現 a 解不出來而卡住（a 本來就不唯一）。(3) ⑬-1 是符號欄不是數字欄，把 −6 的「−」漏掉、只填 6，整題 5 分全沒。</div>' +
+'<div class="as-ans">答：對稱中心 (−6, 3)　→　⑬-1 = −，⑬-2 = 6，⑬-3 = 3</div>' +
+'</div>';
+
+var GSAT114A_SOL_14 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「點到平面的距離都是 6」，直接套點到平面距離公式。重點在：距離公式有絕對值，每個絕對值拆開都有正負兩種可能，看起來會有 2×2×2 = 8 組解——但題目給了「a, b, c 皆小於 0」這個限制，就是用來把多餘的情形刪掉的。先看清楚 E₁、E₂ 兩個平面都只有 y、z 沒有 x，所以它們只牽涉 b 和 c，可以先聯立解出 b、c，最後再用 E₃ 解 a。這個「先兩式解兩未知數」的切入點是這題的關鍵。</div></div>' +
+'<div class="as-f">點 (x₀,y₀,z₀) 到平面 px+qy+rz = s 的距離 = |px₀+qy₀+rz₀−s| ÷ √(p²+q²+r²)</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>先算 E₁ : 4y + 3z = 2。法向量 (0, 4, 3)，長度 √(0+16+9) = 5。</div></div>' +
+'<div class="as-f">|4b + 3c − 2| ÷ 5 = 6　→　|4b + 3c − 2| = 30　→　4b + 3c = 32 或 4b + 3c = −28</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>這裡就用 b &lt; 0、c &lt; 0 篩掉一個：b、c 都是負的，4b + 3c 一定是負數，不可能等於 32。</div></div>' +
+'<div class="as-f">b &lt; 0 且 c &lt; 0　→　4b + 3c &lt; 0　→　只能取 4b + 3c = −28　……(甲)</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>同樣處理 E₂ : 3y + 4z = −5。法向量 (0, 3, 4)，長度也是 5。</div></div>' +
+'<div class="as-f">|3b + 4c + 5| ÷ 5 = 6　→　3b + 4c = 25 或 3b + 4c = −35，同理 3b + 4c &lt; 0，只能取 3b + 4c = −35　……(乙)</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>聯立 (甲)(乙)。係數是 4、3 和 3、4 這種對稱形，用「相加」和「相減」最快，不要硬做消去法。</div></div>' +
+'<div class="as-f">(甲)+(乙)：7b + 7c = −63　→　b + c = −9<br>(甲)−(乙)：b − c = −28 −(−35) = 7</div>' +
+'<div class="as-f">解得 b = (−9+7)/2 = −1　，c = (−9−7)/2 = −8　（兩者皆 &lt; 0 ✓）</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>把 b + c = −9 代進 E₃ : x + 2y + 2z = −2。法向量 (1, 2, 2)，長度 √(1+4+4) = 3。這裡不必分別代 b、c，直接用 2b + 2c = 2(b+c) = −18 更快。</div></div>' +
+'<div class="as-f">|a + 2b + 2c + 2| ÷ 3 = 6　→　|a + (−18) + 2| = 18　→　|a − 16| = 18</div>' +
+'<div class="as-f">a − 16 = 18 → a = 34（不合，a 須 &lt; 0）；a − 16 = −18 → a = −2　✓</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>檢驗 A(−2, −1, −8) 三個距離是否都真的等於 6，這一步不要省。</div></div>' +
+'<div class="as-f">E₁：|4(−1)+3(−8)−2| ÷5 = |−30|÷5 = 6 ✓<br>E₂：|3(−1)+4(−8)+5| ÷5 = |−30|÷5 = 6 ✓<br>E₃：|(−2)+2(−1)+2(−8)+2| ÷3 = |−18|÷3 = 6 ✓</div>' +
+'<div class="as-step"><div class="as-n">8</div><div>算總和並對照填答格式。答案欄是 ⑭-1⑭-2⑭-3，其中 ⑭-1 是正負號欄位，⑭-2、⑭-3 各放一位數字，所以 −11 要拆成「−」「1」「1」。</div></div>' +
+'<div class="as-f">a + b + c = (−2) + (−1) + (−8) = −11　→　⑭-1 = −，⑭-2 = 1，⑭-3 = 1</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 把絕對值直接拿掉不分正負，例如寫成 4b+3c−2 = 30 就得到 b、c 為正的假解——絕對值一定要拆兩種再用 a,b,c &lt; 0 篩選。(2) E₃ 的距離除數是 √(1²+2²+2²) = 3 不是 5，三個平面的法向量長度不同，套公式時很容易延用上一題的 5。(3) 平面方程式右邊有常數時，分子是「代入左式再減右邊常數」；E₂ 右邊是 −5，減去 −5 等於加 5，符號寫錯就整題垮。(4) ⑭-1 是符號欄，只填 11 會被判錯。</div>' +
+'<div class="as-ans">答：A(−2, −1, −8)，a + b + c = −11　→　⑭-1 = −，⑭-2 = 1，⑭-3 = 1</div>' +
+'</div>';
+
+var GSAT114A_SOL_15 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「期望值」要先做的事永遠是：列出所有可能的付款金額，一個一個算出它的機率，確認機率加起來是 1，最後才做「金額 × 機率」相加。這題只有四種金額：240、320、400、480，所以要算四個機率。關鍵在讀懂規則：遊戲是「湊滿 3 個正面就停」，最多丟 5 次；付多少錢由「第 3 個正面出現在第幾次」決定。</div></div>' +
+'<div class="as-f">期望值 E = Σ（金額 × 該金額發生的機率）</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>240 元：前 3 次連續都是正面。三次獨立，每次正面機率 ½。</div></div>' +
+'<div class="as-f">P(240) = (½)³ = 1/8</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>320 元：第 3 個正面「剛好」出現在第 4 次。這句話要翻成兩個同時成立的條件——前 3 次恰好 2 正 1 反，而且第 4 次是正面。前 3 次恰好 2 正的排法有 C(3,2) = 3 種（反面出現在第 1、2 或 3 次）。</div></div>' +
+'<div class="as-f">P(320) = [ C(3,2) × (½)³ ] × ½ = (3/8) × ½ = 3/16</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>400 元：第 3 個正面剛好出現在第 5 次。同樣拆成——前 4 次恰好 2 正 2 反，且第 5 次是正面。前 4 次恰好 2 正的排法有 C(4,2) = 6 種。</div></div>' +
+'<div class="as-f">P(400) = [ C(4,2) × (½)⁴ ] × ½ = (6/16) × ½ = 3/16</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>480 元：5 次丟完仍沒湊到 3 個正面。這一項不要正面硬算（要分 0 正、1 正、2 正三種情形），用「1 減掉其他三項」最快，也順便檢查前面有沒有算錯。</div></div>' +
+'<div class="as-f">P(480) = 1 − 1/8 − 3/16 − 3/16 = 1 − 2/16 − 3/16 − 3/16 = 1 − 8/16 = 1/2</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>順手直接驗算一次 P(480)：5 次中正面數 ≤ 2 的機率，用二項式算 C(5,0)+C(5,1)+C(5,2) = 1+5+10 = 16，總數 2⁵ = 32。</div></div>' +
+'<div class="as-f">P(480) = 16/32 = 1/2　✓（與上面互補算出的一致）</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>四項相乘再相加。把分母通分成 16 會比較好算：1/8 = 2/16。</div></div>' +
+'<div class="as-f">E = 240×(1/8) + 320×(3/16) + 400×(3/16) + 480×(1/2)<br>　 = 30 + 60 + 75 + 240</div>' +
+'<div class="as-f">E = 405（元）　→　⑮-1 = 4，⑮-2 = 0，⑮-3 = 5</div>' +
+'<div class="as-step"><div class="as-n">8</div><div>合理性檢查：期望值 405 落在最低 240 與最高 480 之間，而且因為「付 480」的機率高達 ½，答案應該偏向 480 那一側——405 確實比中間值 360 高，符合直覺。填答欄 ⑮-1⑮-2⑮-3 是三位數，⑮-2 要填 0 不能空著。</div></div>' +
+'<div class="as-f">240 &lt; 405 &lt; 480，且偏向高價側　✓</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 把「第 4 次才累積 3 個正面」誤算成「前 4 次有 3 個正面」＝C(4,3)×(½)⁴ = 4/16——這樣會把「前 3 次就全正、第 4 次也正」重複算進來，但那種人在第 3 次就已經停止、付的是 240 元。必須指定「第 4 次一定是正面」，前面只能有 2 個正面。(2) 忘記算 480 元那一項，或誤以為 5 次一定會湊到 3 個正面——事實上付 480 的機率高達 ½，是四種情形中最大的一種，漏掉答案會變成 165。(3) 算完沒檢查四個機率和是否為 1，這題和剛好是 1，是最好的自我檢驗。</div>' +
+'<div class="as-ans">答：期望值 = 405 元　→　⑮-1 = 4，⑮-2 = 0，⑮-3 = 5</div>' +
+'</div>';
+
+var GSAT114A_SOL_16 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先把題目給的三個條件對應到「圓與直線」的兩個核心工具：弦長靠「半徑、圓心到弦的距離、半弦長」的直角三角形（畢氏定理），相切靠「圓心到直線的距離 = 半徑」。這題圓心在原點，所有距離都用點到直線距離公式算，非常乾淨。策略是：先用「圓心到 L₁ 距離 = 1」解出 m，再用「Γ 與 L₂ 相切」求半徑 r，最後畢氏定理求弦長。</div></div>' +
+'<div class="as-f">弦長 AB = 2√(r² − d²)　，d = 圓心到弦所在直線的距離</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>寫出兩直線方程式。兩條都過 (3, 1)，斜率分別是 m 和 −m，用點斜式後整理成一般式（一般式才好套距離公式）。</div></div>' +
+'<div class="as-f">L₁ : y − 1 = m(x − 3)　→　mx − y + (1 − 3m) = 0<br>L₂ : y − 1 = −m(x − 3)　→　mx + y − (1 + 3m) = 0</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>用「圓心 O(0,0) 到 L₁ 的距離為 1」解 m。代入距離公式後把根號平方掉。</div></div>' +
+'<div class="as-f">|1 − 3m| ÷ √(m² + 1) = 1　→　(1 − 3m)² = m² + 1</div>' +
+'<div class="as-f">1 − 6m + 9m² = m² + 1　→　8m² − 6m = 0　→　2m(4m − 3) = 0　→　m = 0 或 m = 3/4</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>兩個根要檢查哪個合題意——這是本題真正的關卡。若 m = 0，則 L₁ : y = 1 而 L₂ : y = 1，兩條是同一條線；此時 Γ 既要和它交於相異兩點 A、B，又要和它相切（只有一個交點），自相矛盾。（也可以這樣看：m = 0 時圓心到 L₂ 的距離也是 1，相切代表 r = 1，但 L₁ 的距離也是 1，圓和 L₁ 就只有一個交點，不可能有相異兩點。）所以 m = 0 必須捨去。</div></div>' +
+'<div class="as-f">m = 0　→　L₁ 與 L₂ 重合，無法同時「割」又「切」，不合，捨去<br>故 m = 3/4</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>用 m = 3/4 求半徑：Γ 與 L₂ 相切，代表圓心到 L₂ 的距離就是半徑 r。</div></div>' +
+'<div class="as-f">r = |1 + 3m| ÷ √(m² + 1) = |1 + 9/4| ÷ √(9/16 + 1) = (13/4) ÷ (5/4) = 13/5</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>最後用畢氏定理求弦長。圓心 O、弦 AB 的中點 M、端點 A 構成直角三角形：OA = r（半徑）、OM = 1（圓心到 L₁ 的距離）、AM 是半弦長。</div></div>' +
+'<div class="as-f">AM = √(r² − 1²) = √( (13/5)² − 1 ) = √(169/25 − 25/25) = √(144/25) = 12/5</div>' +
+'<div class="as-f">AB = 2 × AM = 2 × 12/5 = 24/5</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>檢查合理性與填答格式。r = 13/5 = 2.6 &gt; 1，圓確實會割穿 L₁（有相異兩點）✓；弦長 24/5 = 4.8 &lt; 直徑 26/5 = 5.2 ✓。答案欄是分數形式 ⑯-1⑯-2 ／ ⑯-3，分子是兩位數欄位、分母一位數，24/5 已是最簡分數（24 與 5 互質）。</div></div>' +
+'<div class="as-f">AB = 24/5　→　⑯-1 = 2，⑯-2 = 4，⑯-3 = 5</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 解出 8m² − 6m = 0 後只寫 m = 3/4、或兩個根都不檢查就亂選——m = 0 是這題刻意埋的假根，必須說明「兩線重合、不能同時相交於兩點又相切」才算完整。(2) 把「圓心到 L₁ 的距離 1」誤當成半徑，直接算 AB = 2×1；1 是圓心到弦的距離，半徑要從 L₂ 相切那個條件才拿得到。(3) L₂ 整理成一般式時符號弄錯：斜率是 −m，移項後是 mx + y − (1+3m) = 0，分子是 |1 + 3m| 不是 |1 − 3m|，一個符號錯半徑就變成 1，弦長算成 0。(4) 忘了乘 2，把半弦長 12/5 當成答案。</div>' +
+'<div class="as-ans">答：m = 3/4，r = 13/5，弦 AB = 24/5　→　⑯-1 = 2，⑯-2 = 4，⑯-3 = 5</div>' +
+'</div>';
+
+var GSAT114A_SOL_17 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「三角形外接圓上有一點 D」＋「已知一條線段長，求另一條」，第一個要想到的工具是圓內接四邊形的兩大性質：對角互補（cos 互為相反數）、以及托勒密定理（對角線乘積 = 兩組對邊乘積之和）。這題四邊 AB、BC 已知、D 又給了 BD，形狀非常適合托勒密。策略：先求 AC，再用托勒密得到 AD + CD，再用餘弦定理得到 AD × CD，最後由和與積解一元二次方程式。</div></div>' +
+'<div class="as-f">托勒密定理（圓內接四邊形 ADCB）：AC × DB = AD × CB + DC × AB</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>先用餘弦定理在 △ABC 求出 AC。cos∠ABC = −1/8 是負的，代表 ∠ABC 是鈍角，減去一個負數會變成加，AC 會比 AB、BC 大不少。</div></div>' +
+'<div class="as-f">AC² = AB² + BC² − 2·AB·BC·cos∠ABC = 9 + 9 − 2·3·3·(−1/8) = 18 + 9/4 = 81/4</div>' +
+'<div class="as-f">AC = 9/2</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>確認 D 落在哪一段弧上——這關係到托勒密要怎麼列，不能跳過。因為 BA = BC = 3，而 BD = 4 &gt; 3；從 B 出發沿圓周走，離 B 的弦長是先變長、到對徑點最長，所以「離 B 比 A、C 更遠」代表 D 一定在「不含 B 的那段弧 AC」上。於是 A、D、C、B 依序在圓上，ADCB 是凸的圓內接四邊形。</div></div>' +
+'<div class="as-f">BD = 4 &gt; BA = BC = 3　→　D 在不含 B 的弧 AC 上，四邊形 ADCB 依序內接於圓</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>對 ADCB 用托勒密定理。它的兩條對角線是 AC 與 DB，兩組對邊是 (AD, CB) 與 (DC, AB)。因為 AB = CB = 3，右邊可以直接提出公因數 3，AD 和 CD 的「和」就掉出來了——這一步就是本題最漂亮的地方。</div></div>' +
+'<div class="as-f">AC × DB = AD × CB + DC × AB<br>(9/2) × 4 = AD × 3 + CD × 3</div>' +
+'<div class="as-f">18 = 3(AD + CD)　→　AD + CD = 6　……(甲)</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>再拿一條關係式。用「圓內接四邊形對角互補」：∠ADC 與 ∠ABC 互補，所以 cos∠ADC = −cos∠ABC = 1/8。接著在 △ADC 用餘弦定理，因為 △ADC 和 △ABC 共用同一條邊 AC，兩邊可以接起來。</div></div>' +
+'<div class="as-f">∠ADC = 180° − ∠ABC　→　cos∠ADC = −(−1/8) = 1/8</div>' +
+'<div class="as-f">AC² = AD² + CD² − 2·AD·CD·(1/8)　→　81/4 = AD² + CD² − (1/4)·AD·CD</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>把 AD² + CD² 換成 (AD+CD)² − 2·AD·CD，就能只剩 AD·CD 一個未知數。</div></div>' +
+'<div class="as-f">81/4 = (AD + CD)² − 2·AD·CD − (1/4)·AD·CD = 36 − (9/4)·AD·CD</div>' +
+'<div class="as-f">(9/4)·AD·CD = 36 − 81/4 = 63/4　→　AD × CD = 7　……(乙)</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>由 (甲)(乙)：AD 與 CD 是「和為 6、積為 7」的兩個數，也就是同一個二次方程式的兩根，用根與係數反推方程式再解。</div></div>' +
+'<div class="as-f">t² − 6t + 7 = 0　→　t = [6 ± √(36 − 28)] / 2 = (6 ± 2√2)/2 = 3 ± √2</div>' +
+'<div class="as-step"><div class="as-n">8</div><div>最後用 AD ≤ CD 決定誰是誰：3 − √2 ≈ 1.586 比較小、3 + √2 ≈ 4.414 比較大，所以小的給 AD、大的給 CD。</div></div>' +
+'<div class="as-f">AD = 3 − √2 ≈ 1.586，CD = 3 + √2 ≈ 4.414</div>' +
+'<div class="as-step"><div class="as-n">9</div><div>驗算：和 = (3−√2)+(3+√2) = 6 ✓，積 = 9 − 2 = 7 ✓。再檢查 CD ≈ 4.414 有沒有超過直徑：由正弦定理 sin∠ABC = √(1 − 1/64) = (3√7)/8，直徑 = AC ÷ sin∠ABC = (9/2) ÷ (3√7/8) = 12/√7 ≈ 4.536，CD 略小於直徑，合理 ✓。填答欄是 ⑰-1 + √⑰-2 的形式，所以根號外整數 3 填 ⑰-1、根號內 2 填 ⑰-2。</div></div>' +
+'<div class="as-f">CD = 3 + √2　→　⑰-1 = 3，⑰-2 = 2</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 托勒密的邊配錯——一定要先確定四點在圓上的「順序」是 A、D、C、B，對角線是 AC 與 BD；如果誤把 AD 與 CB 當對角線，等式整個反過來就全錯。(2) 忘了 cos∠ADC 要變號：∠ADC 是 ∠ABC 的補角，cos 是 +1/8 不是 −1/8，符號一錯 AD·CD 就算成別的值。(3) 解出 3 ± √2 兩個根後隨便挑一個填——題目寫 AD ≤ CD 就是要你挑「大的那個」當 CD，挑成 3 − √2 會填成 ⑰-1 = 3 但漏掉是減號（而且答案格式是「+√」，本身也在提示答案為加號）。(4) 只用 △ABC 求外接圓半徑再拼命做坐標，雖然做得出來但計算量大、考場時間不夠——托勒密加對角互補是這題的正規快解。</div>' +
+'<div class="as-ans">答：AD + CD = 6、AD × CD = 7，得 {AD, CD} = {3−√2, 3+√2}；由 AD ≤ CD 得 CD = 3 + √2　→　⑰-1 = 3，⑰-2 = 2</div>' +
+'</div>';
+// 114 學測數A 第 18–20 題（旋轉矩陣題組）adv-sol 詳解
+// 配分：18 單選 3 分、19 非選 6 分、20 非選 6 分
+
+var GSAT114A_SOL_18 =
+'<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先認出「旋轉矩陣長什麼樣子」。這題所有東西都掛在這個形狀上：以原點為中心逆時針旋轉 θ 的矩陣，第一行是 (cosθ, sinθ)，第二行是 (−sinθ, cosθ)。四個位置不是隨便填的，看到左下角是 sinθ、右上角是 −sinθ（差一個負號）就是它。</div></div>' +
+'<div class="as-f">R(θ) = [ cosθ　−sinθ ; sinθ　cosθ ]</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>本題的鑰匙：<b>旋轉矩陣相乘 = 角度相加</b>。連續轉兩次當然就是轉了兩次的角度和，寫成矩陣就是 R(α)R(β) = R(α+β)。所以 A 是旋轉 α，A² 就是旋轉 2α；B 是旋轉 β，B³ 就是旋轉 3β。整個題組（18、19、20）從頭到尾只用這一句話。</div></div>' +
+'<div class="as-f">R(α)·R(β) = R(α+β)　⇒　A² = R(2α)，B³ = R(3β)</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>既然 A² 本身也是旋轉矩陣，就把題目給的 [ 0　c ; 1　d ] 直接跟 R(θ) 的四個位置一一對應。先看左上角與左下角這兩個「不含未知數」的位置，θ 就被鎖死了。</div></div>' +
+'<div class="as-f">cosθ = 0，sinθ = 1　⇒　θ = 90°</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>θ 定了，右上角的 c 與右下角的 d 就跟著出來。注意右上角是 <b>−sinθ</b>，那個負號就是這題唯一的機關。</div></div>' +
+'<div class="as-f">c = −sin90° = −1，　d = cos90° = 0</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>順手把 α、β 也解出來（19、20 題馬上要用），這裡要用上題目說的「銳角」條件。旋轉角同界角每 360° 一輪，所以 2α 可以是 90°、450°、810°…，但只有 90° 能讓 α 是銳角。</div></div>' +
+'<div class="as-f">2α = 90° + 360°k ⇒ α = 45°（k=0）；α = 225°（k=1）不是銳角，捨去<br>3β = 90° + 360°k ⇒ β = 30°（k=0）；β = 150°、270° 都不是銳角，捨去<br>⇒ A = R(45°)，B = R(30°)</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：一是把 −sinθ 的負號漏掉，直接答 c = 1（選 (3)），這是本題設計的標準陷阱；二是解 2α = 90° 時只寫 α = 45° 而忘了檢查同界角，雖然本題結果一樣，但沒有「銳角」這個條件去篩，19、20 題的 A、B 就不唯一了——題目寫「銳角」不是裝飾，是為了讓答案唯一。</div>' +
+'<div class="as-ans">答：(2)　c = −1（順帶 d = 0，A 為旋轉 45°、B 為旋轉 30°）</div>' +
+'</div>';
+
+var GSAT114A_SOL_19 =
+'<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>承第 18 題的鑰匙：<b>A²=B³=R(90°)，加上「銳角」的唯一性，得 A=R(45°)、B=R(30°)</b>。非選題要寫過程，所以這一段一定要寫出來，不能直接跳到 A³。寫法：因 A² = [ 0　−1 ; 1　0 ] = R(90°)，且 A 是旋轉銳角 α 的旋轉矩陣，由 2α = 90°（α 為銳角故取此解）得 α = 45°；同理 3β = 90° 得 β = 30°。</div></div>' +
+'<div class="as-f">A = R(45°) = [ √2/2　−√2/2 ; √2/2　√2/2 ]　，　B = R(30°) = [ √3/2　−1/2 ; 1/2　√3/2 ]</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>要求 Q，先算 A³。這裡千萬別去乘三次矩陣——用角度相加，A³ 就是旋轉 3×45° = 135°，直接寫出來。（這就是為什麼第 1 步值得花力氣把 α 解出來：解出角度後，A 的任何次方都是「一句話」的事。）</div></div>' +
+'<div class="as-f">A³ = R(3×45°) = R(135°) = [ −√2/2　−√2/2 ; √2/2　−√2/2 ]</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>把 P(1,1) 當成行向量代入。矩陣變換就是矩陣乘在點的坐標行向量左邊。</div></div>' +
+'<div class="as-f">[ −√2/2　−√2/2 ; √2/2　−√2/2 ]·[ 1 ; 1 ] = [ −√2/2 − √2/2 ; √2/2 − √2/2 ] = [ −√2 ; 0 ]<br>⇒ Q(−√2, 0)</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>【幾何解法・強烈建議也懂這招】完全不用乘矩陣：旋轉不改變長度，只把方向角加上去。OP→ 長 √2、方向角 45°；轉 135° 後方向角變 180°，長度還是 √2 ⇒ 落在 x 軸負向。兩種解法官方都給滿分，但這招在第 20 題會省下大量時間。</div></div>' +
+'<div class="as-f">|OP→| = √(1²+1²) = √2，方向角 45°<br>方向角 45° + 135° = 180°　⇒　Q = (√2·cos180°, √2·sin180°) = (−√2, 0)</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>再轉一次求 R。同理 B⁴ 是旋轉 4×30° = 120°，作用在 OQ→ 上。用方向角加法最快：180° + 120° = 300°，長度仍為 √2。</div></div>' +
+'<div class="as-f">B⁴ = R(120°) = [ −1/2　−√3/2 ; √3/2　−1/2 ]<br>[ −1/2　−√3/2 ; √3/2　−1/2 ]·[ −√2 ; 0 ] = [ √2/2 ; −√6/2 ]<br>⇒ R(√2/2, −√6/2)　（即方向角 300°、長 √2 的點）</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>求 OR→ 與 (1,0) 的夾角。方法一（官方寫法）用內積定義；注意「夾角」依定義取 0° 到 180° 之間的值，所以答案是 60° 不是 −60° 也不是 300°。</div></div>' +
+'<div class="as-f">OR→ · (1,0) = √2/2，　|OR→| = √( (√2/2)² + (√6/2)² ) = √(1/2 + 3/2) = √2<br>cosθ = (√2/2) ÷ (√2 × 1) = 1/2　⇒　θ = 60°</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>方法二（角度累加，30 秒解決）：從 P 出發一路把旋轉角加起來，得到 OR→ 的方向角 300°；它與 x 軸正向的夾角就是 360° − 300° = 60°。</div></div>' +
+'<div class="as-f">方向角：45°（OP→）+ 135°（A³）+ 120°（B⁴）= 300°<br>與 (1,0) 的夾角 = 360° − 300° = 60°</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 直接寫「A 是旋轉 45° 矩陣」而<b>沒有交代 A² = R(90°) 與銳角條件怎麼推出 45°</b>——非選題明講「必須寫出計算過程或理由，否則酌予扣分」，這一步不寫就是送分變扣分。(2) 把 A³ 老實乘三次矩陣，時間全花光還容易算錯。(3) 最後把「方向角 300°」直接當成夾角寫上去——夾角必須落在 0°～180°。</div>' +
+'<div class="as-ans">答：Q(−√2, 0)；OR→ 與 (1,0) 的夾角為 60°</div>' +
+'<div class="as-note"><b>自評指引（本題 6 分，官方採兩項均正確才滿分）</b><br>依官方評分原則拆成兩個等重的評分點，各 3 分：<br>' +
+'① <b>Q 點坐標（3 分）</b>：寫出 Q(−√2, 0) 且過程正確 → 3 分。有推出 A = R(45°)、A³ = R(135°) 但坐標算錯（例如正負號寫反成 (√2,0)）→ 給 1～2 分。直接寫答案沒有任何過程 → 0～1 分。<br>' +
+'② <b>夾角 60°（3 分）</b>：寫出 60° 且有交代 B = R(30°)、B⁴ = R(120°)（或有算出 R 點坐標再用內積）→ 3 分。過程對但答成 300° 或 −60° → 給 1～2 分。<br>' +
+'另外自己再檢查一次：<b>「由 A² = R(90°) 且 α 為銳角，故 α = 45°」這句有沒有寫在卷面上？</b>沒寫的話，即使 ①② 答案都對，也屬於「解題過程部分正確」的部分給分區間，這正是最多人被扣分的地方。</div>' +
+'</div>';
+
+var GSAT114A_SOL_20 =
+'<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先把第 19 題的成果搬過來，這題完全建立在它上面：Q(−√2, 0)、R(√2/2, −√6/2)。看到「求交點」就先各自寫出兩條直線的方程式——這是所有交點題的固定起手式。</div></div>' +
+'<div class="as-f">Q(−√2, 0)　，　R(√2/2, −√6/2)</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>直線 OQ 是什麼？O 是原點、Q 在 x 軸負向上，所以<b>直線 OQ 就是 x 軸</b>（y = 0）。這是第 19 題答案送給我們的大禮：既然 L 過 P(1,1) 且平行 x 軸，L 就是一條水平線 y = 1，不必再算斜率。</div></div>' +
+'<div class="as-f">直線 OQ：y = 0（即 x 軸）<br>L 過 P(1,1) 且與 OQ 平行　⇒　L：y = 1</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>直線 OR 過原點，斜率就是 R 的 y 坐標除以 x 坐標。分母有根號時把它化簡乾淨，後面代入才不會亂。</div></div>' +
+'<div class="as-f">斜率 = (−√6/2) ÷ (√2/2) = −√6/√2 = −√3<br>直線 OR：y = −√3 x</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>兩式聯立求 S。把 y = 1 代進去解 x，最後記得分母有理化。</div></div>' +
+'<div class="as-f">1 = −√3 x　⇒　x = −1/√3 = −√3/3<br>⇒ S(−√3/3, 1)</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>求 ∠OSP。這是<b>以 S 為頂點</b>的角，所以兩邊要用「從 S 出發」的向量 SO→ 與 SP→，不能拿 OS→ 去算（方向反了角度就變成補角）。P 在 S 的正右方，所以 SP→ 的方向就是 (1,0)。</div></div>' +
+'<div class="as-f">SO→ = O − S = (√3/3, −1)，　|SO→| = √(1/3 + 1) = √(4/3) = 2√3/3<br>SP→ = P − S = (1 + √3/3, 0)，方向同 (1,0)<br>cos∠OSP = (√3/3) ÷ (2√3/3) = 1/2　⇒　∠OSP = 60°</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>【幾何解法・幾乎不用算】取 D(1,0)，第 19 題已知 OR→ 與 (1,0) 夾角 60°，即 ∠ROD = 60°。因為 L ∥ 直線 OQ（都是水平線），被直線 OR 這條截線所截，∠OSP 與 ∠ROD 是<b>同位角</b>，故相等。看懂下圖就會發現這題的 ∠OSP 根本是第 19 題答案的複製品。</div></div>' +
+'<svg viewBox="0 0 360 270" style="width:100%;max-width:420px;display:block;margin:8px auto">' +
+'<line x1="95" y1="150" x2="315" y2="150" stroke="var(--ink3)" stroke-width="1"/>' +
+'<line x1="200" y1="60" x2="200" y2="245" stroke="var(--ink3)" stroke-width="1"/>' +
+'<line x1="100" y1="90" x2="310" y2="90" stroke="var(--green)" stroke-width="2"/>' +
+'<line x1="155" y1="72" x2="251" y2="238" stroke="var(--accent)" stroke-width="2"/>' +
+'<polyline points="187.4,90 186.6,95.7 184.4,101 180.9,105.6 176.4,109.1" fill="none" stroke="var(--red)" stroke-width="2"/>' +
+'<polyline points="230,150 229,157.8 226,165 221.2,171.2 215,176" fill="none" stroke="var(--red)" stroke-width="2"/>' +
+'<circle cx="200" cy="150" r="3.5" fill="var(--ink)"/>' +
+'<circle cx="260" cy="90" r="3.5" fill="var(--ink)"/>' +
+'<circle cx="115" cy="150" r="3.5" fill="var(--ink)"/>' +
+'<circle cx="242" cy="223" r="3.5" fill="var(--ink)"/>' +
+'<circle cx="165" cy="90" r="3.5" fill="var(--gold)"/>' +
+'<circle cx="260" cy="150" r="3" fill="var(--ink3)"/>' +
+'<text x="188" y="167" font-size="13" fill="var(--ink)">O</text>' +
+'<text x="266" y="86" font-size="13" fill="var(--ink)">P(1,1)</text>' +
+'<text x="96" y="167" font-size="13" fill="var(--ink)">Q</text>' +
+'<text x="250" y="228" font-size="13" fill="var(--ink)">R</text>' +
+'<text x="140" y="84" font-size="13" fill="var(--gold)">S</text>' +
+'<text x="256" y="167" font-size="12" fill="var(--ink3)">D(1,0)</text>' +
+'<text x="188" y="107" font-size="12" fill="var(--red)">60°</text>' +
+'<text x="232" y="172" font-size="12" fill="var(--red)">60°</text>' +
+'<text x="300" y="84" font-size="12" fill="var(--green)">L : y=1</text>' +
+'<text x="252" y="250" font-size="12" fill="var(--accent)">OR : y=−√3x</text>' +
+'</svg>' +
+'<div class="as-note">圖中綠線 L（y=1）與 x 軸（即直線 OQ）平行，被藍色截線 OR 所截。S 處的紅色角 ∠OSP 與 O 處的紅色角 ∠ROD 是同位角，因此 ∠OSP = ∠ROD = 60°。圖上各點皆按實際坐標繪製：O(0,0)、P(1,1)、Q(−√2,0)≈(−1.41,0)、R(√2/2,−√6/2)≈(0.71,−1.22)、S(−√3/3,1)≈(−0.58,1)。</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 求 ∠OSP 時拿成 OS→ 而不是 SO→，算出 120°（60° 的補角）——頂點在哪裡，向量就要從哪裡出發。(2) 斜率算成 −√6/2 ÷ √2/2 時忘了化簡，寫成 y = −(√6/√2)x 後代入解出來的 x 沒有有理化，答案寫 −1/√3 雖不算錯但官方答案格式是 −√3/3，非選題建議化到最簡。(3) 沒看出「直線 OQ 就是 x 軸」，硬去算 OQ 的斜率再求平行線，繞遠路又容易錯。</div>' +
+'<div class="as-ans">答：∠OSP = 60°，S 點坐標為 (−√3/3, 1)</div>' +
+'<div class="as-note"><b>自評指引（本題 6 分，官方採兩項均正確才滿分）</b><br>依官方評分原則拆成兩個等重的評分點，各 3 分：<br>' +
+'① <b>S 點坐標（3 分）</b>：寫出 S(−√3/3, 1)，且卷面上有 L：y = 1 與 OR：y = −√3 x 兩條方程式 → 3 分。兩條直線方程式對但聯立算錯 → 2 分。只寫對其中一條方程式 → 1 分。<br>' +
+'② <b>∠OSP = 60°（3 分）</b>：寫出 60° 且有理由（內積計算，或明確寫出「L ∥ OQ，同位角」）→ 3 分。答 60° 但完全沒寫理由 → 1 分（非選題無過程本來就要扣）。算成 120° → 0～1 分。<br>' +
+'特別提醒：本題兩問是<b>互相獨立</b>的評分點，就算 S 算錯，只要用同位角把 ∠OSP = 60° 講清楚，②的 3 分照拿——所以考場上時間不夠時，先把同位角那句話寫上去。</div>' +
+'</div>';
+
+/* ── 115 學測數A ── */
+/* 115 學測數學A（20題）— 追加進 GSAT_PAPERS
+   題組配分：18題3分／19題4分／20題8分 */
+GSAT_PAPERS.push({
+  id:'115A', year:115, subj:'數A', title:'115 學測・數學A',
+  time:100, total:100, numKeys:true,
+  groups:[[18,19,20]],
+  figBase:'gsat/115a/',
+  items:[
+    {no:1,type:'single',ch:'隨機變數',grade:2,score:5,
+     q:'財神廟舉辦抽發財金活動：參加者抽兩次籤，每次抽籤出現「吉」、「祥」的機率皆為 1/3。如果兩次都抽得「吉」，獲得獎金 180 元；如果兩次都抽得「祥」，獲得獎金 90 元；其餘情況則無獎金。試問參加者可獲獎金的期望值為何？',
+     opts:['20 元','30 元','45 元','60 元','90 元'],ans:'B'},
+
+    {no:2,type:'single',ch:'數與式',grade:0,score:5,
+     q:'對任一實數 a，令 [a] 代表滿足 [a] ≤ a ＜ [a] + 1 的整數，例如：[3] = 3，[3.1] = 3，[−3.1] = −4。關於函數 f(x) = [√(99 − x)] + [√(99 + x)]，其中 −99 ≤ x ≤ 99；試選出正確的選項。',
+     opts:['f(−20) ≤ f(0) ＜ f(1)','f(−20) ＜ f(1) ≤ f(0)','f(1) ＜ f(−20) ≤ f(0)','f(0) ＜ f(−20) ≤ f(1)','f(0) ≤ f(1) ＜ f(−20)'],
+     ans:'A'},
+
+    {no:3,type:'single',ch:'指數與對數',grade:0,score:5,
+     q:'設 f(x) = aˣ，其中 a 為正實數。已知 c₁, c₂, c₃ 是公差為 10/3 的等差數列，且 f(c₁), f(c₂), f(c₃) 是公比為 4 的等比數列。則等比數列 f(10), f(8), f(6) 的公比為何？',
+     opts:['2^(−6/5)','2^(−3/5)','2^(3/5)','2^(6/5)','2^(5/3)'],ans:'A'},
+
+    {no:4,type:'single',ch:'排列組合與機率',grade:0,score:5,
+     q:'某網遊有 16 種材料，其中 6 種為基本材料，10 種為進階材料。任選 3 種不同材料可以合成出草藥、食物、藥水中的 1 類道具，其合成規則如下：若 3 種材料均為基本材料，則合成結果必為同一種草藥；若 3 種材料中 2 種為基本材料、1 種為進階材料，則合成結果會根據不同的進階材料得到不同種的食物，但不會受到基本材料不同而改變；其他的組合都會合成出不同種的藥水。試問此網遊總共可合成出多少種道具？',
+     opts:['256','370','401','455','560'],ans:'C'},
+
+    {no:5,type:'single',ch:'矩陣',grade:1,score:5,fig:'fig_q5.png',
+     q:'已知實數三階方陣 A 滿足 A(1,1,0)ᵀ = (0,−1,1)ᵀ，A(0,−1,1)ᵀ = (1,1,0)ᵀ，A(1,0,−1)ᵀ = (0,0,0)ᵀ。試問有多少個行向量 v→ = (v₁, v₂, v₃)ᵀ 滿足 A·v→ = (1,0,1)ᵀ 且 v→ 垂直於行向量 (0,1,0)ᵀ？（原卷以直行矩陣呈現，如圖）',
+     opts:['1 個','2 個','3 個','0 個','無窮多個'],ans:'E'},
+
+    {no:6,type:'single',ch:'直線與圓',grade:0,score:5,
+     q:'坐標平面上有 A(2, −2), B(−1, 2) 兩點，試問直線 y = −6 上有多少個點 C 使得 △ABC 為等腰三角形？',
+     opts:['1','2','3','4','5'],ans:'B'},
+
+    {no:7,type:'multi',ch:'直線與圓',grade:0,score:5,
+     q:'坐標平面上同時滿足 2x − y − 3 ＞ 0 且 x + 2y + 1 ＜ 0 的點 P(x, y) 可能位在下列哪些選項？',
+     opts:['第一象限','第二象限','第三象限','第四象限','x 軸'],ans:['C','D']},
+
+    {no:8,type:'multi',ch:'矩陣',grade:1,score:5,fig:'fig_q8.png',
+     q:'已知 A（第一列 2, 1；第二列 1, 0），且對所有正整數 n ≥ 2，令 Aⁿ（第一列 aₙ, bₙ；第二列 cₙ, dₙ）。試選出正確的選項。（矩陣原式如圖）',
+     opts:['b₂ ＜ c₂','A² = 2A + I（I 為單位方陣）','c₍ₙ₊₂₎ = c₍ₙ₊₁₎ + 2cₙ','Aⁿ·(0, 1)ᵀ = (b₍ₙ₊₁₎, d₍ₙ₊₁₎)ᵀ','d₂ₙ − a₂ₙ = (dₙ)² − (aₙ)²'],
+     ans:['B','E']},
+
+    {no:9,type:'multi',ch:'數據分析',grade:0,score:5,
+     q:'T 分數為評量成績的一種方式，其計算方式如下：設全班平均成績為 μ 且標準差為 σ。若某生原始成績為 S，則他該科之 T 分數為 T = 50 + 10·((S − μ)／σ)。已知某班期末數學和英文兩科的平均成績皆為 60，數學成績的標準差為 12，英文成績的標準差為 8。試選出正確的選項。',
+     opts:['若甲生英文的原始成績為 52，則其 T 分數為 40','各生數學的 T 分數不會超過其原始成績','若乙生兩科的原始成績平均比丙生兩科的原始成績平均高，則乙生兩科的 T 分數平均比丙生兩科的 T 分數平均高','若該班級兩科的及格標準均為 T 分數大於或等於 40，則數學及格的原始成績比英文及格的原始成績低','該班原始成績數學對英文的迴歸直線（即最適直線）之斜率與該班 T 分數數學對英文的迴歸直線之斜率相同'],
+     ans:['A','B','D']},
+
+    {no:10,type:'multi',ch:'平面向量',grade:1,score:5,
+     q:'已知四邊形 ABCD 中，AB 平行 DC，AC 與 BD 交於 E。若 AB→ = (2, −6), AD→ = (1, 5) 且 △ABE 面積為 3。試選出正確的選項。',
+     opts:['cos∠BAD = −7√65 ／ 65','△ABD 面積為 9','AE→ = (3/2, 1/2)','四邊形 ABCD 面積為 65/3','BC ＜ 8/3'],
+     ans:['A','E']},
+
+    {no:11,type:'multi',ch:'三角函數',grade:1,score:5,
+     q:'令 Γ 為坐標平面上 y = cos((π/2)x) 的圖形。對任一實數 m ≠ 0，以 Lₘ 表示直線 y = mx + 1。試選出正確的選項。',
+     opts:['m ＞ 0 時，Lₘ 和 Γ 交點的 x 坐標皆為負','若 (a, b) 為 Lₘ 和 Γ 的交點，則 (−a, b) 為 L₋ₘ 和 Γ 的交點','可以找到一實數 m ≠ 0 使得 Lₘ 和 Γ 交於點 (20/3, 1/2)','若 Lₘ 與 Γ 有一交點在直線 y = −1 上，則 1/m 是奇數','若 Lₘ 與 Γ 有一交點在 x 軸上，則 Lₘ 與 Γ 有偶數個交點'],
+     ans:['B','D']},
+
+    {no:12,type:'multi',ch:'多項式函數',grade:0,score:5,
+     q:'令 f(x)、g(x) 為實係數三次多項式且 f(x) 的首項係數為 1，已知 f(x) − g(x) = 2x³ + 2x。令 Γ₁ 和 Γ₂ 分別為 f(x) 和 g(x) 在坐標平面上的函數圖形，其對稱中心分別為 (a₁, b₁), (a₂, b₂)。試選出正確的選項。',
+     opts:['Γ₁ 和 Γ₂ 恰交於三點','a₁ + a₂ 可唯一確定','b₁ + b₂ 可唯一確定','若 a₁ = a₂，則 b₁ = b₂','若 b₁ = b₂，則 a₁ = a₂'],
+     ans:['B','D']},
+
+    {no:13,type:'fill',ch:'條件機率',grade:1,score:5,
+     q:'某高中聘用的全體教師 1/4 只有學士學位，3/4 有碩士學位。只有學士學位的教師中有 1/5 通過英聽檢定，有碩士學位的教師中有 3/5 通過英聽檢定。已知每位教師被抽到的機會相等，若隨機抽選一位通過英聽檢定的教師，則該教師有碩士學位的條件機率為 ⑬-1 ／ ⑬-2⑬-3。（化為最簡分數）<br><span class="gsat-fillnote">作答格式：最簡分數，例如 9/10</span>',
+     ans:'9/10',acc:['9／10']},
+
+    {no:14,type:'fill',ch:'平面向量',grade:1,score:5,
+     q:'坐標平面上，向量 (a, b) 與直線 y = bx − 1 垂直，則 a + b 的最大可能值為 ⑭-1 ／ ⑭-2。（化為最簡分數）<br><span class="gsat-fillnote">作答格式：最簡分數，例如 1/4</span>',
+     ans:'1/4',acc:['1／4']},
+
+    {no:15,type:'fill',ch:'指數與對數',grade:0,score:5,
+     q:'已知三正數 a, b, c 成一等差數列，其中 a ＜ b ＜ c，且坐標平面上三點 (a, log 3a)、(b, log 4b)、(c, log 6c) 在同一直線上，則 b/a 之值為 ⑮-1 ／ ⑮-2。（化為最簡分數；此處 log 為常用對數）<br><span class="gsat-fillnote">作答格式：最簡分數，例如 3/2</span>',
+     ans:'3/2',acc:['3／2']},
+
+    {no:16,type:'fill',ch:'多項式函數',grade:0,score:5,
+     q:'坐標平面上，已知二次函數圖形 Γ : y = f(x) 的頂點 P 在直線 y = 1 + 2x 上，且交 x 軸於點 A(−1/2, 0), B(1/2, 0)。將 Γ 平移使得平移後圖形的頂點 Q 仍在直線 y = 1 + 2x 上，且亦通過點 B(1/2, 0)，此時 P、Q 為兩相異點，則 PQ = ⑯-1√⑯-2 ／ ⑯-3。（化為最簡根式）<br><span class="gsat-fillnote">作答格式：如 3√5/2 請填 3sqrt5/2 或 3√5/2</span>',
+     ans:'3√5/2',acc:['3sqrt5/2','3 √5 / 2','3根號5/2']},
+
+    {no:17,type:'fill',ch:'三角比',grade:0,score:5,
+     q:'直角 △ABC 中，∠CAB 為直角，AB 邊上一點 D，滿足 ∠BCD = 2∠ACD，且 BC = 2·BD。若 AD→ = k·AB→，則 k = ⑰-1 ／ ⑰-2⑰-3。（化為最簡分數）<br><span class="gsat-fillnote">作答格式：最簡分數，例如 3/11</span>',
+     ans:'3/11',acc:['3／11']},
+
+    {no:18,type:'single',ch:'空間向量',grade:1,score:3,fig:'fig_q18.png',
+     stem:'坐標空間中有一平行六面體 PQRS–ABCD，如圖所示。已知 AB→ × AD→ = (−5, 5, 5)、AD→ × AP→ = (−2, 0, −4)、AP→ × AB→ = (6, −10, −8)、AP = 6。',
+     q:'試問平行四邊形 ABCD 的面積為何？（單選題，3 分）',
+     opts:['2√5','5√2','5√3','6√3','10√2'],ans:'C'},
+
+    {no:19,type:'open',ch:'空間中的平面與直線',grade:1,score:4,fig:'fig_q18.png',
+     stem:'（承 18 題同一題組）平行六面體 PQRS–ABCD，AB→ × AD→ = (−5, 5, 5)、AD→ × AP→ = (−2, 0, −4)、AP→ × AB→ = (6, −10, −8)、AP = 6。',
+     q:'設 B 點坐標為 (1, 2, 0)，試求平面 ABCD 的平面方程式。（非選擇題，4 分）',
+     ans:'x − y − z = −1。\n（平面 ABCD 的法向量平行於 AB→ × AD→ = (−5, 5, 5)，即 (1, −1, −1)；代入 B(1, 2, 0) 得 (x−1) − (y−2) − (z−0) = 0。）'},
+
+    {no:20,type:'open',ch:'空間向量',grade:1,score:8,fig:'fig_q18.png',
+     stem:'（承 19 題同一題組）',
+     q:'試求平行六面體的體積，並求平行六面體上（含邊界）距點 A 的最長距離。（非選擇題，8 分）',
+     ans:'體積 = 10；距點 A 的最長距離為 AS = √94。\n（由三個外積推得 AP→ = ±(4, 4, −2)、AB→ = (1, −1, 2)、AD→ = (2, 3, −1)；體積 = |AP→ · (AB→ × AD→)| = 10。各頂點距離：AB=√6、AD=√14、AC=√14、AQ=√34、AR=√86、AS=√94，最長為 √94。）'}
+  ]
+});
+
+// 115 學測 數A — 第 1~4 題 adv-sol 詳解
+// 變數：GSAT115A_SOL_1 ~ GSAT115A_SOL_4
+
+var GSAT115A_SOL_1 =
+'<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「有機率、有獎金、問期望值」，就是把「每一種有錢拿的情況」列出來，算出它的機率，再乘上獎金加總。不要一開始就急著算，先問自己：有幾種情況會拿到錢？這題只有兩種：兩次都吉、兩次都祥。</div></div>' +
+'<div class="as-f">期望值 E ＝ Σ（該情況機率 × 該情況獎金）</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>抽兩次是彼此獨立的（第一次抽完不影響第二次），所以「兩次都吉」的機率就是兩次機率相乘。每次抽到吉的機率是 1/3。</div></div>' +
+'<div class="as-f">P(兩次都吉) ＝ (1/3) × (1/3) ＝ 1/9</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>同樣算「兩次都祥」。每次抽到祥的機率也是 1/3。</div></div>' +
+'<div class="as-f">P(兩次都祥) ＝ (1/3) × (1/3) ＝ 1/9</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>其餘所有情況（一吉一祥、抽到吉祥以外的結果…）獎金都是 0 元，乘出來也是 0，不必去算它們的機率是多少。這是這題最省時間的地方。</div></div>' +
+'<div class="as-f">其餘情況：獎金 0 元 → 對期望值貢獻 0</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>把兩項有錢的加起來。</div></div>' +
+'<div class="as-f">E ＝ (1/9)×180 ＋ (1/9)×90 ＝ 20 ＋ 10 ＝ 30（元）</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：題目說「出現吉、祥的機率皆為 1/3」，代表還有 1/3 是「既不是吉也不是祥」的第三種結果，機率並不是吉 1/2、祥 1/2！很多人自動把它讀成「只有吉和祥兩種」，於是算成 (1/2)²×180＋(1/2)²×90 ＝ 67.5，落入不存在的選項而慌張。另一個常見錯誤是把 1/9 誤寫成 1/3（忘了抽「兩次」都要中）。</div>' +
+'<div class="as-ans">答：(2) 30 元</div>' +
+'</div>';
+
+var GSAT115A_SOL_2 =
+'<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到高斯符號 [ ] 就一句話：[a] 是「不超過 a 的最大整數」，也就是把數字往下砍到整數。這題三個函數值都是具體數字，最快的做法不是分析函數性質，而是直接把 x ＝ −20、0、1 代進去老實算三個數，再比大小。</div></div>' +
+'<div class="as-f">f(x) ＝ [√(99 − x)] ＋ [√(99 + x)]</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>先算 f(0)。兩個根號裡都是 99。要判斷 [√99]，去想它夾在哪兩個完全平方數之間：9² ＝ 81 ≤ 99 ＜ 100 ＝ 10²，所以 9 ≤ √99 ＜ 10，取整得 9。</div></div>' +
+'<div class="as-f">f(0) ＝ [√99] ＋ [√99] ＝ 9 ＋ 9 ＝ 18</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>再算 f(1)：根號裡變成 99 − 1 ＝ 98 與 99 ＋ 1 ＝ 100。關鍵是 100 剛好是完全平方數，√100 ＝ 10 整整好，取整不會掉下來；而 98 仍在 81 與 100 之間，取整是 9。</div></div>' +
+'<div class="as-f">f(1) ＝ [√98] ＋ [√100] ＝ 9 ＋ 10 ＝ 19</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>最後算 f(−20)：根號裡是 99 −(−20) ＝ 119 與 99 ＋(−20) ＝ 79。用完全平方數夾擠：10² ＝ 100 ≤ 119 ＜ 121 ＝ 11²，故 [√119] ＝ 10；8² ＝ 64 ≤ 79 ＜ 81 ＝ 9²，故 [√79] ＝ 8。</div></div>' +
+'<div class="as-f">f(−20) ＝ [√119] ＋ [√79] ＝ 10 ＋ 8 ＝ 18</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>三個值到齊：f(−20) ＝ 18、f(0) ＝ 18、f(1) ＝ 19。注意前兩個是「相等」，所以正確選項一定含有 ≤ 或 ＝ 的寫法，不會是嚴格小於。</div></div>' +
+'<div class="as-f">18 ＝ 18 &lt; 19，即 f(−20) ≤ f(0) &lt; f(1)　→ 選項 (1)</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>回頭刷掉其他選項確認：(2) 說 f(1) ≤ f(0) 即 19 ≤ 18，錯；(3) 說 f(1) ＜ f(−20) 即 19 ＜ 18，錯；(4) 說 f(0) ＜ f(−20) 即 18 ＜ 18，錯；(5) 說 f(1) ＜ f(−20) 即 19 ＜ 18，錯。只有 (1) 全部成立。</div></div>' +
+'<div class="as-f">(2)(3)(5) 皆要求 f(1) 比別人小 → 但 f(1) ＝ 19 最大，全錯</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(a) 記錯負數的高斯值 — 題目已用 [−3.1] ＝ −4 提醒你「往下砍」，不過本題三個根號值都是正的，別自己嚇自己。(b) 誤以為 x 變大 f 就變大：√(99−x) 會變小、√(99+x) 會變大，兩邊拉扯，f 不是單調函數，一定要老實代數字。(c) 把 √100 ＝ 10 誤取整成 9 — 完全平方數是「剛好踩到」，取整不掉，這正是本題把 f(1) 拉高一格的設計點。</div>' +
+'<div class="as-ans">答：(1)　（f(−20) ＝ 18、f(0) ＝ 18、f(1) ＝ 19）</div>' +
+'</div>';
+
+var GSAT115A_SOL_3 =
+'<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「等差數列丟進指數函數 → 變等比數列」，要立刻想到指數的核心性質：指數相加等於底數相乘。等差的相鄰差是固定的 d，代進 aˣ 之後相鄰的比就是固定的 a^d — 這就是「等差變等比」的原理，也是這題唯一的關鍵。</div></div>' +
+'<div class="as-f">f(c₂)/f(c₁) ＝ a^(c₂) / a^(c₁) ＝ a^(c₂ − c₁) ＝ a^d</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>題目給公差 d ＝ 10/3、給等比的公比是 4，直接把兩者接起來，得到關於 a 的方程式。</div></div>' +
+'<div class="as-f">a^(10/3) ＝ 4</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>解 a。兩邊同時取 3/10 次方（也就是把指數 10/3 的倒數乘上去），再把 4 寫成 2² 才好整理成 2 的次方。</div></div>' +
+'<div class="as-f">a ＝ 4^(3/10) ＝ (2²)^(3/10) ＝ 2^(6/10) ＝ 2^(3/5)</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>再看要求的數列 f(10), f(8), f(6)。它的「公差」是 8 − 10 ＝ −2（注意是遞減，指數一路變小），所以公比同樣用 a 的公差次方，只是這次指數是 −2。</div></div>' +
+'<div class="as-f">公比 r ＝ f(8)/f(10) ＝ a^(8 − 10) ＝ a^(−2)</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>把 a ＝ 2^(3/5) 代入，指數相乘。</div></div>' +
+'<div class="as-f">r ＝ (2^(3/5))^(−2) ＝ 2^(−6/5)</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>檢查一下第三項也對得起來：f(6)/f(8) ＝ a^(6 − 8) ＝ a^(−2) ＝ 2^(−6/5)，相鄰比值相同，確實是公比 2^(−6/5) 的等比數列。</div></div>' +
+'<div class="as-f">f(6)/f(8) ＝ a^(−2) ＝ 2^(−6/5)　✓ 兩個比值一致</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：數列寫的是 f(10), f(8), f(6)，是「由大到小」！公比要用「後項除前項」＝ f(8)/f(10) ＝ a^(−2)，指數是負的。若順手寫成 a^(+2) 就會得到 2^(6/5)，正好是陷阱選項 (4)。另一個常見失誤是解 a 時把 4^(3/10) 誤算成 2^(3/10)（忘了 4 ＝ 2²），會得到 2^(−3/5)，正是陷阱選項 (2)。這兩個錯誤選項都是出題者替你準備好的。</div>' +
+'<div class="as-ans">答：(1) 2^(−6/5)</div>' +
+'</div>';
+
+var GSAT115A_SOL_4 =
+'<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先看清楚題目問的是「可合成出多少種道具」，不是「有多少種選材料的方式」。這是本題全部的難度所在：有些不同的選法會合成出「同一種」道具，要合併計算；有些選法則每組都算一種新道具。所以策略是照規則把選法分成三大類，分別數「道具種類數」。</div></div>' +
+'<div class="as-f">材料共 16 種：基本 6 種、進階 10 種；每次任選 3 種不同材料</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>第一類：3 種全是基本材料。規則說「合成結果必為同一種草藥」，不管你挑哪三種基本材料，出來的都是那一種草藥。所以無論選法有 C(6,3) ＝ 20 組，道具種類只有 1 種。</div></div>' +
+'<div class="as-f">全基本：選法 C(6,3) ＝ 20 組，但道具種類 ＝ 1（草藥）</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>第二類：2 種基本 ＋ 1 種進階。規則說結果「隨進階材料不同而不同，但不受基本材料影響」，所以道具種類完全由那 1 種進階材料決定 — 進階有 10 種，就有 10 種食物。基本材料怎麼配都不影響，C(6,2) 那 15 種配法完全不必算進去。</div></div>' +
+'<div class="as-f">2 基本 ＋ 1 進階：道具種類 ＝ 進階材料的種數 ＝ 10（食物）</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>第三類：其餘組合，也就是「1 基本 ＋ 2 進階」與「3 種全進階」。規則說「其他的組合都會合成出不同種的藥水」，代表每一組不同的材料組合就對應一種不同的藥水，這時候選法數 ＝ 道具種類數，要老老實實用組合數算。先算 1 基本 ＋ 2 進階。</div></div>' +
+'<div class="as-f">1 基本 ＋ 2 進階：C(6,1) × C(10,2) ＝ 6 × 45 ＝ 270</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>再算 3 種全是進階材料的組合數。</div></div>' +
+'<div class="as-f">3 進階：C(10,3) ＝ (10×9×8)/(3×2×1) ＝ 120</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>藥水種類就是這兩塊相加。</div></div>' +
+'<div class="as-f">藥水 ＝ 270 ＋ 120 ＝ 390</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>三類道具是草藥、食物、藥水三種不同類別，彼此不會重複，直接相加。</div></div>' +
+'<div class="as-f">總種類 ＝ 1（草藥） ＋ 10（食物） ＋ 390（藥水） ＝ 401</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：這題考的是「選法數 ≠ 種類數」的分辨力。(a) 若把三類全部當成選法數相加，就是 C(16,3) ＝ 560，正好是陷阱選項 (5) — 那是「有幾種選材料的方式」而不是「有幾種道具」。(b) 若第二類誤乘上基本材料的配法 C(6,2) ＝ 15，會得到 150，總數變成 1 ＋ 150 ＋ 390 ＝ 541，題目特別強調「不會受到基本材料不同而改變」就是在防這一步。(c) 若第一類誤算成 C(6,3) ＝ 20 種草藥，總數會變成 420。讀規則時務必逐句問自己：這一類的結果「由什麼決定」，就數什麼。</div>' +
+'<div class="as-ans">答：(3) 401　（草藥 1 ＋ 食物 10 ＋ 藥水 390）</div>' +
+'</div>';
+// 115 學測數A 第 5~8 題 adv-sol 詳解
+// 官方答案：Q5 (5)、Q6 (2)、Q7 (3)(4)、Q8 (2)(5)
+
+var GSAT115A_SOL_5 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>先想「這題到底在問什麼」。題目沒有給 A 的九個數字，只給了 A 作用在三個向量上的結果。這種題目<b>千萬不要去解 A</b>，要改看：等號右邊的 (1,0,1)ᵀ 能不能用「已知的三個像」湊出來。</div></div>'
++ '<div class="as-f">令 u→ = (1,1,0)ᵀ、w→ = (0,−1,1)ᵀ、z→ = (1,0,−1)ᵀ<br>已知：A u→ = w→ ，A w→ = u→ ，A z→ = 0→</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>觀察目標向量 (1,0,1)ᵀ。把 u→ 和 w→ 直接相加看看——剛好就是它。</div></div>'
++ '<div class="as-f">u→ + w→ = (1,1,0)ᵀ + (0,−1,1)ᵀ = (1,0,1)ᵀ</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>對 u→ + w→ 作用 A。因為矩陣乘法有分配律，A(u→ + w→) = A u→ + A w→ = w→ + u→，又繞回 (1,0,1)ᵀ。所以我們已經找到<b>一個</b>解。</div></div>'
++ '<div class="as-f">A(u→ + w→) = w→ + u→ = (1,0,1)ᵀ<br>故 v→ = (1,0,1)ᵀ 是一組解</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>關鍵一步：A z→ = 0→ 代表 A 把 z→ 壓成零向量，也就是 <b>A 不是可逆矩陣</b>。既然如此，解一定不只一個——把任意倍的 z→ 加上去，A 作用後那一項會消失。</div></div>'
++ '<div class="as-f">對任意實數 t：<br>A[(1,0,1)ᵀ + t z→] = A(1,0,1)ᵀ + t·A z→ = (1,0,1)ᵀ + t·0→ = (1,0,1)ᵀ<br>故 v→ = (1,0,1)ᵀ + t(1,0,−1)ᵀ = (1+t, 0, 1−t)ᵀ 全都是解</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>最後檢查第二個條件：v→ 垂直於 (0,1,0)ᵀ。兩向量垂直就是內積為 0，而跟 (0,1,0)ᵀ 內積等於「取出第二個分量」，所以條件其實就是 v₂ = 0。</div></div>'
++ '<div class="as-f">v→ · (0,1,0)ᵀ = (1+t)·0 + 0·1 + (1−t)·0 = 0<br>第二個分量恆為 0 ⟹ <b>對每一個 t 都自動成立</b></div>'
++ '<div class="as-step"><div class="as-n">6</div><div>垂直條件完全沒有把 t 卡住，所以 t 可以是任何實數，解有無窮多個。</div></div>'
++ '<div class="as-f">v→ = (1+t, 0, 1−t)ᵀ，t ∈ ℝ ⟹ 無窮多個</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：看到「三階方陣 A」就想把 A 的 9 個未知數解出來，時間全耗光。真正的訊號是 <b>A z→ = 0→</b>——只要有非零向量被打成零，A 就不可逆，方程 A v→ = b→ 只要有解就必然有無窮多解。另一個陷阱是誤以為「加一個垂直條件就會把答案切成有限個」，一定要實際代進去驗算；本題的 z→ 第二分量剛好是 0，垂直條件形同虛設。</div>'
++ '<div class="as-ans">答：(5) 無窮多個</div>'
++ '</div>';
+
+var GSAT115A_SOL_6 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>等腰三角形題的標準起手式：<b>先問「哪兩邊相等」，一共只有三種可能</b>，一種都不能漏。設 C(c, −6)。<br>① CA‾ = CB‾（C 是頂點）② AB‾ = AC‾（A 是頂點）③ AB‾ = BC‾（B 是頂點）<br>算完之後還要做最後一道檢查：<b>C 不可以和 A、B 共線</b>，否則三角形退化成一直線。</div></div>'
++ '<div class="as-f">A(2, −2)，B(−1, 2)<br>AB‾ = √[(2−(−1))² + (−2−2)²] = √(9 + 16) = 5</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>【情況①　CA‾ = CB‾】到 A、B 等距的點就是 AB‾ 的中垂線。先求中點與 AB‾ 的斜率，再取負倒數當中垂線斜率。</div></div>'
++ '<div class="as-f">AB‾ 中點 M = ((2−1)/2, (−2+2)/2) = (½, 0)<br>AB‾ 斜率 = (2−(−2))/(−1−2) = 4/(−3) = −4/3<br>中垂線斜率 = 3/4，中垂線：y = ¾(x − ½)</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>把 y = −6 代入中垂線，解出交點。</div></div>'
++ '<div class="as-f">−6 = ¾(x − ½) ⟹ x − ½ = −8 ⟹ x = −15/2<br>得 C₁(−15/2, −6)　… 1 個</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>【情況②　AB‾ = AC‾ = 5】以 A 為圓心、半徑 5 畫圓，與 y = −6 求交點。</div></div>'
++ '<div class="as-f">(c − 2)² + (−6 − (−2))² = 5²<br>(c − 2)² + 16 = 25 ⟹ (c − 2)² = 9 ⟹ c = 5 或 c = −1<br>候選：(5, −6)、(−1, −6)</div>'
++ '<div class="as-step"><div class="as-n">5</div><div><b>這裡就是本題的殺著</b>：要檢查候選點是否落在直線 AB 上。先寫出直線 AB 的方程式。</div></div>'
++ '<div class="as-f">直線 AB：斜率 −4/3 過 A(2,−2) ⟹ 4x + 3y = 4·2 + 3·(−2) = 2<br>代 (5, −6)：4·5 + 3·(−6) = 20 − 18 = 2 ✗ <b>成立 ⟹ 在直線 AB 上，三點共線，不成三角形，捨去</b><br>代 (−1, −6)：4·(−1) + 3·(−6) = −4 − 18 = −22 ≠ 2 ✓ 保留</div>'
++ '<div class="as-f">情況② 只留下 C₂(−1, −6)　… 1 個</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>【情況③　AB‾ = BC‾ = 5】以 B(−1, 2) 為圓心、半徑 5 畫圓。注意 B 到直線 y = −6 的距離是 |2 − (−6)| = 8，已經大於半徑 5，圓根本碰不到那條線。</div></div>'
++ '<div class="as-f">(c + 1)² + (−6 − 2)² = 5²<br>(c + 1)² + 64 = 25 ⟹ (c + 1)² = −39 ＜ 0　無實數解<br>情況③ … 0 個</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>三種情況彙整並確認沒有重複的點。</div></div>'
++ '<div class="as-f">C₁(−15/2, −6)、C₂(−1, −6) 相異 ⟹ 共 2 個</div>'
++ '<svg viewBox="0 0 460 300" style="width:100%;max-width:440px;display:block;margin:8px auto">'
++ '<line x1="0" y1="84" x2="448" y2="84" stroke="var(--ink3)" stroke-width="1"/>'
++ '<line x1="252" y1="0" x2="252" y2="290" stroke="var(--ink3)" stroke-width="1"/>'
++ '<line x1="0" y1="252" x2="448" y2="252" stroke="var(--accent)" stroke-width="2"/>'
++ '<line x1="14" y1="196" x2="420" y2="-46" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 3"/>'
++ '<line x1="308" y1="140" x2="224" y2="28" stroke="var(--ink)" stroke-width="2"/>'
++ '<line x1="308" y1="140" x2="42" y2="252" stroke="var(--green)" stroke-width="1.5"/>'
++ '<line x1="224" y1="28" x2="42" y2="252" stroke="var(--green)" stroke-width="1.5"/>'
++ '<line x1="308" y1="140" x2="224" y2="252" stroke="var(--gold)" stroke-width="1.5"/>'
++ '<line x1="224" y1="28" x2="224" y2="252" stroke="var(--gold)" stroke-width="1.5"/>'
++ '<circle cx="308" cy="140" r="4" fill="var(--ink)"/><text x="316" y="136" font-size="13" fill="var(--ink)">A(2,−2)</text>'
++ '<circle cx="224" cy="28" r="4" fill="var(--ink)"/><text x="232" y="24" font-size="13" fill="var(--ink)">B(−1,2)</text>'
++ '<circle cx="42" cy="252" r="4" fill="var(--green)"/><text x="10" y="272" font-size="13" fill="var(--green)">C₁(−7.5,−6)</text>'
++ '<circle cx="224" cy="252" r="4" fill="var(--gold)"/><text x="180" y="272" font-size="13" fill="var(--gold)">C₂(−1,−6)</text>'
++ '<circle cx="392" cy="252" r="4" fill="none" stroke="var(--red)" stroke-width="2"/><text x="352" y="272" font-size="13" fill="var(--red)">(5,−6) 共線捨</text>'
++ '<text x="6" y="80" font-size="12" fill="var(--ink3)">x 軸</text>'
++ '<text x="360" y="246" font-size="12" fill="var(--accent)">y = −6</text>'
++ '</svg>'
++ '<div class="as-note">綠色 C₁ 來自中垂線（CA‾ = CB‾）；金色 C₂ 來自以 A 為圓心半徑 5 的圓（AB‾ = AC‾）。虛線是直線 AB 的延伸，它和 y = −6 交於 (5, −6)——那正是情況② 算出卻必須捨去的共線點。以 B 為圓心半徑 5 的圓則因 B 到 y = −6 的距離 8 ＞ 5 而碰不到這條線。</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<b>兩個要命的點</b>。第一，只算「C 到 A、B 等距」一種情況就答 1，忘了 A 或 B 也能當等腰的頂角頂點。第二，情況② 算出 c = 5 與 c = −1 兩個根就直接計 2 個——但 (5, −6) 剛好在直線 AB 上，A、B、C 共線根本圍不出三角形，必須捨去。凡是「求使 △ 為某種三角形的點有幾個」，<b>最後一定要回頭檢查共線</b>；出題者非常愛在這裡埋一個剛好共線的根。答 3 個或 4 個的人幾乎都是漏掉這道檢查。</div>'
++ '<div class="as-ans">答：(2) 2 個</div>'
++ '</div>';
+
+var GSAT115A_SOL_7 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>線性不等式問「落在哪些象限」，最快的做法<b>不是畫圖硬看</b>，而是：先把兩個不等式都整理成「y ＜ 某式」或「y ＞ 某式」，再對每個象限用它的正負號條件去推矛盾。有矛盾就是不可能，推不出矛盾就實際找一個點驗證。</div></div>'
++ '<div class="as-f">2x − y − 3 ＞ 0 ⟹ y ＜ 2x − 3　…(Ⅰ)<br>x + 2y + 1 ＜ 0 ⟹ y ＜ −(x + 1)/2　…(Ⅱ)</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>順手求兩條邊界線的交點，知道這個區域是從哪個「尖角」張開的。</div></div>'
++ '<div class="as-f">2x − y = 3 且 x + 2y = −1<br>由前式 y = 2x − 3，代入後式：x + 2(2x − 3) = −1 ⟹ 5x = 5 ⟹ x = 1, y = −1<br>頂點 (1, −1)，區域是由此往<b>左下方</b>張開的角形區域（兩式都是 y ＜ …）</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>【選項(1) 第一象限】此時 x ＞ 0 且 y ＞ 0。把 y ＞ 0 丟進 (Ⅱ)。</div></div>'
++ '<div class="as-f">由 (Ⅱ)：0 ＜ y ＜ −(x + 1)/2 ⟹ −(x + 1)/2 ＞ 0 ⟹ x ＜ −1<br>與第一象限的 x ＞ 0 <b>矛盾</b> ⟹ (1) 錯</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>【選項(2) 第二象限】此時 x ＜ 0 且 y ＞ 0。這次改用 (Ⅰ)。</div></div>'
++ '<div class="as-f">由 (Ⅰ)：y ＜ 2x − 3，而 x ＜ 0 ⟹ 2x − 3 ＜ −3<br>故 y ＜ −3 ＜ 0，與第二象限的 y ＞ 0 <b>矛盾</b> ⟹ (2) 錯</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>【選項(3) 第三象限】x ＜ 0 且 y ＜ 0，兩個不等式都要 y 夠小，看起來很有機會。<b>直接找一個具體的點驗證</b>比推導快。</div></div>'
++ '<div class="as-f">取 P(−1, −10)：<br>2(−1) − (−10) − 3 = −2 + 10 − 3 = 5 ＞ 0 ✓<br>(−1) + 2(−10) + 1 = −1 − 20 + 1 = −20 ＜ 0 ✓<br>P 在第三象限且滿足兩式 ⟹ (3) 對</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>【選項(4) 第四象限】x ＞ 0 且 y ＜ 0。頂點 (1, −1) 本身就在第四象限，往左下一點就進區域了。</div></div>'
++ '<div class="as-f">取 P(2, −2)：<br>2(2) − (−2) − 3 = 4 + 2 − 3 = 3 ＞ 0 ✓<br>2 + 2(−2) + 1 = 2 − 4 + 1 = −1 ＜ 0 ✓<br>P 在第四象限且滿足兩式 ⟹ (4) 對</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>【選項(5) x 軸】x 軸上的點是 (x, 0)，把 y = 0 同時代入兩式，看 x 有沒有解。</div></div>'
++ '<div class="as-f">代 (Ⅰ)：0 ＜ 2x − 3 ⟹ x ＞ 3/2<br>代 (Ⅱ)：0 ＜ −(x + 1)/2 ⟹ x ＜ −1<br>需同時 x ＞ 3/2 且 x ＜ −1，<b>無解</b> ⟹ (5) 錯</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<b>不等號是嚴格的 ＞ 與 ＜，邊界線本身不算在區域內</b>，所以頂點 (1, −1) 其實不屬於解集合——但它附近（左下側）的點屬於，用來當「第四象限有解」的直覺可以，寫驗證時要換成內部的點如 (2, −2)。另外「x 軸」這個選項很多人憑印象覺得區域跨過 x 軸就選了，其實區域整個落在 x 軸下方偏左下，和 x 軸<b>完全沒有交集</b>，一定要把 y = 0 代進去實算。最後提醒：象限題只要找到<b>一個</b>符合的點就能確定「可能位在」，不必描述整塊區域。</div>'
++ '<div class="as-ans">答：(3)(4)</div>'
++ '</div>';
+
+var GSAT115A_SOL_8 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>矩陣冪次題的萬用起手式：<b>先老實算出 A²、A³、A⁴</b>，有了具體數字，選項(1)(3)(4) 這種「數列關係」直接用數字檢驗，最快也最不會錯。</div></div>'
++ '<div class="as-f">A = [2 1 ; 1 0]<br>A² = [2 1 ; 1 0][2 1 ; 1 0] = [2·2+1·1　2·1+1·0 ; 1·2+0·1　1·1+0·0] = [5 2 ; 2 1]<br>A³ = A²A = [5 2 ; 2 1][2 1 ; 1 0] = [12 5 ; 5 2]<br>A⁴ = A²A² = [5 2 ; 2 1][5 2 ; 2 1] = [29 12 ; 12 5]</div>'
++ '<div class="as-f">整理成 aₙ, bₙ, cₙ, dₙ：<br>n = 2：a₂ = 5, b₂ = 2, c₂ = 2, d₂ = 1<br>n = 3：a₃ = 12, b₃ = 5, c₃ = 5, d₃ = 2<br>n = 4：a₄ = 29, b₄ = 12, c₄ = 12, d₄ = 5<br>（順帶注意：A 對稱 ⟹ Aⁿ 恆對稱 ⟹ bₙ = cₙ）</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>【選項(1)　b₂ ＜ c₂】直接讀第一步的數字。</div></div>'
++ '<div class="as-f">b₂ = 2，c₂ = 2 ⟹ b₂ = c₂，不是 ＜<br>⟹ <b>(1) 錯</b>（A 是對稱矩陣，Aⁿ 也對稱，b 與 c 永遠相等，不可能有大小關係）</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>【選項(2)　A² = 2A + I】把右邊算出來和第一步的 A² 比對。</div></div>'
++ '<div class="as-f">2A + [1 0 ; 0 1] = [4 2 ; 2 0] + [1 0 ; 0 1] = [5 2 ; 2 1] = A² ✓<br>⟹ <b>(2) 對</b></div>'
++ '<div class="as-f">道理（凱萊–漢彌爾頓）：A 的特徵多項式為<br>λ² − (跡)λ + (行列式) = λ² − 2λ − 1<br>故 A² − 2A − I = O，即 A² = 2A + I</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>【選項(3)　c₍ₙ₊₂₎ = c₍ₙ₊₁₎ + 2cₙ】<b>正確的遞迴要從 (2) 推出來</b>：把 A² = 2A + I 兩邊同乘 Aⁿ，係數是 2 和 1，不是 1 和 2——選項把它寫反了。用數字給反例最乾脆。</div></div>'
++ '<div class="as-f">正解：A⁽ⁿ⁺²⁾ = 2A⁽ⁿ⁺¹⁾ + Aⁿ ⟹ c₍ₙ₊₂₎ = 2c₍ₙ₊₁₎ + cₙ</div>'
++ '<div class="as-f">反例（取 n = 2）：<br>選項宣稱 c₄ = c₃ + 2c₂ = 5 + 2·2 = 9<br>實際 c₄ = 12 ≠ 9<br>（正確式：2c₃ + c₂ = 2·5 + 2 = 12 ✓）<br>⟹ <b>(3) 錯</b></div>'
++ '<div class="as-step"><div class="as-n">5</div><div>【選項(4)】左邊 Aⁿ 乘上 (0,1)ᵀ，就是<b>取出 Aⁿ 的第二行</b>，得到 (bₙ, dₙ)ᵀ；但選項寫成了下標 n+1。</div></div>'
++ '<div class="as-f">[aₙ bₙ ; cₙ dₙ]·(0, 1)ᵀ = (aₙ·0 + bₙ·1, cₙ·0 + dₙ·1)ᵀ = (bₙ, dₙ)ᵀ</div>'
++ '<div class="as-f">反例（取 n = 2）：<br>左邊 = (b₂, d₂)ᵀ = (2, 1)ᵀ<br>右邊 = (b₃, d₃)ᵀ = (5, 2)ᵀ<br>(2, 1)ᵀ ≠ (5, 2)ᵀ ⟹ <b>(4) 錯</b><br>（要得到 (b₍ₙ₊₁₎, d₍ₙ₊₁₎)ᵀ，該乘的是 A 再取第二行，即 A⁽ⁿ⁺¹⁾(0,1)ᵀ）</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>【選項(5)　d₂ₙ − a₂ₙ = (dₙ)² − (aₙ)²】看到下標 2n，想法是 <b>A²ⁿ = (Aⁿ)²</b>，把 Aⁿ 當成一個矩陣自乘，再比對對角線。</div></div>'
++ '<div class="as-f">A²ⁿ = (Aⁿ)² = [aₙ bₙ ; cₙ dₙ][aₙ bₙ ; cₙ dₙ]<br>左上 a₂ₙ = aₙ² + bₙcₙ<br>右下 d₂ₙ = cₙbₙ + dₙ²</div>'
++ '<div class="as-f">相減時 bₙcₙ 這一項<b>剛好抵消</b>：<br>d₂ₙ − a₂ₙ = (bₙcₙ + dₙ²) − (aₙ² + bₙcₙ) = dₙ² − aₙ² ✓<br>⟹ <b>(5) 對</b></div>'
++ '<div class="as-f">數字驗證（取 n = 2）：<br>d₄ − a₄ = 5 − 29 = −24<br>(d₂)² − (a₂)² = 1² − 5² = 1 − 25 = −24 ✓ 相符</div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：<b>(3) 是全題最狠的陷阱</b>——大部分人推出 A² = 2A + I 後很興奮，卻沒注意選項把係數 2 挪到了 cₙ 前面（正確是 c₍ₙ₊₂₎ = 2c₍ₙ₊₁₎ + cₙ）。凡是遞迴選項，<b>一律代 n = 2 用實際數字驗一次</b>，五秒就能抓到。<br>(4) 的陷阱在「Aⁿ 乘 (0,1)ᵀ 是取第 n 次方矩陣<b>自己</b>的第二行」，下標不會自動往上跳。<br>(5) 千萬別去猜通式或求特徵值——只要用 A²ⁿ = (Aⁿ)² 展開，交叉項 bₙcₙ 自動消掉，兩行解決；注意這個結論<b>對任何 2×2 方陣都成立</b>，不必用到本題 A 的對稱性。</div>'
++ '<div class="as-ans">答：(2)(5)</div>'
++ '</div>';
+var GSAT115A_SOL_9 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到 T 分數這種題，第一件事不是逐項硬代，而是<b>先把 T 化成 S 的一次函數</b>。兩科 μ 都是 60，只有 σ 不同，代進去後每科都會變成一條很乾淨的直線，後面五個選項幾乎都能直接用這兩條線判斷。</div></div>'
++ '<div class="as-f">數學（σ = 12）：T = 50 + 10·(S − 60)/12 = 50 + (5/6)S − 50 = <b>(5/6)S</b><br>英文（σ = 8）：T = 50 + 10·(S − 60)/8 = 50 + (5/4)S − 75 = <b>(5/4)S − 25</b></div>'
++ '<div class="as-step"><div class="as-n">2</div><div>選項 (1)：甲生英文原始成績 52，直接代英文的式子。</div></div>'
++ '<div class="as-f">T = (5/4)(52) − 25 = 65 − 25 = 40　→　(1) <b>正確</b><br>（也可以心算：52 = 60 − 8 = μ − σ，剛好低於平均一個標準差，所以 T = 50 − 10 = 40）</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>選項 (2)：問「數學的 T 分數會不會超過原始成績」，就是問 T ≤ S 是否<b>恆</b>成立。用第 1 步化好的式子一秒解決。</div></div>'
++ '<div class="as-f">T ≤ S ⟺ (5/6)S ≤ S ⟺ 0 ≤ (1/6)S ⟺ S ≥ 0<br>成績必為非負數，故對全班每個人都成立　→　(2) <b>正確</b><br>（S = 0 時取等號，其餘 T 都嚴格小於 S，例如 S = 90 → T = 75）</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>選項 (3)：原始平均高，T 平均是否一定高？把兩科 T 平均寫出來，看它是不是「原始平均」的遞增函數。</div></div>'
++ '<div class="as-f">T平均 = [ (5/6)S₁ + (5/4)S₂ − 25 ] / 2 = (5/12)S₁ + (5/8)S₂ − 12.5<br>原始平均 = (1/2)S₁ + (1/2)S₂<br>兩科係數 5/12 ≠ 5/8（英文權重比數學大），<b>兩者不是同一個排序</b></div>'
++ '<div class="as-step"><div class="as-n">5</div><div>不同權重就一定舉得出反例：讓乙的分數全押在<b>權重小的數學</b>，丙全押在<b>權重大的英文</b>。</div></div>'
++ '<div class="as-f">乙：數學 100、英文 0　→　原始平均 = 50，T平均 = (83.33 + (−25))/2 ≈ <b>29.2</b><br>丙：數學 0、英文 96　→　原始平均 = 48，T平均 = (0 + 95)/2 = <b>47.5</b><br>乙原始平均 50 &gt; 丙 48，但 T 平均 29.2 &lt; 47.5　→　(3) <b>錯誤</b></div>'
++ '<div class="as-step"><div class="as-n">6</div><div>選項 (4)：及格線 T = 40。因為 40 = 50 − 10，代表「低於平均剛好一個標準差」，所以及格的原始成績就是 μ − σ。</div></div>'
++ '<div class="as-f">數學：(5/6)S = 40 → S = <b>48</b>（= 60 − 12）<br>英文：(5/4)S − 25 = 40 → S = <b>52</b>（= 60 − 8）<br>48 &lt; 52，數學及格的原始成績確實比英文低　→　(4) <b>正確</b><br>直覺：數學散得比較開（σ 大），要掉到「平均以下一個標準差」得掉更多分</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>選項 (5)：迴歸直線斜率公式是 r·(σ_y/σ_x)。轉成 T 分數是<b>線性變換</b>，相關係數 r 不變，但<b>兩科標準差都被拉成 10</b>，斜率的 σ 比例就變了。</div></div>'
++ '<div class="as-f">原始（y = 數學、x = 英文）：斜率 = r·(σ數/σ英) = r·(12/8) = <b>1.5r</b><br>T 分數：σ 都變成 10（因為 T = 50 + 10·標準化分數）<br>　　斜率 = r·(10/10) = <b>r</b><br>1.5r ≠ r（除非 r = 0）　→　(5) <b>錯誤</b></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：(5) 很多人記得「線性變換不改變相關係數 r」就直接把斜率也當成不變——<b>r 不變 ≠ 斜率不變</b>。斜率還乘了 σ_y/σ_x，而 T 分數把原本 12 : 8 的標準差比硬拉成 10 : 10，比例就被改掉了。另外 (3) 的陷阱是「平均」看起來很公平，但 T 分數對每科的縮放倍率不同（1/12 vs 1/8），平均之後兩科權重根本不相等。</div>'
++ '<div class="as-ans">答：(1)(2)(4)</div>'
++ '</div>';
+
+var GSAT115A_SOL_10 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>梯形對角線題的核心工具只有一個：<b>AB‾ ∥ DC‾ ⟹ △ABE ∼ △CDE</b>，相似比 = AB : DC。題目給「△ABE 面積 3」就是要你<b>反推 DC 是 AB 的幾倍</b>，倍數一出來，C、E 的座標全都定了。</div></div>'
++ '<div class="as-step"><div class="as-n">2</div><div>先算 (1)：純粹是內積求夾角，和梯形結構無關，可以最快拿下。</div></div>'
++ '<div class="as-f">AB→·AD→ = 2·1 + (−6)·5 = 2 − 30 = −28<br>|AB→| = √(4 + 36) = √40 = 2√10，|AD→| = √(1 + 25) = √26<br>cos∠BAD = −28 / (2√10·√26) = −28 / (2√260) = −28 / (4√65) = −7/√65 = <b>−7√65/65</b>　→　(1) <b>正確</b></div>'
++ '<div class="as-step"><div class="as-n">3</div><div>算 △ABD 面積（用兩向量的外積絕對值的一半）。注意這一步同時就把 (2) 判掉了。</div></div>'
++ '<div class="as-f">△ABD = ½|2·5 − (−6)·1| = ½|10 + 6| = ½·16 = <b>8</b><br>題目說 9，8 ≠ 9　→　(2) <b>錯誤</b></div>'
++ '<div class="as-step"><div class="as-n">4</div><div>關鍵一步：E 在 BD‾ 上，△ABE 與 △ABD 共用頂點 A、底邊都在直線 BD 上，所以<b>面積比 = BE : BD</b>。由此逼出相似比。</div></div>'
++ '<div class="as-f">△ABE / △ABD = BE / BD = 3 / 8<br>設 DC→ = k·AB→（k &gt; 0）。由 △ABE ∼ △CDE 得 BE : ED = AB : DC = 1 : k<br>故 BE / BD = 1/(1 + k) = 3/8　→　1 + k = 8/3　→　<b>k = 5/3</b>（即 DC‾ 是 AB‾ 的 5/3 倍）</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>k 定了就把 C、E 的向量算出來。DC→ = (5/3)AB→，而 AC→ = AD→ + DC→。</div></div>'
++ '<div class="as-f">DC→ = (5/3)(2, −6) = (10/3, −10)<br>AC→ = AD→ + DC→ = (1, 5) + (10/3, −10) = <b>(13/3, −5)</b><br>AE : EC = AB : DC = 1 : (5/3) = 3 : 5，故 AE→ = (3/8)AC→<br>AE→ = (3/8)(13/3, −5) = <b>(13/8, −15/8)</b> ≠ (3/2, 1/2)　→　(3) <b>錯誤</b></div>'
++ '<svg viewBox="0 0 230 365" style="max-width:230px;display:block;margin:8px auto"><polygon points="50,170 106,338 171,310 78,30" fill="none" stroke="var(--accent)" stroke-width="2"/><line x1="50" y1="170" x2="171" y2="310" stroke="var(--ink3)" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="106" y1="338" x2="78" y2="30" stroke="var(--ink3)" stroke-width="1.2" stroke-dasharray="4 3"/><circle cx="50" cy="170" r="3" fill="var(--ink)"/><circle cx="106" cy="338" r="3" fill="var(--ink)"/><circle cx="171" cy="310" r="3" fill="var(--ink)"/><circle cx="78" cy="30" r="3" fill="var(--ink)"/><circle cx="96" cy="223" r="3.5" fill="var(--red)"/><text x="33" y="168" font-size="13" fill="var(--ink)">A</text><text x="98" y="353" font-size="13" fill="var(--ink)">B</text><text x="178" y="312" font-size="13" fill="var(--ink)">C</text><text x="70" y="24" font-size="13" fill="var(--ink)">D</text><text x="103" y="221" font-size="13" fill="var(--red)">E</text><text x="58" y="255" font-size="11" fill="var(--green)">3</text><text x="135" y="270" font-size="11" fill="var(--green)">25/3</text></svg>'
++ '<div class="as-note">依實際座標繪製（A(0,0)、B(2,−6)、D(1,5)、C(13/3,−5)）。AB‾ 與 DC‾ 平行且 DC‾ 是 AB‾ 的 5/3 倍，故 E 把兩條對角線都分成 3 : 5。綠色數字為 △ABE = 3 與 △CDE = (5/3)²×3 = 25/3。</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>(4) 四邊形面積：△ABD 與 △BCD 以兩條平行邊為底、<b>高相同</b>，所以面積比就等於底長比 AB : DC = 3 : 5。</div></div>'
++ '<div class="as-f">△BCD = △ABD × (5/3) = 8 × 5/3 = 40/3<br>四邊形 ABCD = 8 + 40/3 = 24/3 + 40/3 = <b>64/3</b><br>題目說 65/3，64/3 ≠ 65/3　→　(4) <b>錯誤</b></div>'
++ '<div class="as-step"><div class="as-n">7</div><div>(5) 直接算 BC→ = AC→ − AB→，再比大小（比大小時<b>兩邊平方</b>比較不會出錯）。</div></div>'
++ '<div class="as-f">BC→ = (13/3, −5) − (2, −6) = (13/3 − 6/3, 1) = (7/3, 1)<br>BC‾ = √(49/9 + 1) = √(58/9) = <b>√58/3</b><br>比較：(√58/3)² = 58/9，(8/3)² = 64/9，58/9 &lt; 64/9<br>故 BC‾ = √58/3 ≈ 2.54 &lt; 8/3 ≈ 2.67　→　(5) <b>正確</b></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：兩個關鍵比要分清楚——<b>△ABE : △ABD = BE : BD = 3 : 8</b>（同高比底），而<b>相似比 AB : DC = BE : ED = 3 : 5</b>。很多人把 3/8 直接當成相似比去算，C 點座標就全錯，(3)(4)(5) 一次陪葬。另外 (4) 的 64/3 和選項的 65/3 只差 1/3，算面積時千萬別把 △ABD 的 ½ 忘了或多乘。</div>'
++ '<div class="as-ans">答：(1)(5)</div>'
++ '</div>';
+
+var GSAT115A_SOL_11 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到「一條直線和一條餘弦曲線的交點」，先抓三個結構性事實，五個選項幾乎都靠它們：<br>① y = cos((π/2)x) <b>週期 = 2π ÷ (π/2) = 4</b>，且是<b>偶函數</b>（對 y 軸對稱）<br>② 所有 Lₘ 都通過<b>定點 (0, 1)</b>，而 cos(0) = 1，所以 <b>(0, 1) 永遠是交點</b><br>③ |cos| ≤ 1，交點只可能落在 −1 ≤ mx + 1 ≤ 1 的範圍內</div></div>'
++ '<div class="as-step"><div class="as-n">2</div><div>選項 (1)：m &gt; 0 時交點 x 坐標皆為負？第 1 步的事實 ② 直接反駁。</div></div>'
++ '<div class="as-f">(0, 1) 恆為 Lₘ 與 Γ 的交點，其 x 坐標 = 0，<b>0 不是負數</b><br>（其餘交點確實都在 x &lt; 0：因為 x &gt; 0 且 m &gt; 0 時 mx + 1 &gt; 1 ≥ cos((π/2)x)，不可能相等。但只要有 x = 0 這一個，「皆為負」就不成立）　→　(1) <b>錯誤</b></div>'
++ '<div class="as-step"><div class="as-n">3</div><div>選項 (2)：這是對稱性題。把 (−a, b) 分別代進 Γ 和 L₋ₘ 驗證即可。</div></div>'
++ '<div class="as-f">已知 b = cos((π/2)a) 且 b = ma + 1<br>驗 Γ：cos((π/2)(−a)) = cos(−(π/2)a) = cos((π/2)a) = b　✓（cos 是偶函數）<br>驗 L₋ₘ：y = (−m)(−a) + 1 = ma + 1 = b　✓<br>兩者都通過 (−a, b)　→　(2) <b>正確</b><br>幾何意義：Γ 對 y 軸對稱，Lₘ 與 L₋ₘ 也對 y 軸互相對稱，整張圖鏡射過去就重合</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>選項 (3)：先別急著解 m，<b>先檢查這個點在不在 Γ 上</b>。不在的話，任何 m 都救不了。</div></div>'
++ '<div class="as-f">x = 20/3 時：(π/2)·(20/3) = 10π/3<br>10π/3 − 2π = 10π/3 − 6π/3 = 4π/3<br>cos(4π/3) = <b>−1/2</b> ≠ 1/2<br>故 (20/3, 1/2) <b>根本不在 Γ 上</b>，不存在這樣的 m　→　(3) <b>錯誤</b></div>'
++ '<div class="as-step"><div class="as-n">5</div><div>選項 (4)：交點在 y = −1 上，代表這是 cos 的<b>最低點</b>。先把所有最低點的 x 找出來。</div></div>'
++ '<div class="as-f">cos((π/2)x) = −1 ⟺ (π/2)x = π + 2kπ ⟺ <b>x = 2 + 4k</b>（k 為整數）<br>即 x = …, −6, −2, 2, 6, 10, …，可寫成 x = 2(2k + 1)（2 乘上一個奇數）</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>再把這個點代進直線，解出 m，然後看 1/m。</div></div>'
++ '<div class="as-f">−1 = m·x + 1　→　mx = −2　→　m = −2/x<br>1/m = −x/2 = −(2 + 4k)/2 = <b>−(2k + 1)</b><br>2k + 1 是奇數，負奇數仍是奇數　→　(4) <b>正確</b><br>驗證：取 x = 2 → m = −1 → 1/m = −1（奇數）；取 x = 6 → m = −1/3 → 1/m = −3（奇數）</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>選項 (5)：交點在 x 軸上（y = 0），先找 cos 的零點，再舉一個具體的 m 數交點個數。</div></div>'
++ '<div class="as-f">cos((π/2)x) = 0 ⟺ (π/2)x = π/2 + kπ ⟺ <b>x = 1 + 2k</b>（奇數）<br>代入直線：0 = m·x + 1 → m = −1/x<br>取 x = 1，則 <b>m = −1</b>，直線 L₋₁ : y = −x + 1</div>'
++ '<div class="as-step"><div class="as-n">8</div><div>數 L₋₁ 與 Γ 的交點：先用 |cos| ≤ 1 把範圍鎖死，再逐點檢查。</div></div>'
++ '<div class="as-f">需 −1 ≤ −x + 1 ≤ 1　→　<b>0 ≤ x ≤ 2</b>，交點只能在這區間內<br>x = 0：直線 1，cos(0) = 1　✓ 交點<br>x = 1：直線 0，cos(π/2) = 0　✓ 交點<br>x = 2：直線 −1，cos(π) = −1　✓ 交點<br>區間內恰有 <b>3 個</b>交點（3 是奇數）　→　(5) <b>錯誤</b></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 的陷阱是<b>忘記 (0, 1) 這個必然交點</b>——所有 Lₘ 都被釘在 (0, 1)，而它剛好也在 Γ 上，「皆為負」就死在 x = 0。(3) 的陷阱是急著設 m 去解方程式，其實只要先算 cos(10π/3) = −1/2 就結束了：<b>點不在曲線上，先驗點再解 m</b>。(5) 則要記得 x 軸交點本身也算一個交點，加上 (0, 1) 和另一端的 (2, −1)，正好湊成奇數個。</div>'
++ '<div class="as-ans">答：(2)(4)</div>'
++ '</div>';
+
+var GSAT115A_SOL_12 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>三次函數對稱中心題，只要記住一條公式就好：<b>y = ax³ + bx² + cx + d 的對稱中心 x 坐標 = −b/(3a)</b>（就是反曲點，二階導數為 0 的地方）。所以這題的策略是：設出 f 的一般式，用 f − g = 2x³ + 2x 推出 g，再各自套公式。</div></div>'
++ '<div class="as-f">設 f(x) = x³ + px² + qx + r（首項係數 1，題目給定）<br>g(x) = f(x) − (2x³ + 2x) = <b>−x³ + px² + (q − 2)x + r</b><br>注意 g 的首項係數 = 1 − 2 = <b>−1</b>（仍是三次，符合題意）</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>套對稱中心公式，把 a₁、a₂ 算出來。這一步是整題的鑰匙。</div></div>'
++ '<div class="as-f">Γ₁（a = 1、b = p）：a₁ = −p/(3·1) = <b>−p/3</b><br>Γ₂（a = −1、b = p）：a₂ = −p/(3·(−1)) = <b>p/3</b><br>令 t = p/3，則 <b>a₁ = −t，a₂ = t</b></div>'
++ '<div class="as-step"><div class="as-n">3</div><div>再把 b₁ = f(a₁)、b₂ = g(a₂) 算出來（代入時用 p = 3t 化簡會很乾淨）。</div></div>'
++ '<div class="as-f">b₁ = f(−t) = −t³ + p t² − q t + r = −t³ + 3t·t² − qt + r = <b>2t³ − qt + r</b><br>b₂ = g(t) = −t³ + p t² + (q − 2)t + r = −t³ + 3t³ + (q − 2)t + r = <b>2t³ + (q − 2)t + r</b></div>'
++ '<div class="as-step"><div class="as-n">4</div><div>選項 (1)：兩圖形的交點就是解 f(x) = g(x)，也就是 f − g = 0。題目直接把 f − g 給你了。</div></div>'
++ '<div class="as-f">f(x) − g(x) = 0　→　2x³ + 2x = 0　→　2x(x² + 1) = 0<br>x² + 1 = 0 <b>無實根</b>，故只有 x = 0<br>交點<b>恰有 1 個</b>（0, r），不是三個　→　(1) <b>錯誤</b></div>'
++ '<div class="as-step"><div class="as-n">5</div><div>選項 (2)：a₁ + a₂ 是否唯一確定？直接把第 2 步的結果相加。</div></div>'
++ '<div class="as-f">a₁ + a₂ = −t + t = <b>0</b><br>不論 p、q、r 取什麼值都等於 0，<b>唯一確定</b>　→　(2) <b>正確</b><br>（意義：兩個對稱中心永遠對 y 軸左右對稱）</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>選項 (3)：b₁ + b₂ 是否唯一確定？同樣相加看還剩哪些字母。</div></div>'
++ '<div class="as-f">b₁ + b₂ = (2t³ − qt + r) + (2t³ + (q − 2)t + r) = <b>4t³ − 2t + 2r</b><br>q 雖然消掉了，但 <b>t 和 r 還在</b>，值不唯一<br>反例：f = x³（p = q = r = 0）→ b₁ + b₂ = 0；f = x³ + 1（r = 1）→ b₁ + b₂ = 2<br>0 ≠ 2　→　(3) <b>錯誤</b></div>'
++ '<div class="as-step"><div class="as-n">7</div><div>選項 (4)：a₁ = a₂ 時。搭配 (2) 已證的 a₁ + a₂ = 0，這兩個條件一夾，答案立刻出來。</div></div>'
++ '<div class="as-f">a₁ = a₂ 且 a₁ + a₂ = 0　→　2a₁ = 0　→　a₁ = a₂ = 0，即 <b>t = 0（p = 0）</b><br>此時 b₁ = f(0) = r，b₂ = g(0) = r<br>b₁ = b₂ = r　→　(4) <b>正確</b></div>'
++ '<div class="as-step"><div class="as-n">8</div><div>選項 (5)：反過來，b₁ = b₂ 是否一定推得 a₁ = a₂？把第 3 步兩式相減看看。</div></div>'
++ '<div class="as-f">b₂ − b₁ = [2t³ + (q − 2)t + r] − [2t³ − qt + r] = (2q − 2)t<br>b₁ = b₂ ⟺ (2q − 2)t = 0 ⟺ <b>t = 0 或 q = 1</b><br>只要取 <b>q = 1 且 t ≠ 0</b>，就會 b₁ = b₂ 但 a₁ ≠ a₂</div>'
++ '<div class="as-step"><div class="as-n">9</div><div>把反例寫成具體的多項式（考場上一定要驗算過再劃卡）。</div></div>'
++ '<div class="as-f">取 p = 3（t = 1）、q = 1、r = 0：<br>f(x) = x³ + 3x² + x　→　a₁ = −3/3 = −1，b₁ = f(−1) = −1 + 3 − 1 = <b>1</b><br>g(x) = −x³ + 3x² − x　→　a₂ = −3/(−3) = 1，b₂ = g(1) = −1 + 3 − 1 = <b>1</b><br>b₁ = b₂ = 1，但 a₁ = −1 ≠ 1 = a₂　→　(5) <b>錯誤</b></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：最大的陷阱是<b>忘記 g 的首項係數是 −1 而不是 1</b>——f − g = 2x³ + … 表示 g 的 x³ 係數是 1 − 2 = −1。若誤以為兩者同號，a₂ 會算成 −p/3，就變成 a₁ = a₂ 恆成立，(2)(4)(5) 全錯。第二個陷阱是 (4) 和 (5) 看起來像互逆命題就以為同真同假，其實 (4) 借了「a₁ + a₂ = 0」這個強條件把兩點夾死在原點，(5) 沒有這種好事——b₁ = b₂ 還有 q = 1 這條逃生路。</div>'
++ '<div class="as-ans">答：(2)(4)</div>'
++ '</div>';
+// 115 學測數學A — 選填題 13~17 詳解（adv-sol）
+// 變數前綴 GSAT115A_SOL_
+
+var GSAT115A_SOL_13 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「已知結果、回推原因」就是條件機率。這題給的是「學士中有多少通過」「碩士中有多少通過」，問的卻是「已知通過，是碩士的機率」——方向相反，要用貝氏（先算聯合機率，再除以總和）。先把兩條路徑的機率各自乘出來。</div></div>' +
+'<div class="as-f">學士且通過：P = (1/4) × (1/5) = 1/20<br>碩士且通過：P = (3/4) × (3/5) = 9/20</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>把「通過英聽檢定」這件事的總機率算出來（就是上面兩條路徑相加，因為學士、碩士互斥且涵蓋全體）。</div></div>' +
+'<div class="as-f">P(通過) = 1/20 + 9/20 = 10/20 = 1/2</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>條件機率＝「我要的那一條」除以「全部通過的」。</div></div>' +
+'<div class="as-f">P(碩士 | 通過) = (9/20) ÷ (10/20) = 9/10</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>快速心算法：把全校設成 20 人（分母 4 與 5 的最小公倍數）。學士 5 人、其中 1 人過；碩士 15 人、其中 9 人過。通過的共 10 人，碩士佔 9 人 → 9/10。跟上面完全一致，考場上用這招最快也最不會錯。</div></div>' +
+'<div class="as-f">20 人 → 學士 5（過 1）、碩士 15（過 9）<br>通過者 1 + 9 = 10 人，其中碩士 9 人 → 9/10</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>填答格式：答案欄是「⑬-1 分之 ⑬-2⑬-3」，分子一格、分母兩格，且要最簡分數。9/10 已是最簡（9 與 10 互質）。</div></div>' +
+'<div class="as-f">⑬-1 = 9（分子）<br>⑬-2 = 1、⑬-3 = 0（分母 10，十位填 1、個位填 0）</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：把答案寫成 3/5（那是「已知是碩士，通過的機率」，條件方向反了），或寫成 9/20（那是「同時是碩士且通過」的聯合機率，忘了除以 P(通過)）。分母兩格提示你答案分母是兩位數，若你算出 3/5 就會發現格子填不滿——這是原卷給的免費檢查點，一定要用。</div>' +
+'<div class="as-ans">答：9/10（⑬-1 = 9，⑬-2 = 1，⑬-3 = 0）</div>' +
+'</div>';
+
+var GSAT115A_SOL_14 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先把「向量與直線垂直」翻譯成算式。直線 y = bx − 1 的方向向量是 (1, b)（斜率 b 表示 x 走 1、y 走 b）。垂直就是內積為 0。注意 a、b 不是各自獨立的兩個變數——b 同時出現在向量與直線裡，這才是本題的機關。</div></div>' +
+'<div class="as-f">(a, b) · (1, b) = 0<br>a + b² = 0　→　a = −b²</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>把 a 換掉，兩個變數變成只剩一個 b，問題就退化成「求二次函數最大值」。</div></div>' +
+'<div class="as-f">a + b = −b² + b</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>配方求最大值。開口向下（二次項係數 −1 &lt; 0），所以頂點就是最大值。</div></div>' +
+'<div class="as-f">−b² + b = −(b² − b) = −(b − ½)² + ¼</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>當 b = ½ 時取到最大值 ¼。回頭驗證這組解合法：a = −b² = −¼，向量 (−¼, ½) 不是零向量（零向量談不上垂直），直線是 y = ½x − 1，方向 (1, ½)，內積 = −¼ + ¼ = 0 ✓。</div></div>' +
+'<div class="as-f">b = ½ → a = −¼，a + b = −¼ + ½ = ¼<br>驗證：(−¼, ½)·(1, ½) = −¼ + ¼ = 0 ✓</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>填答格式：答案欄是「⑭-1 分之 ⑭-2」，分子一格、分母一格，最簡分數。¼ 的分子是 1、分母是 4。</div></div>' +
+'<div class="as-f">⑭-1 = 1（分子）<br>⑭-2 = 4（分母）</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：把直線的「法向量」誤當成方向向量。y = bx − 1 可寫成 bx − y − 1 = 0，法向量是 (b, −1)；「(a,b) 與直線垂直」意思是 (a,b) 平行於法向量、垂直於方向向量 (1,b)。若誤用成 (a,b)·(b,−1)=0 會得到 ab = b，做出來的是完全不同的題。另一個雷是忘了 b 一樣要當變數：有人固定 b 只對 a 求極值，結果 a + b 沒有上界（會誤答「無最大值」）。</div>' +
+'<div class="as-ans">答：¼（⑭-1 = 1，⑭-2 = 4）</div>' +
+'</div>';
+
+var GSAT115A_SOL_15 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>三點共線 → 任兩段的斜率相等。這題最關鍵的觀察是：三個點的 x 坐標剛好就是 a、b、c，而 a、b、c 是等差數列，所以兩段的「x 差」相同（都等於公差 d）。斜率的分母一樣，代表分子（y 的差）也必須一樣——直接把除法變成減法，計算量大幅下降。</div></div>' +
+'<div class="as-f">設公差 d：b − a = c − b = d（d &gt; 0，因 a &lt; b &lt; c）<br>斜率相等：(log4b − log3a)/d = (log6c − log4b)/d<br>→ log4b − log3a = log6c − log4b</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>用對數律把減法收成一個 log，再脫掉 log（log 是一對一函數，兩邊 log 相等就代表真數相等）。</div></div>' +
+'<div class="as-f">log(4b / 3a) = log(6c / 4b)<br>→ 4b / (3a) = 6c / (4b)<br>→ 16b² = 18ac　→　8b² = 9ac</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>再用一次等差的條件把 c 消掉：等差表示中項是兩端的平均，2b = a + c，所以 c = 2b − a。代進去就只剩 a、b。</div></div>' +
+'<div class="as-f">8b² = 9a(2b − a) = 18ab − 9a²<br>→ 8b² − 18ab + 9a² = 0</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>題目要的是「比值 b/a」，所以整式同除以 a²（a &gt; 0 可放心除），令 t = b/a，變成一元二次方程。</div></div>' +
+'<div class="as-f">8t² − 18t + 9 = 0，其中 t = b/a<br>t = (18 ± √(324 − 288)) / 16 = (18 ± 6) / 16<br>→ t = 24/16 = 3/2　或　t = 12/16 = 3/4</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>兩個根要用題目條件篩選。題目寫明 a &lt; b，所以 b/a &gt; 1，t = 3/4 不合，捨去。</div></div>' +
+'<div class="as-f">t = 3/4 &lt; 1 與 a &lt; b 矛盾 → 捨<br>t = 3/2 → b = 1.5a、c = 2b − a = 2a，確實 a &lt; 1.5a &lt; 2a ✓</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>驗算（實際找一組數代回去）：取 a = 2，則 b = 3、c = 4，等差公差 1 ✓。三點為 (2, log6)、(3, log12)、(4, log24)，相鄰的 y 差都是 log2，x 差都是 1，斜率同為 log2，確實共線 ✓。</div></div>' +
+'<div class="as-f">a=2, b=3, c=4：log12 − log6 = log2；log24 − log12 = log2<br>兩段斜率皆為 log2 → 共線 ✓</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>填答格式：答案欄是「⑮-1 分之 ⑮-2」，分子一格、分母一格，最簡分數。3/2 的分子 3、分母 2。</div></div>' +
+'<div class="as-f">⑮-1 = 3（分子）<br>⑮-2 = 2（分母）</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 把 log3a 讀成以 3 為底的對數——原卷是 log 3a，指的是常用對數 log(3a)，讀錯整題就走偏；(2) 忘記檢查兩根、直接填 3/4（那組會得到 a &gt; b，違反題目寫的 a &lt; b &lt; c）；(3) 沒發現「等差 → 兩段 x 差相同」而硬去展開三階行列式，時間會不夠。</div>' +
+'<div class="as-ans">答：3/2（⑮-1 = 3，⑮-2 = 2）</div>' +
+'</div>';
+
+var GSAT115A_SOL_16 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>先把原拋物線定出來。已知它交 x 軸於 −½ 和 ½，所以可用因式形式寫成 y = k(x + ½)(x − ½) = k(x² − ¼)。這種「已知兩根」的題目用因式形式最省事，不要一開始就設 ax² + bx + c 三個未知數。由對稱性，頂點的 x 坐標是兩根的平均 = 0。</div></div>' +
+'<div class="as-f">f(x) = k(x² − ¼)，頂點 x = (−½ + ½)/2 = 0<br>頂點 P = (0, −k/4)</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>用「頂點 P 在直線 y = 1 + 2x 上」把 k 定出來。</div></div>' +
+'<div class="as-f">−k/4 = 1 + 2(0) = 1　→　k = −4<br>f(x) = −4(x² − ¼) = −4x² + 1，P = (0, 1)</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>關鍵觀念：平移不改變形狀，所以平移後的拋物線二次項係數仍是 −4，只是頂點換位置。設新頂點 Q 在直線上，把 Q 的坐標用一個參數 q 表示，就只剩一個未知數。</div></div>' +
+'<div class="as-f">設 Q = (q, 1 + 2q)<br>平移後：y = −4(x − q)² + (1 + 2q)</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>再用「亦通過 B(½, 0)」代入解 q。</div></div>' +
+'<div class="as-f">0 = −4(½ − q)² + 1 + 2q<br>−4(¼ − q + q²) + 1 + 2q = 0<br>−1 + 4q − 4q² + 1 + 2q = 0<br>6q − 4q² = 0　→　2q(3 − 2q) = 0<br>→ q = 0　或　q = 3/2</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>q = 0 得到的正是原來的 Γ（頂點就是 P），但題目說 P、Q 為兩相異點，所以捨去，取 q = 3/2。</div></div>' +
+'<div class="as-f">q = 0 → Q = (0, 1) = P，與「相異」矛盾 → 捨<br>q = 3/2 → Q = (3/2, 1 + 3) = (3/2, 4)</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>算 PQ 的長度。P = (0, 1)、Q = (3/2, 4)。</div></div>' +
+'<div class="as-f">PQ‾ = √((3/2 − 0)² + (4 − 1)²) = √(9/4 + 9)<br>= √(45/4) = √45 / 2 = 3√5 / 2</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>驗算：新拋物線 y = −4(x − 3/2)² + 4，代 x = ½ 得 −4(−1)² + 4 = 0 ✓ 確實通過 B。頂點 (3/2, 4) 代直線：1 + 2(3/2) = 4 ✓ 確實在線上。</div></div>' +
+'<div class="as-f">x = ½：−4(½ − 3/2)² + 4 = −4(1) + 4 = 0 ✓<br>頂點：1 + 2(3/2) = 4 ✓</div>' +
+'<div class="as-step"><div class="as-n">8</div><div>填答格式：答案欄長得像「⑯-3 分之 ⑯-1√⑯-2」，也就是（整數）×（根號內數字）÷（分母），且要最簡根式。3√5/2 → 根號外 3、根號內 5、分母 2。注意 √45 一定要化簡成 3√5，否則 ⑯-2 的格子會填成兩位數字而填不下。</div></div>' +
+'<div class="as-f">⑯-1 = 3（根號外係數）<br>⑯-2 = 5（根號內）<br>⑯-3 = 2（分母）</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 忘了平移後「開口大小不變」，又重新設一個新的二次項係數，未知數變多解不出來；(2) 解出 q = 0 和 q = 3/2 卻沒看到「P、Q 為兩相異點」而選錯根，或誤以為兩解都要算；(3) 算完 √(45/4) 直接填 √45/2，沒化最簡根式，格子數對不上。原卷寫「化為最簡根式」就是在提醒你這一步。</div>' +
+'<div class="as-ans">答：3√5 / 2（⑯-1 = 3，⑯-2 = 5，⑯-3 = 2）</div>' +
+'</div>';
+
+var GSAT115A_SOL_17 = '<div class="adv-sol">' +
+'<div class="as-step"><div class="as-n">1</div><div>看到「角是兩倍」＋「邊是兩倍」＋直角三角形，第一步是設一個角當變數，把所有線段都用同一個角的三角函數表示。因為 ∠A 是直角，把 AC‾ 當基準長度最方便：AD 和 AB 都可以用 tan 直接寫出來。</div></div>' +
+'<div class="as-f">設 ∠ACD = θ，則 ∠BCD = 2θ、∠ACB = 3θ<br>設 AC‾ = 1（不影響比值 k）<br>AD‾ = tanθ、　AB‾ = tan3θ、　BC‾ = 1/cos3θ</div>' +
+'<div class="as-step"><div class="as-n">2</div><div>把 BD‾ 寫成 AB‾ 減 AD‾（D 在 AB 上，且因 θ &lt; 3θ 可知 D 在 A 與 B 之間）。</div></div>' +
+'<div class="as-f">BD‾ = AB‾ − AD‾ = tan3θ − tanθ</div>' +
+'<div class="as-step"><div class="as-n">3</div><div>把題目給的 BC‾ = 2 BD‾ 代進去，得到一條只含 θ 的方程式。右邊的 tan 相減要通分——通分後分子剛好湊出正弦的差角公式，這是本題最漂亮的一步。</div></div>' +
+'<div class="as-f">1/cos3θ = 2(tan3θ − tanθ)<br>tan3θ − tanθ = sin3θ/cos3θ − sinθ/cosθ<br>= (sin3θ·cosθ − cos3θ·sinθ) / (cos3θ·cosθ)<br>= sin(3θ − θ) / (cos3θ·cosθ) = sin2θ / (cos3θ·cosθ)</div>' +
+'<div class="as-step"><div class="as-n">4</div><div>兩邊同乘 cos3θ 消掉（3θ 是銳角，cos3θ ≠ 0），再用二倍角 sin2θ = 2sinθcosθ，θ 就解出來了。</div></div>' +
+'<div class="as-f">1/cos3θ = 2·sin2θ / (cos3θ·cosθ)<br>→ 1 = 2 sin2θ / cosθ　→　cosθ = 2 sin2θ = 4 sinθ cosθ<br>cosθ ≠ 0，兩邊同除 cosθ：1 = 4 sinθ　→　sinθ = ¼</div>' +
+'<div class="as-step"><div class="as-n">5</div><div>題目問的 k 是 AD→ = k AB→ 的比例係數。因為 D 在 AB‾ 上、與 AB→ 同向，k 就是長度比 AD‾ : AB‾（正值）。</div></div>' +
+'<div class="as-f">k = AD‾ / AB‾ = tanθ / tan3θ</div>' +
+'<div class="as-step"><div class="as-n">6</div><div>由 sinθ = ¼ 求 tanθ，再用三倍角的 tan 公式算 tan3θ。</div></div>' +
+'<div class="as-f">cosθ = √(1 − 1/16) = √15/4　→　tanθ = 1/√15<br>tan3θ = (3tanθ − tan³θ) / (1 − 3tan²θ)<br>分子 = 3/√15 − 1/(15√15) = (45 − 1)/(15√15) = 44/(15√15)<br>分母 = 1 − 3·(1/15) = 1 − 1/5 = 4/5<br>tan3θ = 44/(15√15) × 5/4 = 11/(3√15)</div>' +
+'<div class="as-step"><div class="as-n">7</div><div>相除得答案。</div></div>' +
+'<div class="as-f">k = (1/√15) ÷ (11/(3√15)) = (1/√15) × (3√15/11) = 3/11</div>' +
+'<div class="as-step"><div class="as-n">8</div><div>驗算（用實際長度檢查 BC‾ = 2BD‾）：取 AC‾ = 1，θ ≈ 14.48°、3θ ≈ 43.43°。</div></div>' +
+'<div class="as-f">AD‾ = tanθ ≈ 0.2582、AB‾ = tan3θ ≈ 0.9467<br>BD‾ = 0.9467 − 0.2582 = 0.6885<br>BC‾ = √(AB‾² + AC‾²) = √(0.8962 + 1) ≈ 1.3771<br>1.3771 ÷ 0.6885 ≈ 2.000 ✓　且 0.2582/0.9467 ≈ 0.2727 = 3/11 ✓</div>' +
+'<svg viewBox="0 0 340 300" width="100%" style="max-width:340px;display:block;margin:10px auto">' +
+'<polygon points="60,260 249,260 60,60" fill="none" stroke="var(--accent)" stroke-width="2"/>' +
+'<line x1="60" y1="60" x2="112" y2="260" stroke="var(--green)" stroke-width="2"/>' +
+'<path d="M60 244 L76 244 L76 260" fill="none" stroke="var(--ink3)" stroke-width="1.5"/>' +
+'<circle cx="60" cy="260" r="3" fill="var(--ink)"/><circle cx="249" cy="260" r="3" fill="var(--ink)"/>' +
+'<circle cx="60" cy="60" r="3" fill="var(--ink)"/><circle cx="112" cy="260" r="3" fill="var(--red)"/>' +
+'<text x="44" y="278" font-size="14" fill="var(--ink)">A</text>' +
+'<text x="253" y="278" font-size="14" fill="var(--ink)">B</text>' +
+'<text x="46" y="54" font-size="14" fill="var(--ink)">C</text>' +
+'<text x="106" y="280" font-size="14" fill="var(--red)">D</text>' +
+'<text x="68" y="96" font-size="12" fill="var(--green)">θ</text>' +
+'<text x="82" y="118" font-size="12" fill="var(--gold)">2θ</text>' +
+'<text x="150" y="252" font-size="12" fill="var(--ink3)">BD‾</text>' +
+'<text x="76" y="252" font-size="12" fill="var(--ink3)">AD‾</text>' +
+'<text x="196" y="150" font-size="12" fill="var(--ink3)">BC‾ = 2BD‾</text>' +
+'</svg>' +
+'<div class="as-note">圖為按實際比例繪製（sinθ = ¼ 時 θ ≈ 14.5°、∠ACB = 3θ ≈ 43.4°）。CD‾（綠線）把直角 ∠ACB 分成靠近 AC 的 θ 與靠近 CB 的 2θ，因此 D 落在靠近 A 的一側，AD‾ 只佔 AB‾ 的 3/11——答案小於 ½ 是合理的。</div>' +
+'<div class="as-step"><div class="as-n">9</div><div>填答格式：答案欄是「⑰-1 分之 ⑰-2⑰-3」，分子一格、分母兩格，最簡分數。3/11 已最簡（3 與 11 互質）。</div></div>' +
+'<div class="as-f">⑰-1 = 3（分子）<br>⑰-2 = 1、⑰-3 = 1（分母 11，十位 1、個位 1）</div>' +
+'<div class="as-warn">⚠ 學測考場最容易在這裡失分：(1) 把 ∠BCD = 2∠ACD 誤讀成 ∠BCD = 2∠ACB，或把三個角的位置擺反（θ 靠 AC 這側、2θ 靠 CB 這側，因為 D 在 AB 上、CD 在 CA 與 CB 之間）；(2) 硬用「角平分線分對邊」的比例定理——CD 不是角平分線（是 1:2 分割），套錯定理會得到 1/3；(3) tan3θ 忘了公式，可改用 tan(2θ+θ) 的和角公式一步步推，別亂猜；(4) 分母是兩位數格子，若你算出 1/3 或 1/4 就會填不滿，這是原卷免費送的檢查點。</div>' +
+'<div class="as-ans">答：3/11（⑰-1 = 3，⑰-2 = 1，⑰-3 = 1）</div>' +
+'</div>';
+var GSAT115A_SOL_18 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>看到題目<b>直接把外積算好給你</b>，第一個反應應該是：「外積能拿來做什麼？」空間向量的外積只有兩個用途，這個題組剛好兩個都考：<br>‧ <b>長度</b> |u→ × v→| = 以 u→, v→ 為兩鄰邊的<b>平行四邊形面積</b>（第 18 題用這個）<br>‧ <b>方向</b> u→ × v→ 同時垂直 u→ 和 v→，也就是這兩個向量所張平面的<b>法向量</b>（第 19 題用這個）<br>平行四邊形 ABCD 的兩鄰邊正是 AB→ 與 AD→，所以要的面積就是 AB→ × AD→ 的長度，題目已經幫你算好了，剩下的只是取長度。</div></div>'
++ '<div class="as-f">平行四邊形 ABCD 面積 = |AB→ × AD→|</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>把 (−5, 5, 5) 取長度。注意 75 = 25 × 3，要提出的是 √25 = 5。</div></div>'
++ '<div class="as-f">|(−5, 5, 5)| = √((−5)² + 5² + 5²) = √(25 + 25 + 25) = √75</div>'
++ '<div class="as-f">√75 = √(25 × 3) = 5√3　（≈ 5 × 1.732 = 8.66）</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>對一下選項：5√3 ≈ 8.66，而 2√5 ≈ 4.47、5√2 ≈ 7.07、6√3 ≈ 10.39、10√2 ≈ 14.14，只有 (3) 對得上，沒有選項長得像但數值接近的干擾，可以放心。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：① <b>多除了一個 2</b>——½|u→ × v→| 是<b>三角形</b>面積，這題問的是<b>平行四邊形</b>，不要除 2（答成 (2) 5√2 者常是把 √75 又亂化簡；真的除 2 會得 5√3/2，選項裡根本沒有，反而救了你一命）。② <b>√75 化錯</b>：75 = 25 × 3 → 5√3，寫成 3√5（把 75 當成 9 × 5，但 9 × 5 = 45）是最常見的手滑，而且 (1) 2√5 就在旁邊等你踩。③ 有人會想「面積要不要看正負」——外積可能指向反面，但<b>長度恆為正</b>，面積不會有負的問題。</div>'
++ '<div class="as-ans">答：(3) 5√3</div>'
++ '</div>';
+
+var GSAT115A_SOL_19 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div>求平面方程式永遠只需要兩樣東西：<b>一個法向量</b> ＋ <b>平面上的一個點</b>。先各自去湊。<br>‧ 法向量：平面 ABCD 是由 AB→ 和 AD→ 張出來的，而 AB→ × AD→ 同時垂直這兩個向量，<b>所以外積就是法向量</b>——這正是第 18 題那個外積的第二種用途，同一個 (−5, 5, 5) 兩題各用一次。<br>‧ 點：題目送了 B(1, 2, 0)，B 就在平面 ABCD 上（B 是這個平行四邊形的頂點）。<br>兩樣都到齊了，這題其實是送分題，重點在<b>把理由寫清楚</b>。</div></div>'
++ '<div class="as-f">n→ ∥ AB→ × AD→ = (−5, 5, 5)</div>'
++ '<div class="as-step"><div class="as-n">2</div><div>法向量只在乎<b>方向</b>，可以整條同乘任意非零倍數。(−5, 5, 5) 三個分量都有公因數 5，先約掉再乘 −1 讓首項變正，寫成 (1, −1, −1) 最乾淨，後面代點時算術最不容易錯。<b>這一步不是必要的，但強烈建議做</b>。</div></div>'
++ '<div class="as-f">(−5, 5, 5) = −5 × (1, −1, −1)　⇒　取 n→ = (1, −1, −1)</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>用「點法式」寫平面：法向量 (a, b, c) 加上平面上一點 (x₀, y₀, z₀)，平面就是 a(x − x₀) + b(y − y₀) + c(z − z₀) = 0。它的來由是「平面上任一點 P 與 B 連成的 BP→ 一定垂直法向量」，也就是 n→ · BP→ = 0，不是硬背的公式。把 n→ = (1, −1, −1)、B(1, 2, 0) 代進去。</div></div>'
++ '<div class="as-f">1·(x − 1) + (−1)·(y − 2) + (−1)·(z − 0) = 0</div>'
++ '<div class="as-f">x − 1 − y + 2 − z = 0</div>'
++ '<div class="as-f">x − y − z + 1 = 0　　即　x − y − z = −1</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>驗算（非選題一定要花這 10 秒）：把 B(1, 2, 0) 代回左式，看是不是等於右式的 −1。</div></div>'
++ '<div class="as-f">1 − 2 − 0 = −1　✓　B 確實在此平面上</div>'
++ '<div class="as-step"><div class="as-n">5</div><div>順帶想清楚一件事，第 20 題會用到：這個平面方程式描述的是<b>整個平面</b>，而 A、B、C、D 四點都在上面。題目只給了 B 一點的坐標，所以第 19 題只能求平面；<b>要求體積與距離，就得再把 AB→、AD→、AP→ 三個向量本身還原出來</b>——那才是第 20 題真正的工作量。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：① <b>把法向量寫成 AB→ 或 AD→ 本身</b>——外積是<b>垂直</b>於平面的，AB→、AD→ 是<b>躺在</b>平面上的，方向差 90°，混淆就全錯。② <b>常數項符號抄錯</b>：展開 −(y − 2) 時要變號成 −y + 2，很多人寫成 −y − 2，答案就變成 x − y − z = 3。寫完務必用第 4 步代 B 驗算一次。③ <b>非選題只寫答案沒寫理由會被扣分</b>：官方評分原則明文列出兩件必寫的事——「<b>正確指出平面 ABCD 的法向量平行於 (−5, 5, 5)</b>」和「<b>將 B 點坐標代入後得到正確方程式</b>」。只寫出 x − y − z = −1 而沒交代法向量哪來的，會被歸到部分給分。④ 別因為約成 (1, −1, −1) 就不提 (−5, 5, 5)——評分原則要看的是你知道法向量來自那個外積，所以第 1 步那行要寫在紙上。</div>'
++ '<div class="as-note"><b>自評指引（本題 4 分，建議配分）</b><br>'
++ '① 寫出「平面 ABCD 的法向量平行於 AB→ × AD→ = (−5, 5, 5)」並說明理由（外積垂直於兩向量所張的平面）：<b>2 分</b><br>'
++ '② 取 B(1, 2, 0) 用點法式代入，展開整理得 x − y − z = −1：<b>2 分</b><br>'
++ '對照官方評分原則：滿分要求「① 正確指出法向量平行 (−5, 5, 5)　② 代入 B 點得到正確平面方程式」，剛好就是上面兩項各 2 分。<br>'
++ '<b>自評對照表</b>：<br>'
++ '‧ 兩項都對 → <b>4 分（滿分）</b><br>'
++ '‧ 有正確指出法向量，但方程式沒算對、或只寫了法向量就停筆、或直接跳寫答案沒交代怎麼來的 → 落入官方「部分給分」，<b>約 2 分</b><br>'
++ '‧ 法向量就找錯（例如拿 AB→ 當法向量），後面方程式即使形式漂亮也不成立 → <b>0 分</b>，因為官方零分條件是「未符合部分給分原則」<br>'
++ '<b>提醒</b>：本題兩個得分點是<b>分開</b>的，就算方程式算錯，只要法向量那行有寫對，仍拿得到一半，所以<b>千萬不要空白</b>。</div>'
++ '<div class="as-ans">答：x − y − z = −1（法向量取 AB→ × AD→ = (−5, 5, 5) ∥ (1, −1, −1)，過 B(1, 2, 0)）</div>'
++ '</div>';
+
+var GSAT115A_SOL_20 = '<div class="adv-sol">'
++ '<div class="as-step"><div class="as-n">1</div><div><b>先盤點手上有什麼、缺什麼。</b>題目給的全是<b>外積</b>（三個）和一個長度 AP‾ = 6，卻沒有給任何一個向量的坐標。而我們要的是：<br>‧ 體積 = |AP→ · (AB→ × AD→)|（純量三重積，等一下解釋）<br>‧ 最長距離 → 必須知道每個頂點的位置 → <b>三個向量的坐標都要還原</b><br>所以本題真正的主線是：<b>從外積把 AP→、AB→、AD→ 一個一個逆推回來</b>。體積只要 AP→ 就能算（因為 AB→ × AD→ 已知），距離則三個都要。</div></div>'
++ '<div class="as-f">目標：求出 AP→、AB→、AD→ 的坐標</div>'
++ '<div class="as-step"><div class="as-n">2</div><div><b>★ 逆推的關鍵手法：外積結果一定垂直於它的兩個因子。</b><br>觀察題目給的三個外積裡，<b>AP→ 出現在兩式中</b>：AD→ × AP→ 和 AP→ × AB→。既然 AP→ 是這兩個外積的因子之一，AP→ 就同時垂直這兩個結果向量。<br>「同時垂直兩個已知向量」的方向怎麼求？<b>再取一次外積</b>就好——這就是為什麼要把那兩個結果向量叉乘起來。</div></div>'
++ '<div class="as-f">AP→ ⊥ (AD→ × AP→)　且　AP→ ⊥ (AP→ × AB→)</div>'
++ '<div class="as-f">⇒　AP→ ∥ [(AD→ × AP→) × (AP→ × AB→)]</div>'
++ '<div class="as-step"><div class="as-n">3</div><div>算這個外積。用行列式展開：(a₁,a₂,a₃) × (b₁,b₂,b₃) = (a₂b₃ − a₃b₂,　a₃b₁ − a₁b₃,　a₁b₂ − a₂b₁)。</div></div>'
++ '<div class="as-f">(−2, 0, −4) × (6, −10, −8)</div>'
++ '<div class="as-f">x 分量：0×(−8) − (−4)×(−10) = 0 − 40 = −40</div>'
++ '<div class="as-f">y 分量：(−4)×6 − (−2)×(−8) = −24 − 16 = −40</div>'
++ '<div class="as-f">z 分量：(−2)×(−10) − 0×6 = 20 − 0 = 20</div>'
++ '<div class="as-f">= (−40, −40, 20) = −20 × (2, 2, −1)　⇒　AP→ ∥ (2, 2, −1)</div>'
++ '<div class="as-step"><div class="as-n">4</div><div>方向有了，還缺<b>長度</b>——這就是題目給 AP‾ = 6 的用途。先把 (2, 2, −1) 化成單位向量再乘 6：|(2, 2, −1)| = √(4+4+1) = 3，是個漂亮的整數，所以直接乘 2 倍就是長度 6。<br>注意「平行」包含<b>正反兩個方向</b>，所以要寫 ±。</div></div>'
++ '<div class="as-f">|(2, 2, −1)| = √(2² + 2² + (−1)²) = √9 = 3</div>'
++ '<div class="as-f">AP→ = ±(6/3)(2, 2, −1) = ±(4, 4, −2)</div>'
++ '<div class="as-step"><div class="as-n">5</div><div><b>算體積。</b>為什麼是純量三重積？平行六面體的體積 = 底面積 × 高：<br>‧ 底面積 = |AB→ × AD→|（第 18 題算過 = 5√3）<br>‧ 高 = AP→ 在<b>底面法線方向</b>上的投影長，而 AB→ × AD→ 正是那個法線方向<br>兩者相乘、把長度與 cos 合併，剛好就是內積的絕對值 |AP→ · (AB→ × AD→)|。<b>這不是背來的公式，是「底 × 高」自動長出來的。</b>取絕對值是因為 AP→ 可能指向法向量的反側，體積不能是負的（也正好讓第 4 步的 ± 不影響答案）。</div></div>'
++ '<div class="as-f">體積 = |AP→ · (AB→ × AD→)| = |(4, 4, −2) · (−5, 5, 5)|</div>'
++ '<div class="as-f">= |4×(−5) + 4×5 + (−2)×5| = |−20 + 20 − 10| = |−10| = 10</div>'
++ '<div class="as-f">檢核：底面積 5√3 × 高 = 10　⇒　高 = 10/(5√3) = 2/√3 ≈ 1.155，比 AP‾ = 6 小很多，合理（六面體很「斜」）</div>'
++ '<div class="as-step"><div class="as-n">6</div><div>體積搞定，接著<b>用同一招把 AB→ 逼出來</b>。AB→ 出現在 AB→ × AD→ 和 AP→ × AB→ 兩式中，所以 AB→ 同時垂直這兩個結果，再叉乘一次取方向。（此時 AP→ 已知，先取 AP→ = (4, 4, −2) 這一支，之後再說明另一支為什麼不影響答案。）</div></div>'
++ '<div class="as-f">AB→ ∥ [(AB→ × AD→) × (AP→ × AB→)] = (−5, 5, 5) × (6, −10, −8)</div>'
++ '<div class="as-f">x：5×(−8) − 5×(−10) = −40 + 50 = 10</div>'
++ '<div class="as-f">y：5×6 − (−5)×(−8) = 30 − 40 = −10</div>'
++ '<div class="as-f">z：(−5)×(−10) − 5×6 = 50 − 30 = 20</div>'
++ '<div class="as-f">= (10, −10, 20) = 10(1, −1, 2)　⇒　設 AB→ = t(1, −1, 2)</div>'
++ '<div class="as-step"><div class="as-n">7</div><div>這次<b>沒有給 AB‾ 的長度</b>，倍數 t 要從哪裡定？<b>回頭用題目原本的外積條件反解</b>——把 AP→ 與 t(1, −1, 2) 叉乘，結果必須等於題目給的 (6, −10, −8)，比對係數就能解出 t。這是本題最漂亮的一步：外積<b>先給方向、再定倍數</b>。</div></div>'
++ '<div class="as-f">AP→ × AB→ = (4, 4, −2) × t(1, −1, 2)</div>'
++ '<div class="as-f">x：t[4×2 − (−2)×(−1)] = t(8 − 2) = 6t</div>'
++ '<div class="as-f">y：t[(−2)×1 − 4×2] = t(−2 − 8) = −10t</div>'
++ '<div class="as-f">z：t[4×(−1) − 4×1] = t(−4 − 4) = −8t</div>'
++ '<div class="as-f">(6t, −10t, −8t) = (6, −10, −8)　⇒　t = 1　⇒　AB→ = (1, −1, 2)</div>'
++ '<div class="as-step"><div class="as-n">8</div><div><b>AD→ 完全比照辦理。</b>AD→ 出現在 AB→ × AD→ 與 AD→ × AP→ 中，叉乘這兩個結果取方向，再用 AD→ × AP→ = (−2, 0, −4) 定倍數。</div></div>'
++ '<div class="as-f">AD→ ∥ (−5, 5, 5) × (−2, 0, −4)</div>'
++ '<div class="as-f">x：5×(−4) − 5×0 = −20　／　y：5×(−2) − (−5)×(−4) = −10 − 20 = −30　／　z：(−5)×0 − 5×(−2) = 10</div>'
++ '<div class="as-f">= (−20, −30, 10) = −10(2, 3, −1)　⇒　設 AD→ = s(2, 3, −1)</div>'
++ '<div class="as-f">AD→ × AP→ = s(2, 3, −1) × (4, 4, −2)</div>'
++ '<div class="as-f">x：s[3×(−2) − (−1)×4] = s(−6 + 4) = −2s　／　y：s[(−1)×4 − 2×(−2)] = s(−4 + 4) = 0　／　z：s[2×4 − 3×4] = s(8 − 12) = −4s</div>'
++ '<div class="as-f">(−2s, 0, −4s) = (−2, 0, −4)　⇒　s = 1　⇒　AD→ = (2, 3, −1)</div>'
++ '<div class="as-step"><div class="as-n">9</div><div><b>總驗算</b>（非選題務必做）：把還原出來的三個向量代回題目給的三個外積，三條都要對得起來。前兩條在第 7、8 步已經對過，再補驗最關鍵的第一條 AB→ × AD→。</div></div>'
++ '<div class="as-f">(1, −1, 2) × (2, 3, −1)：x：(−1)(−1) − 2×3 = 1 − 6 = −5　／　y：2×2 − 1×(−1) = 4 + 1 = 5　／　z：1×3 − (−1)×2 = 3 + 2 = 5</div>'
++ '<div class="as-f">= (−5, 5, 5)　✓　與題目一致，三個向量全部正確</div>'
++ '<div class="as-step"><div class="as-n">10</div><div><b>★ 求「六面體上（含邊界）距 A 最長的距離」的觀念關鍵。</b><br>為什麼只要看<b>頂點</b>？因為平行六面體是<b>凸體</b>，而「到定點 A 的距離」是凸函數；凸函數在凸體上的最大值一定發生在<b>頂點（極點）</b>上。白話版：從 A 往外走，離 A 最遠的地方一定被推到角落，不可能停在面或稜的中間。<br>接著用向量把八個頂點對 A 的位移全部列出來。以 A 為起點，B、D、P 是三條稜；C 在底面對角、Q 與 S 在側面對角、R 是整個六面體的體對角。</div></div>'
++ '<div class="as-f">AB→ = (1, −1, 2)　　AD→ = (2, 3, −1)　　AP→ = (4, 4, −2)</div>'
++ '<div class="as-f">AC→ = AB→ + AD→ = (3, 2, 1)</div>'
++ '<div class="as-f">AQ→ = AP→ + AB→ = (5, 3, 0)　　AS→ = AP→ + AD→ = (6, 7, −3)</div>'
++ '<div class="as-f">AR→ = AP→ + AB→ + AD→ = (7, 6, −1)</div>'
++ '<div class="as-step"><div class="as-n">11</div><div>七個都算長度（第八個頂點就是 A 自己，距離 0）。<b>比大小時只要比根號內的平方和，不必真的開根號</b>，快又不會錯。</div></div>'
++ '<div class="as-f">AB‾ = √(1 + 1 + 4) = √6　　AD‾ = √(4 + 9 + 1) = √14　　AP‾ = √(16 + 16 + 4) = √36 = 6 ✓（與題目 AP‾ = 6 相符）</div>'
++ '<div class="as-f">AC‾ = √(9 + 4 + 1) = √14　　AQ‾ = √(25 + 9 + 0) = √34</div>'
++ '<div class="as-f">AS‾ = √(36 + 49 + 9) = √94　　AR‾ = √(49 + 36 + 1) = √86</div>'
++ '<div class="as-f">比較平方和：6 &lt; 14 = 14 &lt; 34 &lt; 36 &lt; 86 &lt; <b>94</b>　⇒　最長為 AS‾ = √94 ≈ 9.70</div>'
++ '<div class="as-step"><div class="as-n">12</div><div><b>★ 這題最想坑你的地方：最遠的不是體對角線 AR‾。</b><br>在長方體裡，離 A 最遠的一定是體對角線的另一端；但這是<b>斜的</b>平行六面體，AP→ 和底面的夾角很小（第 5 步算出高只有約 1.155，卻有 6 的邊長，代表 P 幾乎是「橫躺」出去的），使得 AS→ = AP→ + AD→ 兩段幾乎同向、相加後反而拉得比 AR→ 更長；AR→ 多加的那段 AB→ = (1, −1, 2) 方向與前兩者相反，反而把它「拉回來」。<br>數字上：AS‾ = √94 &gt; AR‾ = √86。<b>所以絕不能只算體對角線就交卷，七個頂點必須全列。</b></div></div>'
++ '<div class="as-step"><div class="as-n">13</div><div><b>補一句關於第 4 步那個 ± 號。</b>若改取 AP→ = (−4, −4, 2)，則由第 7、8 步的比對會同步得到 AB→ = (−1, 1, −2)、AD→ = (−2, −3, 1)，整個六面體變成原本的<b>鏡射（對 A 點對稱）</b>。所有頂點的坐標同時變號，<b>長度完全不變</b>，體積也仍是 10。所以答題時寫「不失一般性，取 AP→ = (4, 4, −2)」是完全合法的，不必兩種都算——但這句話要寫出來，讓閱卷者知道你有意識到兩解。</div></div>'
++ '<div class="as-warn">⚠ 學測考場最容易在這裡失分：① <b>只算體對角線 AR→ 就當答案</b>，寫成 √86——這是本題設計的主陷阱，斜六面體沒有「體對角線最長」這回事，官方評分原則第 4 點明白寫著要「由 AB→, AD→, AC→, AS→, AQ→, AR→ 來判斷」，<b>就是要看到你把每一個頂點都比過</b>。② <b>忘了 AP‾ = 6 只定長度不定方向</b>，漏掉 ± 或忘記先把 (2, 2, −1) 除以其長度 3 再乘 6（直接寫 AP→ = 6(2, 2, −1) = (12, 12, −6) 就全錯，那長度是 18）。③ <b>倍數 t、s 憑感覺猜成 1</b>——它們確實都等於 1，但必須<b>用原外積比對出來</b>，跳過這步等於沒有推導，是會被扣分的。④ 體積<b>忘了取絕對值</b>寫成 −10。⑤ 外積分量算錯符號：三個分量的行列式展開中，<b>y 分量要變號</b>，這是空間向量最高頻的計算失誤，每算一次外積就用「結果與兩因子內積是否為 0」驗一次最保險。</div>'
++ '<div class="as-note"><b>自評指引（本題 8 分，建議配分）</b><br>'
++ '官方評分原則列了四個必要項目，本題 8 分，等於<b>每項 2 分</b>：<br>'
++ '① <b>正確計算得到 AP→（2 分）</b>：有寫出「AP→ 同時垂直 (−2,0,−4) 與 (6,−10,−8)，故平行其外積」的理由，算出 (2, 2, −1)，並用 |(2,2,−1)| = 3、AP‾ = 6 定出 AP→ = ±(4, 4, −2)。<b>只寫方向沒定長度，這 2 分只能算一半</b>。<br>'
++ '② <b>正確算出體積 = 10（2 分）</b>：寫出 體積 = |AP→ · (AB→ × AD→)| 並算得 10。<b>沒取絕對值寫成 −10，扣 1 分</b>。<br>'
++ '③ <b>正確求得 AB→ = (1, −1, 2) 與 AD→ = (2, 3, −1)（2 分）</b>：兩個各 1 分。必須包含「先由兩外積叉乘定方向、再由原外積比對定倍數 t = 1（s = 1）」的過程；<b>直接寫出坐標沒有推導過程，這 2 分拿不到</b>。<br>'
++ '④ <b>由六個（七個）頂點向量比較，判斷最長為 √94（2 分）</b>：必須看得到 AB‾, AD‾, AC‾, AQ‾, AS‾, AR‾ 的比較，<b>只挑體對角線算的不給分</b>。<br>'
++ '<b>自評對照表（對應官方部分給分四款）</b>：<br>'
++ '‧ 只求得 AP→，AB→、AD→ 沒求出來 → 官方部分給分第 1 款，<b>約 2 分</b><br>'
++ '‧ 求得 AP→ 且體積正確，但 AB→、AD→ 沒求出來（因此距離也答不出來）→ 第 2 款，<b>約 4 分</b><br>'
++ '‧ 體積算對但 AP→、AB→、AD→ 推導不完整 → 第 3 款，<b>約 2～3 分</b><br>'
++ '‧ AP→、AB→、AD→ 與體積全對，只差最後沒比出最長距離 → 第 4 款，<b>約 6 分</b><br>'
++ '‧ 四項全對 → <b>8 分（滿分）</b><br>'
++ '<b>最划算的搶分順序</b>：體積只需要 AP→（②的 2 分連著①的 2 分共 4 分），比還原 AB→、AD→ 容易得多。考場時間不夠時，<b>先把 AP→ 和體積寫完整、拿滿前 4 分</b>，再回頭處理 AB→、AD→。<br>'
++ '<b>常見自評誤區</b>：最後答 √86（只算體對角線）者，④ 完全不給分，總分約 6 分；把 AP→ 寫成 (12, 12, −6) 者，①②③④ 會連環錯，只剩「方法正確」的少量分數。</div>'
++ '<div class="as-ans">答：平行六面體體積 = 10；距點 A 的最長距離為 AS‾ = √94（≈ 9.70），發生在頂點 S</div>'
 + '</div>';
 
 /* 把詳解掛回題庫（泛用：GSAT<id>_SOL_<題號>） */
