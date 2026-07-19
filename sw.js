@@ -1,4 +1,4 @@
-var CACHE = 'mathgo-v16';
+var CACHE = 'mathgo-v18';
 var CORE = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 
 self.addEventListener('install', function (e) {
