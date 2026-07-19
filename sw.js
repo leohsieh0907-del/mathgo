@@ -1,4 +1,4 @@
-var CACHE = 'mathgo-v19';
+var CACHE = 'mathgo-v20';
 var CORE = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
   'gsat/111a/fig_q3.png','gsat/111a/fig_q11.png','gsat/111a/fig_q14_sys.png','gsat/111a/fig_q14_mat.png','gsat/111a/fig_q15.png','gsat/111a/fig_q18.png'];
 
