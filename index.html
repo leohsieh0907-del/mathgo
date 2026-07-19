@@ -56,6 +56,16 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--i
 .gsat-ch{border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer;background:var(--surface)}
 .gsat-ch:hover{border-color:var(--accent);color:var(--accent)}
 .gsat-fig{display:block;max-width:100%;width:auto;margin:10px 0;border:1px solid var(--border);border-radius:8px;background:#fff;padding:6px}
+.gsat-modes.five{grid-template-columns:repeat(3,1fr)}
+.study-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px}
+.study-chip{border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer;background:var(--surface)}
+.study-chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.study-head-l{display:flex;align-items:center;gap:8px;min-width:0}
+.study-no{font-family:var(--mono);font-size:12px;color:var(--ink3);flex:none}
+.study-t{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.study-ans{background:var(--green);color:#fff;border-radius:6px;padding:2px 10px;font-size:12px;font-weight:700;display:inline-block;margin:10px 0}
+.study-qtext{font-size:14px;line-height:1.8;margin-bottom:6px}
+@media(max-width:640px){.gsat-modes.five{grid-template-columns:1fr}.study-t{white-space:normal}}
 .gsat-fillnote{font-size:11px;color:var(--ink3)}
 .gsat-src{font-size:10px;font-family:var(--mono);color:var(--ink3);margin-top:6px}
 @media(max-width:640px){.gsat-modes{grid-template-columns:1fr}}
@@ -522,7 +532,7 @@ textarea.fill-input{min-height:96px;resize:vertical;line-height:1.7;font-family:
     <div class="sidebar-logo">
       <div class="app-name">數學通</div>
       <div class="app-tagline">108課綱・數學／物理／化學</div>
-      <div class="app-ver">v27・更新 2026-07-19（新增學測訓練：111 學測數A 真題）</div>
+      <div class="app-ver">v27.1・更新 2026-07-19（學測訓練＋真題研讀模式）</div>
     </div>
     <div class="sidebar-subject">
       <button class="subject-btn active" onclick="setSubject(0,this)">數學</button>
@@ -5017,7 +5027,7 @@ function setGrade(idx,el){
 function pickExam(el,g){el.parentElement.querySelectorAll('.exam-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');}
 function startExam(){alert('請從試卷列表選擇試卷開始作答');}
 
-var APP_VER='v27';
+var APP_VER='v27.1';
 function toggleInstall(){var g=document.getElementById('install-guide');if(!g)return;g.style.display=(g.style.display==='none'||!g.style.display)?'block':'none';}
 function forceUpdate(){
   var btn=document.getElementById('hv-btn'),st=document.getElementById('hv-status');
@@ -5754,11 +5764,12 @@ function renderGsat(){
     +'<div class="exam-title">學測訓練</div>'
     +'<div class="exam-meta">歷屆真題．大考中心原卷；詳解為本 App 撰寫</div>'
     +'<div class="exam-slabel">選擇訓練模式</div>'
-    +'<div class="gsat-modes">'
+    +'<div class="gsat-modes five">'
     +'<div class="gsat-mode" onclick="startGsatFull(\''+papers[0].id+'\')"><div class="gm-t">📄 完整卷</div><div class="gm-d">整份真題計時作答，繳卷估級分</div></div>'
     +'<div class="gsat-mode" onclick="startGsatRandom()"><div class="gm-t">🎲 隨機組卷</div><div class="gm-d">依學測配比抽題，每次都不一樣</div></div>'
     +'<div class="gsat-mode" onclick="gsatShowChapters()"><div class="gm-t">🎯 章節特訓</div><div class="gm-d">只練指定章節的真題</div></div>'
     +'<div class="gsat-mode" onclick="startGsatWrong()"><div class="gm-t">🔁 錯題重練</div><div class="gm-d">優先抽你曾經答錯的題（目前 '+wrong+' 題）</div></div>'
+    +'<div class="gsat-mode" onclick="startGsatStudy(\''+papers[0].id+'\')"><div class="gm-t">📖 真題研讀</div><div class="gm-d">不計時不計分，直接看題目與完整詳解</div></div>'
     +'</div>'
     +'<div id="gsat-ch-pick" class="gsat-chs" style="display:none">'
     +chs.map(function(c){return '<div class="gsat-ch" onclick="startGsatChapter(\''+c+'\')">'+c+'</div>';}).join('')
@@ -5776,7 +5787,61 @@ function renderGsat(){
     +'<div class="stat-card gold"><div class="stat-num">'+done+'</div><div class="stat-desc">已練過</div></div></div>'
     +'<div class="info-box"><div class="info-box-title">📄 完整卷</div><p>照原卷題序與時間，繳卷後估級分。想模擬真實考場就選這個。</p></div>'
     +'<div class="info-box"><div class="info-box-title">🎲 隨機組卷</div><p>單選2＋多選2＋選填2＋一組題組。<b>沒寫過的題最優先抽</b>，其次是曾經寫錯的。</p></div>'
+    +'<div class="info-box"><div class="info-box-title">📖 真題研讀</div><p>想單獨弄懂某一題時用這個——不用跑完整份卷，直接展開看詳解。</p></div>'
     +'<div class="info-box"><div class="info-box-title">📝 非選題</div><p>請在紙上完整寫出過程，繳卷後對照官方評分原則自評給分——學測非選就是看推理過程。</p></div>';
+}
+var studyFilter={type:'all',ch:'all'},studyPid='111A',studyOpenAll=false;
+function startGsatStudy(pid){
+  studyPid=pid||studyPid;studyFilter={type:'all',ch:'all'};studyOpenAll=false;
+  curPaperHost='gsat-area';curPaperKind='gsat';
+  if(examTimer)clearInterval(examTimer);
+  renderGsatStudy();
+  var el=document.getElementById('gsat-area');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function setStudyFilter(kind,val){studyFilter[kind]=val;renderGsatStudy();}
+function toggleStudyAll(){studyOpenAll=!studyOpenAll;renderGsatStudy();}
+function renderGsatStudy(){
+  var P=GSAT_PAPERS.find(function(x){return x.id===studyPid;})||GSAT_PAPERS[0];
+  var typeName={single:'單選',multi:'多選',fill:'選填',open:'非選'};
+  var chs=[];P.items.forEach(function(it){if(chs.indexOf(it.ch)<0)chs.push(it.ch);});
+  var items=P.items.filter(function(it){
+    return (studyFilter.type==='all'||it.type===studyFilter.type)
+        && (studyFilter.ch==='all'||it.ch===studyFilter.ch);});
+  function chip(kind,val,label){
+    return '<div class="study-chip'+(studyFilter[kind]===val?' on':'')+'" onclick="setStudyFilter(\''+kind+'\',\''+val+'\')">'+label+'</div>';}
+  var html='<div class="exam-active"><div class="exam-active-header"><div>'
+    +'<div class="exam-active-title">📖 '+P.title+'　真題研讀</div>'
+    +'<div style="font-size:12px;color:var(--ink3)">不計時、不計分、不列入統計・點標題展開詳解</div></div>'
+    +'<button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="var e=document.getElementById(\'gsat-area\');if(e)e.innerHTML=\'\';renderGsat();">返回</button></div>';
+  html+='<div class="study-bar">'+chip('type','all','全部題型')
+    +['single','multi','fill','open'].map(function(t){return chip('type',t,typeName[t]);}).join('')
+    +'<span style="width:10px"></span>'+chip('ch','all','全部章節')
+    +chs.map(function(c){return chip('ch',c,c);}).join('')
+    +'<span style="flex:1"></span><div class="study-chip" onclick="toggleStudyAll()">'+(studyOpenAll?'▲ 全部收合':'▼ 全部展開')+'</div></div>';
+  if(!items.length)html+='<div class="curr-empty">這個條件下沒有題目</div>';
+  items.forEach(function(it){
+    var base=P.figBase||'';
+    var figHtml=it.fig?'<img class="gsat-fig" src="'+base+it.fig+'" alt="題目附圖">'+(it.fig2?'<img class="gsat-fig" src="'+base+it.fig2+'" alt="題目附圖">':''):'';
+    var stemHtml=it.stem?'<div class="q-stem"><span class="stem-tag">📋 情境</span>'+it.stem+'</div>':'';
+    var keys=['A','B','C','D','E'];
+    var optHtml=it.opts?'<div class="exam-q-opts">'+it.opts.map(function(o,j){
+      var isAns=(it.type==='multi')?(it.ans.indexOf(keys[j])>-1):(it.ans===keys[j]);
+      return '<div class="exam-q-opt"'+(isAns?' style="border-color:var(--green);background:rgba(46,160,67,.08)"':'')+'><span class="eqk">('+(j+1)+')</span>'+o+(isAns?' ✓':'')+'</div>';}).join('')+'</div>':'';
+    var ansText=(it.type==='multi')?it.ans.map(function(k){return '('+(keys.indexOf(k)+1)+')';}).join(''):
+                (it.type==='single')?'('+(keys.indexOf(it.ans)+1)+')':it.ans;
+    html+='<div class="note-card"><div class="note-head" onclick="togNote(this)">'
+      +'<div class="study-head-l"><span class="study-no">第'+it.no+'題</span>'
+      +'<span class="qtype'+(it.type==='multi'?' multi':it.type==='fill'?' fill':it.type==='open'?' open':'')+'">'+typeName[it.type]+'</span>'
+      +'<span class="study-t">'+it.ch+'</span></div>'
+      +'<div class="note-tag '+(it.type==='open'?'red':it.type==='multi'?'gold':'blue')+'">'+it.score+'分</div></div>'
+      +'<div class="note-body'+(studyOpenAll?' open':'')+'">'
+      +'<div class="gsat-src">出處：'+P.year+' 學測'+P.subj+' 第'+it.no+'題</div>'
+      +stemHtml+'<div class="study-qtext">'+it.q+'</div>'+figHtml+optHtml
+      +'<div class="study-ans">答案：'+ansText+'</div>'
+      +(it.explain||'<div style="color:var(--ink3)">（此題尚無詳解）</div>')
+      +'</div></div>';});
+  html+='</div>';
+  var el=document.getElementById('gsat-area');if(el){el.innerHTML=html;renderMath(el);}
 }
 function gsatShowChapters(){var el=document.getElementById('gsat-ch-pick');if(el)el.style.display=el.style.display==='none'?'flex':'none';}
 
