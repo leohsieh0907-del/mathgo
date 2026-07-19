@@ -1,0 +1,10 @@
+# 開發過程備份（本機保留即可，各約 1~2.7 MB 且高度重複）
+backup_*.html
+
+# 內部工作文件：含個人資訊與金鑰存放位置說明，不進公開 repo
+工作日誌.md
+math_app_handoff.md
+
+# 系統
+Thumbs.db
+.DS_Store
