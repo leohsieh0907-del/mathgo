@@ -5026,7 +5026,7 @@ function setGrade(idx,el){
 function pickExam(el,g){el.parentElement.querySelectorAll('.exam-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');}
 function startExam(){alert('請從試卷列表選擇試卷開始作答');}
 
-var APP_VER='v30';
+var APP_VER='v31';
 function toggleInstall(){var g=document.getElementById('install-guide');if(!g)return;g.style.display=(g.style.display==='none'||!g.style.display)?'block':'none';}
 function forceUpdate(){
   var btn=document.getElementById('hv-btn'),st=document.getElementById('hv-status');
@@ -14231,31 +14231,1697 @@ var CHEM_ADV_CH03 = [
   }
 ];
 
+
+// ═══ 化學高二 v31：選修化學（上）5 章 ═══
+
+// ── ch01_course.js ──
+// chem_g1_v31/ch01_course.js — 化學高二 CH01「原子結構與週期表」課程＋筆記＋速記卡
+var CHEM_COURSE_G1_CH01 = {
+  num: 'CH 01',
+  name: '原子結構與週期表',
+  book: '選修化學（上）',
+  grade: '高二',
+  sub: '電子組態與軌域、遞建/包立/洪德、價電子、週期表結構、週期性遞變',
+  tags: ['分科範圍', '選修', '先懂再背'],
+  sections: [
+    {
+      title: '🗣 白話導讀',
+      color: 'blue',
+      body: `<p class="c-intro">高一已經知道原子核外有電子，這一章要問更細的問題：<span class="c-def">電子到底怎麼排</span>？排法決定了元素的化學性質，也決定它在週期表的位置。電子不是隨便繞，而是住在一格一格的<span class="c-def">軌域</span>裡，照「能量由低到高」乖乖入座。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">先</span>電子組態（怎麼排）</div><div class="c-op">→</div><div class="c-block o"><span class="bk-tag">定</span>價電子（幾個）</div><div class="c-op">→</div><div class="c-block"><span class="bk-tag">看</span>週期表位置＋性質</div></div>
+<p class="c-intro">學會「排電子」這條主線，往下所有東西就串起來了：<span class="c-def">最外層電子數</span>決定放第幾族、<span class="c-def">電子層數</span>決定第幾週期，而半徑、游離能、電負度這些週期性趨勢，全都可以用「核抓電子的力量」一句話解釋。</p>
+<div class="c-warn">⚠ 這章是選修（分科範圍），深度比必修高一點，但仍以高中為限——只談 s／p／d 軌域怎麼填，不碰大學的量子數細節。</div>`
+    },
+    {
+      title: '⚛ 電子組態與三大填充原理',
+      color: 'green',
+      body: `<p class="c-intro">電子住在<span class="c-def">軌域</span>裡：s 有 1 個軌域、p 有 3 個、d 有 5 個。每個軌域最多住 2 個電子，所以 <span class="c-def">s 容 2、p 容 6、d 容 10</span>。填的時候要守三個規矩。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arE" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker></defs>
+<line x1="28" y1="200" x2="28" y2="42" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arE)"/>
+<text x="16" y="40" font-size="12" fill="var(--ink3)">能量</text>
+<line x1="55" y1="190" x2="110" y2="190" stroke="var(--accent)" stroke-width="3"/><text x="40" y="194" font-size="11" fill="var(--ink3)">①</text><text x="120" y="194" font-size="12" fill="var(--ink)">1s</text>
+<line x1="55" y1="170" x2="110" y2="170" stroke="var(--accent)" stroke-width="3"/><text x="40" y="174" font-size="11" fill="var(--ink3)">②</text><text x="120" y="174" font-size="12" fill="var(--ink)">2s</text>
+<line x1="55" y1="156" x2="110" y2="156" stroke="var(--accent)" stroke-width="3"/><text x="40" y="160" font-size="11" fill="var(--ink3)">③</text><text x="120" y="160" font-size="12" fill="var(--ink)">2p</text>
+<line x1="55" y1="134" x2="110" y2="134" stroke="var(--accent)" stroke-width="3"/><text x="40" y="138" font-size="11" fill="var(--ink3)">④</text><text x="120" y="138" font-size="12" fill="var(--ink)">3s</text>
+<line x1="55" y1="118" x2="110" y2="118" stroke="var(--accent)" stroke-width="3"/><text x="40" y="122" font-size="11" fill="var(--ink3)">⑤</text><text x="120" y="122" font-size="12" fill="var(--ink)">3p</text>
+<line x1="55" y1="96" x2="110" y2="96" stroke="var(--gold)" stroke-width="3"/><text x="40" y="100" font-size="11" fill="var(--ink3)">⑥</text><text x="120" y="100" font-size="12" fill="var(--gold)" font-weight="700">4s</text>
+<line x1="55" y1="82" x2="110" y2="82" stroke="var(--gold)" stroke-width="3"/><text x="40" y="86" font-size="11" fill="var(--ink3)">⑦</text><text x="120" y="86" font-size="12" fill="var(--gold)" font-weight="700">3d</text>
+<text x="185" y="94" font-size="12" fill="var(--ink)">⚠ 4s 能量低於 3d</text>
+<text x="185" y="112" font-size="12" fill="var(--ink3)">故先填 4s、再填 3d</text>
+<text x="185" y="150" font-size="11.5" fill="var(--ink3)">容量：s 2 ‧ p 6 ‧ d 10 e⁻</text>
+</svg></div>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext"><b>遞建原理</b>：電子從最低能量的軌域開始填，順序 1s→2s→2p→3s→3p→4s→3d→4p…（注意 4s 排在 3d 前）。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext"><b>包立不相容原理</b>：一個軌域最多 2 個電子，且自旋必須相反。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext"><b>洪德定則</b>：能量相同的軌域（如三個 2p），電子先「各佔一格」再成對，這樣最穩定。</div></div>
+<div class="formula">氮 N（Z = 7）：1s² 2s² 2p³　（三個 2p 各 1 個電子，未成對）</div>
+<div class="fcard"><div class="fcard-f">填充順序 1s 2s 2p 3s 3p 4s 3d 4p…；每軌域最多 2 e⁻（s→2、p→6、d→10）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>從最低能量一格一格往上填，4s 比 3d 先填。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>要寫任何元素的電子組態時。填完後檢查「電子總數 = 原子序」才算對。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>鐵 Fe（Z = 26）→ 1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁶，加總 2+2+6+2+6+2+6 = 26 ✓。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 鉀 K（Z = 19）的組態？<details><summary>看解法</summary><div class="ans">1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹（第 19 個電子填進 4s）。</div></details>② 為什麼 4s 比 3d 先填？<details><summary>看解法</summary><div class="ans">因為 4s 的能量比 3d 低，能量低先填。</div></details></div></div></div>`
+    },
+    {
+      title: '📋 週期表結構與價電子',
+      color: 'gold',
+      body: `<p class="c-intro">週期表其實是「電子組態的地圖」。橫列叫<span class="c-def">週期</span>，數字＝電子填到第幾個電子層；直行叫<span class="c-def">族</span>，同族的<span class="c-def">價電子數</span>相同、化性相近。價電子就是<span class="c-def">最外層 s、p 的電子</span>，是參與化學反應的主角。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">s 區</span>ⅠA、ⅡA</div><div class="c-op">·</div><div class="c-block o"><span class="bk-tag">p 區</span>ⅢA～0 族</div><div class="c-op">·</div><div class="c-block"><span class="bk-tag">d 區</span>過渡元素（B 族）</div></div>
+<p class="c-intro">元素的<span class="c-def">價電子填在哪種軌域</span>，就屬於哪一區：填 s 的在 s 區、填 p 的在 p 區、填 d 的在 d 區（過渡金屬）。主族（A 族）元素的價電子數，剛好等於<span class="c-def">族數的個位數字</span>。</p>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext">週期（第幾列）＝最外層的電子層數。例：Na 填到第 3 層 → 第 3 週期。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext">主族族數＝價電子數。例：Cl（3s² 3p⁵）價電子 7 → ⅦA 族。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext">同族性質相近：ⅠA 都易失 1 e⁻（活潑金屬）、ⅦA 都易得 1 e⁻（活潑非金屬）、0 族（惰性氣體）最外層填滿最穩定。</div></div>
+<div class="fcard"><div class="fcard-f">主族（A 族）元素：價電子數 = 族數個位；價電子 = 最外層 s、p 電子</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>最外層有幾個 s、p 電子，就是第幾 A 族。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>要判斷元素放哪族、幾價、金屬或非金屬時。先寫組態，數最外層。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>鎂 Mg（1s² 2s² 2p⁶ 3s²）最外層 3s²，價電子 2 → ⅡA 族、第 3 週期。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 氧 O 的價電子與族？<details><summary>看解法</summary><div class="ans">組態 1s² 2s² 2p⁴，最外層 2s²2p⁴ = 6 → ⅥA 族、第 2 週期。</div></details>② 鈉 Na 是幾價金屬？<details><summary>看解法</summary><div class="ans">3s¹，價電子 1 → ⅠA，易失 1 e⁻ 成 Na⁺。</div></details></div></div></div>`
+    },
+    {
+      title: '📈 週期性遞變（半徑、游離能、電負度）',
+      color: 'blue',
+      body: `<p class="c-intro">同一列、同一行的元素，性質是「有規律地」變化，這叫<span class="c-def">週期性</span>。只要記住一句話就能推：<span class="c-def">核電荷越大、電子層越少，原子核抓電子越緊</span>。半徑、游離能、電負度全都跟著這句話走。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arP" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker></defs>
+<text x="16" y="26" font-size="12.5" fill="var(--ink)" font-weight="700">① 同一週期（左 → 右）</text>
+<line x1="20" y1="40" x2="360" y2="40" stroke="var(--accent)" stroke-width="2" marker-end="url(#arP)"/>
+<text x="30" y="62" font-size="12" fill="var(--ink3)">原子半徑變小 ‧ 游離能變大 ‧ 電負度變大</text>
+<line x1="20" y1="82" x2="360" y2="82" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="16" y="106" font-size="12.5" fill="var(--ink)" font-weight="700">② 同一族（上 → 下）</text>
+<line x1="34" y1="120" x2="34" y2="196" stroke="var(--green)" stroke-width="2" marker-end="url(#arP)"/>
+<text x="52" y="146" font-size="12" fill="var(--ink3)">原子半徑變大</text>
+<text x="52" y="166" font-size="12" fill="var(--ink3)">游離能變小</text>
+<text x="52" y="186" font-size="12" fill="var(--ink3)">電負度變小</text>
+<text x="230" y="150" font-size="11.5" fill="var(--gold)">右上角 F：</text>
+<text x="230" y="168" font-size="11.5" fill="var(--gold)">半徑最小、電負度最大</text>
+</svg></div>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext"><b>原子半徑</b>：同週期左→右變小（核電荷增、抓得緊）；同族上→下變大（多一層電子）。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext"><b>離子半徑</b>：陽離子比原子小（少一層、核抓更緊，如 Na⁺ ＜ Na）；陰離子比原子大（多電子互斥，如 Cl⁻ ＞ Cl）。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext"><b>游離能</b>（拔走一個電子要的能量）與<b>電負度</b>（搶電子的能力）＆<b>電子親和力</b>：大方向都與半徑相反——同週期左→右變大、同族上→下變小。</div></div>
+<div class="c-warn">⚠ 等電子系列（電子數相同）比半徑，只看核電荷：核電荷越大抓越緊、半徑越小。例：O²⁻ ＞ F⁻ ＞ Na⁺ ＞ Mg²⁺（核電荷 8 ＜ 9 ＜ 11 ＜ 12）。</div>
+<div class="fcard"><div class="fcard-f">同週期左→右：半徑小、游離能大、電負度大；同族上→下：全部反過來</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>往右核抓得緊（半徑小、難丟電子）；往下電子層多（半徑大、易丟電子）。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>比較兩元素的半徑／游離能／電負度時。先確認它們是同週期還是同族。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>Na 與 Cl 同週期（Cl 在右）→ 半徑 Na ＞ Cl；游離能與電負度 Cl ＞ Na。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① Li 與 K 半徑誰大？<details><summary>看解法</summary><div class="ans">同族 K 在下方（多電子層），K ＞ Li。</div></details>② F 與 Cl 電負度誰大？<details><summary>看解法</summary><div class="ans">同族 F 在上方，F ＞ Cl；F 是全表電負度最大的元素。</div></details></div></div></div>`
+    },
+    {
+      title: '✏️ 練習問題',
+      color: 'green',
+      body: `<div class="c-practice"><b>練習 1：</b>寫出氯 Cl（Z = 17）的電子組態，並指出它的價電子數與所屬族、週期。<details><summary>看解答</summary>依遞建順序：1s² 2s² 2p⁶ 3s² 3p⁵（加總 2+2+6+2+5 = 17 ✓）。最外層 3s² 3p⁵ = 7 個價電子 → ⅦA 族；電子填到第 3 層 → 第 3 週期。</details></div>
+<div class="c-practice"><b>練習 2：</b>等電子系列 O²⁻、F⁻、Na⁺、Mg²⁺（都 10 個電子）的半徑由大到小排序？<details><summary>看解答</summary>電子數相同，只比核電荷（質子數）：O 8、F 9、Na 11、Mg 12。核電荷越大抓電子越緊、半徑越小 → O²⁻ ＞ F⁻ ＞ Na⁺ ＞ Mg²⁺。</details></div>
+<div class="c-practice"><b>練習 3：</b>鐵 Fe 的原子序 26，寫出電子組態；並比較 Na 與 Cl 誰的第一游離能大。<details><summary>看解答</summary>Fe：1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁶（4s 先填、再填 3d；加總 = 26 ✓）。Na 與 Cl 同週期，Cl 在右邊、核抓電子更緊 → 游離能 Cl ＞ Na。</details></div>`
+    }
+  ]
+};
+
+var CHEM_NOTES_G1_CH01 = [
+  {
+    title: '一張圖看懂電子怎麼排',
+    tag: '核心概念',
+    tagClass: 'blue',
+    open: true,
+    body: `<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arN1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker></defs>
+<line x1="28" y1="200" x2="28" y2="42" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arN1)"/>
+<text x="16" y="40" font-size="12" fill="var(--ink3)">能量</text>
+<line x1="55" y1="190" x2="110" y2="190" stroke="var(--accent)" stroke-width="3"/><text x="40" y="194" font-size="11" fill="var(--ink3)">①</text><text x="120" y="194" font-size="12" fill="var(--ink)">1s</text>
+<line x1="55" y1="170" x2="110" y2="170" stroke="var(--accent)" stroke-width="3"/><text x="40" y="174" font-size="11" fill="var(--ink3)">②</text><text x="120" y="174" font-size="12" fill="var(--ink)">2s</text>
+<line x1="55" y1="156" x2="110" y2="156" stroke="var(--accent)" stroke-width="3"/><text x="40" y="160" font-size="11" fill="var(--ink3)">③</text><text x="120" y="160" font-size="12" fill="var(--ink)">2p</text>
+<line x1="55" y1="134" x2="110" y2="134" stroke="var(--accent)" stroke-width="3"/><text x="40" y="138" font-size="11" fill="var(--ink3)">④</text><text x="120" y="138" font-size="12" fill="var(--ink)">3s</text>
+<line x1="55" y1="118" x2="110" y2="118" stroke="var(--accent)" stroke-width="3"/><text x="40" y="122" font-size="11" fill="var(--ink3)">⑤</text><text x="120" y="122" font-size="12" fill="var(--ink)">3p</text>
+<line x1="55" y1="96" x2="110" y2="96" stroke="var(--gold)" stroke-width="3"/><text x="40" y="100" font-size="11" fill="var(--ink3)">⑥</text><text x="120" y="100" font-size="12" fill="var(--gold)" font-weight="700">4s</text>
+<line x1="55" y1="82" x2="110" y2="82" stroke="var(--gold)" stroke-width="3"/><text x="40" y="86" font-size="11" fill="var(--ink3)">⑦</text><text x="120" y="86" font-size="12" fill="var(--gold)" font-weight="700">3d</text>
+<text x="185" y="94" font-size="12" fill="var(--ink)">⚠ 4s 能量低於 3d</text>
+<text x="185" y="112" font-size="12" fill="var(--ink3)">故先填 4s、再填 3d</text>
+<text x="185" y="150" font-size="11.5" fill="var(--ink3)">容量：s 2 ‧ p 6 ‧ d 10 e⁻</text>
+</svg></div>
+<div class="formula">填充順序：1s 2s 2p 3s 3p 4s 3d 4p 5s…</div>
+<p class="c-intro">箭頭①→⑦是電子入座的先後：<span class="c-def">由低能量往高能量填</span>。最容易錯的一步是 4s 比 3d 先填（4s 能量較低）。填完務必檢查：<b>電子總數 = 原子序</b>。</p>`
+  },
+  {
+    title: '三大填充原理速記',
+    tag: '核心概念',
+    tagClass: 'green',
+    open: false,
+    body: `<div class="c-blocks"><div class="c-block"><span class="bk-tag">遞建</span>低能量先填</div><div class="c-op">·</div><div class="c-block o"><span class="bk-tag">包立</span>一軌域≤2、自旋相反</div><div class="c-op">·</div><div class="c-block"><span class="bk-tag">洪德</span>同能量先各佔一格</div></div>
+<p class="c-intro"><b>遞建原理</b>：從最低能量軌域開始填。<b>包立不相容</b>：每個軌域最多 2 個電子且自旋必須相反，所以 s 容 2、p 容 6、d 容 10。<b>洪德定則</b>：能量相同的軌域（如三個 2p），電子先各佔一格、自旋平行，再回頭成對——例 N 的 2p³ 有 3 個未成對電子。</p>`
+  },
+  {
+    title: '週期表結構與週期性遞變',
+    tag: '觀念釐清',
+    tagClass: 'gold',
+    open: false,
+    body: `<div class="c-blocks"><div class="c-block"><span class="bk-tag">週期</span>= 電子層數</div><div class="c-op">·</div><div class="c-block o"><span class="bk-tag">主族族數</span>= 價電子數</div></div>
+<p class="c-intro"><b>分區</b>：ⅠA、ⅡA = s 區；ⅢA～0 族 = p 區；過渡元素（B 族）= d 區；價電子填哪種軌域就屬哪區。</p>
+<p class="c-intro"><b>遞變一句記</b>：核抓電子越緊 → 半徑越小、游離能越大、電負度越大。<b>同週期左→右</b>核電荷增 → 半徑小、游離能大、電負度大；<b>同族上→下</b>電子層增 → 半徑大、游離能小、電負度小。等電子系列比半徑只看核電荷（大則小）：O²⁻ ＞ F⁻ ＞ Na⁺ ＞ Mg²⁺。</p>`
+  },
+  {
+    title: '必背規則卡（電子組態＋週期性）',
+    tag: '必背公式',
+    tagClass: 'red',
+    open: false,
+    body: `<div class="fcard"><div class="fcard-f">遞建 1s 2s 2p 3s 3p 4s 3d 4p…；包立 每軌域≤2；洪德 同能階先各佔一格</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>低能量先填、一格最多兩個、同高度先分開站。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>寫任何元素電子組態、判斷未成對電子數時。填完檢查電子總數 = 原子序。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>Fe（Z = 26）→ 1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁶（4s 先於 3d）。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① Cl（Z = 17）幾個價電子？<details><summary>看解法</summary><div class="ans">1s² 2s² 2p⁶ 3s² 3p⁵，最外層 7 個 → ⅦA。</div></details>② 同週期由左到右電負度怎麼變？<details><summary>看解法</summary><div class="ans">變大（核抓電子更緊），F 為全表最大。</div></details></div></div></div>
+<div class="formula">主族：週期 = 電子層數　‧　族數 = 價電子數（最外層 s、p 電子）</div>`
+  }
+];
+
+var CHEM_CARDS_G1_CH01 = [
+  { q: '電子填入軌域的三大原理？', a: '遞建原理：由低能量往高能量填。\n包立不相容：每軌域最多 2 個電子且自旋相反。\n洪德定則：同能量軌域先各佔一格、再成對。' },
+  { q: '軌域填充的能量順序？', a: '1s 2s 2p 3s 3p 4s 3d 4p 5s…\n最常錯：4s 比 3d 先填（4s 能量較低）。' },
+  { q: 's、p、d 軌域各能容納幾個電子？', a: 's 容 2、p 容 6、d 容 10。\n因為每個軌域最多 2 個：s 有 1 個軌域、p 有 3 個、d 有 5 個。' },
+  { q: '什麼是價電子？主族怎麼看族數？', a: '價電子 = 最外層 s、p 的電子，是反應的主角。\n主族（A 族）價電子數 = 族數個位。\n例：Cl 為 3s² 3p⁵ = 7 → ⅦA。' },
+  { q: '週期表的 s／p／d 區怎麼分？', a: 's 區 = ⅠA、ⅡA；\np 區 = ⅢA～0 族；\nd 區 = 過渡元素（B 族）。\n價電子填哪種軌域就屬哪區。' },
+  { q: '同週期由左到右，半徑／游離能／電負度怎麼變？', a: '半徑變小、游離能變大、電負度變大。\n原因：核電荷增加，原子核抓電子更緊。\n同族由上到下則全部相反。' },
+  { q: '等電子系列（電子數相同）半徑怎麼比？', a: '只看核電荷：核電荷越大、抓得越緊、半徑越小。\n例：O²⁻ ＞ F⁻ ＞ Na⁺ ＞ Mg²⁺（核電荷 8 ＜ 9 ＜ 11 ＜ 12）。' }
+];
+
+// ── ch01_basic.js ──
+var CHEM_BASIC_G1_CH01 = [
+  // 1. 電子組態：氯 Z=17（single, ans B）
+  {
+    q: '氯原子（Z＝17）的基態電子組態為何？',
+    opts: ['1s² 2s² 2p⁶ 3s² 3p³', '1s² 2s² 2p⁶ 3s² 3p⁵', '1s² 2s² 2p⁶ 3s² 3p⁶', '1s² 2s² 2p⁶ 3s¹ 3p⁶'],
+    ans: 'B',
+    hint: '依遞建原理由低能階填起：1s→2s→2p→3s→3p；氯共有 17 個電子。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>氯原子序 Z＝17，共 17 個電子，依能階由低到高逐一填入。</div></div><div class="as-f">填序：1s → 2s → 2p → 3s → 3p</div><div class="as-step"><div class="as-n">2</div><div>累加至 17：1s²（2）2s²（4）2p⁶（10）3s²（12）3p⁵（17）。</div></div><div class="as-f">1s² 2s² 2p⁶ 3s² 3p⁵ ＝ 2＋2＋6＋2＋5 ＝ 17</div><div class="as-warn">⚠ 3p 最多只能容 6 個電子；若填成 3p⁶ 會變成 18 個（氬 Ar），別多算一個。</div><div class="as-ans">答：(B) 1s² 2s² 2p⁶ 3s² 3p⁵</div></div>'
+  },
+  // 2. 遞建原理 4s 先於 3d：K Z=19（single, ans C）
+  {
+    q: '依遞建（構築）原理，鉀（Z＝19）的第 19 個電子會填入下列哪一個軌域？',
+    opts: ['3d', '3p', '4s', '4p'],
+    ans: 'C',
+    hint: '4s 軌域能量比 3d 低，遞建時先填 4s 再填 3d。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先排到氬（Z＝18）：1s² 2s² 2p⁶ 3s² 3p⁶，第 19 個電子要填下一個最低能階。</div></div><div class="as-f">能階高低：3p 小於 4s 小於 3d</div><div class="as-step"><div class="as-n">2</div><div>4s 能量低於 3d，故第 19 個電子填入 4s，鉀＝[Ar] 4s¹。</div></div><div class="as-f">K：[Ar] 4s¹（先 4s，後 3d）</div><div class="as-warn">⚠ 3d 主量子數雖較小，但能量高於 4s；「先填 4s」是遞建順序最常見的陷阱。</div><div class="as-ans">答：(C) 4s</div></div>'
+  },
+  // 3. 洪德定則：氮未成對電子（single, ans D）
+  {
+    q: '依洪德定則，氮原子（Z＝7）基態時 2p 軌域中有幾個「未成對電子」？',
+    opts: ['0 個', '1 個', '2 個', '3 個'],
+    ans: 'D',
+    hint: '洪德定則：同能階軌域先各填一個電子且自旋同向，再配對。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>氮 Z＝7：1s² 2s² 2p³，2p 有 3 個電子分佔 3 個 p 軌域。</div></div><div class="as-f">2p³：↑＿ ↑＿ ↑＿（三軌域各一，尚未配對）</div><div class="as-step"><div class="as-n">2</div><div>依洪德定則，三個電子各佔一個軌域且自旋平行，故全部未成對。</div></div><div class="as-f">未成對電子數 ＝ 3</div><div class="as-warn">⚠ 別急著把電子配對；2p³ 剛好半滿，是 3 個未成對，不是 1 個。</div><div class="as-ans">答：(D) 3 個</div></div>'
+  },
+  // 4. 價電子數：硫 Z=16（single, ans B）
+  {
+    q: '硫原子（Z＝16）的價電子數為何？',
+    opts: ['4', '6', '2', '16'],
+    ans: 'B',
+    hint: '價電子＝最外層（最大主量子數）s、p 軌域的電子數。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>硫 Z＝16：1s² 2s² 2p⁶ 3s² 3p⁴，最外層是第 3 層。</div></div><div class="as-f">最外層：3s² 3p⁴</div><div class="as-step"><div class="as-n">2</div><div>價電子＝3s² ＋ 3p⁴ ＝ 2 ＋ 4 ＝ 6。</div></div><div class="as-f">價電子數 ＝ 2 ＋ 4 ＝ 6</div><div class="as-warn">⚠ 價電子只算最外層 s、p；內層 2s² 2p⁶ 不算，別把 16 個電子全算進去。</div><div class="as-ans">答：(B) 6</div></div>'
+  },
+  // 5. 由組態判週期/族：P Z=15（single, ans A）
+  {
+    q: '某元素基態電子組態為 1s² 2s² 2p⁶ 3s² 3p³，它位於週期表的第幾週期、第幾族？',
+    opts: ['第 3 週期、第 VA 族（15 族）', '第 3 週期、第 IIIA 族（13 族）', '第 5 週期、第 IIIA 族（13 族）', '第 2 週期、第 VA 族（15 族）'],
+    ans: 'A',
+    hint: '週期＝最外層主量子數（電子殼層數）；主族族數＝價電子數。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>組態最大主量子數 n＝3（有 3 層電子殼層）→ 第 3 週期。</div></div><div class="as-f">殼層數 ＝ 3 → 第 3 週期</div><div class="as-step"><div class="as-n">2</div><div>價電子 3s² 3p³ ＝ 5 → 第 VA 族。此元素為磷 P（Z＝15）。</div></div><div class="as-f">價電子 ＝ 5 → 第 VA 族</div><div class="as-warn">⚠ 週期看「殼層數」不是電子總數；族數看「價電子數」不是內層電子。</div><div class="as-ans">答：(A) 第 3 週期、第 VA 族</div></div>'
+  },
+  // 6. 原子半徑週期趨勢（single, ans A）
+  {
+    q: '同屬第三週期的 Na、Mg、Cl 三元素，其原子半徑最大者為何？',
+    opts: ['Na', 'Mg', 'Cl', '三者相同'],
+    ans: 'A',
+    hint: '同週期由左到右，核電荷增加把電子拉得更近，原子半徑遞減。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>Na、Mg、Cl 同在第 3 週期，位置由左到右為 Na → Mg → … → Cl。</div></div><div class="as-f">週期內：左（Na）半徑大 → 右（Cl）半徑小</div><div class="as-step"><div class="as-n">2</div><div>越靠左核電荷越小、吸力越弱，半徑越大，故 Na 最大。</div></div><div class="as-f">半徑：Na 大於 Mg 大於 Cl</div><div class="as-warn">⚠ 同週期半徑「向右遞減」；別把原子序大的 Cl 誤認為半徑最大。</div><div class="as-ans">答：(A) Na</div></div>'
+  },
+  // 7. 游離能同族趨勢（single, ans D）
+  {
+    q: 'Li、Na、K 同屬第一族（鹼金屬），三者第一游離能最大者為何？',
+    opts: ['K', 'Na', '三者相同', 'Li'],
+    ans: 'D',
+    hint: '同一族由上到下原子變大、外層電子離核遠，第一游離能遞減。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>Li、Na、K 同屬第一族，由上到下為 Li → Na → K，原子半徑漸大。</div></div><div class="as-f">同族向下：游離能遞減</div><div class="as-step"><div class="as-n">2</div><div>最上方的 Li 外層電子離核最近、最難被移走，第一游離能最大。</div></div><div class="as-f">第一游離能：Li 大於 Na 大於 K</div><div class="as-warn">⚠ 游離能是「移走電子的難易」；半徑越大越易移走→游離能越小，K 最小而非最大。</div><div class="as-ans">答：(D) Li</div></div>'
+  },
+  // 8. 電負度大小（single, ans C）
+  {
+    q: '下列元素中，電負度（電負性）最大者為何？',
+    opts: ['N', 'O', 'F', 'Cl'],
+    ans: 'C',
+    hint: '電負度同週期向右增大、同族向上增大，右上角的氟為所有元素最大。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先看第 2 週期趨勢（向右增大）：N 小於 O 小於 F。</div></div><div class="as-f">第 2 週期：N 小於 O 小於 F</div><div class="as-step"><div class="as-n">2</div><div>F 位於週期表右上角（不含惰性氣體），電負度為全表最大；同族氟在氯上方故 F 大於 Cl。</div></div><div class="as-f">電負度：F 大於 O 大於 Cl 大於 N</div><div class="as-warn">⚠ 別選 Cl；氟與氯同族但氟在上方，電負度 F 大於 Cl。</div><div class="as-ans">答：(C) F</div></div>'
+  },
+  // 9. 等電子離子半徑（single, ans A）
+  {
+    q: 'O²⁻、F⁻、Na⁺、Mg²⁺ 為等電子（皆含 10 個電子）的離子，其半徑最大者為何？',
+    opts: ['O²⁻', 'F⁻', 'Na⁺', 'Mg²⁺'],
+    ans: 'A',
+    hint: '等電子的離子，核內質子越多、對電子吸力越強，半徑越小。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>四種離子電子數都是 10，比較質子數：O 為 8、F 為 9、Na 為 11、Mg 為 12。</div></div><div class="as-f">質子數：O(8) 小於 F(9) 小於 Na(11) 小於 Mg(12)</div><div class="as-step"><div class="as-n">2</div><div>質子越少對電子吸力越弱、半徑越大，故 O²⁻ 半徑最大。</div></div><div class="as-f">半徑：O²⁻ 大於 F⁻ 大於 Na⁺ 大於 Mg²⁺</div><div class="as-warn">⚠ 電子數相同時比「質子數」；質子越多半徑越小，別以為帶越多負電就越大。</div><div class="as-ans">答：(A) O²⁻</div></div>'
+  },
+  // 10. 週期表區塊 s/p/d（single, ans B）
+  {
+    q: '某元素基態電子組態為 1s² 2s² 2p⁶ 3s² 3p⁴（硫），依最後填入的電子判斷，它屬於週期表的哪一區（block）？',
+    opts: ['s 區', 'p 區', 'd 區', 'f 區'],
+    ans: 'B',
+    hint: '最後（最高能）電子填入哪個副層，就屬哪一區：s 區、p 區、d 區。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>硫的組態最外層最後填入的是 3p 軌域。</div></div><div class="as-f">最後電子填入 3p → p 區</div><div class="as-step"><div class="as-n">2</div><div>價電子落在 p 軌域，故屬 p 區元素。</div></div><div class="as-f">硫 S：p 區</div><div class="as-warn">⚠ 別只看有沒有 s 電子；判斷區塊看「最後（最高能）電子」落在 s 還是 p。</div><div class="as-ans">答：(B) p 區</div></div>'
+  },
+  // 11. 週期性趨勢綜合（multi, ans A/C/D）
+  {
+    type: 'multi',
+    q: '【多選】下列有關週期性遞變的敘述，何者正確？',
+    opts: ['同一週期由左到右，原子半徑逐漸減小', '同一族由上到下，第一游離能逐漸增大', '所有元素中電負度以氟（F）為最大', '同一元素的陽離子半徑比其中性原子小', '第 18 族（惰性氣體）的價電子數皆為 8'],
+    ans: ['A', 'C', 'D'],
+    hint: '逐項對照趨勢：半徑、游離能、電負度、離子半徑、價電子。注意惰性氣體有例外。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>甲：同週期向右核電荷增、半徑遞減，正確。乙：同族向下半徑變大、游離能「遞減」而非遞增，錯。</div></div><div class="as-f">甲 ✓（向右半徑減）；乙 ✗（向下游離能減）</div><div class="as-step"><div class="as-n">2</div><div>丙：F 電負度全表最大，正確。丁：陽離子少了電子、外層縮小，半徑比原子小，正確。戊：惰性氣體氦 He 只有 2 個價電子，並非全為 8，錯。</div></div><div class="as-f">丙 ✓；丁 ✓（陽離子 小於 原子）；戊 ✗（He ＝ 2）</div><div class="as-warn">⚠ 惰性氣體「八隅體」有例外——氦 He 為 2；別一律當成 8。</div><div class="as-ans">答：(A)、(C)、(D)</div></div>'
+  },
+  // 12. 電子組態/價電子綜合（multi, ans A/B/D）
+  {
+    type: 'multi',
+    q: '【多選】下列有關電子組態的敘述，何者正確？',
+    opts: ['鎂（Z＝12）的基態電子組態為 1s² 2s² 2p⁶ 3s²', '氧（Z＝8）的價電子數為 6', '鉀（Z＝19）的最外層電子填在 3d 軌域', '碳（Z＝6）基態時有 2 個未成對電子', '氖（Ne，Z＝10）屬於週期表的 s 區'],
+    ans: ['A', 'B', 'D'],
+    hint: '逐項驗算電子組態、價電子數與未成對電子數，並注意惰性氣體的區塊。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>甲：Mg 為 1s² 2s² 2p⁶ 3s²，共 12 個電子，正確。乙：O 價電子 2s² 2p⁴ ＝ 6，正確。</div></div><div class="as-f">甲 ✓（Mg 12 電子）；乙 ✓（O 價電子 6）</div><div class="as-step"><div class="as-n">2</div><div>丙：K 第 19 個電子填 4s 而非 3d，錯。丁：碳 2p² 依洪德定則各佔一軌域，有 2 個未成對，正確。戊：氖 2p⁶ 屬 p 區而非 s 區，錯。</div></div><div class="as-f">丙 ✗（填 4s）；丁 ✓（C 未成對 2）；戊 ✗（Ne 為 p 區）</div><div class="as-warn">⚠ 惰性氣體除氦 He 外都在 p 區；Ne、Ar 皆 p 區，別歸到 s 區。</div><div class="as-ans">答：(A)、(B)、(D)</div></div>'
+  },
+  // 13. 價電子數選填：P（fill, ans 5）
+  {
+    type: 'fill',
+    q: '【選填】磷原子（P，Z＝15）的價電子數為何？（填數字）',
+    ans: '5',
+    acc: ['5個', '五'],
+    hint: '價電子＝最外層 s、p 軌域的電子數。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>磷 P（Z＝15）：1s² 2s² 2p⁶ 3s² 3p³，最外層為第 3 層。</div></div><div class="as-f">最外層：3s² 3p³</div><div class="as-step"><div class="as-n">2</div><div>價電子＝3s² ＋ 3p³ ＝ 2 ＋ 3 ＝ 5。</div></div><div class="as-f">3s² ＋ 3p³ ＝ 5</div><div class="as-warn">⚠ 只算最外層；內層 2s² 2p⁶ 不計入價電子。</div><div class="as-ans">答：5</div></div>'
+  },
+  // 14. 由組態求原子序（fill, ans 20）
+  {
+    type: 'fill',
+    q: '【選填】某中性原子的基態電子組態為 1s² 2s² 2p⁶ 3s² 3p⁶ 4s²，則其原子序 Z 為何？（填數字）',
+    ans: '20',
+    acc: ['20個', '二十'],
+    hint: '把各軌域電子數相加得電子總數；中性原子電子數＝原子序。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>將各軌域電子數逐項相加。</div></div><div class="as-f">2＋2＋6＋2＋6＋2 ＝ 20</div><div class="as-step"><div class="as-n">2</div><div>中性原子電子數＝質子數＝原子序，故 Z＝20（鈣 Ca）。</div></div><div class="as-f">Z ＝ 20</div><div class="as-warn">⚠ 最外層 4s² 也要算進去；漏掉 4s² 會誤得 18（氬 Ar）。</div><div class="as-ans">答：20</div></div>'
+  }
+];
+
+// ── ch01_adv.js ──
+var CHEM_ADV_G1_CH01 = [
+  {
+    type:'open',
+    q:`【進階實戰】某元素 X 基態電子組態為 1s² 2s² 2p⁶ 3s² 3p⁴。試依序回答：(1) X 的原子序與元素名稱 (2) X 在週期表的週期與族 (3) X 的價電子數 (4) X 最常形成的離子。`,
+    ans:`(1) 原子序 16，硫 S　(2) 第三週期、第16族（VIA）　(3) 價電子 6　(4) S²⁻`,
+    hint:`把組態中所有電子加總得原子序；最外層主量子數 n 即週期數；價電子＝最外殼 3s＋3p 電子數，族數由此定。`,
+    fig:`<svg viewBox="0 0 380 96" xmlns="http://www.w3.org/2000/svg"><text x="12" y="30" font-size="14" fill="var(--ink)">已知組態：1s² 2s² 2p⁶ 3s² 3p⁴</text><text x="12" y="58" font-size="13" fill="var(--ink3)">週期＝?　族＝?　價電子＝?</text><text x="12" y="82" font-size="20" fill="var(--red)">?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>原子序＝電子總數，把各軌域電子相加。</div></div><div class="as-f">2＋2＋6＋2＋4 ＝ 16　→　原子序 16，元素為硫 S</div><div class="as-step"><div class="as-n">2</div><div>最外殼主量子數 n＝3 定週期；最外殼電子 3s²3p⁴ 共 6 個定主族族數。</div></div><div class="as-f">第三週期；價電子 6 → 第16族（VIA）</div><div class="as-step"><div class="as-n">3</div><div>價電子只算最外殼 3s＋3p，內層 2s²2p⁶ 不計。</div></div><div class="as-f">價電子 ＝ 3s² ＋ 3p⁴ ＝ 6</div><div class="as-step"><div class="as-n">4</div><div>價電子 6，距八隅體差 2；硫為非金屬，傾向得 2 個電子。</div></div><div class="as-f">S ＋ 2e⁻ → S²⁻</div><div class="as-note">最後一個電子填在 p 軌域，故 X 屬週期表的 p 區元素。</div><div class="as-warn">⚠ 族數看「最外殼電子數」，不是拿原子序個位數硬湊；內層滿殼電子不算價電子。</div><div class="as-ans">答：(1) 原子序 16、硫 S　(2) 第三週期、第16族　(3) 6　(4) S²⁻</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】某第三週期元素 M 的連續游離能（單位 kJ/mol）依序為 I₁＝738、I₂＝1451、I₃＝7733、I₄＝10540。(1) 判斷 M 的價電子數與所屬族 (2) 寫出 M 的元素名稱與基態電子組態 (3) 解釋為何 I₃ 相對 I₂ 突然暴增。`,
+    ans:`(1) 價電子 2、第2族（IIA）　(2) 鎂 Mg，1s² 2s² 2p⁶ 3s²　(3) 移去第 3 個電子須破壞內層八隅體滿殼，核吸引劇增故 I₃ 暴增`,
+    hint:`觀察連續游離能「跳躍數倍」出現的位置：跳躍前的電子數＝價電子數＝主族族數。再配合第三週期定元素。`,
+    fig:`<svg viewBox="0 0 380 100" xmlns="http://www.w3.org/2000/svg"><text x="12" y="28" font-size="13" fill="var(--ink)">已知 I₁ 738　I₂ 1451　I₃ 7733　I₄ 10540</text><text x="12" y="56" font-size="13" fill="var(--ink3)">價電子數＝?　族＝?　元素＝?</text><text x="12" y="86" font-size="20" fill="var(--red)">?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>找連續游離能暴增（數倍跳躍）的位置。I₂ 到 I₃ 由 1451 躍升至 7733，約 5 倍。</div></div><div class="as-f">I₃ ÷ I₂ ＝ 7733 ÷ 1451 ≈ 5.3（明顯跳躍）</div><div class="as-step"><div class="as-n">2</div><div>跳躍出現在「移去第 3 個電子」時，表示前 2 個電子是易失的價電子。</div></div><div class="as-f">價電子 ＝ 2　→　第2族（IIA）</div><div class="as-step"><div class="as-n">3</div><div>已知第三週期＋第2族，可定元素。</div></div><div class="as-f">M ＝ 鎂 Mg（原子序 12），組態 1s² 2s² 2p⁶ 3s²</div><div class="as-step"><div class="as-n">4</div><div>前 2 個電子取自 3s（外層），第 3 個電子須從內層 2p⁶ 滿殼（等同 Ne 穩定組態）移走，核吸引極強。</div></div><div class="as-f">I₃ 暴增 ← 破壞內層八隅體滿殼</div><div class="as-warn">⚠ 判斷看「跳躍倍數」而非絕對數值大小；跳躍前的電子數才是價電子數（主族）。</div><div class="as-ans">答：(1) 價電子 2、第2族　(2) 鎂 Mg，1s² 2s² 2p⁶ 3s²　(3) 第 3 電子須破壞內層滿殼故 I₃ 暴增</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】第三週期取 Na、Mg、S、Cl 四元素。(1) 將四者依「原子半徑」由大到小排序 (2) 將四者依「第一游離能」由小到大排序 (3) 用有效核電荷概念說明兩趨勢為何相反。`,
+    ans:`(1) 原子半徑：Na 大於 Mg 大於 S 大於 Cl　(2) 第一游離能：Na 小於 Mg 小於 S 小於 Cl　(3) 同週期左到右有效核電荷增大，半徑變小、游離能變大`,
+    hint:`同一週期由左到右，質子數增加而電子填在同一主殼層，屏蔽增加有限，故有效核電荷變大。半徑與游離能會呈相反走向。`,
+    fig:`<svg viewBox="0 0 380 92" xmlns="http://www.w3.org/2000/svg"><text x="12" y="26" font-size="13" fill="var(--ink)">第三週期　Na → Mg → S → Cl（由左到右）</text><line x1="20" y1="46" x2="330" y2="46" stroke="var(--ink3)"/><polygon points="330,46 320,41 320,51" fill="var(--ink3)"/><text x="20" y="72" font-size="13" fill="var(--red)">原子半徑＝?　第一游離能＝?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>同週期由左到右，質子數增、電子加在同一主殼層，屏蔽幾乎不變，故有效核電荷逐漸增大。</div></div><div class="as-f">有效核電荷：Na 小於 Mg 小於 S 小於 Cl</div><div class="as-step"><div class="as-n">2</div><div>有效核電荷越大，核對外層電子拉得越緊，原子半徑越小。</div></div><div class="as-f">原子半徑：Na 大於 Mg 大於 S 大於 Cl</div><div class="as-step"><div class="as-n">3</div><div>核抓得越緊，移走一個電子越難，第一游離能越大。</div></div><div class="as-f">第一游離能：Na 小於 Mg 小於 S 小於 Cl（約 496、738、1000、1251 kJ/mol）</div><div class="as-note">同週期「半徑減、游離能增」正是有效核電荷增大的兩面表現，方向相反。</div><div class="as-warn">⚠ 半徑與游離能走向相反：同週期是半徑減、游離能增；換成同族由上到下才變成半徑增、游離能減，勿記混。</div><div class="as-ans">答：(1) Na 大於 Mg 大於 S 大於 Cl　(2) Na 小於 Mg 小於 S 小於 Cl　(3) 有效核電荷增大所致</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】有 O²⁻、F⁻、Na⁺、Mg²⁺ 四種離子（原子序 O＝8、F＝9、Na＝11、Mg＝12）。(1) 說明四者有何共同點 (2) 將四者依「離子半徑」由大到小排序，並說明理由。`,
+    ans:`(1) 皆含 10 個電子，為等電子系列（與 Ne 同）　(2) O²⁻ 大於 F⁻ 大於 Na⁺ 大於 Mg²⁺，質子越多對相同電子吸引越強半徑越小`,
+    hint:`先各自算電子數（原子序±電荷）確認皆為 10。電子數相同時，比較核內質子數：質子越多，核拉電子越緊，半徑越小。`,
+    fig:`<svg viewBox="0 0 380 96" xmlns="http://www.w3.org/2000/svg"><circle cx="55" cy="46" r="20" fill="none" stroke="var(--accent)"/><text x="55" y="50" text-anchor="middle" font-size="12" fill="var(--ink)">O²⁻</text><circle cx="145" cy="46" r="20" fill="none" stroke="var(--gold)"/><text x="145" y="50" text-anchor="middle" font-size="12" fill="var(--ink)">F⁻</text><circle cx="235" cy="46" r="20" fill="none" stroke="var(--green)"/><text x="235" y="50" text-anchor="middle" font-size="12" fill="var(--ink)">Na⁺</text><circle cx="325" cy="46" r="20" fill="none" stroke="var(--accent)"/><text x="325" y="50" text-anchor="middle" font-size="11" fill="var(--ink)">Mg²⁺</text><text x="12" y="88" font-size="13" fill="var(--red)">半徑大小順序＝?（圖中大小僅示意）</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>各離子電子數＝原子序減去電荷。逐一計算。</div></div><div class="as-f">O²⁻：8＋2＝10　F⁻：9＋1＝10　Na⁺：11−1＝10　Mg²⁺：12−2＝10</div><div class="as-step"><div class="as-n">2</div><div>四者電子數皆為 10（與 Ne 同），屬等電子系列，電子雲結構相同。</div></div><div class="as-f">共同點：皆為 10 電子等電子系列</div><div class="as-step"><div class="as-n">3</div><div>電子數相同時，核內質子數越多，對這 10 個電子的吸引越強，半徑越小。質子數 O(8) 小於 F(9) 小於 Na(11) 小於 Mg(12)。</div></div><div class="as-f">離子半徑：O²⁻ 大於 F⁻ 大於 Na⁺ 大於 Mg²⁺</div><div class="as-warn">⚠ 別用「原子序小半徑就小」的直覺；等電子系列剛好相反——質子越多半徑越小。且陽離子通常比原子小、陰離子比原子大。</div><div class="as-ans">答：(1) 皆為 10 電子等電子系列　(2) O²⁻ 大於 F⁻ 大於 Na⁺ 大於 Mg²⁺</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】某元素 Y 基態電子組態為 1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁵。(1) 求 Y 的原子序與元素 (2) 判斷 Y 所屬週期、族與 s／p／d 區 (3) 求價電子數，並說明 3d¹⁰ 是否計入 (4) 推測 Y 最常形成的離子。`,
+    ans:`(1) 原子序 35，溴 Br　(2) 第四週期、第17族（VIIA）、p 區　(3) 價電子 7；3d¹⁰ 為內層滿殼不計入　(4) Br⁻`,
+    hint:`原子序＝電子總數。最高主量子數 n 定週期，最後填入的軌域定區。價電子只看最外殼 4s＋4p，內層填滿的 3d 不算。`,
+    fig:`<svg viewBox="0 0 380 96" xmlns="http://www.w3.org/2000/svg"><text x="12" y="30" font-size="12" fill="var(--ink)">1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁵</text><text x="12" y="58" font-size="13" fill="var(--ink3)">週期＝?　族＝?　區＝?　價電子＝?</text><text x="12" y="84" font-size="20" fill="var(--red)">?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>把所有電子加總得原子序。</div></div><div class="as-f">2＋2＋6＋2＋6＋2＋10＋5 ＝ 35　→　溴 Br</div><div class="as-step"><div class="as-n">2</div><div>最高主量子數 n＝4 定第四週期；最後一個電子填在 4p → p 區。</div></div><div class="as-f">第四週期、p 區</div><div class="as-step"><div class="as-n">3</div><div>價電子＝最外殼 4s²＋4p⁵＝7；3d¹⁰ 雖排在後面卻屬內層滿殼，不計入價電子。價電子 7 → 第17族。</div></div><div class="as-f">價電子 ＝ 4s² ＋ 4p⁵ ＝ 7 → 第17族（VIIA，鹵素）</div><div class="as-step"><div class="as-n">4</div><div>價電子 7，距八隅體差 1，為活潑非金屬，傾向得 1 電子達 Kr 組態。</div></div><div class="as-f">Br ＋ e⁻ → Br⁻</div><div class="as-note">寫組態時 4s 先填，但比較「內外層」要看主量子數 n：4s、4p（n＝4）才是最外殼，3d（n＝3）屬內層。</div><div class="as-warn">⚠ 別把 3d¹⁰ 當價電子；它是填滿的內層。族數看最外殼電子總數（此處 7），不是把 3d 也加進去。</div><div class="as-ans">答：(1) 原子序 35、溴 Br　(2) 第四週期、第17族、p 區　(3) 價電子 7，3d¹⁰ 不計　(4) Br⁻</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】第三週期四元素 Na、Al、S、Cl 的電負度分別約為 0.9、1.5、2.5、3.0。(1) 將四者金屬性由強到弱排序 (2) 判斷哪兩元素之間最易形成「離子鍵」，並簡述理由 (3) 說明同週期電負度為何由左向右遞增。`,
+    ans:`(1) 金屬性：Na 大於 Al 大於 S 大於 Cl　(2) Na 與 Cl（電負度差最大 3.0−0.9＝2.1）　(3) 同週期由左到右有效核電荷增、半徑減，吸電子能力增故電負度遞增`,
+    hint:`電負度越小金屬性越強。離子鍵傾向出現在電負度差最大的一對元素（一個很想給電子、一個很想搶電子）。`,
+    fig:`<svg viewBox="0 0 380 92" xmlns="http://www.w3.org/2000/svg"><text x="12" y="28" font-size="12" fill="var(--ink)">電負度　Na 0.9　Al 1.5　S 2.5　Cl 3.0</text><line x1="20" y1="50" x2="330" y2="50" stroke="var(--ink3)"/><polygon points="330,50 320,45 320,55" fill="var(--ink3)"/><text x="20" y="76" font-size="13" fill="var(--red)">金屬性順序＝?　最強離子鍵＝?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>電負度越小，越傾向失去電子，金屬性越強；反之非金屬性越強。</div></div><div class="as-f">金屬性：Na 大於 Al 大於 S 大於 Cl</div><div class="as-step"><div class="as-n">2</div><div>離子鍵傾向由電負度差最大的一對形成（差越大，電子偏移越徹底）。逐對比較差值。</div></div><div class="as-f">Cl − Na ＝ 3.0 − 0.9 ＝ 2.1（最大）</div><div class="as-step"><div class="as-n">3</div><div>差 2.1 最大 → Na 與 Cl 之間離子性最強，形成離子化合物 NaCl。</div></div><div class="as-f">最易形成離子鍵：Na 與 Cl</div><div class="as-step"><div class="as-n">4</div><div>同週期由左到右，有效核電荷增大、原子半徑減小，原子吸引成鍵電子的能力增強，故電負度遞增。</div></div><div class="as-note">電負度差小（如 S 與 Cl 差 0.5）則偏共價鍵；差大才偏離子鍵。金屬性與電負度是相反指標。</div><div class="as-warn">⚠ 別把「電負度大」當金屬性強；恰相反，電負度大代表非金屬性強。判斷離子鍵要比「差值」而非單一數值。</div><div class="as-ans">答：(1) Na 大於 Al 大於 S 大於 Cl　(2) Na 與 Cl，電負度差 2.1 最大　(3) 有效核電荷增、半徑減使吸電子力增</div></div>`
+  }
+];
+
+// ── ch02_course.js ──
+// chem_g1_v31/ch02_course.js — 化學高二 CH02「化學鍵結」課程＋筆記＋速記卡（檔 A）
+var CHEM_COURSE_G1_CH02 = {
+  num: 'CH 02',
+  name: '化學鍵結',
+  book: '選修化學（上）',
+  grade: '高二',
+  sub: '離子鍵與晶格、共價鍵單雙叁鍵、鍵能鍵長、路易斯結構與形式電荷、VSEPR 分子形狀、分子極性、金屬鍵',
+  tags: ['分科範圍', '選修', '先懂再背'],
+  sections: [
+    {
+      title: '🗣 白話導讀',
+      color: 'blue',
+      body: `<p class="c-intro">原子為什麼會「黏」在一起？因為多數原子都想讓最外層電子湊到<span class="c-def">八隅體</span>（最外層 8 個電子，像鈍氣一樣穩定；氫、氦例外湊 2 個）。為了達到這個穩定狀態，原子之間會<span class="c-def">給電子、搶電子或共用電子</span>——這就是化學鍵。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">給/搶</span>離子鍵</div><div class="c-op">·</div><div class="c-block o"><span class="bk-tag">共用</span>共價鍵</div><div class="c-op">·</div><div class="c-block"><span class="bk-tag">共享電子海</span>金屬鍵</div></div>
+<p class="c-intro">一句話記三種鍵：<span class="c-def">金屬＋非金屬</span>用「搶電子」形成離子鍵；<span class="c-def">非金屬＋非金屬</span>用「共用電子」形成共價鍵；<span class="c-def">金屬＋金屬</span>把電子丟進公共池變成金屬鍵。這一章就照這條線，先認鍵、再畫結構（路易斯）、再判形狀（VSEPR）、最後看形狀怎麼決定分子極性與物性。</p>
+<div class="c-warn">⚠ 八隅體是「傾向」不是鐵律：H、He 只湊 2 個；BF₃ 的 B 只有 6 個；還有像 SF₆ 這種超過 8 個的例外。判斷時先套八隅體，再留意這幾個常見特例。</div>`
+    },
+    {
+      title: '🔗 三種鍵結：離子鍵、共價鍵、金屬鍵',
+      color: 'green',
+      body: `<p class="c-intro"><span class="c-def">離子鍵</span>是金屬把電子交給非金屬，形成陽離子與陰離子，靠正負電互相吸引。無數離子按規則排成<span class="c-def">晶格</span>（如 NaCl 一正一負交錯堆疊），所以離子化合物沒有單一「分子」，寫的 NaCl 只是最簡比例。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arC2a" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker></defs>
+<circle cx="45" cy="82" r="16" fill="var(--accent)"/>
+<text x="45" y="87" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Na⁺</text>
+<circle cx="95" cy="82" r="21" fill="var(--green)"/>
+<text x="95" y="87" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Cl⁻</text>
+<line x1="55" y1="58" x2="82" y2="58" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arC2a)"/>
+<text x="68" y="50" text-anchor="middle" font-size="10" fill="var(--accent)">e⁻</text>
+<circle cx="180" cy="82" r="16" fill="none" stroke="var(--ink3)" stroke-width="1.5"/>
+<circle cx="214" cy="82" r="16" fill="none" stroke="var(--ink3)" stroke-width="1.5"/>
+<circle cx="197" cy="76" r="2.5" fill="var(--ink)"/>
+<circle cx="197" cy="88" r="2.5" fill="var(--ink)"/>
+<circle cx="300" cy="66" r="9" fill="var(--gold)"/><text x="300" y="70" text-anchor="middle" fill="#fff" font-size="9">＋</text>
+<circle cx="332" cy="66" r="9" fill="var(--gold)"/><text x="332" y="70" text-anchor="middle" fill="#fff" font-size="9">＋</text>
+<circle cx="300" cy="98" r="9" fill="var(--gold)"/><text x="300" y="102" text-anchor="middle" fill="#fff" font-size="9">＋</text>
+<circle cx="332" cy="98" r="9" fill="var(--gold)"/><text x="332" y="102" text-anchor="middle" fill="#fff" font-size="9">＋</text>
+<circle cx="316" cy="82" r="2.5" fill="var(--accent)"/><circle cx="300" cy="82" r="2.5" fill="var(--accent)"/><circle cx="332" cy="82" r="2.5" fill="var(--accent)"/><circle cx="316" cy="66" r="2.5" fill="var(--accent)"/><circle cx="316" cy="98" r="2.5" fill="var(--accent)"/>
+<text x="70" y="150" text-anchor="middle" font-size="12" fill="var(--ink)">離子鍵</text>
+<text x="70" y="168" text-anchor="middle" font-size="10" fill="var(--ink3)">給／搶電子</text>
+<text x="197" y="150" text-anchor="middle" font-size="12" fill="var(--ink)">共價鍵</text>
+<text x="197" y="168" text-anchor="middle" font-size="10" fill="var(--ink3)">共用電子對</text>
+<text x="316" y="150" text-anchor="middle" font-size="12" fill="var(--ink)">金屬鍵</text>
+<text x="316" y="168" text-anchor="middle" font-size="10" fill="var(--ink3)">電子海</text>
+</svg></div>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext"><b>離子鍵</b>：金屬失電子成陽離子、非金屬得電子成陰離子，正負相吸並排成晶格。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext"><b>共價鍵</b>：兩個非金屬各出電子「共用」一對；共用 1 對＝單鍵、2 對＝雙鍵、3 對＝叁鍵。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext"><b>金屬鍵</b>：金屬陽離子固定成陣，價電子脫離變成可自由流動的「電子海」，所以金屬能導電、有延展性與光澤。</div></div>
+<p class="c-intro">共價鍵還分<span class="c-def">極性</span>與<span class="c-def">非極性</span>：兩原子電負度相同（如 H–H、Cl–Cl）電子平分，是非極性共價鍵；電負度不同（如 H–Cl）電子偏向較會搶的一方，是極性共價鍵，會出現「一端略負、一端略正」的偶極。</p>
+<div class="formula">電負度差 ≈ 0：非極性共價　·　0 &lt; 差 &lt; 1.7：極性共價　·　差 ≥ 1.7：偏離子鍵</div>
+<div class="fcard"><div class="fcard-f">鍵數越多 → 鍵能越大、鍵長越短（叁 &gt; 雙 &gt; 單）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>共用的電子對越多，兩原子被綁得越緊、拉得越近，所以又強又短。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>比較同兩元素間單／雙／叁鍵的強弱或長短時。<span class="c-def">鍵能</span>＝拆斷一莫耳鍵所需能量（越大越穩）；<span class="c-def">鍵長</span>＝兩核平均距離。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>碳碳鍵：C–C 約 348 kJ/mol、154 pm；C＝C 約 614 kJ/mol、134 pm；C≡C 約 839 kJ/mol、120 pm。鍵能升、鍵長降。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① N₂ 為何很難反應？<details><summary>看解法</summary><div class="ans">N≡N 是叁鍵，鍵能高達約 945 kJ/mol，非常穩定難拆，故 N₂ 化性不活潑。</div></details>② O₂（O＝O）與 O₃ 的鍵，哪個單鍵成分較多、鍵較長？<details><summary>看解法</summary><div class="ans">O₃ 因共振，鍵介於單、雙鍵之間（約 1.5 鍵），比 O₂ 的純雙鍵長。</div></details></div></div></div>`
+    },
+    {
+      title: '✒ 路易斯結構、八隅體與形式電荷',
+      color: 'gold',
+      body: `<p class="c-intro"><span class="c-def">路易斯結構</span>用「點」代表價電子、「線」代表共用電子對，把分子怎麼接、電子怎麼分畫出來。畫的步驟：算總價電子數 → 定中心原子（通常最會共用、電負度較小者，H 永遠在外）→ 連單鍵 → 補孤電子對讓外圍先滿八隅體 → 若中心不足八隅體，就把孤對移來形成雙／叁鍵。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<text x="110" y="112" text-anchor="middle" font-size="22" font-weight="700" fill="var(--ink)">O</text>
+<text x="190" y="112" text-anchor="middle" font-size="22" font-weight="700" fill="var(--accent)">C</text>
+<text x="270" y="112" text-anchor="middle" font-size="22" font-weight="700" fill="var(--ink)">O</text>
+<line x1="126" y1="100" x2="172" y2="100" stroke="var(--ink)" stroke-width="1.5"/>
+<line x1="126" y1="110" x2="172" y2="110" stroke="var(--ink)" stroke-width="1.5"/>
+<line x1="208" y1="100" x2="254" y2="100" stroke="var(--ink)" stroke-width="1.5"/>
+<line x1="208" y1="110" x2="254" y2="110" stroke="var(--ink)" stroke-width="1.5"/>
+<circle cx="100" cy="80" r="3" fill="var(--ink)"/><circle cx="120" cy="80" r="3" fill="var(--ink)"/>
+<circle cx="100" cy="130" r="3" fill="var(--ink)"/><circle cx="120" cy="130" r="3" fill="var(--ink)"/>
+<circle cx="260" cy="80" r="3" fill="var(--ink)"/><circle cx="280" cy="80" r="3" fill="var(--ink)"/>
+<circle cx="260" cy="130" r="3" fill="var(--ink)"/><circle cx="280" cy="130" r="3" fill="var(--ink)"/>
+<text x="190" y="175" text-anchor="middle" font-size="12" fill="var(--ink3)">O＝C＝O　（每個 O、C 都滿八隅體）</text>
+</svg></div>
+<p class="c-intro">上圖是 CO₂：兩條線＝雙鍵（4 個共用電子），O 上四點＝兩對孤電子。C 用兩個雙鍵共 8 個電子、每個 O 也是 8 個，全部滿八隅體。</p>
+<div class="c-stepline"><div class="c-stepnum">·</div><div class="c-steptext"><b>共振</b>：有些分子（如 O₃、NO₃⁻、SO₄²⁻）可畫出好幾種等價的路易斯結構，真實情況是它們的「平均」。用雙箭號 ↔ 連接，鍵長會平均化。</div></div>
+<div class="fcard"><div class="fcard-f">形式電荷 = 價電子數 − 未鍵結電子數 − （鍵結電子數 ÷ 2）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>本來帶幾個價電子，減掉自己獨占的孤電子，再減掉共用電子的一半。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>要在多種畫法中挑「最合理」的路易斯結構時。<span class="c-def">形式電荷越接近 0、負電荷落在電負度大的原子上，結構越好</span>。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>CO₂ 的 C：價電子 4、孤電子 0、共用電子 8 → 4 − 0 − 8÷2 = 0。O：6 − 4 − 4÷2 = 0。全為 0，是好結構。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 一氧化碳 :C≡O: 中，C 的形式電荷？<details><summary>看解法</summary><div class="ans">C：孤電子 2、共用電子 6 → 4 − 2 − 6÷2 = −1。（O 為 +1，總和 0，符合中性分子。）</div></details>② 全部形式電荷加起來應等於什麼？<details><summary>看解法</summary><div class="ans">等於整個分子或離子的總電荷（中性分子＝0，離子＝其電荷）。可拿來檢查有沒有畫錯。</div></details></div></div></div>`
+    },
+    {
+      title: '🧭 VSEPR 分子形狀與分子極性',
+      color: 'blue',
+      body: `<p class="c-intro"><span class="c-def">VSEPR</span>（價殼層電子對互斥）說：中心原子周圍的電子對會盡量互相遠離，決定分子形狀。先數<span class="c-def">電子域數</span>＝接的原子數 ＋ 中心的孤電子對數，再對照下圖。孤電子對比較「胖」、排斥力大，會把鍵角略微壓小。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<circle cx="42" cy="80" r="7" fill="var(--accent)"/><circle cx="22" cy="80" r="5" fill="var(--ink3)"/><circle cx="62" cy="80" r="5" fill="var(--ink3)"/><line x1="29" y1="80" x2="55" y2="80" stroke="var(--ink)" stroke-width="1.5"/>
+<circle cx="116" cy="80" r="7" fill="var(--accent)"/><circle cx="116" cy="58" r="5" fill="var(--ink3)"/><circle cx="99" cy="92" r="5" fill="var(--ink3)"/><circle cx="133" cy="92" r="5" fill="var(--ink3)"/><line x1="116" y1="73" x2="116" y2="63" stroke="var(--ink)" stroke-width="1.5"/><line x1="111" y1="86" x2="103" y2="90" stroke="var(--ink)" stroke-width="1.5"/><line x1="121" y1="86" x2="129" y2="90" stroke="var(--ink)" stroke-width="1.5"/>
+<circle cx="190" cy="80" r="7" fill="var(--accent)"/><circle cx="190" cy="56" r="5" fill="var(--ink3)"/><circle cx="168" cy="98" r="5" fill="var(--ink3)"/><circle cx="212" cy="98" r="5" fill="var(--ink3)"/><circle cx="190" cy="106" r="5" fill="var(--ink3)"/><line x1="190" y1="73" x2="190" y2="61" stroke="var(--ink)" stroke-width="1.5"/><line x1="185" y1="85" x2="172" y2="95" stroke="var(--ink)" stroke-width="1.5"/><line x1="195" y1="85" x2="208" y2="95" stroke="var(--ink)" stroke-width="1.5"/><line x1="190" y1="87" x2="190" y2="101" stroke="var(--ink)" stroke-width="1.5"/>
+<circle cx="264" cy="76" r="7" fill="var(--accent)"/><circle cx="246" cy="98" r="5" fill="var(--ink3)"/><circle cx="282" cy="98" r="5" fill="var(--ink3)"/><line x1="259" y1="81" x2="250" y2="93" stroke="var(--ink)" stroke-width="1.5"/><line x1="269" y1="81" x2="278" y2="93" stroke="var(--ink)" stroke-width="1.5"/>
+<circle cx="338" cy="76" r="7" fill="var(--accent)"/><circle cx="320" cy="98" r="5" fill="var(--ink3)"/><circle cx="356" cy="98" r="5" fill="var(--ink3)"/><circle cx="338" cy="104" r="5" fill="var(--ink3)"/><line x1="333" y1="81" x2="324" y2="93" stroke="var(--ink)" stroke-width="1.5"/><line x1="343" y1="81" x2="352" y2="93" stroke="var(--ink)" stroke-width="1.5"/><line x1="338" y1="83" x2="338" y2="99" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="42" y="150" text-anchor="middle" font-size="11" fill="var(--ink)">直線</text><text x="42" y="166" text-anchor="middle" font-size="9" fill="var(--ink3)">180°</text>
+<text x="116" y="150" text-anchor="middle" font-size="11" fill="var(--ink)">平面三角</text><text x="116" y="166" text-anchor="middle" font-size="9" fill="var(--ink3)">120°</text>
+<text x="190" y="150" text-anchor="middle" font-size="11" fill="var(--ink)">四面體</text><text x="190" y="166" text-anchor="middle" font-size="9" fill="var(--ink3)">109.5°</text>
+<text x="264" y="150" text-anchor="middle" font-size="11" fill="var(--ink)">角形</text><text x="264" y="166" text-anchor="middle" font-size="9" fill="var(--ink3)">104.5°</text>
+<text x="338" y="150" text-anchor="middle" font-size="11" fill="var(--ink)">三角錐</text><text x="338" y="166" text-anchor="middle" font-size="9" fill="var(--ink3)">107°</text>
+</svg></div>
+<p class="c-intro">對照範例：<b>直線</b>＝CO₂（2 域）；<b>平面三角</b>＝BF₃（3 域）；<b>四面體</b>＝CH₄（4 域）；<b>角形</b>＝H₂O（4 域含 2 孤對）；<b>三角錐</b>＝NH₃（4 域含 1 孤對）。可見孤對越多，鍵角被壓得越小（109.5° → 107° → 104.5°）。</p>
+<div class="fcard"><div class="fcard-f">電子域數 = 接的原子數 ＋ 中心孤電子對數 → 決定形狀</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>先數中心接幾個原子、有幾對孤電子，加起來就知道電子怎麼撐開。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>判斷分子形狀與鍵角時。2 域→直線、3 域→平面三角、4 域→四面體；有孤對就從對應形狀「拿掉一角」變角形或三角錐。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>H₂O：O 接 2 個 H、還有 2 對孤電子＝4 域 → 底是四面體，扣掉 2 個孤對位置 → 角形，鍵角約 104.5°。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① NH₃ 是什麼形狀？<details><summary>看解法</summary><div class="ans">N 接 3 個 H、1 對孤電子＝4 域 → 四面體扣一角 → 三角錐，鍵角約 107°。</div></details>② CH₄ 與 CO₂ 誰鍵角大？<details><summary>看解法</summary><div class="ans">CO₂ 直線 180° 大於 CH₄ 的 109.5°（電子域越少、撐得越開）。</div></details></div></div></div>
+<p class="c-intro"><span class="c-def">分子極性</span>＝把每根極性鍵的偶極當向量相加：形狀對稱、偶極互相抵消 → <b>非極性分子</b>（CO₂、CH₄、BF₃）；形狀不對稱、偶極沒抵消 → <b>極性分子</b>（H₂O、NH₃、HCl）。所以「有極性鍵」不等於「是極性分子」，還要看形狀。</p>
+<div class="c-warn">⚠ 鍵結決定物性：離子化合物熔點高、脆、固態不導電但熔融或水溶液導電；分子化合物（共價分子間靠弱作用力）熔點低；網狀共價（鑽石、石英）極硬、熔點極高；金屬導電導熱、可延展。</div>`
+    },
+    {
+      title: '✏️ 練習問題',
+      color: 'green',
+      body: `<div class="c-practice"><b>練習 1：</b>MgCl₂ 是離子鍵還是共價鍵？寫出電子轉移。<details><summary>看解答</summary>金屬 Mg ＋ 非金屬 Cl → 離子鍵。Mg 失去 2 個電子成 Mg²⁺，兩個 Cl 各得 1 個電子成 Cl⁻，靠正負相吸並排成晶格。</details></div>
+<div class="c-practice"><b>練習 2：</b>CO₂ 與 H₂O 都含極性鍵，為何 CO₂ 是非極性分子、H₂O 是極性分子？<details><summary>看解答</summary>CO₂ 為直線（O＝C＝O），兩根偶極方向相反、大小相等而抵消 → 非極性；H₂O 為角形（104.5°），兩根偶極無法抵消、合成一個指向 O 的淨偶極 → 極性。關鍵在形狀對不對稱。</details></div>
+<div class="c-practice"><b>練習 3：</b>用 VSEPR 判斷 NH₃ 的形狀與大約鍵角。<details><summary>看解答</summary>中心 N 接 3 個 H、另有 1 對孤電子 → 電子域數 4，電子幾何為四面體；扣掉孤對佔的一角 → 分子形狀為三角錐。孤對排斥力大，鍵角略小於 109.5°，約 107°。</details></div>`
+    }
+  ]
+};
+
+var CHEM_NOTES_G1_CH02 = [
+  {
+    title: '一張圖看懂三種化學鍵',
+    tag: '核心概念',
+    tagClass: 'blue',
+    open: true,
+    body: `<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arC2n" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker></defs>
+<circle cx="45" cy="82" r="16" fill="var(--accent)"/><text x="45" y="87" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Na⁺</text>
+<circle cx="95" cy="82" r="21" fill="var(--green)"/><text x="95" y="87" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Cl⁻</text>
+<line x1="55" y1="58" x2="82" y2="58" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arC2n)"/><text x="68" y="50" text-anchor="middle" font-size="10" fill="var(--accent)">e⁻</text>
+<circle cx="180" cy="82" r="16" fill="none" stroke="var(--ink3)" stroke-width="1.5"/><circle cx="214" cy="82" r="16" fill="none" stroke="var(--ink3)" stroke-width="1.5"/>
+<circle cx="197" cy="76" r="2.5" fill="var(--ink)"/><circle cx="197" cy="88" r="2.5" fill="var(--ink)"/>
+<circle cx="300" cy="66" r="9" fill="var(--gold)"/><text x="300" y="70" text-anchor="middle" fill="#fff" font-size="9">＋</text>
+<circle cx="332" cy="66" r="9" fill="var(--gold)"/><text x="332" y="70" text-anchor="middle" fill="#fff" font-size="9">＋</text>
+<circle cx="300" cy="98" r="9" fill="var(--gold)"/><text x="300" y="102" text-anchor="middle" fill="#fff" font-size="9">＋</text>
+<circle cx="332" cy="98" r="9" fill="var(--gold)"/><text x="332" y="102" text-anchor="middle" fill="#fff" font-size="9">＋</text>
+<circle cx="316" cy="82" r="2.5" fill="var(--accent)"/><circle cx="316" cy="66" r="2.5" fill="var(--accent)"/><circle cx="316" cy="98" r="2.5" fill="var(--accent)"/>
+<text x="70" y="150" text-anchor="middle" font-size="12" fill="var(--ink)">離子鍵</text>
+<text x="197" y="150" text-anchor="middle" font-size="12" fill="var(--ink)">共價鍵</text>
+<text x="316" y="150" text-anchor="middle" font-size="12" fill="var(--ink)">金屬鍵</text>
+</svg></div>
+<div class="formula">金屬＋非金屬 → 離子鍵　·　非金屬＋非金屬 → 共價鍵　·　金屬＋金屬 → 金屬鍵</div>
+<p class="c-intro">三張小圖對照三種鍵：<b>離子鍵</b>把電子搶過去（Na 給、Cl 拿）；<b>共價鍵</b>兩原子共用一對電子；<b>金屬鍵</b>陽離子泡在自由電子海裡。判斷鍵型只要先看「元素是金屬還是非金屬」就八九不離十。</p>`
+  },
+  {
+    title: 'VSEPR 分子形狀速記',
+    tag: '核心概念',
+    tagClass: 'green',
+    open: false,
+    body: `<div class="c-blocks"><div class="c-block"><span class="bk-tag">2 域</span>直線 180°</div><div class="c-op">·</div><div class="c-block o"><span class="bk-tag">3 域</span>平面三角 120°</div><div class="c-op">·</div><div class="c-block"><span class="bk-tag">4 域</span>四面體 109.5°</div></div>
+<p class="c-intro">先數<b>電子域＝接的原子數＋孤對數</b>，得到「電子幾何」；再把孤對佔的角拿掉，就是「分子形狀」。</p>
+<p class="c-intro">4 域家族一定要記熟：<b>0 孤對</b>＝四面體（CH₄）；<b>1 孤對</b>＝三角錐（NH₃，約 107°）；<b>2 孤對</b>＝角形（H₂O，約 104.5°）。孤對越多、鍵角被壓得越小。</p>`
+  },
+  {
+    title: '分子極性與物性',
+    tag: '觀念釐清',
+    tagClass: 'gold',
+    open: false,
+    body: `<p class="c-intro"><span class="c-def">分子極性</span>＝各極性鍵偶極的向量和。<b>對稱抵消 → 非極性</b>（CO₂、CH₄、BF₃）；<b>不對稱 → 極性</b>（H₂O、NH₃、HCl）。有極性鍵不代表是極性分子，還要看形狀。</p>
+<p class="c-intro"><span class="c-def">鍵結決定物性</span>：離子化合物熔點高、質脆、固態不導電，熔融或溶於水才導電；分子化合物熔點低、多不導電；網狀共價（鑽石、石英）極硬且熔點極高；金屬可導電導熱、有延展性與金屬光澤。</p>`
+  },
+  {
+    title: '必背公式卡（形式電荷與鍵能）',
+    tag: '必背公式',
+    tagClass: 'red',
+    open: false,
+    body: `<div class="fcard"><div class="fcard-f">形式電荷 = 價電子數 − 未鍵結電子數 − （鍵結電子數 ÷ 2）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>價電子，減自己獨占的孤電子，再減共用電子的一半。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>在多種路易斯畫法中挑最合理者：形式電荷越接近 0 越好，負電荷該落在電負度大的原子上。全部相加＝分子或離子總電荷（可檢查）。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>CO₂ 的 C：4 − 0 − 8÷2 = 0；O：6 − 4 − 4÷2 = 0，全為 0，結構佳。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① :C≡O: 中 C 的形式電荷？<details><summary>看解法</summary><div class="ans">4 − 2 − 6÷2 = −1（O 為 +1，總和 0）。</div></details></div></div></div>
+<div class="formula">鍵能：叁 &gt; 雙 &gt; 單　·　鍵長：叁 &lt; 雙 &lt; 單（鍵數多 → 又強又短）</div>`
+  }
+];
+
+var CHEM_CARDS_G1_CH02 = [
+  { q: '原子為什麼要形成化學鍵？', a: '為了讓最外層電子達到八隅體（8 個，H/He 為 2 個）而穩定。\n方式：給／搶電子（離子鍵）、共用電子（共價鍵）、共享電子海（金屬鍵）。' },
+  { q: '離子鍵、共價鍵、金屬鍵怎麼快速判斷？', a: '金屬＋非金屬 → 離子鍵（給搶電子）。\n非金屬＋非金屬 → 共價鍵（共用電子對）。\n金屬＋金屬 → 金屬鍵（電子海）。' },
+  { q: '鍵能與鍵長隨鍵數如何變化？', a: '鍵數越多，鍵能越大、鍵長越短。\n叁鍵 > 雙鍵 > 單鍵（鍵能）；鍵長相反。\n例：C–C 154 pm、C＝C 134 pm、C≡C 120 pm。' },
+  { q: '形式電荷怎麼算？拿來做什麼？', a: '形式電荷 = 價電子數 − 未鍵結電子數 − 鍵結電子數÷2。\n用來挑最合理的路易斯結構：越接近 0 越好。\n全部相加 = 分子/離子的總電荷。' },
+  { q: 'VSEPR：電子域數怎麼對應形狀？', a: '電子域 = 接的原子數 + 中心孤對數。\n2 域直線、3 域平面三角、4 域四面體。\n4 域有 1 孤對→三角錐、2 孤對→角形（鍵角變小）。' },
+  { q: '為什麼 CO₂ 非極性、H₂O 極性？', a: '兩者都有極性鍵，但看形狀。\nCO₂ 直線對稱，偶極抵消 → 非極性。\nH₂O 角形不對稱，偶極不抵消 → 極性。' },
+  { q: '離子、分子、金屬化合物的物性差在哪？', a: '離子：熔點高、脆、熔融或水溶液才導電。\n分子：熔點低、多不導電（網狀共價除外，極硬高熔點）。\n金屬：導電導熱、有延展性與光澤。' }
+];
+
+// ── ch02_basic.js ──
+var CHEM_BASIC_G1_CH02 = [
+  // 1. 鍵型判斷：離子鍵（single, ans B）
+  {
+    q: '下列化合物中，何者主要以「離子鍵」結合？',
+    opts: ['二氧化碳 CO₂', '氯化鉀 KCl', '甲烷 CH₄', '氨 NH₃'],
+    ans: 'B',
+    hint: '離子鍵通常形成於「金屬＋非金屬」之間（電負度差大，發生電子轉移）。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>判準：金屬與非金屬結合、電負度差大者，傾向以離子鍵（電子轉移）結合；非金屬之間則多為共價鍵（電子共用）。</div></div><div class="as-f">金屬＋非金屬 → 離子鍵；非金屬＋非金屬 → 共價鍵</div><div class="as-step"><div class="as-n">2</div><div>逐項看：CO₂、CH₄、NH₃ 皆由非金屬組成（共價）；KCl 中 K 是金屬、Cl 是非金屬，K 給出 1 電子成 K⁺、Cl 得 1 電子成 Cl⁻。</div></div><div class="as-f">K⁺ ＋ Cl⁻ → 靜電吸引（離子鍵）</div><div class="as-warn">⚠ 別只看「化合物」就猜離子；CO₂、NH₃ 也是化合物但屬共價，關鍵在有沒有金屬與電子轉移。</div><div class="as-ans">答：(B) 氯化鉀 KCl</div></div>'
+  },
+  // 2. 非極性共價鍵（single, ans A）
+  {
+    q: '下列鍵結中，何者屬於「非極性共價鍵」？',
+    opts: ['H₂ 中的 H—H 鍵', 'HCl 中的 H—Cl 鍵', 'H₂O 中的 O—H 鍵', 'NaCl 中的鍵結'],
+    ans: 'A',
+    hint: '兩個「相同元素」原子共用電子，電負度相等，電子不偏向任一方＝非極性共價鍵。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>共價鍵是否有極性，看兩端原子電負度差：差為 0（同元素）→ 非極性；差不為 0 → 極性。</div></div><div class="as-f">同元素（差＝0）→ 非極性共價鍵</div><div class="as-step"><div class="as-n">2</div><div>H—H 兩端都是氫，電負度相等、電子平均共用→非極性。H—Cl、O—H 兩端不同元素→極性共價；NaCl 是離子鍵，不屬共價鍵。</div></div><div class="as-f">H—H 差＝0（非極性）；H—Cl、O—H 差≠0（極性）</div><div class="as-warn">⚠ NaCl 是干擾項，它是離子鍵不是共價鍵；「非極性」問的是共價鍵內電子分布，別選到離子鍵。</div><div class="as-ans">答：(A) H₂ 中的 H—H 鍵</div></div>'
+  },
+  // 3. VSEPR：CH₄ 正四面體（single, ans C）＋四面體 SVG
+  {
+    q: '甲烷 CH₄ 的中心碳原子接 4 個氫、無孤對電子。依 VSEPR 理論，其分子形狀與鍵角為何？',
+    opts: ['直線形，180°', '平面三角形，120°', '正四面體，109.5°', '角形，104.5°'],
+    ans: 'C',
+    hint: '中心原子周圍有 4 個電子對且皆為鍵結對、無孤對 → 正四面體。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>VSEPR：電子對互相排斥、彼此盡量遠離。數中心碳的電子對＝4 個 C—H 鍵、0 對孤對，共 4 個電子域。</div></div><div class="as-f">電子域＝4，孤對＝0 → 正四面體</div><svg viewBox="0 0 200 170" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="90" r="13" fill="var(--accent)"/><text x="100" y="94" font-size="10" text-anchor="middle" fill="var(--bg)">C</text><line x1="100" y1="90" x2="100" y2="30" stroke="var(--ink3)"/><line x1="100" y1="90" x2="45" y2="130" stroke="var(--ink3)"/><line x1="100" y1="90" x2="155" y2="130" stroke="var(--ink3)"/><line x1="100" y1="90" x2="120" y2="150" stroke="var(--ink3)"/><circle cx="100" cy="30" r="9" fill="var(--green)"/><text x="100" y="33" font-size="8" text-anchor="middle" fill="var(--bg)">H</text><circle cx="45" cy="130" r="9" fill="var(--green)"/><text x="45" y="133" font-size="8" text-anchor="middle" fill="var(--bg)">H</text><circle cx="155" cy="130" r="9" fill="var(--green)"/><text x="155" y="133" font-size="8" text-anchor="middle" fill="var(--bg)">H</text><circle cx="120" cy="150" r="9" fill="var(--green)"/><text x="120" y="153" font-size="8" text-anchor="middle" fill="var(--bg)">H</text><text x="150" y="70" font-size="10" text-anchor="middle" fill="var(--ink)">109.5°</text></svg><div class="as-note">4 個 C—H 鍵在三維空間彼此撐到最開，形成正四面體，H—C—H 鍵角為 109.5°。</div><div class="as-warn">⚠ 別因平面上畫成十字就以為是 90° 或 120°；CH₄ 是立體四面體，鍵角 109.5°。</div><div class="as-ans">答：(C) 正四面體，109.5°</div></div>'
+  },
+  // 4. VSEPR：H₂O 角形（single, ans D）
+  {
+    q: '水分子 H₂O 的中心氧原子有 2 個 O—H 鍵結對與 2 對孤對電子。依 VSEPR 理論，其分子形狀為何？',
+    opts: ['直線形', '正四面體', '三角錐', '角形（彎曲形）'],
+    ans: 'D',
+    hint: '中心有 4 個電子域（2 鍵結＋2 孤對），但形狀只看「原子」的排列 → 角形。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>氧的電子域＝2 個 O—H 鍵＋2 對孤對＝4，電子域排列為四面體。</div></div><div class="as-f">電子域＝4（其中 2 對是孤對）</div><div class="as-step"><div class="as-n">2</div><div>分子「形狀」只描述原子位置：兩個 H 分居中心兩側、被孤對壓下→呈角形（彎曲形），鍵角約 104.5°。</div></div><div class="as-f">2 鍵結＋2 孤對 → 角形（約 104.5°）</div><div class="as-warn">⚠ 形狀只算「原子」不算孤對；別因為電子域是四面體就答四面體，要看原子排成角形。</div><div class="as-ans">答：(D) 角形（彎曲形）</div></div>'
+  },
+  // 5. VSEPR：NH₃ 三角錐（single, ans A）
+  {
+    q: '氨分子 NH₃ 的中心氮原子有 3 個 N—H 鍵結對與 1 對孤對電子。依 VSEPR 理論，其形狀與鍵角約為何？',
+    opts: ['三角錐，約107°', '平面三角形，120°', '正四面體，109.5°', '直線形，180°'],
+    ans: 'A',
+    hint: '4 個電子域（3 鍵結＋1 孤對），原子排列成三角錐；孤對排斥使鍵角略小於109.5°。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>氮的電子域＝3 個 N—H 鍵＋1 對孤對＝4，電子域基本骨架為四面體。</div></div><div class="as-f">電子域＝4（3 鍵結＋1 孤對）</div><div class="as-step"><div class="as-n">2</div><div>只看 3 個 H 與 N 的原子排列→三角錐。孤對排斥力較強，把 N—H 壓近，鍵角由 109.5° 縮到約 107°。</div></div><div class="as-f">3 鍵結＋1 孤對 → 三角錐（約 107°）</div><div class="as-warn">⚠ NH₃ 不是平面三角形（那要 0 孤對，如 BF₃）；有 1 對孤對就會被推成立體三角錐。</div><div class="as-ans">答：(A) 三角錐，約107°</div></div>'
+  },
+  // 6. 分子極性：CO₂ 非極性（single, ans C）＋CO₂ 向量對消 SVG
+  {
+    q: '下列分子中，何者為「非極性分子」？',
+    opts: ['H₂O', 'NH₃', 'CO₂', 'HCl'],
+    ans: 'C',
+    hint: '分子極性＝各鍵偶極的向量和。形狀對稱使偶極互相抵消者為非極性分子。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先看鍵有無極性，再看形狀是否對稱：對稱使各鍵偶極向量互相抵消→整體非極性。</div></div><div class="as-f">分子偶極 ＝ 各鍵偶極的向量和</div><svg viewBox="0 0 300 90" xmlns="http://www.w3.org/2000/svg"><circle cx="90" cy="45" r="12" fill="var(--green)"/><text x="90" y="49" font-size="10" text-anchor="middle" fill="var(--bg)">O</text><circle cx="150" cy="45" r="13" fill="var(--accent)"/><text x="150" y="49" font-size="10" text-anchor="middle" fill="var(--bg)">C</text><circle cx="210" cy="45" r="12" fill="var(--green)"/><text x="210" y="49" font-size="10" text-anchor="middle" fill="var(--bg)">O</text><line x1="102" y1="45" x2="138" y2="45" stroke="var(--ink3)"/><line x1="162" y1="45" x2="198" y2="45" stroke="var(--ink3)"/><line x1="150" y1="70" x2="110" y2="70" stroke="var(--ink)"/><polygon points="110,70 118,66 118,74" fill="var(--ink)"/><line x1="150" y1="70" x2="190" y2="70" stroke="var(--ink)"/><polygon points="190,70 182,66 182,74" fill="var(--ink)"/><text x="150" y="88" font-size="9" text-anchor="middle" fill="var(--ink)">兩偶極大小相等、方向相反 → 抵消</text></svg><div class="as-note">CO₂ 為直線形 O＝C＝O，兩個 C＝O 偶極大小相等、方向恰相反，向量和為 0，故為非極性分子。</div><div class="as-step"><div class="as-n">2</div><div>H₂O（角形）、NH₃（三角錐）不對稱，偶極不抵消→極性；HCl 為異核雙原子，本身即極性。</div></div><div class="as-f">CO₂：直線對稱 → 偶極抵消 → 非極性</div><div class="as-warn">⚠ 有極性鍵不代表分子有極性；CO₂ 的 C＝O 是極性鍵，但形狀對稱使整體抵消。</div><div class="as-ans">答：(C) CO₂</div></div>'
+  },
+  // 7. 鍵能鍵長比較（single, ans A）
+  {
+    q: '關於氮原子之間的 單鍵 N—N、雙鍵 N＝N、叁鍵 N≡N，下列敘述何者正確？',
+    opts: ['叁鍵的鍵能最大、鍵長最短', '單鍵的鍵能最大、鍵長最短', '叁鍵的鍵長最長', '鍵數越多鍵長越長'],
+    ans: 'A',
+    hint: '兩原子間共用電子對越多，鍵結越強、原子被拉得越近。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>同一對原子之間，共用電子對越多，鍵越強→鍵能越大，同時把原子拉得越近→鍵長越短。</div></div><div class="as-f">鍵數 ↑ → 鍵能 ↑、鍵長 ↓</div><div class="as-step"><div class="as-n">2</div><div>故對 N 而言：叁鍵 N≡N 鍵能最大、鍵長最短；單鍵 N—N 鍵能最小、鍵長最長。</div></div><div class="as-f">鍵能：N≡N &gt; N＝N &gt; N—N；鍵長：N≡N &lt; N＝N &lt; N—N</div><div class="as-warn">⚠ 鍵能與鍵長成反比：鍵越強（能量高）鍵長越短，別把「鍵多」誤想成「鍵長變長」。</div><div class="as-ans">答：(A) 叁鍵的鍵能最大、鍵長最短</div></div>'
+  },
+  // 8. 金屬鍵：物性（single, ans D）
+  {
+    q: '金屬普遍能導電、且具有良好的延展性，主要原因為何？',
+    opts: ['金屬原子間形成離子鍵', '金屬由共價網狀結構組成', '金屬分子間以氫鍵相連', '金屬中有可自由移動的價電子（電子海）'],
+    ans: 'D',
+    hint: '金屬鍵＝金屬陽離子浸在「自由電子海」中；電子可流動、離子可滑動。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>金屬鍵模型：規則排列的金屬陽離子，被脫離原子的價電子形成的「電子海」包圍。</div></div><div class="as-f">金屬 ＝ 陽離子 ＋ 自由移動的價電子（電子海）</div><div class="as-step"><div class="as-n">2</div><div>自由電子可移動→導電、導熱；受外力時陽離子層可相對滑動而電子海仍維繫吸引→延展、可鍛打不易碎。</div></div><div class="as-f">自由電子流動 → 導電；離子層滑動 → 延展性</div><div class="as-warn">⚠ 金屬不是離子鍵（無非金屬陰離子），也不是氫鍵；關鍵是「非定域的自由電子」。</div><div class="as-ans">答：(D) 金屬中有可自由移動的價電子（電子海）</div></div>'
+  },
+  // 9. 離子化合物物性（single, ans C）
+  {
+    q: '關於離子化合物（如氯化鈉 NaCl）的性質，下列何者正確？',
+    opts: ['固態時能導電', '熔點通常很低', '固態不導電，但熔融或水溶液能導電', '常溫下多為氣體'],
+    ans: 'C',
+    hint: '導電需要「可自由移動的帶電粒子」；離子被鎖在晶格時不導電，鬆開後才導電。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>離子化合物由陽、陰離子以強靜電力堆成晶格：鍵強→熔點沸點高、常溫多為固體。</div></div><div class="as-f">強離子鍵 → 高熔點、常溫固態</div><div class="as-step"><div class="as-n">2</div><div>導電要靠可移動的離子。固態時離子被鎖在晶格不能動→不導電；熔融或溶於水後離子可自由移動→能導電。</div></div><div class="as-f">固態：離子不動（不導電）；熔融/水溶液：離子自由（導電）</div><div class="as-warn">⚠ 別把「固態不導電」誤記成「永遠不導電」；離子化合物熔化或溶解後是良好的電解質。</div><div class="as-ans">答：(C) 固態不導電，但熔融或水溶液能導電</div></div>'
+  },
+  // 10. 共價網狀固體（single, ans B）
+  {
+    q: '下列物質中，何者屬於「共價網狀固體」，具有極高熔點、質地極硬且不導電？',
+    opts: ['乾冰 CO₂(s)', '鑽石（金剛石，碳 C）', '食鹽 NaCl', '銅 Cu'],
+    ans: 'B',
+    hint: '共價網狀固體＝整塊晶體由共價鍵連成一個大網，如鑽石、石英。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先分類：乾冰＝分子晶體（分子間力弱）、NaCl＝離子晶體、Cu＝金屬晶體、鑽石＝共價網狀晶體。</div></div><div class="as-f">鑽石：每個 C 以共價鍵接 4 個 C，連成三維大網</div><div class="as-step"><div class="as-n">2</div><div>要破壞鑽石須打斷大量共價鍵→熔點極高、極硬；電子被固定在共價鍵中無法自由移動→不導電。</div></div><div class="as-f">共價網狀 → 熔點極高、極硬、不導電</div><div class="as-warn">⚠ 乾冰雖也是共價分子，但分子「之間」只有弱作用力，熔點低易昇華，與共價網狀固體截然不同。</div><div class="as-ans">答：(B) 鑽石（金剛石，碳 C）</div></div>'
+  },
+  // 11. 極性分子多選（multi, ans A/C/E）
+  {
+    type: 'multi',
+    q: '【多選】下列分子中，何者為「極性分子」？',
+    opts: ['H₂O 水', 'CO₂ 二氧化碳', 'NH₃ 氨', 'CH₄ 甲烷', 'HCl 氯化氫'],
+    ans: ['A', 'C', 'E'],
+    hint: '有極性鍵＋形狀不對稱（偶極不抵消）＝極性分子；對稱抵消者為非極性。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>判準：先看鍵是否有極性，再看形狀是否對稱使偶極抵消。抵消→非極性；不抵消→極性。</div></div><div class="as-f">極性分子 ＝ 極性鍵 ＋ 形狀不對稱</div><div class="as-step"><div class="as-n">2</div><div>H₂O 角形（不對稱）→極性；NH₃ 三角錐（不對稱）→極性；HCl 異核雙原子→極性。CO₂ 直線對稱、CH₄ 正四面體對稱→偶極抵消→非極性。</div></div><div class="as-f">極性：H₂O、NH₃、HCl　｜　非極性：CO₂、CH₄</div><div class="as-warn">⚠ CO₂ 與 CH₄ 都含極性鍵卻是非極性分子，因為形狀對稱把偶極抵消掉，別被「有極性鍵」誤導。</div><div class="as-ans">答：(A) H₂O、(C) NH₃、(E) HCl</div></div>'
+  },
+  // 12. 鍵結與物性綜合多選（multi, ans A/B/D）
+  {
+    type: 'multi',
+    q: '【多選】下列關於化學鍵與物質性質的敘述，何者正確？',
+    opts: ['NaCl 固態不導電，熔融後可導電', '金屬具延展性是因價電子可自由移動', '鑽石（共價網狀）熔點很低且質地柔軟', '乾冰等分子晶體熔點低、常溫易昇華', '離子化合物通常由兩種非金屬組成'],
+    ans: ['A', 'B', 'D'],
+    hint: '逐項對照四大晶體（離子、金屬、共價網狀、分子）的鍵結強弱與導電機制。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>四大晶體：離子晶體（強、熔融導電）、金屬晶體（電子海、延展導電）、共價網狀（極硬極高熔點）、分子晶體（弱、低熔點）。</div></div><div class="as-f">鍵強弱：共價網狀、離子、金屬 ＞ 分子晶體</div><div class="as-step"><div class="as-n">2</div><div>逐項：(A) 對，NaCl 熔融離子可動而導電；(B) 對，自由電子使金屬可延展；(D) 對，分子晶體弱作用力→低熔點易昇華。</div></div><div class="as-f">正確：A、B、D</div><div class="as-step"><div class="as-n">3</div><div>錯項：(C) 鑽石是共價網狀→熔點極高、極硬，不是低熔點柔軟；(E) 離子化合物一般由金屬＋非金屬組成，非兩種非金屬。</div></div><div class="as-f">(C) 鑽石極硬高熔點；(E) 離子＝金屬＋非金屬</div><div class="as-warn">⚠ 別把「共價」一律當成弱作用力：共價「網狀」固體鍵結遍及整塊晶體，反而最硬、熔點最高。</div><div class="as-ans">答：(A)、(B)、(D)</div></div>'
+  },
+  // 13. 路易斯結構價電子總數（fill, ans 16）
+  {
+    type: 'fill',
+    q: '【選填】要畫 CO₂ 的路易斯（Lewis）結構，須先算出分子的價電子總數。已知 C 的價電子為 4、O 的價電子為 6，則 CO₂ 分子的價電子「總數」為多少個？',
+    ans: '16',
+    acc: ['16個', '16 個'],
+    hint: '價電子總數＝各原子價電子數 × 原子個數，再全部相加。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>畫路易斯結構第一步：把所有原子的價電子加總。CO₂ 含 1 個 C、2 個 O。</div></div><div class="as-f">總價電子 ＝ 4 × 1 ＋ 6 × 2</div><div class="as-step"><div class="as-n">2</div><div>計算：C 貢獻 4；O 貢獻 6 × 2 ＝ 12；相加 ＝ 16 個。</div></div><div class="as-f">4 ＋ 12 ＝ 16（個價電子＝8 對）</div><div class="as-warn">⚠ 別漏算第二個 O；16 個電子＝8 對，剛好排成 O＝C＝O（兩個 C＝O 雙鍵＋各 O 上 2 對孤對），每個原子皆滿足八隅體。</div><div class="as-ans">答：16 個</div></div>'
+  },
+  // 14. VSEPR 鍵角數值（fill, ans 109.5）
+  {
+    type: 'fill',
+    q: '【選填】甲烷 CH₄ 為正四面體結構，中心碳無孤對電子。其 H—C—H 鍵角約為多少度？（填數值，單位：度）',
+    ans: '109.5',
+    acc: ['109.5°', '109', '109度', '109.5度'],
+    hint: '正四面體、4 個等值鍵結對、無孤對時的理想鍵角是固定值。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>CH₄ 中心碳有 4 個 C—H 鍵、0 對孤對，4 個電子域彼此排斥到最遠→正四面體。</div></div><div class="as-f">4 鍵結＋0 孤對 → 正四面體</div><div class="as-step"><div class="as-n">2</div><div>正四面體中任兩頂點對中心所張的角為固定幾何值，約 109.5°（即 109°28′）。</div></div><div class="as-f">H—C—H 鍵角 ≈ 109.5°</div><div class="as-warn">⚠ 別和 H₂O（約104.5°）、NH₃（約107°）混淆；那兩者因有孤對排斥而鍵角變小，唯有無孤對的 CH₄ 保持 109.5°。</div><div class="as-ans">答：約 109.5°</div></div>'
+  }
+];
+
+// ── ch02_adv.js ──
+// ch02_adv.js — 化學高二（選修化學上）CH02「化學鍵結」進階實戰 6 題
+// 變數：var CHEM_ADV_G1_CH02
+// 全部 type:'open'，題幹開頭「【進階實戰】」
+
+var CHEM_ADV_G1_CH02 = [
+  {
+    type:'open',
+    q:`【進階實戰】二氧化碳 CO₂（原子序 C＝6、O＝8）。請依序完成（如圖為已知條件）：(1) 畫出路易斯結構並算價電子總數 (2) 用 VSEPR 判斷分子形狀 (3) 寫出鍵角 (4) 判斷整個分子是極性或非極性，並說明理由。`,
+    ans:`(1) 16 個價電子，O＝C＝O（兩個 C＝O 雙鍵、每個 O 兩對孤對、C 無孤對）　(2) AX₂ 直線形　(3) 180°　(4) 非極性分子`,
+    hint:`先數價電子總數；雙鍵在 VSEPR 中只算「1 個電子對域」。中心 C 有無孤對電子是關鍵。極性看「有無極性鍵」還要看「幾何是否對稱抵消」。`,
+    fig:`<svg viewBox="0 0 344 78" xmlns="http://www.w3.org/2000/svg"><text x="12" y="24" font-size="13" fill="var(--ink)">已知：CO₂　中心原子 C，周圍 2 個 O</text><text x="12" y="46" font-size="12" fill="var(--ink3)">價電子總數 = 4 + 6×2</text><text x="12" y="70" font-size="13" fill="var(--red)">形狀 = ?　鍵角 = ?　分子極性 = ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>價電子總數＝C 的 4 個＋兩個 O 各 6 個。路易斯結構把 C 放中間，與兩個 O 各形成一個雙鍵，每個 O 補到兩對孤對，C 上無孤對，全部原子達八隅體。</div></div><div class="as-f">價電子 ＝ 4 ＋ 6×2 ＝ 16　→　O＝C＝O</div><div class="as-step"><div class="as-n">2</div><div>VSEPR 只數「電子對域」：中心 C 有 2 個成鍵區（每個雙鍵算 1 域）加 0 對孤對，共 2 域，屬 AX₂。</div></div><div class="as-f">電子對域 ＝ 2（雙鍵各算 1 域）＋ 孤對 0 ＝ AX₂ → 直線形</div><div class="as-step"><div class="as-n">3</div><div>直線形兩鍵夾角為 180°。</div></div><div class="as-f">鍵角 ＝ 180°</div><div class="as-step"><div class="as-n">4</div><div>C＝O 是極性鍵（O 電負度大於 C），但直線對稱使兩個鍵偶極大小相等、方向相反，恰好抵消，故整個分子淨偶極為零。</div></div><div class="as-f">兩鍵偶極相反等大 → 抵消 → 非極性分子</div><div class="as-note">判斷分子極性的順序：先看鍵有無極性，再看分子幾何是否對稱到能讓偶極抵消。</div><div class="as-warn">⚠ 「含極性鍵」不等於「極性分子」。CO₂ 有極性鍵卻因直線對稱而抵消，是非極性的經典例子。</div><div class="as-ans">答：(1) 16 個價電子，O＝C＝O　(2) AX₂ 直線形　(3) 180°　(4) 非極性分子（偶極抵消）</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】水分子 H₂O（原子序 O＝8、H＝1）。請依序完成（如圖為已知條件）：(1) 畫路易斯結構並算價電子總數 (2) 用 VSEPR 定電子幾何與分子形狀 (3) 估計鍵角，並解釋為何不是 109.5° (4) 判斷分子極性。`,
+    ans:`(1) 8 個價電子，H–O–H，O 上 2 對孤對　(2) 4 個電子對域 → 電子幾何四面體，分子 AX₂E₂ 角形　(3) 約 104.5°，因 2 對孤對排斥把鍵角壓小　(4) 極性分子`,
+    hint:`O 有 6 個價電子，接 2 個 H 後還剩 2 對孤對。孤對電子也占電子對域。孤對-成鍵的排斥比成鍵-成鍵強，會壓縮鍵角。`,
+    fig:`<svg viewBox="0 0 344 78" xmlns="http://www.w3.org/2000/svg"><text x="12" y="24" font-size="13" fill="var(--ink)">已知：H₂O　中心原子 O，接 2 個 H</text><text x="12" y="46" font-size="12" fill="var(--ink3)">價電子總數 = 6 + 1×2</text><text x="12" y="70" font-size="13" fill="var(--red)">電子幾何 = ?　形狀 = ?　鍵角 = ?　極性 = ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>價電子總數＝O 的 6 個＋兩個 H 各 1 個。O 與兩個 H 各成一個單鍵，O 上再補到 2 對孤對電子。</div></div><div class="as-f">價電子 ＝ 6 ＋ 1×2 ＝ 8　→　H–O–H（O 帶 2 對孤對）</div><div class="as-step"><div class="as-n">2</div><div>中心 O 的電子對域＝2 個成鍵區＋2 對孤對＝4，電子幾何為四面體；扣掉孤對後看原子排列，分子屬 AX₂E₂，形狀為角形。</div></div><div class="as-f">電子對域 ＝ 2 ＋ 2 ＝ 4 → 四面體電子幾何；AX₂E₂ → 角形</div><div class="as-step"><div class="as-n">3</div><div>理想四面體鍵角為 109.5°，但 2 對孤對電子的排斥比成鍵電子對更強，把兩個 O–H 鍵往內壓，鍵角變小。</div></div><div class="as-f">鍵角 ≈ 104.5° &lt; 109.5°（孤對排斥壓縮）</div><div class="as-step"><div class="as-n">4</div><div>O–H 是極性鍵，且角形不對稱，兩個鍵偶極無法抵消，合成一個指向 O 的淨偶極。</div></div><div class="as-f">極性鍵 ＋ 角形不對稱 → 偶極不抵消 → 極性分子</div><div class="as-note">水能溶解許多離子化合物，正是因為它是彎曲的極性分子。</div><div class="as-warn">⚠ 別把 H₂O 當直線形；中心 O 的兩對孤對電子使它彎成角形，也讓它成為極性分子。</div><div class="as-ans">答：(1) 8 個價電子，H–O–H　(2) 四面體電子幾何、AX₂E₂ 角形　(3) 約 104.5°，孤對排斥所致　(4) 極性分子</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】比較甲烷 CH₄、氨 NH₃、水 H₂O 三個分子。(1) 各自用 AXₙEₘ 表示並寫出分子形狀 (2) 將三者的鍵角由大到小排列 (3) 用「孤對電子數」解釋這個鍵角大小順序。`,
+    ans:`(1) CH₄＝AX₄ 正四面體、NH₃＝AX₃E 三角錐、H₂O＝AX₂E₂ 角形　(2) 109.5°（CH₄）＞ 107°（NH₃）＞ 104.5°（H₂O）　(3) 中心原子孤對電子越多，對成鍵電子對排斥越強，鍵角被壓得越小`,
+    hint:`三者中心原子都是 4 個電子對域（四面體電子幾何）。差別在孤對電子數：CH₄ 有 0 對、NH₃ 有 1 對、H₂O 有 2 對。孤對-成鍵排斥 大於 成鍵-成鍵排斥。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>三者中心原子皆為 4 個電子對域（四面體電子幾何），差別只在孤對電子數。CH₄：4 成鍵、0 孤對；NH₃：3 成鍵、1 孤對；H₂O：2 成鍵、2 孤對。</div></div><div class="as-f">CH₄ ＝ AX₄ 正四面體　；　NH₃ ＝ AX₃E 三角錐　；　H₂O ＝ AX₂E₂ 角形</div><div class="as-step"><div class="as-n">2</div><div>孤對電子的排斥力比成鍵電子對強，會把鄰近的鍵往內壓。孤對越多，壓縮越明顯，鍵角越小。</div></div><div class="as-f">鍵角：109.5° ＞ 107° ＞ 104.5°</div><div class="as-step"><div class="as-n">3</div><div>對應關係：CH₄ 無孤對，維持理想 109.5°；NH₃ 有 1 對孤對，壓到約 107°；H₂O 有 2 對孤對，再壓到約 104.5°。孤對電子數越多 → 鍵角越小。</div></div><div class="as-f">孤對數 0 &lt; 1 &lt; 2　⇒　鍵角 109.5° ＞ 107° ＞ 104.5°</div><div class="as-warn">⚠ 別因為三者都是四面體電子幾何就說鍵角都 109.5°；孤對電子會系統性地壓縮鍵角。</div><div class="as-ans">答：(1) AX₄ 正四面體／AX₃E 三角錐／AX₂E₂ 角形　(2) 109.5° ＞ 107° ＞ 104.5°　(3) 孤對電子越多、排斥越強，鍵角越小</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】碳酸根離子 CO₃²⁻（原子序 C＝6、O＝8）。(1) 算價電子總數並畫一個合理的路易斯結構（一個 C＝O 雙鍵、兩個 C–O 單鍵）(2) 標出 C 與三個 O 的形式電荷並驗證總和 (3) 說明為何實際上三個 C–O 鍵完全等長（如圖）。`,
+    ans:`(1) 24 個價電子　(2) C＝0、雙鍵 O＝0、兩個單鍵 O 各 −1，總和 −2　(3) 有三個等價共振結構、雙鍵離域，故三鍵等長，鍵級約 4/3`,
+    hint:`價電子總數要加上離子的 2 個電荷。形式電荷＝價電子 − 孤對電子 − (成鍵電子/2)。雙鍵能畫在任一個 O 上 → 共振。`,
+    fig:`<svg viewBox="0 0 344 78" xmlns="http://www.w3.org/2000/svg"><text x="12" y="24" font-size="13" fill="var(--ink)">已知：CO₃²⁻　中心 C，周圍 3 個 O</text><text x="12" y="46" font-size="12" fill="var(--ink3)">價電子總數 = 4 + 6×3 + 2</text><text x="12" y="70" font-size="13" fill="var(--red)">各原子形式電荷 = ?　三個 C–O 鍵長是否相等 = ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>價電子總數要把離子帶的 2 個負電荷算進去。骨架把 C 放中央、三個 O 環繞，配置一個 C＝O 雙鍵與兩個 C–O 單鍵，單鍵的 O 各補到三對孤對。</div></div><div class="as-f">價電子 ＝ 4 ＋ 6×3 ＋ 2 ＝ 24</div><div class="as-step"><div class="as-n">2</div><div>用公式逐項算形式電荷。C：4−0−(8/2)＝0；雙鍵 O：6−4−(4/2)＝0；每個單鍵 O：6−6−(2/2)＝−1。</div></div><div class="as-f">形式電荷 ＝ 價電子 − 孤對電子 − (成鍵電子/2)</div><div class="as-f">C ＝ 0、雙鍵 O ＝ 0、單鍵 O ＝ −1（兩個）；總和 ＝ 0＋0＋(−1)×2 ＝ −2 ✓</div><div class="as-step"><div class="as-n">3</div><div>那個雙鍵可以畫在三個 O 的任一個上，得到三個能量相同的等價結構，即共振。真實的碳酸根是這三者的平均（電子離域），三個 C–O 鍵完全一樣。</div></div><div class="as-f">平均鍵級 ＝ (2＋1＋1)/3 ＝ 4/3 ≈ 1.33（介於單鍵與雙鍵之間）</div><div class="as-note">形式電荷總和必須等於離子電荷（此處 −2），可用來檢查路易斯結構有沒有畫錯。</div><div class="as-warn">⚠ 共振不是「雙鍵在三個位置間快速跳動」；真實只有一種離域狀態，三鍵等長、鍵級 4/3。</div><div class="as-ans">答：(1) 24 個價電子　(2) C＝0、雙鍵 O＝0、兩單鍵 O 各 −1（總 −2）　(3) 三個等價共振使雙鍵離域，三個 C–O 鍵等長、鍵級約 4/3</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】二氧化碳 CO₂ 與二氧化硫 SO₂ 都是「一個中心原子接兩個氧」的三原子分子，但一個是直線形非極性、一個是角形極性。(1) 分別算價電子總數並判斷中心原子的孤對電子數 (2) 寫出兩者的 VSEPR 類型與形狀 (3) 說明為何 CO₂ 非極性、SO₂ 卻是極性（如圖）。`,
+    ans:`(1) CO₂ 16 個價電子、中心 C 無孤對；SO₂ 18 個價電子、中心 S 有 1 對孤對　(2) CO₂＝AX₂ 直線形、SO₂＝AX₂E 角形　(3) CO₂ 直線對稱使偶極抵消為非極性；SO₂ 角形使偶極不抵消為極性`,
+    hint:`同樣是 AB₂，關鍵差在「中心原子有沒有孤對電子」。S 比 C 多 2 個價電子，多出的那對就成了孤對，把分子折彎。`,
+    fig:`<svg viewBox="0 0 344 78" xmlns="http://www.w3.org/2000/svg"><text x="12" y="24" font-size="13" fill="var(--ink)">已知：CO₂ 與 SO₂ 皆為 AB₂ 三原子</text><text x="12" y="46" font-size="12" fill="var(--ink3)">價電子：CO₂ = 4+6×2　SO₂ = 6+6×2</text><text x="12" y="70" font-size="13" fill="var(--red)">中心孤對數 = ?　形狀 = ?　極性 = ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先算價電子。CO₂＝4＋6×2＝16，C 的電子全用在兩個雙鍵上，中心無孤對。SO₂＝6＋6×2＝18，比 CO₂ 多 2 個電子，這對電子留在 S 上成為一對孤對。</div></div><div class="as-f">CO₂：16 e⁻、C 孤對 0　；　SO₂：18 e⁻、S 孤對 1</div><div class="as-step"><div class="as-n">2</div><div>依電子對域判形狀。CO₂ 中心 2 域（2 成鍵、0 孤對）→ AX₂ 直線形，180°；SO₂ 中心 3 域（2 成鍵、1 孤對）→ AX₂E 角形，約 119°。</div></div><div class="as-f">CO₂ ＝ AX₂ 直線形　；　SO₂ ＝ AX₂E 角形（≈119°）</div><div class="as-step"><div class="as-n">3</div><div>兩者的中心–O 鍵都有極性。CO₂ 直線對稱，兩鍵偶極方向相反、大小相等而抵消 → 非極性；SO₂ 角形使兩鍵偶極無法抵消，加上孤對電子的貢獻，形成淨偶極 → 極性。</div></div><div class="as-f">CO₂ 對稱抵消 → 非極性　；　SO₂ 不對稱 → 極性</div><div class="as-note">同樣是三原子 AB₂，形狀與極性完全不同，差別就在中心原子有沒有孤對電子。</div><div class="as-warn">⚠ 別假設 AB₂ 一定是直線形；要先數中心原子的電子對域（含孤對），孤對會把分子折彎。</div><div class="as-ans">答：(1) CO₂ 16 e⁻、C 無孤對；SO₂ 18 e⁻、S 有 1 對孤對　(2) AX₂ 直線／AX₂E 角形　(3) CO₂ 對稱抵消為非極性、SO₂ 不對稱為極性</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】氯化鈉 NaCl 與乾冰 CO₂ 兩種固體。NaCl 熔點約 801℃、固態不導電但熔融或水溶液能導電；乾冰約 −78℃ 就昇華、完全不導電。(1) 分別指出兩者是哪一類鍵結／晶體 (2) 用鍵結解釋熔點的巨大差異 (3) 解釋導電性的不同。`,
+    ans:`(1) NaCl 為離子鍵、離子晶體；乾冰為分子晶體（分子內共價鍵、分子間凡得瓦力）　(2) 熔化離子晶體要打斷整片強靜電吸引，熔點高；分子晶體只需克服微弱分子間力，熔點低　(3) 導電需可自由移動的帶電粒子：NaCl 熔融或溶解後離子可動而導電，乾冰只有中性分子故不導電`,
+    hint:`離子鍵是陽離子與陰離子整片的強靜電吸引；分子晶體的分子「內」是共價鍵很強，但分子「間」只有弱凡得瓦力。導電看有沒有能自由移動的帶電粒子。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>NaCl 由 Na⁺ 與 Cl⁻ 靠靜電吸引排成整片離子晶格，屬離子鍵／離子晶體。乾冰是一顆顆 CO₂ 分子堆積成的分子晶體：分子「內」是強共價鍵，分子「間」只靠微弱的凡得瓦力（分散力）。</div></div><div class="as-f">NaCl：離子鍵、離子晶格　；　CO₂(固)：分子晶體、分子間凡得瓦力</div><div class="as-step"><div class="as-n">2</div><div>熔化時要克服的作用力決定熔點。熔化 NaCl 必須打斷整片離子間的強靜電吸引，需要很高能量；熔化乾冰只需克服分子間微弱的凡得瓦力，能量很低。</div></div><div class="as-f">熔點：NaCl（801℃）≫ CO₂ 乾冰（約 −78℃ 昇華）</div><div class="as-step"><div class="as-n">3</div><div>導電需要能自由移動的帶電粒子。NaCl 固態時離子被鎖在晶格中不能動 → 不導電；熔融或溶於水後離子可自由移動 → 導電。乾冰全是中性分子、沒有離子或自由電子 → 任何狀態都不導電。</div></div><div class="as-f">NaCl 固態不導電；熔融／水溶液導電。CO₂ 一律不導電。</div><div class="as-note">物質的物理性質（熔點、導電）由它的鍵結與晶體類型決定，這是「先懂鍵結、再推物性」的核心邏輯。</div><div class="as-warn">⚠ 別說「離子化合物一定導電」；固態離子被鎖住並不導電，要熔融或製成水溶液，離子能動了才導電。</div><div class="as-ans">答：(1) NaCl 離子晶體、乾冰分子晶體　(2) 打斷離子鍵能量大故 NaCl 熔點遠高於只需克服弱分子間力的乾冰　(3) NaCl 熔融／水溶液有可動離子而導電，乾冰無離子故不導電</div></div>`
+  }
+];
+
+// ── ch03_course.js ──
+var CHEM_COURSE_G1_CH03 = {
+  num: 'CH 03',
+  name: '分子間作用力與物質三態',
+  book: '選修化學（上）',
+  grade: '高二',
+  sub: '凡得瓦力、氫鍵、沸點熔點、三態相變、理想氣體 PV=nRT、道耳頓分壓、氣體擴散',
+  tags: ['分科範圍', '選修', '先懂再背'],
+  sections: [
+    {
+      title: '🗣 白話導讀',
+      color: 'blue',
+      body: `<p class="c-intro">上一章談「分子內」原子怎麼靠<span class="c-def">化學鍵</span>結合；這一章換個尺度，看<span class="c-def">分子與分子之間</span>互相拉扯的力——它決定一個物質是氣體、液體還是固體，也決定它幾度會沸騰。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">分子內</span>化學鍵（強）</div><div class="c-op">≫</div><div class="c-block o"><span class="bk-tag">分子間</span>凡得瓦力／氫鍵（弱）</div></div>
+<p class="c-intro">分子間力雖然遠比化學鍵弱，卻是決定<span class="c-def">物性</span>的關鍵：分子間力越強，越難拉開分子，<span class="c-def">沸點、熔點就越高</span>。後半章把分子拉到最遠——變成氣體，用一條<span class="c-def">PV=nRT</span>就能算出壓力、體積、莫耳數。</p>
+<div class="c-warn">⚠ 沸騰是把「分子拉開」，不是把「鍵打斷」。水煮沸得到的是水蒸氣（還是 H₂O 分子），不是 H₂ 和 O₂——斷的是分子間力，不是共價鍵。</div>`
+    },
+    {
+      title: '🔗 凡得瓦力與氫鍵',
+      color: 'green',
+      body: `<p class="c-intro">分子間力主要有兩大類。<span class="c-def">凡得瓦力</span>又分兩種：<span class="c-def">分散力</span>（存在於所有分子，來自電子瞬間分布不均產生的暫時偶極；分子越大、電子越多就越強）與<span class="c-def">偶極-偶極力</span>（只在有永久偶極的極性分子間，如 HCl）。另一類是特別強的<span class="c-def">氫鍵</span>。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">弱</span>分散力</div><div class="c-op">&lt;</div><div class="c-block"><span class="bk-tag">中</span>偶極-偶極</div><div class="c-op">&lt;</div><div class="c-block o"><span class="bk-tag">強</span>氫鍵</div></div>
+<p class="c-intro"><span class="c-def">氫鍵</span>不是真正的鍵，而是一種特強的分子間吸引力。它的形成有明確條件：氫必須直接接在<span class="c-def">N、O、F</span>這三個又小又高電負度的原子上，再去吸引另一分子上 N、O、F 的孤對電子。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<circle cx="95" cy="65" r="20" fill="var(--accent)"/>
+<text x="95" y="70" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">O</text>
+<circle cx="60" cy="98" r="11" fill="var(--green)"/>
+<text x="60" y="102" text-anchor="middle" fill="#fff" font-size="10">H</text>
+<circle cx="128" cy="92" r="11" fill="var(--green)"/>
+<text x="128" y="96" text-anchor="middle" fill="#fff" font-size="10">H</text>
+<line x1="95" y1="65" x2="60" y2="98" stroke="var(--ink3)" stroke-width="2"/>
+<line x1="95" y1="65" x2="128" y2="92" stroke="var(--ink3)" stroke-width="2"/>
+<circle cx="270" cy="150" r="20" fill="var(--accent)"/>
+<text x="270" y="155" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">O</text>
+<circle cx="235" cy="118" r="11" fill="var(--green)"/>
+<text x="235" y="122" text-anchor="middle" fill="#fff" font-size="10">H</text>
+<circle cx="305" cy="182" r="11" fill="var(--green)"/>
+<text x="305" y="186" text-anchor="middle" fill="#fff" font-size="10">H</text>
+<line x1="270" y1="150" x2="235" y2="118" stroke="var(--ink3)" stroke-width="2"/>
+<line x1="270" y1="150" x2="305" y2="182" stroke="var(--ink3)" stroke-width="2"/>
+<line x1="128" y1="92" x2="270" y2="150" stroke="var(--gold)" stroke-width="2.5" stroke-dasharray="5 4"/>
+<text x="182" y="108" text-anchor="middle" font-size="12" fill="var(--gold)" font-weight="700">氫鍵</text>
+<text x="188" y="188" text-anchor="middle" font-size="11" fill="var(--ink3)">H 接在 O 上 → 吸引另一分子的 O</text>
+</svg></div>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext"><b>分散力</b>：所有分子都有。同類型分子中，分子量越大、電子越多，分散力越強。例：鹵素沸點 F₂ &lt; Cl₂ &lt; Br₂ &lt; I₂。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext"><b>偶極-偶極</b>：只在極性分子間（分子有永久偶極），如 HCl 之間。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext"><b>氫鍵</b>：氫接在 N、O、F 上才有，如 H₂O、NH₃、HF、醇類。是分子間力中最強的一種。</div></div>
+<div class="c-warn">⚠ 常見誤解：CH₄ 分子有 C−H 鍵，但 C 不是 N/O/F，所以分子之間<b>沒有氫鍵</b>，只有分散力。氫鍵要看「H 接在誰身上」。</div>`
+    },
+    {
+      title: '🌡 沸點熔點與三態相變',
+      color: 'gold',
+      body: `<p class="c-intro">分子間力越強，把分子拉開所需的能量越多，<span class="c-def">沸點、熔點就越高</span>。這條規則能解釋一個經典異常：第 16 族氫化物中，H₂O 因為有氫鍵，沸點（100°C）遠高於同族的 H₂S、H₂Se、H₂Te——若照分子量趨勢外推，水本應在約 −80°C 就沸騰。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<line x1="45" y1="20" x2="45" y2="180" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="45" y1="180" x2="360" y2="180" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="20" y="35" font-size="10" fill="var(--ink3)">沸點</text>
+<line x1="42" y1="31" x2="45" y2="31" stroke="var(--ink3)"/><text x="38" y="35" text-anchor="end" font-size="9" fill="var(--ink3)">100</text>
+<line x1="42" y1="105" x2="45" y2="105" stroke="var(--ink3)"/><text x="38" y="109" text-anchor="end" font-size="9" fill="var(--ink3)">0</text>
+<line x1="42" y1="178" x2="45" y2="178" stroke="var(--ink3)"/><text x="38" y="182" text-anchor="end" font-size="9" fill="var(--ink3)">−80</text>
+<line x1="80" y1="163" x2="330" y2="115" stroke="var(--ink3)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="300" y="150" font-size="10" fill="var(--ink3)">照趨勢外推</text>
+<polyline points="80,31 170,163 250,148 330,115" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<circle cx="80" cy="31" r="4" fill="var(--accent)"/><text x="80" y="24" text-anchor="middle" font-size="10" fill="var(--ink)">H₂O</text>
+<circle cx="170" cy="163" r="4" fill="var(--accent)"/><text x="170" y="176" text-anchor="middle" font-size="10" fill="var(--ink)">H₂S</text>
+<circle cx="250" cy="148" r="4" fill="var(--accent)"/><text x="250" y="140" text-anchor="middle" font-size="10" fill="var(--ink)">H₂Se</text>
+<circle cx="330" cy="115" r="4" fill="var(--accent)"/><text x="330" y="107" text-anchor="middle" font-size="10" fill="var(--ink)">H₂Te</text>
+<text x="60" y="55" font-size="10" fill="var(--gold)">氫鍵把 H₂O 拉高</text>
+</svg></div>
+<p class="c-intro">溫度改變時物質在三態間轉換，稱為<span class="c-def">相變</span>。吸熱方向讓分子跑得更開（固→液→氣），放熱方向讓分子聚得更近（氣→液→固）。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<rect x="15" y="55" width="100" height="90" rx="8" fill="none" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="65" y="45" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="700">固態</text>
+<circle cx="38" cy="80" r="6" fill="var(--accent)"/><circle cx="65" cy="80" r="6" fill="var(--accent)"/><circle cx="92" cy="80" r="6" fill="var(--accent)"/>
+<circle cx="38" cy="105" r="6" fill="var(--accent)"/><circle cx="65" cy="105" r="6" fill="var(--accent)"/><circle cx="92" cy="105" r="6" fill="var(--accent)"/>
+<circle cx="38" cy="130" r="6" fill="var(--accent)"/><circle cx="65" cy="130" r="6" fill="var(--accent)"/><circle cx="92" cy="130" r="6" fill="var(--accent)"/>
+<rect x="140" y="55" width="100" height="90" rx="8" fill="none" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="190" y="45" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="700">液態</text>
+<circle cx="160" cy="78" r="6" fill="var(--green)"/><circle cx="188" cy="88" r="6" fill="var(--green)"/><circle cx="215" cy="75" r="6" fill="var(--green)"/>
+<circle cx="168" cy="110" r="6" fill="var(--green)"/><circle cx="200" cy="118" r="6" fill="var(--green)"/><circle cx="222" cy="105" r="6" fill="var(--green)"/>
+<circle cx="152" cy="132" r="6" fill="var(--green)"/><circle cx="195" cy="135" r="6" fill="var(--green)"/>
+<rect x="265" y="55" width="100" height="90" rx="8" fill="none" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="315" y="45" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="700">氣態</text>
+<circle cx="285" cy="72" r="6" fill="var(--gold)"/><circle cx="345" cy="85" r="6" fill="var(--gold)"/><circle cx="310" cy="108" r="6" fill="var(--gold)"/><circle cx="278" cy="128" r="6" fill="var(--gold)"/><circle cx="352" cy="132" r="6" fill="var(--gold)"/>
+<text x="127" y="170" text-anchor="middle" font-size="11" fill="var(--accent)">熔化 →</text>
+<text x="252" y="170" text-anchor="middle" font-size="11" fill="var(--accent)">汽化 →</text>
+<text x="190" y="192" text-anchor="middle" font-size="10" fill="var(--ink3)">← 凝固　　　← 凝結（吸熱往右、放熱往左）</text>
+</svg></div>
+<div class="formula">固 ⇌ 液：熔化／凝固　　液 ⇌ 氣：汽化／凝結　　固 ⇌ 氣：昇華／凝華</div>
+<div class="c-warn">⚠ 比較沸點先問：有沒有氫鍵？沒有的話再比分子量（分散力）。同分子量時，有氫鍵的一定沸點較高（如乙醇 vs 二甲醚）。</div>`
+    },
+    {
+      title: '💨 理想氣體、分壓與擴散',
+      color: 'blue',
+      body: `<p class="c-intro">氣體分子間力幾乎可忽略、間距又大，行為最單純，用一條<span class="c-def">理想氣體方程式</span>就能把壓力 P、體積 V、莫耳數 n、溫度 T 綁在一起。溫度一律用<span class="c-def">絕對溫度 K</span>（K = °C + 273）。</p>
+<div class="fcard"><div class="fcard-f">PV = nRT　（R = 0.082 atm·L/(mol·K)）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>壓力乘體積，等於莫耳數乘氣體常數乘絕對溫度。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>已知氣體四量（P、V、n、T）中的三個、求第四個時。動手前先把溫度換成 K、壓力用 atm、體積用 L，R 才配得上 0.082。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>0.5 mol 理想氣體在 27°C（=300 K）、1 atm 下，V = nRT/P = 0.5×0.082×300 ÷ 1 = 12.3 L。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 2 mol 氣體裝在 5 L、27°C，壓力多少？<details><summary>看解法</summary><div class="ans">P = nRT/V = 2×0.082×300 ÷ 5 = 49.2 ÷ 5 = 9.84 atm。</div></details>② 1 mol 氣體在 0°C（273 K）、1 atm 佔多少體積？<details><summary>看解法</summary><div class="ans">V = 1×0.082×273 ≈ 22.4 L，正好是 STP 莫耳體積。</div></details></div></div></div>
+<p class="c-intro">容器裝混合氣體時，<span class="c-def">道耳頓分壓定律</span>說：總壓 = 各氣體分壓之和；每種氣體的分壓，正比於它的莫耳數（莫耳分率）。</p>
+<div class="fcard"><div class="fcard-f">P_總 = P₁ + P₂ + …　　Pᵢ = xᵢ × P_總　（xᵢ = 莫耳分率）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>各氣體分壓相加等於總壓；單一氣體分壓等於它的莫耳分率乘總壓。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>同一容器裝兩種以上不反應的氣體、要拆分壓時。分壓比就等於莫耳數比。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>容器裝 2 mol N₂ 與 1 mol O₂，總壓 3 atm → P(N₂) =（2÷3）×3 = 2 atm、P(O₂) = 1 atm。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 3 mol He 與 1 mol Ne 混合，總壓 8 atm，He 分壓？<details><summary>看解法</summary><div class="ans">x(He) = 3÷4，P(He) = 0.75×8 = 6 atm。</div></details>② 兩氣體分壓比 3:1 代表什麼比？<details><summary>看解法</summary><div class="ans">莫耳數比 3:1（同容器同溫，壓力正比莫耳數）。</div></details></div></div></div>
+<p class="c-intro">氣體會自發散開、彼此混合，稱為<span class="c-def">擴散</span>。同溫下，分子量越小跑得越快——葛拉漢擴散定律：擴散速率與分子量平方根成反比。</p>
+<div class="fcard"><div class="fcard-f">r₁ / r₂ = √(M₂ / M₁)　（同溫同壓下比較）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>兩氣體擴散速率之比，等於「對方分子量除以自己分子量」再開根號。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>比較兩種氣體誰擴散快、或由速率比反推分子量時。輕的跑得快，所以速率比和分子量比方向相反。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>H₂（M=2）與 O₂（M=32）：r(H₂)/r(O₂) = √(32÷2) = √16 = 4，氫氣擴散快 4 倍。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① He（M=4）與 CH₄（M=16）誰快幾倍？<details><summary>看解法</summary><div class="ans">r(He)/r(CH₄) = √(16÷4) = √4 = 2，He 快 2 倍。</div></details>② 某氣體擴散速率是 O₂ 的 2 倍，分子量多少？<details><summary>看解法</summary><div class="ans">√(32÷M) = 2 → 32÷M = 4 → M = 8。</div></details></div></div></div>`
+    },
+    {
+      title: '✏️ 練習問題',
+      color: 'green',
+      body: `<div class="c-practice"><b>練習 1：</b>把 F₂、Cl₂、Br₂、I₂ 依沸點由高到低排列，並說明原因。<details><summary>看解答</summary>沸點：I₂ &gt; Br₂ &gt; Cl₂ &gt; F₂。四者都是非極性分子，只有分散力；分子量越大、電子越多，分散力越強，沸點越高。</details></div>
+<div class="c-practice"><b>練習 2：</b>0.2 mol 理想氣體裝在 2 L 容器、127°C，壓力是多少 atm？<details><summary>看解答</summary>T = 127 + 273 = 400 K；P = nRT/V = 0.2×0.082×400 ÷ 2 = 6.56 ÷ 2 = 3.28 atm。</details></div>
+<div class="c-practice"><b>練習 3：</b>NH₃ 沸點（−33°C）為何遠高於 PH₃（−88°C）？<details><summary>看解答</summary>NH₃ 的 H 接在 N 上，分子間有<b>氫鍵</b>；PH₃ 的 P 電負度低、原子大，形不成氫鍵，只有較弱的凡得瓦力，所以沸點低很多。</details></div>`
+    }
+  ]
+};
+
+var CHEM_NOTES_G1_CH03 = [
+  {
+    title: '一張圖看懂分子間作用力強弱',
+    tag: '核心概念',
+    tagClass: 'blue',
+    open: true,
+    body: `<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<text x="190" y="22" text-anchor="middle" font-size="12" fill="var(--ink3)">作用力由弱到強（越強 → 沸點越高）</text>
+<rect x="40" y="150" width="90" height="34" rx="6" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="85" y="171" text-anchor="middle" font-size="11" fill="var(--ink)">分散力</text>
+<text x="85" y="200" text-anchor="middle" font-size="9" fill="var(--ink3)">所有分子</text>
+<rect x="145" y="110" width="90" height="34" rx="6" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="190" y="131" text-anchor="middle" font-size="11" fill="var(--ink)">偶極-偶極</text>
+<text x="190" y="160" text-anchor="middle" font-size="9" fill="var(--ink3)">極性分子</text>
+<rect x="250" y="70" width="90" height="34" rx="6" fill="var(--gold)" stroke="var(--gold)"/>
+<text x="295" y="91" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">氫鍵</text>
+<text x="295" y="120" text-anchor="middle" font-size="9" fill="var(--ink3)">H 接 N/O/F</text>
+<line x1="40" y1="150" x2="340" y2="70" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="200" y="55" text-anchor="middle" font-size="10" fill="var(--accent)">化學鍵（分子內）≫ 以上所有分子間力</text>
+</svg></div>
+<div class="formula">分散力 &lt; 偶極-偶極 &lt; 氫鍵 ≪ 化學鍵</div>
+<p class="c-intro">重點：分散力人人都有、分子越大越強；氫鍵最強但要<b>H 接在 N/O/F</b>才有。<span class="c-def">分子間力越強 → 越難拉開 → 沸點熔點越高</span>。沸騰斷的是分子間力，不是共價鍵。</p>`
+  },
+  {
+    title: '凡得瓦力 vs 氫鍵 速記',
+    tag: '觀念釐清',
+    tagClass: 'green',
+    open: false,
+    body: `<div class="c-blocks"><div class="c-block"><span class="bk-tag">分散力</span>所有分子、隨分子量↑</div><div class="c-op">vs</div><div class="c-block o"><span class="bk-tag">氫鍵</span>H 接 N/O/F 才有</div></div>
+<p class="c-intro"><b>分散力</b>：來自電子瞬間分布不均的暫時偶極，所有分子都有；同類分子中分子量越大越強（F₂ &lt; Cl₂ &lt; Br₂ &lt; I₂）。<b>偶極-偶極</b>：極性分子的永久偶極互相吸引（如 HCl）。</p>
+<p class="c-intro"><b>氫鍵三條件</b>：① 氫直接接在 N、O、F 上；② 去吸引另一分子 N、O、F 的孤對電子。代表：H₂O、NH₃、HF、醇類。CH₄ 沒有（C 不算），只有分散力。</p>`
+  },
+  {
+    title: '三態與相變',
+    tag: '觀念釐清',
+    tagClass: 'gold',
+    open: false,
+    body: `<div class="formula">固 ⇌ 液：熔化／凝固　　液 ⇌ 氣：汽化／凝結　　固 ⇌ 氣：昇華／凝華</div>
+<p class="c-intro"><b>吸熱</b>方向（固→液→氣）讓分子跑得更開、分子間力被克服；<b>放熱</b>方向（氣→液→固）讓分子聚得更近。相變過程中溫度不變（能量拿去改變狀態）。</p>
+<p class="c-intro">比較沸點口訣：<b>先看有沒有氫鍵，再比分子量（分散力）</b>。H₂O 因氫鍵，沸點 100°C 遠高於同族 H₂S、H₂Se、H₂Te，是最經典的異常例。</p>`
+  },
+  {
+    title: '必背公式卡（氣體三式）',
+    tag: '必背公式',
+    tagClass: 'red',
+    open: false,
+    body: `<div class="fcard"><div class="fcard-f">PV = nRT　（R = 0.082、T 用 K = °C + 273）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>壓力乘體積等於莫耳數乘 R 乘絕對溫度。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>氣體 P、V、n、T 知三求一。單位先對齊：atm、L、mol、K。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>1 mol 氣體 273 K、1 atm → V = 1×0.082×273 ≈ 22.4 L。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 0.5 mol、300 K、1 atm 的體積？<details><summary>看解法</summary><div class="ans">V = 0.5×0.082×300 ÷ 1 = 12.3 L。</div></details>② 分壓與擴散公式？<details><summary>看解法</summary><div class="ans">Pᵢ = xᵢ×P_總；r₁/r₂ = √(M₂/M₁)。</div></details></div></div></div>
+<div class="formula">道耳頓分壓：Pᵢ = xᵢ × P_總　　葛拉漢擴散：r₁ / r₂ = √(M₂ / M₁)</div>`
+  }
+];
+
+var CHEM_CARDS_G1_CH03 = [
+  { q: '分散力是什麼？存在於哪些分子？', a: '電子瞬間分布不均產生暫時偶極的吸引力。\n所有分子都有。\n同類分子中分子量越大、電子越多，分散力越強（F₂ < Cl₂ < Br₂ < I₂）。' },
+  { q: '偶極-偶極力在什麼分子間才有？', a: '有永久偶極的「極性分子」之間，如 HCl。\n非極性分子（如 O₂、CH₄）沒有偶極-偶極力，只有分散力。' },
+  { q: '氫鍵形成的條件？', a: '① 氫直接接在 N、O、F 上（又小又高電負度）。\n② 去吸引另一分子 N、O、F 的孤對電子。\n代表：H₂O、NH₃、HF、醇類。是最強的分子間力。' },
+  { q: '為什麼水 H₂O 的沸點特別高？', a: '水分子間有氫鍵，把分子拉得很緊，難以汽化。\n所以沸點 100°C 遠高於同族 H₂S、H₂Se、H₂Te。\n若只照分子量趨勢，水本應約 −80°C 就沸騰。' },
+  { q: 'PV=nRT 各符號與 R 值？', a: 'P 壓力(atm)、V 體積(L)、n 莫耳、T 絕對溫度(K = °C+273)。\nR = 0.082 atm·L/(mol·K)。\n知三個量可求第四個。' },
+  { q: '道耳頓分壓定律？', a: '總壓 = 各氣體分壓之和。\nPᵢ = xᵢ × P_總（xᵢ 為莫耳分率）。\n同容器同溫，分壓比 = 莫耳數比。' },
+  { q: '葛拉漢氣體擴散定律？', a: '同溫下，擴散速率與分子量平方根成反比：\nr₁ / r₂ = √(M₂ / M₁)。\n輕的氣體跑得快，例：H₂ 比 O₂ 快 √(32/2)=4 倍。' }
+];
+
+// ── ch03_basic.js ──
+// chem_g1_v31/ch03_basic.js — 化學高二 CH03「分子間作用力與物質三態」14 基本題（單選10＋多選2＋選填2）
+var CHEM_BASIC_G1_CH03 = [
+  // 1. 分子間力類型：非極性分子（single, ans B）
+  {
+    q: '下列何者是「非極性分子」（如 O₂、N₂）彼此之間的主要分子間作用力？',
+    opts: ['氫鍵', '分散力（倫敦力）', '離子鍵', '共價鍵'],
+    ans: 'B',
+    hint: '非極性分子沒有永久偶極，靠瞬間偶極產生的分散力互相吸引。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先看分子有無「永久偶極」：O₂、N₂ 兩端相同、電荷對稱，屬非極性分子，沒有偶極-偶極力。</div></div><div class="as-f">非極性分子：無永久偶極 → 排除偶極-偶極力與氫鍵</div><div class="as-step"><div class="as-n">2</div><div>電子雲隨時在晃動，某一瞬間會出現「瞬間偶極」，誘導鄰近分子跟著極化而互相吸引，這就是分散力（倫敦力），存在於所有分子之間。</div></div><div class="as-f">瞬間偶極 → 誘導偶極 → 分散力（倫敦力）</div><div class="as-warn">⚠ 離子鍵與共價鍵是「鍵結」不是分子間力；氫鍵只在 H 接 F/O/N 時才有。</div><div class="as-ans">答：(B) 分散力（倫敦力）</div></div>'
+  },
+  // 2. 氫鍵判斷：能形成分子間氫鍵者（single, ans D）
+  {
+    q: '下列分子中，何者「分子間」可形成氫鍵？',
+    opts: ['CH₄', 'PH₃', 'H₂S', 'NH₃'],
+    ans: 'D',
+    hint: '形成氫鍵的條件：H 必須直接鍵結在 F、O、N 這三種高電負度原子上。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>氫鍵條件：分子中要有 H 直接連在 F、O、N 上（高電負度且帶孤對電子）。</div></div><div class="as-f">可形成氫鍵：H—F、H—O、H—N</div><div class="as-step"><div class="as-n">2</div><div>逐項看中心原子：CH₄（H 接 C，不符）、PH₃（H 接 P，不符）、H₂S（H 接 S，不符）、NH₃（H 接 N，符合）。</div></div><div class="as-f">只有 NH₃ 的 H 接在 N 上 → 有氫鍵</div><div class="as-warn">⚠ P、S 雖與 N、O 同族，但電負度不夠、原子半徑大，不形成氫鍵；別把 PH₃、H₂S 誤選。</div><div class="as-ans">答：(D) NH₃</div></div>'
+  },
+  // 3. 沸點排序：鹵素分散力（single, ans A）
+  {
+    q: '鹵素 F₂、Cl₂、Br₂、I₂ 均為非極性分子，在常溫常壓下，何者沸點最高？',
+    opts: ['I₂', 'Br₂', 'Cl₂', 'F₂'],
+    ans: 'A',
+    hint: '同類非極性分子，分子量越大、電子數越多，分散力越強，沸點越高。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>四者都是非極性分子，分子間只有分散力，比的是分散力強弱。</div></div><div class="as-f">分散力：分子量（電子數）越大 → 越強</div><div class="as-step"><div class="as-n">2</div><div>分子量 F₂（38）＜Cl₂（71）＜Br₂（160）＜I₂（254），故分散力與沸點皆 I₂ 最大。</div></div><div class="as-f">沸點高低：I₂ ＞ Br₂ ＞ Cl₂ ＞ F₂</div><div class="as-warn">⚠ 這裡沒有氫鍵或偶極力可比，唯一變因就是分子量帶動的分散力，別想成「越輕越易揮發沸點越高」。</div><div class="as-ans">答：(A) I₂</div></div>'
+  },
+  // 4. PV=nRT 求體積（single, ans C）
+  {
+    q: '2 mol 理想氣體在 27°C、壓力 2 atm 下，體積為何？（R＝0.082 atm·L/(mol·K)）',
+    opts: ['12.3 L', '49.2 L', '24.6 L', '6.15 L'],
+    ans: 'C',
+    hint: '用 PV＝nRT，溫度先換成克氏溫標 K（27＋273＝300）。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先把攝氏換成絕對溫度：T＝27＋273＝300 K，再整理成 V＝nRT/P。</div></div><div class="as-f">V ＝ nRT ÷ P</div><div class="as-step"><div class="as-n">2</div><div>代入：V＝(2 × 0.082 × 300) ÷ 2＝49.2 ÷ 2＝24.6 L。</div></div><div class="as-f">V ＝ (2 × 0.082 × 300) ÷ 2 ＝ 24.6 L</div><div class="as-warn">⚠ 溫度一定要用 K，直接代 27 會全錯；R 用 0.082 時壓力用 atm、體積得 L。</div><div class="as-ans">答：(C) 24.6 L</div></div>'
+  },
+  // 5. 道耳頓分壓（single, ans B）
+  {
+    q: '一密閉容器中裝有 N₂ 0.3 mol 與 O₂ 0.2 mol，混合氣體總壓為 5 atm。則 O₂ 的分壓為何？',
+    opts: ['1 atm', '2 atm', '3 atm', '2.5 atm'],
+    ans: 'B',
+    hint: '分壓＝該氣體的莫耳分率 × 總壓。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先求 O₂ 的莫耳分率：總莫耳＝0.3＋0.2＝0.5 mol。</div></div><div class="as-f">O₂ 莫耳分率 ＝ 0.2 ÷ 0.5 ＝ 0.4</div><div class="as-step"><div class="as-n">2</div><div>分壓＝莫耳分率 × 總壓：0.4 × 5＝2 atm。</div></div><div class="as-f">P(O₂) ＝ 0.4 × 5 ＝ 2 atm</div><div class="as-warn">⚠ 分壓看的是「莫耳比」不是質量比；也別把總壓平均分給每種氣體。</div><div class="as-ans">答：(B) 2 atm</div></div>'
+  },
+  // 6. 氣體擴散速率（single, ans A）
+  {
+    q: '在相同溫度與壓力下，氫氣 H₂（分子量 2）與氧氣 O₂（分子量 32）由同一小孔擴散，則 H₂ 的擴散速率約為 O₂ 的幾倍？',
+    opts: ['4 倍', '2 倍', '16 倍', '8 倍'],
+    ans: 'A',
+    hint: '葛拉漢定律：擴散速率與分子量的平方根成反比（分子量小者擴散快）。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>葛拉漢定律：速率比 ＝ 分子量平方根的倒數比。</div></div><div class="as-f">r(H₂) ÷ r(O₂) ＝ √(M(O₂) ÷ M(H₂))</div><div class="as-step"><div class="as-n">2</div><div>代入分子量：√(32 ÷ 2)＝√16＝4，故 H₂ 擴散速率是 O₂ 的 4 倍。</div></div><div class="as-f">√(32 ÷ 2) ＝ √16 ＝ 4</div><div class="as-warn">⚠ 是分子量「開根號」再取倒數，不是直接比 32÷2＝16；輕的分子擴散快，比值放在分子上要放大分子量那個。</div><div class="as-ans">答：(A) 4 倍</div></div>'
+  },
+  // 7. 氫鍵對沸點的影響（single, ans D）
+  {
+    q: '水 H₂O 的沸點（100°C）遠高於硫化氫 H₂S（約 −60°C），其主要原因為何？',
+    opts: ['H₂O 分子量比 H₂S 大', 'H₂O 是共價化合物而 H₂S 不是', 'H₂O 分子體積較小', 'H₂O 分子間可形成氫鍵'],
+    ans: 'D',
+    hint: '同族氫化物中，H₂O 因分子間氫鍵而沸點異常偏高。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先排除分子量因素：H₂O 分子量 18，H₂S 分子量 34，H₂O 反而較小，若只看分散力應該 H₂S 沸點較高才對。</div></div><div class="as-f">分子量：H₂O（18）＜ H₂S（34） → 分散力無法解釋</div><div class="as-step"><div class="as-n">2</div><div>差異來自 O 電負度高、H₂O 分子間能形成強氫鍵，要拆開需更多能量，沸點因而大幅升高。</div></div><div class="as-f">H₂O 分子間氫鍵（H—O…H） → 沸點異常偏高</div><div class="as-warn">⚠ H₂O 與 H₂S 都是共價化合物，選項 B 敘述錯誤；關鍵單一變因是氫鍵。</div><div class="as-ans">答：(D) H₂O 分子間可形成氫鍵</div></div>'
+  },
+  // 8. 相變名稱：昇華（single, ans C）＋三態 SVG
+  {
+    q: '物質由固態「不經過液態」直接變為氣態的相變過程，稱為什麼？',
+    opts: ['凝固', '汽化', '昇華', '凝結'],
+    ans: 'C',
+    hint: '固 → 氣（不經液態）叫昇華；例如乾冰 CO₂、樟腦。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先釐清各相變：固→液＝熔化、液→氣＝汽化、氣→液＝凝結、液→固＝凝固。</div></div><svg viewBox="0 0 380 96" xmlns="http://www.w3.org/2000/svg"><rect x="14" y="34" width="70" height="30" rx="5" fill="none" stroke="var(--accent)"/><text x="49" y="54" font-size="13" text-anchor="middle" fill="var(--ink)">固態</text><rect x="155" y="34" width="70" height="30" rx="5" fill="none" stroke="var(--green)"/><text x="190" y="54" font-size="13" text-anchor="middle" fill="var(--ink)">液態</text><rect x="296" y="34" width="70" height="30" rx="5" fill="none" stroke="var(--gold)"/><text x="331" y="54" font-size="13" text-anchor="middle" fill="var(--ink)">氣態</text><line x1="84" y1="49" x2="155" y2="49" stroke="var(--ink3)"/><polygon points="155,49 147,45 147,53" fill="var(--ink3)"/><text x="119" y="42" font-size="10" text-anchor="middle" fill="var(--ink3)">熔化</text><line x1="225" y1="49" x2="296" y2="49" stroke="var(--ink3)"/><polygon points="296,49 288,45 288,53" fill="var(--ink3)"/><text x="260" y="42" font-size="10" text-anchor="middle" fill="var(--ink3)">汽化</text><path d="M49 34 Q190 8 331 34" fill="none" stroke="var(--red)"/><polygon points="331,34 323,29 326,37" fill="var(--red)"/><text x="190" y="18" font-size="11" text-anchor="middle" fill="var(--red)">昇華（固→氣）</text></svg><div class="as-note">昇華是固態越過液態直接變氣態（紅色路徑），例如乾冰、樟腦、碘。</div><div class="as-step"><div class="as-n">2</div><div>題目描述「固→氣、不經液態」，正是昇華。</div></div><div class="as-f">固態 ─(昇華)→ 氣態</div><div class="as-warn">⚠ 汽化是「液→氣」；別把昇華和汽化混淆。氣→固（不經液態）叫凝華。</div><div class="as-ans">答：(C) 昇華</div></div>'
+  },
+  // 9. PV=nRT 求莫耳數（single, ans B）
+  {
+    q: '在 8.2 L 容器中，某理想氣體壓力為 2 atm、溫度為 500 K。則容器中氣體的莫耳數為何？（R＝0.082）',
+    opts: ['0.2 mol', '0.4 mol', '0.8 mol', '4 mol'],
+    ans: 'B',
+    hint: '由 PV＝nRT 整理成 n＝PV/(RT)。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>把理想氣體方程式整理成求莫耳數的形式。</div></div><div class="as-f">n ＝ PV ÷ (RT)</div><div class="as-step"><div class="as-n">2</div><div>代入：分子＝2 × 8.2＝16.4；分母＝0.082 × 500＝41；n＝16.4 ÷ 41＝0.4 mol。</div></div><div class="as-f">n ＝ (2 × 8.2) ÷ (0.082 × 500) ＝ 16.4 ÷ 41 ＝ 0.4 mol</div><div class="as-warn">⚠ 500 已是 K 不用再加 273；R 記得放在分母且與 T 相乘。</div><div class="as-ans">答：(B) 0.4 mol</div></div>'
+  },
+  // 10. 分子間力概念敘述（single, ans A）
+  {
+    q: '下列有關「分子間作用力」的敘述，何者正確？',
+    opts: ['分子間作用力越強，物質的沸點通常越高', '分子間作用力就是分子內的共價鍵', '所有分子之間都存在氫鍵', '分散力只存在於極性分子之間'],
+    ans: 'A',
+    hint: '要拆開分子間吸引力才能沸騰，作用力越強越難拆，沸點越高。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>沸騰＝把彼此吸住的分子拉開成氣態，分子間力越強，需要的能量越多，沸點越高。</div></div><div class="as-f">分子間力 ↑ → 沸點、熔點 ↑</div><div class="as-step"><div class="as-n">2</div><div>逐一檢查錯項：共價鍵是分子「內」的鍵結（B 錯）；氫鍵只在 H 接 F/O/N 才有、非所有分子（C 錯）；分散力存在於所有分子含非極性（D 錯）。</div></div><div class="as-f">分子間力（弱） ≠ 共價鍵（分子內，強）</div><div class="as-warn">⚠ 別把「分子間力」與「化學鍵」混為一談；分子間力弱得多，只影響物態與沸熔點，不改變分子組成。</div><div class="as-ans">答：(A) 分子間作用力越強，物質的沸點通常越高</div></div>'
+  },
+  // 11. 氫鍵判斷（multi, ans A/B/C/E）
+  {
+    type: 'multi',
+    q: '【多選】下列分子中，何者「分子間」可以形成氫鍵？',
+    opts: ['HF', 'H₂O', 'CH₃OH（甲醇）', 'CH₄', 'NH₃'],
+    ans: ['A', 'B', 'C', 'E'],
+    hint: '氫鍵要有 H 直接接在 F、O 或 N 上；只要分子中有這種 H—F/O/N 結構就可以。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>判準：分子中是否含 H 直接鍵結於 F、O、N（且該原子帶孤對電子）。</div></div><div class="as-f">氫鍵：H—F、H—O、H—N</div><div class="as-step"><div class="as-n">2</div><div>逐項判：HF（H—F，可）、H₂O（H—O，可）、CH₃OH（含 O—H，可）、CH₄（H 全接 C，不可）、NH₃（H—N，可）。</div></div><div class="as-f">可：HF、H₂O、CH₃OH、NH₃　｜　不可：CH₄</div><div class="as-warn">⚠ 甲醇 CH₃OH 雖有 C，但因含 O—H 仍可形成氫鍵；判斷要看有沒有 H—F/O/N，不是看碳。</div><div class="as-ans">答：(A) HF、(B) H₂O、(C) CH₃OH、(E) NH₃</div></div>'
+  },
+  // 12. 綜合概念（multi, ans A/B/D）
+  {
+    type: 'multi',
+    q: '【多選】下列有關分子間作用力與物質三態的敘述，何者正確？',
+    opts: ['分散力普遍存在於所有分子之間', '同類分子中，分子量越大分散力通常越強', '氫鍵屬於分子「內」的化學鍵', '固態直接變為氣態的過程稱為昇華', '相同條件下，分子量越大的氣體擴散越快'],
+    ans: ['A', 'B', 'D'],
+    hint: '逐項用定義檢查：分散力普遍存在、氫鍵是分子間力、擴散速率與分子量平方根成反比。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>A：瞬間偶極造成的分散力任何分子都有，正確。B：分子量大、電子多，分散力越強，正確。</div></div><div class="as-f">分散力：所有分子皆有；分子量 ↑ → 分散力 ↑</div><div class="as-step"><div class="as-n">2</div><div>C：氫鍵是「分子間」作用力，不是分子內鍵結，錯。D：固→氣（不經液態）＝昇華，正確。E：擴散速率與 √分子量成反比，分子量大者擴散「慢」，錯。</div></div><div class="as-f">擴散速率 ∝ 1 ÷ √M → 分子量大 → 擴散慢</div><div class="as-warn">⚠ 氫鍵常被誤當化學鍵；它比共價鍵弱很多，屬分子間力。擴散方向別記反。</div><div class="as-ans">答：(A)、(B)、(D)</div></div>'
+  },
+  // 13. PV=nRT 求體積（fill, ans 12.3）
+  {
+    type: 'fill',
+    q: '【選填】0.5 mol 理想氣體在 27°C、1 atm 下的體積為多少 L？（R＝0.082，填數值）',
+    ans: '12.3',
+    acc: ['12.30', '12.3 L'],
+    hint: '用 V＝nRT/P，溫度換成 K（27＋273＝300）。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>換算絕對溫度 T＝27＋273＝300 K，整理成 V＝nRT/P。</div></div><div class="as-f">V ＝ nRT ÷ P</div><div class="as-step"><div class="as-n">2</div><div>代入：V＝(0.5 × 0.082 × 300) ÷ 1＝12.3 L。</div></div><div class="as-f">V ＝ (0.5 × 0.082 × 300) ÷ 1 ＝ 12.3 L</div><div class="as-warn">⚠ 27°C 一定要換成 300 K；若忘記換算會得到明顯偏小的錯值。</div><div class="as-ans">答：12.3 L</div></div>'
+  },
+  // 14. 分壓計算（fill, ans 6）
+  {
+    type: 'fill',
+    q: '【選填】一容器中裝有 H₂ 2 mol 與 He 3 mol，混合氣體總壓為 10 atm。則 He 的分壓為多少 atm？（填數值）',
+    ans: '6',
+    acc: ['6 atm', '6.0'],
+    hint: 'He 分壓＝He 莫耳分率 × 總壓。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先求 He 莫耳分率：總莫耳＝2＋3＝5 mol。</div></div><div class="as-f">He 莫耳分率 ＝ 3 ÷ 5 ＝ 0.6</div><div class="as-step"><div class="as-n">2</div><div>分壓＝莫耳分率 × 總壓：0.6 × 10＝6 atm。</div></div><div class="as-f">P(He) ＝ 0.6 × 10 ＝ 6 atm</div><div class="as-warn">⚠ 用的是莫耳比不是質量比；He 莫耳較多，分壓也較大。</div><div class="as-ans">答：6 atm</div></div>'
+  }
+];
+
+// ── ch03_adv.js ──
+var CHEM_ADV_G1_CH03 = [
+  {
+    type:'open',
+    q:`【進階實戰】一容積 24.6 L 的鋼瓶，在 27°C 下裝有氧氣 O₂，測得瓶內壓力為 2.0 atm（氣體常數 R＝0.082 atm·L/(mol·K)；原子量 O＝16）。試求瓶中 O₂ 的 (1) 莫耳數 (2) 質量 (3) 密度（g/L）。`,
+    ans:`(1) 2.0 mol　(2) 64 g　(3) 約 2.60 g/L`,
+    hint:`先把攝氏溫度換成 K（27°C＝300 K），代入 PV＝nRT 解 n；質量＝n×M，密度＝質量÷體積。`,
+    fig:`<svg viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg"><rect x="14" y="18" width="150" height="56" rx="8" fill="none" stroke="var(--accent)"/><text x="89" y="42" text-anchor="middle" font-size="13" fill="var(--ink)">O₂ 氣體</text><text x="89" y="62" text-anchor="middle" font-size="11" fill="var(--ink3)">V＝24.6 L</text><text x="200" y="34" font-size="12" fill="var(--ink3)">T＝27°C＝300 K</text><text x="200" y="54" font-size="12" fill="var(--ink3)">P＝2.0 atm</text><text x="200" y="74" font-size="13" fill="var(--red)">n、m、密度 ＝ ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>溫度先換成克氏溫標：T＝27＋273＝300 K。再用理想氣體方程式解莫耳數 n。</div></div><div class="as-f">n ＝ PV ÷ RT ＝ (2.0×24.6) ÷ (0.082×300) ＝ 49.2 ÷ 24.6 ＝ 2.0 mol</div><div class="as-step"><div class="as-n">2</div><div>質量＝莫耳數×莫耳質量，M(O₂)＝16×2＝32 g/mol。</div></div><div class="as-f">m ＝ n × M ＝ 2.0 × 32 ＝ 64 g</div><div class="as-step"><div class="as-n">3</div><div>密度＝質量÷體積。</div></div><div class="as-f">密度 ＝ 64 ÷ 24.6 ≈ 2.60 g/L</div><div class="as-note">密度也可直接用 密度＝PM/RT ＝ (2.0×32)/24.6 ≈ 2.60 g/L 一步得到，與上式一致。</div><div class="as-warn">⚠ 最常見扣分：溫度沒換成 K 直接代 27，或忘了 O₂ 的莫耳質量是 32 而非 16。</div><div class="as-ans">答：(1) 2.0 mol　(2) 64 g　(3) 約 2.60 g/L</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】某純氣體 22 g 裝入 12.3 L 的容器中，在 27°C 下壓力恰為 1.0 atm（R＝0.082；原子量 C＝12、O＝16）。試求 (1) 此氣體的莫耳數 (2) 莫耳質量，並推測它可能是何種氣體 (3) 該狀態下的密度。`,
+    ans:`(1) 0.50 mol　(2) M＝44 g/mol，可能是 CO₂　(3) 約 1.79 g/L`,
+    hint:`由 PV＝nRT 先求 n，再用 M＝質量÷莫耳數 得莫耳質量；把 M 對照常見氣體判斷是誰。密度＝質量÷體積。`,
+    fig:`<svg viewBox="0 0 340 88" xmlns="http://www.w3.org/2000/svg"><rect x="14" y="16" width="150" height="58" rx="8" fill="none" stroke="var(--gold)"/><text x="89" y="40" text-anchor="middle" font-size="12" fill="var(--ink)">氣體 22 g</text><text x="89" y="60" text-anchor="middle" font-size="11" fill="var(--ink3)">V＝12.3 L</text><text x="200" y="32" font-size="12" fill="var(--ink3)">T＝300 K　P＝1.0 atm</text><text x="200" y="54" font-size="13" fill="var(--red)">M ＝ ?　它是誰 ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>T＝27＋273＝300 K。以理想氣體方程式求莫耳數。</div></div><div class="as-f">n ＝ PV ÷ RT ＝ (1.0×12.3) ÷ (0.082×300) ＝ 12.3 ÷ 24.6 ＝ 0.50 mol</div><div class="as-step"><div class="as-n">2</div><div>莫耳質量＝質量÷莫耳數。</div></div><div class="as-f">M ＝ 22 ÷ 0.50 ＝ 44 g/mol</div><div class="as-step"><div class="as-n">3</div><div>M＝44，對照常見氣體：CO₂＝12＋16×2＝44，最相符，故推測為二氧化碳。</div></div><div class="as-f">M(CO₂) ＝ 12 ＋ 16×2 ＝ 44　✓</div><div class="as-step"><div class="as-n">4</div><div>密度＝質量÷體積。</div></div><div class="as-f">密度 ＝ 22 ÷ 12.3 ≈ 1.79 g/L</div><div class="as-warn">⚠ 推測氣體要用「莫耳質量」比對，不能用密度直接猜；密度會隨溫壓改變，莫耳質量才是氣體的身分證。</div><div class="as-ans">答：(1) 0.50 mol　(2) M＝44，為 CO₂　(3) 約 1.79 g/L</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】一 24.6 L 的密閉容器，在 27°C 下裝入 0.20 mol 氮氣 N₂ 與 0.30 mol 氧氣 O₂（R＝0.082）。試依道耳頓分壓定律求 (1) N₂ 的分壓 (2) O₂ 的分壓 (3) 容器內總壓 (4) O₂ 的莫耳分率。`,
+    ans:`(1) 0.20 atm　(2) 0.30 atm　(3) 0.50 atm　(4) 0.60`,
+    hint:`每種氣體的分壓＝該氣體單獨佔滿整個容器時的壓力，各自用 PV＝nRT 算；總壓＝各分壓之和；莫耳分率＝該氣體莫耳數÷總莫耳數。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>T＝300 K。分壓＝各氣體單獨佔全容器的壓力，先算 N₂。</div></div><div class="as-f">P(N₂) ＝ n·RT/V ＝ 0.20×(0.082×300)÷24.6 ＝ 0.20×24.6÷24.6 ＝ 0.20 atm</div><div class="as-step"><div class="as-n">2</div><div>同法算 O₂ 分壓。</div></div><div class="as-f">P(O₂) ＝ 0.30×24.6÷24.6 ＝ 0.30 atm</div><div class="as-step"><div class="as-n">3</div><div>道耳頓分壓定律：總壓＝各分壓之和。</div></div><div class="as-f">P(總) ＝ P(N₂) ＋ P(O₂) ＝ 0.20 ＋ 0.30 ＝ 0.50 atm</div><div class="as-step"><div class="as-n">4</div><div>莫耳分率＝該氣體莫耳數÷總莫耳數，也等於分壓÷總壓。</div></div><div class="as-f">x(O₂) ＝ 0.30 ÷ (0.20＋0.30) ＝ 0.30 ÷ 0.50 ＝ 0.60</div><div class="as-warn">⚠ 分壓與莫耳成正比、與是哪種氣體無關；別誤以為分子量大的氣體分壓就比較大。</div><div class="as-ans">答：(1) 0.20 atm　(2) 0.30 atm　(3) 0.50 atm　(4) 莫耳分率 0.60</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】如圖，有 CH₄、H₂S、NH₃、H₂O 四種分子（分子量都很接近，介於 16～18）。試將它們的沸點由低到高排序，並逐一說明主導的分子間作用力為何造成此順序。`,
+    ans:`沸點：CH₄ ＜ H₂S ＜ NH₃ ＜ H₂O`,
+    hint:`分子量相近時，沸點高低看分子間作用力強弱：只有分散力（非極性）最弱，偶極-偶極次之，能形成氫鍵者更高，氫鍵多且強者最高。`,
+    fig:`<svg viewBox="0 0 360 96" xmlns="http://www.w3.org/2000/svg"><text x="30" y="30" text-anchor="middle" font-size="13" fill="var(--ink)">CH₄</text><text x="120" y="30" text-anchor="middle" font-size="13" fill="var(--ink)">H₂S</text><text x="210" y="30" text-anchor="middle" font-size="13" fill="var(--ink)">NH₃</text><text x="300" y="30" text-anchor="middle" font-size="13" fill="var(--ink)">H₂O</text><line x1="20" y1="60" x2="340" y2="60" stroke="var(--ink3)"/><text x="20" y="80" font-size="11" fill="var(--ink3)">沸點低</text><text x="340" y="80" text-anchor="end" font-size="11" fill="var(--ink3)">沸點高</text><text x="180" y="80" text-anchor="middle" font-size="13" fill="var(--red)">排序 ＝ ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>四者分子量差不多（16～18），色散力大小相近，因此決勝負的是「有沒有偶極、有沒有氫鍵」。</div></div><div class="as-f">判斷主軸：分散力 ＜ 偶極-偶極 ＜ 氫鍵</div><div class="as-step"><div class="as-n">2</div><div>CH₄：正四面體、對稱、非極性分子，只有最弱的色散（分散）力 → 沸點最低。</div></div><div class="as-f">CH₄：非極性，僅色散力（最弱）</div><div class="as-step"><div class="as-n">3</div><div>H₂S：彎曲形、有極性，具偶極-偶極力；但 S 電負度不夠大，不算真正的強氫鍵 → 比 CH₄ 高，但比 NH₃ 低。</div></div><div class="as-f">H₂S：偶極-偶極（無強氫鍵）</div><div class="as-step"><div class="as-n">4</div><div>NH₃ 與 H₂O 都含 N—H、O—H，能形成氫鍵。O 電負度大於 N，且每個 H₂O 平均可牽 2 條氫鍵、NH₃ 較少，故 H₂O 的氫鍵網最強。</div></div><div class="as-f">NH₃：有氫鍵；H₂O：氫鍵最強且最多 → 沸點最高</div><div class="as-note">實際沸點佐證：CH₄ 約 −162°C、H₂S 約 −60°C、NH₃ 約 −33°C、H₂O 100°C，順序一致。</div><div class="as-warn">⚠ 別只用分子量猜沸點；此題分子量幾乎一樣，勝負全在氫鍵與極性。也別把 H₂S 當有強氫鍵。</div><div class="as-ans">答：CH₄ ＜ H₂S ＜ NH₃ ＜ H₂O（分散力 → 偶極 → 氫鍵 → 最強氫鍵）</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】如圖，以排水集氣法收集氧氣 O₂。實驗在 27°C 下進行，調整管內外水面等高時，管內總壓等於大氣壓 1.00 atm。已知 27°C 時水的飽和蒸氣壓為 0.040 atm，量得收集氣體體積 6.15 L（R＝0.082；原子量 O＝16）。試求 (1) 乾燥 O₂ 的分壓 (2) O₂ 的莫耳數 (3) O₂ 的質量。`,
+    ans:`(1) 0.96 atm　(2) 0.24 mol　(3) 7.68 g`,
+    hint:`排水集氣時管內是「O₂＋水蒸氣」的混合氣。乾燥 O₂ 分壓＝總壓−水蒸氣壓，再用這個「校正後的壓力」代入 PV＝nRT。`,
+    fig:`<svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg"><rect x="120" y="14" width="60" height="80" rx="4" fill="none" stroke="var(--accent)"/><text x="150" y="42" text-anchor="middle" font-size="11" fill="var(--ink)">O₂ ＋</text><text x="150" y="58" text-anchor="middle" font-size="11" fill="var(--ink)">水蒸氣</text><line x1="60" y1="94" x2="260" y2="94" stroke="var(--accent)"/><text x="60" y="112" font-size="10" fill="var(--ink3)">水槽（27°C）</text><text x="6" y="30" font-size="11" fill="var(--ink3)">總壓 1.00 atm</text><text x="6" y="48" font-size="11" fill="var(--ink3)">水蒸氣 0.040 atm</text><text x="196" y="40" font-size="12" fill="var(--red)">乾 O₂ 分壓 ＝ ?</text><text x="196" y="60" font-size="12" fill="var(--red)">n、m ＝ ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>管內是 O₂ 與水蒸氣的混合氣，由道耳頓分壓定律，乾燥 O₂ 分壓＝總壓減去水蒸氣壓。</div></div><div class="as-f">P(O₂) ＝ 1.00 − 0.040 ＝ 0.96 atm</div><div class="as-step"><div class="as-n">2</div><div>T＝27＋273＝300 K，用「校正後」的 O₂ 分壓代入 PV＝nRT 求 n。</div></div><div class="as-f">n ＝ P(O₂)·V ÷ RT ＝ (0.96×6.15) ÷ (0.082×300) ＝ 5.904 ÷ 24.6 ＝ 0.24 mol</div><div class="as-step"><div class="as-n">3</div><div>質量＝莫耳數×莫耳質量，M(O₂)＝32。</div></div><div class="as-f">m ＝ 0.24 × 32 ＝ 7.68 g</div><div class="as-note">水面等高的目的，是讓管內總壓等於外界大氣壓，方便直接用大氣壓當總壓。</div><div class="as-warn">⚠ 最常見扣分：忘了扣掉水蒸氣壓，直接拿 1.00 atm 當 O₂ 分壓，會把莫耳數算多。</div><div class="as-ans">答：(1) 0.96 atm　(2) 0.24 mol　(3) 7.68 g</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】如圖，甲容器容積 1.0 L，裝有 N₂，壓力 4.0 atm；乙容器容積 3.0 L，裝有 O₂，壓力 2.0 atm。兩容器以細管與活栓相連（溫度固定 27°C，連接管體積可忽略）。打開活栓使氣體充分混合後，求 (1) N₂ 的分壓 (2) O₂ 的分壓 (3) 混合氣體總壓 (4) O₂ 的莫耳分率。`,
+    ans:`(1) 1.0 atm　(2) 1.5 atm　(3) 2.5 atm　(4) 0.60`,
+    hint:`每種氣體莫耳數不變、溫度不變，膨脹到「總體積」後用波以耳定律 P₁V₁＝P₂V₂ 各自求新分壓；總壓＝各分壓之和。總體積＝1.0＋3.0＝4.0 L。`,
+    fig:`<svg viewBox="0 0 340 110" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="30" width="90" height="50" rx="6" fill="none" stroke="var(--accent)"/><text x="65" y="52" text-anchor="middle" font-size="12" fill="var(--ink)">甲 N₂</text><text x="65" y="70" text-anchor="middle" font-size="10" fill="var(--ink3)">1.0 L / 4.0 atm</text><line x1="110" y1="55" x2="200" y2="55" stroke="var(--ink3)"/><text x="155" y="48" text-anchor="middle" font-size="10" fill="var(--ink3)">活栓</text><rect x="200" y="24" width="120" height="62" rx="6" fill="none" stroke="var(--gold)"/><text x="260" y="50" text-anchor="middle" font-size="12" fill="var(--ink)">乙 O₂</text><text x="260" y="68" text-anchor="middle" font-size="10" fill="var(--ink3)">3.0 L / 2.0 atm</text><text x="70" y="104" font-size="12" fill="var(--red)">混合後 各分壓、總壓 ＝ ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>混合後每種氣體都佔滿總體積 V(總)＝1.0＋3.0＝4.0 L。溫度、莫耳數不變，對各氣體用波以耳定律求新分壓。</div></div><div class="as-f">V(總) ＝ 1.0 ＋ 3.0 ＝ 4.0 L</div><div class="as-step"><div class="as-n">2</div><div>N₂：原本 4.0 atm 佔 1.0 L，膨脹到 4.0 L。</div></div><div class="as-f">P(N₂) ＝ (4.0×1.0) ÷ 4.0 ＝ 1.0 atm</div><div class="as-step"><div class="as-n">3</div><div>O₂：原本 2.0 atm 佔 3.0 L，膨脹到 4.0 L。</div></div><div class="as-f">P(O₂) ＝ (2.0×3.0) ÷ 4.0 ＝ 1.5 atm</div><div class="as-step"><div class="as-n">4</div><div>道耳頓分壓定律求總壓，莫耳分率＝分壓÷總壓。</div></div><div class="as-f">P(總) ＝ 1.0 ＋ 1.5 ＝ 2.5 atm　；　x(O₂) ＝ 1.5 ÷ 2.5 ＝ 0.60</div><div class="as-warn">⚠ 別直接把兩瓶壓力相加（4.0＋2.0）當總壓；體積變了，必須先各自用波以耳定律換算到總體積再相加。</div><div class="as-ans">答：(1) 1.0 atm　(2) 1.5 atm　(3) 2.5 atm　(4) 莫耳分率 0.60</div></div>`
+  }
+];
+
+// ── ch04_course.js ──
+// chem_g1_v31 / CH04 化學反應速率 — 檔A（課程＋筆記＋速記卡）
+var CHEM_COURSE_G1_CH04 = {
+  num: 'CH 04',
+  name: '化學反應速率',
+  book: '選修化學（上）',
+  grade: '高二',
+  sub: '反應速率的定義與表示、碰撞學說與活化能、影響速率的因素、速率定律與反應級數、反應機構與速率決定步驟、催化劑',
+  tags: ['分科範圍', '選修', '先懂再背'],
+  sections: [
+    {
+      title: '🗣 白話導讀',
+      color: 'blue',
+      body: `<p class="c-intro">同樣放著不管，鐵<span class="c-def">生鏽</span>要好幾天；但鎂帶點火，一瞬間就燒完。化學反應有快有慢，這一章就在問兩件事：<span class="c-def">反應到底跑多快？又有哪些手段能讓它變快或變慢？</span></p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">要碰到</span>分子必須相撞</div><div class="c-op">＋</div><div class="c-block o"><span class="bk-tag">要夠力</span>能量 ≧ 活化能</div><div class="c-op">＋</div><div class="c-block"><span class="bk-tag">要對準</span>撞擊方向正確</div></div>
+<p class="c-intro">一個反應要發生，分子得先「撞在一起、撞得夠用力、還要撞對角度」——這就是<span class="c-def">碰撞學說</span>。凡是能讓「有效碰撞」變多的手段（升溫、加濃、磨成粉、加催化劑），都會讓反應變快。</p>
+<div class="c-warn">⚠ 速率快慢跟反應「放不放熱」是兩回事：放熱多不代表反應快（鑽石燒成 CO₂ 放很多熱，卻慢到幾乎看不出來）。快慢由<b>活化能</b>決定，放熱多少由 <b>ΔH</b> 決定。</div>`
+    },
+    {
+      title: '⚡ 碰撞學說與活化能',
+      color: 'green',
+      body: `<p class="c-intro">分子時時刻刻在碰撞，但大多數碰撞「無效」——不是能量不夠，就是角度不對。只有能量達到<span class="c-def">活化能 Ea</span>（跨過能量門檻）且方向正確的碰撞，才能拆開舊鍵、生成新物質，這種叫<span class="c-def">有效碰撞</span>。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<line x1="34" y1="16" x2="34" y2="182" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="34" y1="182" x2="366" y2="182" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="8" y="30" font-size="11" fill="var(--ink3)">位能</text>
+<text x="300" y="196" font-size="11" fill="var(--ink3)">反應進行 →</text>
+<line x1="42" y1="120" x2="96" y2="120" stroke="var(--ink)" stroke-width="2"/>
+<line x1="286" y1="145" x2="360" y2="145" stroke="var(--ink)" stroke-width="2"/>
+<polyline points="96,120 122,113 148,92 172,62 190,45 208,62 232,92 258,120 286,145" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+<polyline points="96,120 126,114 152,99 178,86 190,83 202,86 228,99 258,120 286,145" fill="none" stroke="var(--green)" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="96" y1="120" x2="286" y2="120" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="304" y1="120" x2="304" y2="145" stroke="var(--ink3)" stroke-width="1.2"/>
+<text x="52" y="112" font-size="11" fill="var(--ink)">反應物</text>
+<text x="300" y="163" font-size="11" fill="var(--ink)">生成物</text>
+<text x="132" y="34" font-size="10.5" fill="var(--accent)">Ea＝60（無催化）</text>
+<text x="196" y="74" font-size="10" fill="var(--green)">Ea′＝30（有催化）</text>
+<text x="308" y="136" font-size="10" fill="var(--ink3)">ΔH＝−20</text>
+<text x="205" y="204" font-size="10" fill="var(--accent)">實線 無催化劑</text>
+<text x="300" y="204" font-size="10" fill="var(--green)">虛線 有催化</text>
+</svg></div>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext"><b>活化能 Ea</b> ＝ 從反應物爬到山頂（活化錯合物）所需補進的能量；Ea 越高，翻得過去的分子越少，反應越慢。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext">山頂那個不穩定的過渡狀態叫<b>活化錯合物</b>，一形成就往下掉成生成物。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext"><b>反應熱 ΔH</b> ＝ 生成物能量 − 反應物能量，與 Ea 大小無關；上圖 ΔH＝20 − 40 ＝ −20 kJ（放熱）。</div></div>
+<div class="formula">Ea(正) ＝ 山頂 − 反應物　　ΔH ＝ 生成物 − 反應物　　Ea(逆) ＝ 山頂 − 生成物</div>
+<div class="c-warn">⚠ 催化劑<b>降低活化能</b>（開一條較好走的新路徑），同時加快正、逆反應；但它反應前後不被消耗，也不改變 ΔH 與平衡位置。上圖催化後 Ea 由 60 降到 30 kJ，兩端高度卻沒動。</div>`
+    },
+    {
+      title: '🔥 影響反應速率的因素',
+      color: 'gold',
+      body: `<p class="c-intro">先講「速率」怎麼量：追蹤某物濃度隨時間的變化。反應物越變越少（取負號變正）、生成物越變越多，單位常是 M/s（莫耳濃度每秒）。</p>
+<div class="fcard"><div class="fcard-f">反應速率 ＝ −Δ[反應物]/Δt ＝ ＋Δ[生成物]/Δt　（單位 M/s）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>速率就是「濃度改變量」除以「經過的時間」；反應物取負號，讓算出來的速率是正的。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>題目給某物濃度隨時間變化，要算平均速率時。多物種要除以係數才會一致：−(1/a)Δ[A]/Δt。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>[A] 在 30 秒內由 0.80 M 降到 0.50 M → 速率 ＝ −(0.50 − 0.80)/30 ＝ 0.30/30 ＝ 0.010 M/s。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 2N₂O₅ → 4NO₂ ＋ O₂，若 O₂ 以 0.020 M/s 生成，NO₂ 的生成速率？<details><summary>看解法</summary><div class="ans">係數比 NO₂:O₂ ＝ 4:1 → 0.020 × 4 ＝ 0.080 M/s。</div></details>② 同上，N₂O₅ 的消耗速率？<details><summary>看解法</summary><div class="ans">N₂O₅:O₂ ＝ 2:1 → 0.020 × 2 ＝ 0.040 M/s。</div></details></div></div></div>
+<p class="c-intro">知道怎麼量之後，有四個「旋鈕」可以調快慢：</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">碰撞頻率</span>濃度 · 表面積</div><div class="c-op">＋</div><div class="c-block o"><span class="bk-tag">有效比例</span>溫度 · 催化劑</div></div>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext"><b>濃度↑</b>：單位體積內分子變多 → 碰撞頻率↑ → 變快（氣體加壓、縮小體積效果相同）。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext"><b>溫度↑</b>：分子跑更快，且能量 ≧ Ea 的比例大增 → 變快。經驗上每升約 10°C，速率快一倍。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext"><b>表面積↑</b>：固體磨成粉，接觸面變大 → 變快（麵粉塵爆、鐵粉比鐵塊易燃就是這道理）。</div></div>
+<div class="c-stepline"><div class="c-stepnum">4</div><div class="c-steptext"><b>催化劑</b>：提供低 Ea 的新路徑 → 變快，且反應前後不被消耗。</div></div>
+<div class="c-warn">⚠ 濃度、表面積影響的是「碰撞<b>頻率</b>」；溫度、催化劑影響的是「有效碰撞的<b>比例</b>」。溫度是唯一同時大幅影響兩者的因素。</div>`
+    },
+    {
+      title: '📈 速率定律與反應級數',
+      color: 'blue',
+      body: `<p class="c-intro">速率跟濃度的量化關係，寫成<span class="c-def">速率定律</span>：rate ＝ k[A]ᵐ[B]ⁿ。其中 k 是<span class="c-def">速率常數</span>，指數 m、n 叫<span class="c-def">反應級數</span>——只能由<b>實驗</b>測，不能直接看方程式係數。</p>
+<div class="fcard"><div class="fcard-f">rate ＝ k[A]ᵐ[B]ⁿ　（m、n ＝ 反應級數，由實驗定）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>速率等於速率常數 k，乘上各反應物濃度的某個次方。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>要把「濃度」和「速率」量化連起來時。切記 m、n 不是方程式係數，必須靠實驗數據推。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>某反應 rate ＝ k[A]²，k ＝ 2.0 M⁻¹s⁻¹。當 [A] ＝ 0.10 M → rate ＝ 2.0 × 0.10² ＝ 0.020 M/s。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 上式若 [A] 加倍到 0.20 M，速率變幾倍？<details><summary>看解法</summary><div class="ans">二級：×2² ＝ ×4 → rate ＝ 0.080 M/s。</div></details>② 這反應的總級數是多少？<details><summary>看解法</summary><div class="ans">m＝2、n＝0，總級數 ＝ 2 ＋ 0 ＝ 2（二級）。</div></details></div></div></div>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<line x1="38" y1="16" x2="38" y2="180" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="38" y1="180" x2="366" y2="180" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="10" y="30" font-size="11" fill="var(--ink3)">濃度</text>
+<text x="300" y="196" font-size="11" fill="var(--ink3)">時間 →</text>
+<polyline points="44,40 82,55 122,78 162,100 212,124 272,140 342,146" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+<polyline points="44,172 82,157 122,134 162,112 212,88 272,72 342,66" fill="none" stroke="var(--green)" stroke-width="2.2"/>
+<text x="118" y="34" font-size="11" fill="var(--accent)">反應物 ↓</text>
+<text x="250" y="56" font-size="11" fill="var(--green)">生成物 ↑</text>
+<text x="120" y="200" font-size="10" fill="var(--ink3)">曲線斜率（陡→平）＝ 速率（快→慢）</text>
+</svg></div>
+<p class="c-intro">級數說的是「濃度加倍時，速率跟著放大幾倍」：</p>
+<div class="c-stepline"><div class="c-stepnum">0</div><div class="c-steptext"><b>零級</b> rate＝k：濃度加倍，速率<b>不變</b>（2⁰＝1）；k 單位 M/s。</div></div>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext"><b>一級</b> rate＝k[A]：濃度加倍，速率<b>×2</b>（2¹）；k 單位 s⁻¹。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext"><b>二級</b> rate＝k[A]²：濃度加倍，速率<b>×4</b>（2²）；k 單位 M⁻¹s⁻¹。</div></div>
+<div class="fcard"><div class="fcard-f">濃度變 c 倍、速率變 cⁿ 倍　→　反推級數 n</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>看「濃度放大幾倍」對上「速率放大幾倍」，用次方關係反推級數。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>拿到兩組實驗（其他濃度固定、只變一種）要判斷對某物的級數時。求出級數後回代任一組算 k。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>[A]＝0.10 時 rate＝0.020；[A]＝0.20 時 rate＝0.080。濃度×2、速率×4＝2² → 二級。k ＝ 0.020 ÷ 0.10² ＝ 2.0 M⁻¹s⁻¹。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① [A]×3 時 rate×3，是幾級？<details><summary>看解法</summary><div class="ans">3 ＝ 3¹ → 一級，k 單位 s⁻¹。</div></details>② [A]×4 時 rate 不變，是幾級？<details><summary>看解法</summary><div class="ans">4⁰ ＝ 1 → 零級，rate＝k，k 單位 M/s。</div></details></div></div></div>
+<p class="c-intro">多數反應不是一步到位，而是分成好幾個<span class="c-def">基元步驟</span>依序走。其中最慢的那一步是<span class="c-def">速率決定步驟</span>，整體速率就由它決定；先生成又被消耗掉、方程式看不到的物種，叫<span class="c-def">中間產物</span>。</p>
+<div class="c-warn">⚠ 級數 ≠ 係數。例：NO₂ ＋ CO → NO ＋ CO₂ 實驗測得 rate＝k[NO₂]²，因為慢步是 NO₂ ＋ NO₂ 相撞（跟 CO 無關，對 CO 是零級）——這正說明級數必須看反應機構，不能照抄總方程式係數。</div>`
+    },
+    {
+      title: '✏️ 練習問題',
+      color: 'green',
+      body: `<div class="c-practice"><b>練習 1：</b>反應 2N₂O₅ → 4NO₂ ＋ O₂ 中，O₂ 以 0.010 M/s 生成。求 NO₂ 的生成速率與 N₂O₅ 的消耗速率。<details><summary>看解答</summary>係數比 N₂O₅:NO₂:O₂ ＝ 2:4:1。NO₂ ＝ 0.010 × 4 ＝ 0.040 M/s；N₂O₅ ＝ 0.010 × 2 ＝ 0.020 M/s。</details></div>
+<div class="c-practice"><b>練習 2：</b>某反應正反應活化能 Ea ＝ 60 kJ，反應熱 ΔH ＝ −20 kJ（放熱）。求逆反應的活化能。<details><summary>看解答</summary>Ea(逆) ＝ Ea(正) − ΔH ＝ 60 − (−20) ＝ 80 kJ。（放熱反應的逆反應更難翻過山頂，故 Ea 較大。）</details></div>
+<div class="c-practice"><b>練習 3：</b>反應 A → 產物，實驗數據：[A]＝0.20 M 時 rate＝0.010 M/s；[A]＝0.40 M 時 rate＝0.040 M/s。求反應級數與速率常數 k。<details><summary>看解答</summary>濃度×2、速率×4＝2² → 對 A 為二級。k ＝ rate ÷ [A]² ＝ 0.010 ÷ 0.20² ＝ 0.010 ÷ 0.040 ＝ 0.25 M⁻¹s⁻¹。驗證：0.25 × 0.40² ＝ 0.25 × 0.16 ＝ 0.040 M/s ✓。</details></div>`
+    }
+  ]
+};
+
+var CHEM_NOTES_G1_CH04 = [
+  {
+    title: '一張圖看懂活化能與催化劑',
+    tag: '核心概念',
+    tagClass: 'blue',
+    open: true,
+    body: `<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<line x1="34" y1="16" x2="34" y2="182" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="34" y1="182" x2="366" y2="182" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="8" y="30" font-size="11" fill="var(--ink3)">位能</text>
+<text x="300" y="196" font-size="11" fill="var(--ink3)">反應進行 →</text>
+<line x1="42" y1="120" x2="96" y2="120" stroke="var(--ink)" stroke-width="2"/>
+<line x1="286" y1="145" x2="360" y2="145" stroke="var(--ink)" stroke-width="2"/>
+<polyline points="96,120 122,113 148,92 172,62 190,45 208,62 232,92 258,120 286,145" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+<polyline points="96,120 126,114 152,99 178,86 190,83 202,86 228,99 258,120 286,145" fill="none" stroke="var(--green)" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="52" y="112" font-size="11" fill="var(--ink)">反應物</text>
+<text x="300" y="163" font-size="11" fill="var(--ink)">生成物</text>
+<text x="132" y="34" font-size="10.5" fill="var(--accent)">Ea＝60（無催化）</text>
+<text x="196" y="74" font-size="10" fill="var(--green)">Ea′＝30（有催化）</text>
+<text x="205" y="204" font-size="10" fill="var(--accent)">實線 無催化劑</text>
+<text x="300" y="204" font-size="10" fill="var(--green)">虛線 有催化</text>
+</svg></div>
+<div class="formula">Ea(正) ＝ 山頂 − 反應物　　ΔH ＝ 生成物 − 反應物　　（催化劑↓Ea、不改 ΔH）</div>
+<p class="c-intro">圖中同一反應走兩條路：<b>實線無催化劑、虛線有催化劑</b>。催化劑把「山」壓低（Ea 由 60 降到 30 kJ），反應更容易翻過去；但起點（反應物）與終點（生成物）的高度沒變，所以 <b>ΔH 不變</b>、平衡位置也不變。</p>`
+  },
+  {
+    title: '碰撞學說與四大影響因素',
+    tag: '觀念釐清',
+    tagClass: 'gold',
+    open: false,
+    body: `<div class="c-blocks"><div class="c-block"><span class="bk-tag">碰撞頻率</span>濃度、表面積</div><div class="c-op">＋</div><div class="c-block o"><span class="bk-tag">有效比例</span>溫度、催化劑</div></div>
+<p class="c-intro"><b>有效碰撞</b> ＝ 能量 ≧ Ea ＋ 撞擊方向正確。凡是讓有效碰撞變多的手段都會加速反應。</p>
+<p class="c-intro"><b>濃度↑</b>／<b>表面積↑</b>（磨成粉）→ 撞得更頻繁；<b>溫度↑</b>（約每 ＋10°C 速率快一倍）／<b>催化劑</b>（降低 Ea）→ 有效碰撞的比例大增。溫度是唯一「頻率」與「比例」都大幅影響的因素。</p>`
+  },
+  {
+    title: '速率定律與反應級數',
+    tag: '核心概念',
+    tagClass: 'green',
+    open: false,
+    body: `<div class="formula">rate ＝ k[A]ᵐ[B]ⁿ　（m、n 由實驗定，不是係數）</div>
+<p class="c-intro"><b>零級</b> rate＝k：濃度加倍速率不變；<b>一級</b> rate＝k[A]：加倍→×2；<b>二級</b> rate＝k[A]²：加倍→×4。k 的單位依序為 M/s、s⁻¹、M⁻¹s⁻¹。</p>
+<p class="c-intro"><span class="c-def">速率決定步驟</span>：反應分多個基元步驟，最慢那步決定整體速率；先生成又被消耗的物種是<span class="c-def">中間產物</span>。所以級數要看慢步的機構，未必等於總方程式係數。</p>`
+  },
+  {
+    title: '必背公式卡（速率與級數）',
+    tag: '必背公式',
+    tagClass: 'red',
+    open: false,
+    body: `<div class="fcard"><div class="fcard-f">rate ＝ k[A]ᵐ[B]ⁿ；濃度 ×c → 速率 ×cⁿ</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>速率＝k 乘各濃度的級數次方；用倍率反推級數。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>算速率、判斷級數、求 k 時。級數只能實驗測；求出後回代算 k 與其單位。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>[A]＝0.10→rate＝0.020、[A]＝0.20→rate＝0.080：×2 對上 ×4 → 二級，k ＝ 0.020 ÷ 0.10² ＝ 2.0 M⁻¹s⁻¹。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 一級反應 k 的單位是什麼？<details><summary>看解法</summary><div class="ans">rate＝k[A]，M/s ＝ k·M → k 為 s⁻¹。</div></details>② 零級反應濃度減半，速率如何變？<details><summary>看解法</summary><div class="ans">rate＝k 與濃度無關，速率不變。</div></details></div></div></div>
+<div class="formula">平均速率 ＝ −Δ[反應物]/Δt ＝ ＋Δ[生成物]/Δt；　k 單位：零級 M/s、一級 s⁻¹、二級 M⁻¹s⁻¹</div>`
+  }
+];
+
+var CHEM_CARDS_G1_CH04 = [
+  { q: '反應速率怎麼定義與表示？', a: '追蹤濃度隨時間的變化。\n速率 = −Δ[反應物]/Δt = ＋Δ[生成物]/Δt。\n多物種要各除以係數才一致，單位常為 M/s。' },
+  { q: '碰撞學說的兩個條件？活化能是什麼？', a: '有效碰撞要：① 能量 ≧ 活化能 Ea　② 撞擊方向正確。\nEa = 從反應物爬到山頂（活化錯合物）要補的能量。\nEa 越高，反應越慢。' },
+  { q: '影響反應速率的四個因素？', a: '濃度↑、表面積↑（磨粉）→ 碰撞頻率↑。\n溫度↑（約每 ＋10°C 快一倍）、催化劑 → 有效碰撞比例↑。\n溫度是唯一兩者都大幅影響的。' },
+  { q: '催化劑如何加速反應？會被消耗嗎？', a: '提供活化能較低的新路徑，同時加快正、逆反應。\n反應前後「不被消耗」。\n不改變 ΔH，也不改變平衡位置。' },
+  { q: '速率定律 rate＝k[A]ᵐ[B]ⁿ，級數怎麼來？', a: 'm、n 是反應級數，只能由「實驗數據」測。\n不能直接照抄方程式係數。\n總級數 = m ＋ n。' },
+  { q: '零、一、二級反應，濃度加倍速率如何變？', a: '零級 rate＝k：不變（2⁰＝1），k 單位 M/s。\n一級 rate＝k[A]：×2，k 單位 s⁻¹。\n二級 rate＝k[A]²：×4，k 單位 M⁻¹s⁻¹。' },
+  { q: '反應機構與速率決定步驟是什麼？', a: '反應常分多個基元步驟，最慢那步 = 速率決定步驟，整體速率由它決定。\n先生成又被消耗的物種 = 中間產物。\n所以級數看慢步，未必等於總係數。' }
+];
+
+// ── ch04_basic.js ──
+var CHEM_BASIC_G1_CH04 = [
+  // 1. 速率表示與換算：化學計量比（single, ans D）
+  {
+    q: '反應 N₂ ＋ 3H₂ → 2NH₃ 中，若某時刻 N₂ 的消耗速率為 0.2 mol/(L·s)，則同時刻 H₂ 的消耗速率為何？',
+    opts: ['0.067 mol/(L·s)', '0.2 mol/(L·s)', '0.4 mol/(L·s)', '0.6 mol/(L·s)'],
+    ans: 'D',
+    hint: '各物質速率之比＝方程式係數之比；H₂ 係數 3、N₂ 係數 1。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>同一反應中，各物質的反應速率比等於化學計量係數比。</div></div><div class="as-f">速率比 ＝ N₂ : H₂ : NH₃ ＝ 1 : 3 : 2</div><div class="as-step"><div class="as-n">2</div><div>H₂ 係數是 N₂ 的 3 倍，故 H₂ 消耗速率 ＝ 3 × N₂ 消耗速率 ＝ 3 × 0.2。</div></div><div class="as-f">H₂ 速率 ＝ 3 × 0.2 ＝ 0.6 mol/(L·s)</div><div class="as-warn">⚠ 係數大速率就大；別把 0.2 直接當答案，也別誤用除以 3（0.067 是把關係倒過來）。</div><div class="as-ans">答：(D) 0.6 mol/(L·s)</div></div>'
+  },
+  // 2. 平均反應速率計算（single, ans B）
+  {
+    q: '反應 2N₂O₅ → 4NO₂ ＋ O₂ 中，測得 20 秒內 N₂O₅ 濃度由 1.00 mol/L 降為 0.60 mol/L，則此段時間 N₂O₅ 的平均消耗速率為何？',
+    opts: ['0.008 mol/(L·s)', '0.02 mol/(L·s)', '0.04 mol/(L·s)', '0.20 mol/(L·s)'],
+    ans: 'B',
+    hint: '平均消耗速率 ＝ 濃度減少量 ÷ 經過時間。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>反應物的平均消耗速率＝濃度變化量的絕對值除以時間。</div></div><div class="as-f">速率 ＝ |Δ[N₂O₅]| ÷ Δt</div><div class="as-step"><div class="as-n">2</div><div>濃度減少 ＝ 1.00 － 0.60 ＝ 0.40 mol/L，經過 20 秒。</div></div><div class="as-f">速率 ＝ 0.40 ÷ 20 ＝ 0.02 mol/(L·s)</div><div class="as-warn">⚠ 這題問的是 N₂O₅ 本身的消耗速率，先不要乘以係數換算；係數換算是要求別的物質時才用。</div><div class="as-ans">答：(B) 0.02 mol/(L·s)</div></div>'
+  },
+  // 3. 由某物質速率換算另一物質（single, ans A）
+  {
+    q: '承上，反應 2N₂O₅ → 4NO₂ ＋ O₂ 中，若 N₂O₅ 的消耗速率為 0.02 mol/(L·s)，則 O₂ 的生成速率為何？',
+    opts: ['0.01 mol/(L·s)', '0.02 mol/(L·s)', '0.04 mol/(L·s)', '0.005 mol/(L·s)'],
+    ans: 'A',
+    hint: '速率比＝係數比；N₂O₅ 係數 2、O₂ 係數 1。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>寫出速率與係數的關係：把每個物質速率各除以自己的係數，值相等。</div></div><div class="as-f">N₂O₅ 速率 ÷ 2 ＝ O₂ 速率 ÷ 1</div><div class="as-step"><div class="as-n">2</div><div>代入：O₂ 速率 ＝ N₂O₅ 速率 × (1/2) ＝ 0.02 × 0.5。</div></div><div class="as-f">O₂ 速率 ＝ 0.02 ÷ 2 ＝ 0.01 mol/(L·s)</div><div class="as-warn">⚠ O₂ 係數比 N₂O₅ 小，速率也較小；別誤乘 2 得 0.04。</div><div class="as-ans">答：(A) 0.01 mol/(L·s)</div></div>'
+  },
+  // 4. 影響因素多選（multi, ans A/B/D）
+  {
+    type: 'multi',
+    q: '【多選】下列措施中，何者可以加快「鋅塊與稀鹽酸」反應（Zn ＋ 2HCl → ZnCl₂ ＋ H₂）產生氫氣的速率？',
+    opts: ['將鋅塊磨成鋅粉後反應', '提高鹽酸的濃度', '在鹽酸中加入大量的水稀釋', '將反應混合物加熱升溫', '將反應容器放入冰浴中'],
+    ans: ['A', 'B', 'D'],
+    hint: '增大表面積、提高濃度、升高溫度都會加快；稀釋與降溫則變慢。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>影響速率的因素：濃度↑、溫度↑、固體表面積↑、加催化劑都會加快；反之變慢。</div></div><div class="as-f">加快：濃度↑、溫度↑、表面積↑</div><div class="as-step"><div class="as-n">2</div><div>逐項判：(A) 鋅粉表面積大→變快✓；(B) 濃度變大→變快✓；(C) 加水稀釋使 HCl 濃度變小→變慢✗；(D) 升溫→變快✓；(E) 冰浴降溫→變慢✗。</div></div><div class="as-f">加快者：(A) 表面積、(B) 濃度、(D) 溫度</div><div class="as-warn">⚠ 「加水」常被誤以為讓反應更順；但稀釋降低了反應物濃度，速率反而下降。</div><div class="as-ans">答：(A) 鋅粉、(B) 提高濃度、(D) 升溫</div></div>'
+  },
+  // 5. 有效碰撞條件（single, ans C）
+  {
+    q: '依碰撞學說，反應物粒子的一次碰撞要能真正引發反應（有效碰撞），必須同時滿足哪兩個條件？',
+    opts: ['碰撞粒子質量相同且速率相同', '溫度足夠高且濃度足夠大', '碰撞能量達到或超過活化能，且碰撞的取向（方向）正確', '含有催化劑且固體表面積夠大'],
+    ans: 'C',
+    hint: '有效碰撞＝能量夠（≥ 活化能）＋方向對。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>碰撞學說：反應物必須先碰撞，但不是每次碰撞都能反應。</div></div><div class="as-f">有效碰撞 ＝ 能量足夠 ＋ 取向正確</div><div class="as-step"><div class="as-n">2</div><div>兩條件缺一不可：碰撞能量須 ≥ 活化能，且分子相撞的方向（取向）要能讓舊鍵斷、新鍵成。</div></div><div class="as-f">能量 ≥ 活化能　且　碰撞方向適當</div><div class="as-warn">⚠ 溫度、濃度是「影響有效碰撞次數」的外在因素，本身不是有效碰撞的判準；別把它們當條件。</div><div class="as-ans">答：(C) 能量達到活化能且取向正確</div></div>'
+  },
+  // 6. 活化能概念（single, ans D）
+  {
+    q: '關於反應的「活化能」，下列敘述何者正確？',
+    opts: ['活化能越大，反應通常進行得越快', '放熱反應不需要活化能', '催化劑是藉由提高活化能來加速反應', '活化能是反應物轉變為生成物時必須跨越的能量障礙'],
+    ans: 'D',
+    hint: '活化能是「門檻」，越高越難跨越、反應越慢；催化劑則降低它。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>活化能（Ea）是反應要先「爬過」的能量高牆，達到活化錯合物所需的最低能量。</div></div><div class="as-f">Ea ＝ 反應必須跨越的能量障礙</div><div class="as-step"><div class="as-n">2</div><div>逐項判：(A) Ea 越大越難跨越、反應越慢，錯；(B) 不論放熱吸熱都要先跨活化能，錯；(C) 催化劑是「降低」Ea，不是提高，錯；(D) 正確描述。</div></div><div class="as-f">Ea↑ → 反應↓；催化劑使 Ea↓</div><div class="as-warn">⚠ 放熱反應（ΔH 為負）仍需活化能才會啟動；ΔH 與 Ea 是兩件事，別混。</div><div class="as-ans">答：(D) 活化能是反應物變生成物必須跨越的能量障礙</div></div>'
+  },
+  // 7. 能量圖判讀＋ΔH（single, ans A）＋能量圖 SVG
+  {
+    q: '某反應的正反應活化能為 120 kJ/mol，逆反應活化能為 200 kJ/mol。則此正反應的反應熱 ΔH 為何？',
+    opts: ['−80 kJ/mol（放熱）', '＋80 kJ/mol（吸熱）', '−320 kJ/mol（放熱）', '＋320 kJ/mol（吸熱）'],
+    ans: 'A',
+    hint: 'ΔH ＝ 正反應活化能 － 逆反應活化能。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>能量圖上，正、逆反應共用同一個能峰（活化錯合物）；ΔH 由正逆活化能之差決定。</div></div><div class="as-f">ΔH ＝ Ea(正) － Ea(逆)</div><div class="as-step"><div class="as-n">2</div><div>代入：ΔH ＝ 120 － 200 ＝ －80 kJ/mol；為負值，代表生成物能量較低→放熱。</div></div><div class="as-f">ΔH ＝ 120 － 200 ＝ －80 kJ/mol（放熱）</div><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg"><line x1="34" y1="18" x2="34" y2="180" stroke="var(--ink3)"/><line x1="34" y1="180" x2="366" y2="180" stroke="var(--ink3)"/><text x="20" y="24" font-size="10" text-anchor="middle" fill="var(--ink)">能量</text><text x="300" y="196" font-size="10" text-anchor="middle" fill="var(--ink)">反應歷程</text><polyline points="46,110 96,110 130,88 160,60 190,44 220,70 258,110 310,154 356,154" fill="none" stroke="var(--accent)" stroke-width="2"/><line x1="46" y1="110" x2="356" y2="110" stroke="var(--ink3)" stroke-dasharray="3 3"/><line x1="46" y1="154" x2="356" y2="154" stroke="var(--ink3)" stroke-dasharray="3 3"/><line x1="190" y1="44" x2="356" y2="44" stroke="var(--ink3)" stroke-dasharray="3 3"/><text x="70" y="105" font-size="10" fill="var(--ink)">反應物</text><text x="315" y="170" font-size="10" fill="var(--ink)">生成物</text><text x="196" y="40" font-size="10" fill="var(--ink)">活化錯合物</text><line x1="120" y1="110" x2="120" y2="44" stroke="var(--green)"/><text x="124" y="86" font-size="9" fill="var(--green)">Ea正 120</text><line x1="335" y1="154" x2="335" y2="44" stroke="var(--gold)"/><text x="250" y="82" font-size="9" fill="var(--gold)">Ea逆 200</text></svg><div class="as-note">正反應要爬 120（反應物→峰），逆反應要爬 200（生成物→同一峰）；生成物比反應物低 200－120＝80，故放熱 80 kJ/mol。</div><div class="as-warn">⚠ ΔH 是「相減」不是相加；120＋200＝320 是把兩段活化能誤加起來的錯解。</div><div class="as-ans">答：(A) −80 kJ/mol（放熱）</div></div>'
+  },
+  // 8. 催化劑對可逆反應的作用（single, ans C）
+  {
+    q: '在一可逆反應中加入催化劑，下列關於其影響的敘述何者正確？',
+    opts: ['只加快正反應，不影響逆反應', '使平衡常數 K 變大', '同時加快正反應與逆反應的速率，且不改變反應熱 ΔH', '能提高生成物的最終產率'],
+    ans: 'C',
+    hint: '催化劑降低活化能，正逆同降，只縮短達平衡時間，不動平衡位置與 ΔH。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>催化劑提供活化能較低的替代途徑，這條新路徑對正、逆反應同時有效。</div></div><div class="as-f">Ea(正)、Ea(逆) 一起下降 → 正逆速率一起變快</div><div class="as-step"><div class="as-n">2</div><div>反應物與生成物的能量高度都沒變，所以 ΔH 不變、平衡常數 K 不變，只是更快到達平衡。</div></div><div class="as-f">ΔH 不變、K 不變、達平衡時間縮短</div><div class="as-warn">⚠ 催化劑不會偏袒某一方，也不能提高產率或改變平衡位置；那些是勒沙特列原理的範疇。</div><div class="as-ans">答：(C) 正逆反應都加快且不改變 ΔH</div></div>'
+  },
+  // 9. 速率定律：總反應級數（single, ans C）
+  {
+    q: '已知某反應的速率定律為 速率 ＝ k[A][B]²，則此反應的「總反應級數」為何？',
+    opts: ['1 級', '2 級', '3 級', '4 級'],
+    ans: 'C',
+    hint: '總反應級數＝速率定律中各濃度項指數的總和。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>反應級數看的是速率定律裡各濃度的「指數」，不是看方程式係數。</div></div><div class="as-f">速率 ＝ k[A]¹[B]²　（對 A 一級、對 B 二級）</div><div class="as-step"><div class="as-n">2</div><div>總反應級數 ＝ 各指數相加 ＝ 1 ＋ 2。</div></div><div class="as-f">總級數 ＝ 1 ＋ 2 ＝ 3</div><div class="as-warn">⚠ 級數必須由實驗數據或給定的速率定律決定，不能直接抄化學方程式的係數。</div><div class="as-ans">答：(C) 3 級</div></div>'
+  },
+  // 10. 由數據求反應級數（single, ans B）
+  {
+    q: '某反應速率只與反應物 A 濃度有關。實驗測得：[A]＝0.1 mol/L 時速率為 0.2 mol/(L·s)；[A]＝0.2 mol/L 時速率為 0.8 mol/(L·s)。則此反應對 A 的反應級數為何？',
+    opts: ['1 級', '2 級', '3 級', '0 級'],
+    ans: 'B',
+    hint: '濃度變幾倍、速率變幾倍，用 (倍數)ⁿ ＝ 速率倍數 反推 n。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>設速率 ＝ k[A]ⁿ，比較兩組實驗，濃度與速率各變化幾倍。</div></div><div class="as-f">[A]：0.1 → 0.2（變 2 倍）；速率：0.2 → 0.8（變 4 倍）</div><div class="as-step"><div class="as-n">2</div><div>由 (2)ⁿ ＝ 4 解出 n：2ⁿ ＝ 4 ＝ 2²，故 n ＝ 2。</div></div><div class="as-f">2ⁿ ＝ 4 → n ＝ 2（對 A 為二級）</div><div class="as-warn">⚠ 濃度加倍速率加倍才是一級；本題速率變成 4 倍，是二級。別憑直覺猜一級。</div><div class="as-ans">答：(B) 2 級</div></div>'
+  },
+  // 11. 求速率常數 k（fill, ans 20）
+  {
+    type: 'fill',
+    q: '【選填】承上題，該反應對 A 為二級（速率 ＝ k[A]²）。已知 [A]＝0.1 mol/L 時速率為 0.2 mol/(L·s)，求速率常數 k 的數值。（單位 L/(mol·s)，填數值）',
+    ans: '20',
+    acc: ['20.0', 'k=20', '20 L/(mol·s)'],
+    hint: '把一組數據代入 速率 ＝ k[A]²，解出 k ＝ 速率 ÷ [A]²。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>由二級速率定律解 k：把速率與濃度代入後移項。</div></div><div class="as-f">k ＝ 速率 ÷ [A]²</div><div class="as-step"><div class="as-n">2</div><div>代入 [A]＝0.1、速率＝0.2：[A]² ＝ 0.1² ＝ 0.01，故 k ＝ 0.2 ÷ 0.01。</div></div><div class="as-f">k ＝ 0.2 ÷ 0.01 ＝ 20 L/(mol·s)</div><div class="as-warn">⚠ 記得先把濃度「平方」再相除；若忘了平方會誤算成 2。二級反應 k 的單位是 L/(mol·s)，不同於一級。</div><div class="as-ans">答：k ＝ 20 L/(mol·s)</div></div>'
+  },
+  // 12. 溫度對速率的倍率（fill, ans 8）
+  {
+    type: 'fill',
+    q: '【選填】某反應在此溫度範圍內，溫度每升高 10°C 反應速率變為原來的 2 倍。若溫度由 20°C 升高到 50°C，則反應速率變為原來的幾倍？（填數值）',
+    ans: '8',
+    acc: ['8倍', '8.0', '八'],
+    hint: '先算升高了幾個「10°C」，再用 2 的次方。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先算溫度總共升高多少，換算成幾個 10°C 級距。</div></div><div class="as-f">ΔT ＝ 50 － 20 ＝ 30°C ＝ 3 個 10°C</div><div class="as-step"><div class="as-n">2</div><div>每升 10°C 速率乘 2，升 3 次就乘 3 次 2。</div></div><div class="as-f">倍率 ＝ 2 × 2 × 2 ＝ 2³ ＝ 8 倍</div><div class="as-warn">⚠ 是「連乘（次方）」不是「相加」；30°C 不是 3×2＝6 倍，而是 2³＝8 倍。</div><div class="as-ans">答：8 倍</div></div>'
+  },
+  // 13. 碰撞學說與活化能綜合（multi, ans A/C/E）
+  {
+    type: 'multi',
+    q: '【多選】關於碰撞學說、活化能與溫度的關係，下列敘述何者正確？',
+    opts: ['反應物分子必須先發生碰撞，才有可能反應', '反應物之間的每一次碰撞都能使反應發生', '只有能量達到或超過活化能、且碰撞取向適當的碰撞才是有效碰撞', '催化劑是靠提高活化能來加快反應', '升高溫度會增加具有足夠能量的分子比例，使有效碰撞次數增多'],
+    ans: ['A', 'C', 'E'],
+    hint: '正確：碰撞前提、有效碰撞雙條件、升溫增有效碰撞；錯誤：每撞必反應、催化劑「提高」活化能。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>逐項用碰撞學說檢驗。碰撞是反應的「前提」，但要「有效」才算數。</div></div><div class="as-f">有效碰撞 ＝ 能量 ≥ 活化能　＋　取向正確</div><div class="as-step"><div class="as-n">2</div><div>判：(A) 碰撞是必要前提✓；(B) 大多數碰撞能量不足或方向不對，不會反應✗；(C) 有效碰撞雙條件的正確敘述✓；(D) 催化劑是「降低」活化能，不是提高✗；(E) 升溫使高能分子比例上升、有效碰撞增多✓。</div></div><div class="as-f">正確：A、C、E　｜　錯誤：B（每撞必反應）、D（催化劑降 Ea）</div><div class="as-warn">⚠ 最容易錯的是 (D)：催化劑「降低」活化能；寫成提高就是常見陷阱。</div><div class="as-ans">答：(A)、(C)、(E)</div></div>'
+  },
+  // 14. 由速率定律預測濃度倍率（single, ans D）
+  {
+    q: '已知某反應速率定律為 速率 ＝ k[A]²[B]。在其他條件不變下，若將 [A] 變為原來的 2 倍、[B] 維持不變，則反應速率變為原來的幾倍？',
+    opts: ['2 倍', '3 倍', '6 倍', '4 倍'],
+    ans: 'D',
+    hint: '只有 [A] 改變，代入指數：新速率倍數 ＝ (A 倍數)^(A 的級數)。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>寫出改變前後的速率並相除，只有 [A] 變、[B] 與 k 不變。</div></div><div class="as-f">速率倍數 ＝ (2[A])²[B] ÷ ([A]²[B]) ＝ 2²</div><div class="as-step"><div class="as-n">2</div><div>對 A 是二級，[A] 變 2 倍，速率就變 2² 倍。</div></div><div class="as-f">速率倍數 ＝ 2² ＝ 4 倍</div><div class="as-warn">⚠ [A] 的指數是 2，倍率要「平方」；直接寫 2 倍是漏看了二級。</div><div class="as-ans">答：(D) 4 倍</div></div>'
+  }
+];
+
+// ── ch04_adv.js ──
+var CHEM_ADV_G1_CH04 = [
+  {
+    type:'open',
+    q:`【進階實戰】反應 2A ＋ B → 產物，於同溫下量得三組初速率數據：
+實驗①[A]＝0.10 M、[B]＝0.10 M，初速率＝2.0×10⁻³ M/s；
+實驗②[A]＝0.20 M、[B]＝0.10 M，初速率＝8.0×10⁻³ M/s；
+實驗③[A]＝0.10 M、[B]＝0.20 M，初速率＝4.0×10⁻³ M/s。
+試求：(1) 對 A、對 B 的反應級數 (2) 總級數 (3) 速率常數 k（含單位）(4) 寫出速率定律，並預測 [A]＝0.30 M、[B]＝0.30 M 時的初速率。`,
+    ans:`(1) 對 A 為 2 級、對 B 為 1 級　(2) 總級數 3　(3) k ＝ 2.0 M⁻²·s⁻¹　(4) 速率 ＝ k[A]²[B]，初速率 ＝ 5.4×10⁻² M/s`,
+    hint:`用「初速率比較法」：固定一物濃度、看另一物加倍時速率變幾倍。速率變 2ⁿ 倍即級數 n。求 k 用任一組數據代回，單位由總級數決定。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>比較①②：[B] 不變，[A] 由 0.10 加倍到 0.20，速率由 2.0×10⁻³ 變 8.0×10⁻³（4 倍）。速率變 2ᵐ＝4，故 m＝2。</div></div><div class="as-f">rate ∝ [A]ᵐ　；　2ᵐ ＝ 4　→　m ＝ 2</div><div class="as-step"><div class="as-n">2</div><div>比較①③：[A] 不變，[B] 加倍，速率由 2.0×10⁻³ 變 4.0×10⁻³（2 倍）。2ⁿ＝2，故 n＝1。總級數＝2＋1＝3。</div></div><div class="as-f">速率定律 ＝ k[A]²[B]　；　總級數 ＝ 3</div><div class="as-step"><div class="as-n">3</div><div>代入①求 k：k＝速率÷([A]²[B])。</div></div><div class="as-f">k ＝ 2.0×10⁻³ ÷ (0.10² × 0.10) ＝ 2.0×10⁻³ ÷ 0.001 ＝ 2.0</div><div class="as-f">單位：k ＝ (M/s) ÷ M³ ＝ M⁻²·s⁻¹　→　k ＝ 2.0 M⁻²·s⁻¹</div><div class="as-step"><div class="as-n">4</div><div>驗算②：2.0×(0.20)²×0.10 ＝ 2.0×0.04×0.10 ＝ 8.0×10⁻³ ✓，與數據一致。再代 [A]＝[B]＝0.30。</div></div><div class="as-f">速率 ＝ 2.0×(0.30)²×0.30 ＝ 2.0×0.09×0.30 ＝ 0.054 ＝ 5.4×10⁻² M/s</div><div class="as-warn">⚠ 反應級數由「實驗初速率」定，不能直接抄化學計量係數 2A 而寫成 2 級；係數與級數是兩回事。k 的單位隨總級數改變，別漏寫。</div><div class="as-ans">答：(1) A 為 2 級、B 為 1 級　(2) 總級數 3　(3) k ＝ 2.0 M⁻²·s⁻¹　(4) 速率 ＝ k[A]²[B]，預測初速率 ＝ 5.4×10⁻² M/s</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】某反應在此溫度範圍內符合經驗規則「溫度每升高 10°C，反應速率約變為原來的 2 倍」。(1) 若溫度由 20°C 升到 50°C，反應速率約變為原來的幾倍？ (2) 若在 20°C 時此反應需 40 分鐘完成，升到 50°C 後約需多少分鐘？ (3) 用碰撞學說解釋：為何升高溫度能加快反應速率？`,
+    ans:`(1) 約 8 倍　(2) 約 5 分鐘　(3) 升溫使分子平均動能增大，能量達到活化能的「有效碰撞」比例大增（碰撞頻率也略增），故速率加快`,
+    hint:`先算升溫幾個「10°C」→倍率＝2^(級數)。所需時間與速率成反比，速率變 k 倍則時間變 1/k。第 3 問扣「有效碰撞／活化能」關鍵。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>由 20°C 到 50°C 共升高 30°C，等於 3 個「10°C」階段，每階段速率變 2 倍。</div></div><div class="as-f">倍率 ＝ 2³ ＝ 8　（速率變為原來 8 倍）</div><div class="as-step"><div class="as-n">2</div><div>完成同一反應所需時間與反應速率成反比：速率變 8 倍，時間變為 1/8。</div></div><div class="as-f">時間 ＝ 40 ÷ 8 ＝ 5 分鐘</div><div class="as-step"><div class="as-n">3</div><div>碰撞學說：分子要發生反應，須以足夠能量（≥ 活化能）且方向正確地碰撞（有效碰撞）。</div></div><div class="as-f">升溫 → 分子動能↑ → 能量 ≥ Eₐ 的分子比例大幅增加 → 有效碰撞增多</div><div class="as-warn">⚠ 升溫加速的「主因」是「達到活化能的分子比例上升」，而非只是碰撞變頻繁；只寫「碰撞變多」會被扣關鍵分。此經驗規則只在一定溫域近似成立，不可無限外推。</div><div class="as-ans">答：(1) 約 8 倍　(2) 約 5 分鐘　(3) 升溫使更多分子的能量超過活化能，有效碰撞比例大增，故速率加快。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】某反應由下列兩步驟機構進行：
+步驟一（慢）：NO₂ ＋ NO₂ → NO₃ ＋ NO
+步驟二（快）：NO₃ ＋ CO → NO₂ ＋ CO₂
+(1) 寫出總反應方程式 (2) 由速率決定步驟寫出速率定律 (3) 指出此反應的總級數 (4) 說明為何 CO 未出現在速率定律中。`,
+    ans:`(1) NO₂ ＋ CO → NO ＋ CO₂　(2) 速率 ＝ k[NO₂]²　(3) 總級數 2　(4) CO 只參與慢步驟「之後」的快步驟，不影響最慢的決速步，故不進入速率定律`,
+    hint:`總反應＝兩步驟相加後消去中間產物（NO₃ 與一個 NO₂）。速率定律只看「最慢」的速率決定步驟，用其反應物濃度（含係數當次方）。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>兩步驟相加，消去只在中間出現的 NO₃，以及兩邊各出現一次的 NO₂。</div></div><div class="as-f">相加：2NO₂ ＋ NO₃ ＋ CO → NO₃ ＋ NO ＋ NO₂ ＋ CO₂</div><div class="as-f">消去 NO₃ 與一個 NO₂　→　總反應：NO₂ ＋ CO → NO ＋ CO₂</div><div class="as-step"><div class="as-n">2</div><div>整體速率由「最慢」的步驟一決定。步驟一為 NO₂＋NO₂，兩個 NO₂ 參與。</div></div><div class="as-f">速率 ＝ k[NO₂]²</div><div class="as-step"><div class="as-n">3</div><div>速率定律各濃度次方相加得總級數。</div></div><div class="as-f">總級數 ＝ 2</div><div class="as-step"><div class="as-n">4</div><div>CO 只在步驟二（快步驟）才登場，發生在決速步之後；決速步的快慢不受 CO 濃度影響。</div></div><div class="as-warn">⚠ 速率定律「看機構的慢步驟」，不是看總反應係數。若逕由總反應 NO₂＋CO 寫成 k[NO₂][CO] 就錯了；CO 不進速率定律。</div><div class="as-note">補充：中間產物（如 NO₃）與決速步之後才出現的反應物，通常不會出現在速率定律中。</div><div class="as-ans">答：(1) NO₂ ＋ CO → NO ＋ CO₂　(2) 速率 ＝ k[NO₂]²　(3) 2 級　(4) CO 屬決速步之後的快步驟，不影響最慢步驟，故不入速率定律。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】如圖為某反應的能量變化圖，已標示反應物、活化複體（過渡狀態）與生成物的能量（單位 kJ）。試求：(1) 正反應的活化能 Eₐ(正) (2) 逆反應的活化能 Eₐ(逆) (3) 反應熱 ΔH，並判斷吸熱或放熱 (4) 若加入催化劑，Eₐ 與 ΔH 分別如何改變？`,
+    ans:`(1) Eₐ(正) ＝ 90 kJ　(2) Eₐ(逆) ＝ 60 kJ　(3) ΔH ＝ ＋30 kJ（吸熱）　(4) 催化劑降低 Eₐ（正、逆皆降），ΔH 不變`,
+    hint:`Eₐ(正)＝峰高－反應物；Eₐ(逆)＝峰高－生成物；ΔH＝生成物－反應物（也等於 Eₐ正－Eₐ逆）。催化劑只改路徑高度，不改起點與終點。`,
+    fig:`<svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="20" x2="40" y2="185" stroke="var(--ink3)"/><line x1="40" y1="185" x2="365" y2="185" stroke="var(--ink3)"/><text x="14" y="105" font-size="11" fill="var(--ink3)" transform="rotate(-90 14 105)">能量(kJ)</text><text x="250" y="203" font-size="11" fill="var(--ink3)">反應進程</text><polyline points="55,144 100,144 140,95 175,41 210,66 250,110 320,110" fill="none" stroke="var(--accent)" stroke-width="2"/><line x1="55" y1="144" x2="120" y2="144" stroke="var(--gold)" stroke-dasharray="3 3"/><line x1="250" y1="110" x2="330" y2="110" stroke="var(--gold)" stroke-dasharray="3 3"/><line x1="120" y1="41" x2="230" y2="41" stroke="var(--gold)" stroke-dasharray="3 3"/><text x="58" y="160" font-size="11" fill="var(--ink)">反應物 40</text><text x="270" y="126" font-size="11" fill="var(--ink)">生成物 70</text><text x="120" y="35" font-size="11" fill="var(--ink)">活化複體 130</text><text x="150" y="90" font-size="15" fill="var(--red)" font-weight="bold">?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>正反應活化能＝由「反應物」爬到「活化複體峰頂」所需能量。</div></div><div class="as-f">Eₐ(正) ＝ 130 − 40 ＝ 90 kJ</div><div class="as-step"><div class="as-n">2</div><div>逆反應活化能＝由「生成物」爬到同一峰頂所需能量。</div></div><div class="as-f">Eₐ(逆) ＝ 130 − 70 ＝ 60 kJ</div><div class="as-step"><div class="as-n">3</div><div>反應熱＝生成物能量－反應物能量；正值為吸熱。也可用 Eₐ(正)−Eₐ(逆) 檢驗。</div></div><div class="as-f">ΔH ＝ 70 − 40 ＝ ＋30 kJ　（＝ 90 − 60，一致）→ 吸熱反應</div><div class="as-step"><div class="as-n">4</div><div>催化劑提供活化能較低的替代路徑，使峰頂降低，正、逆活化能同時下降；但反應物與生成物的能量不變，故 ΔH 不變。</div></div><div class="as-f">催化劑：Eₐ(正)↓、Eₐ(逆)↓　；　ΔH 不變</div><div class="as-warn">⚠ 峰頂到反應物、到生成物是「兩個不同的活化能」，別混用。催化劑改變速率但不改 ΔH，也不改變平衡位置；別誤以為催化劑能放出更多能量。</div><div class="as-note">圖中紅色「?」處即正反應活化能（峰頂與反應物的高度差）。</div><div class="as-ans">答：(1) 90 kJ　(2) 60 kJ　(3) ΔH ＝ ＋30 kJ，為吸熱　(4) 催化劑使 Eₐ（正、逆）降低，ΔH 不變。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】某反應的速率定律為 速率 ＝ k[A][B]²（A 為 1 級、B 為 2 級）。在下列各獨立情況下，反應速率各變為原來的幾倍？ (1) [A] 加倍、[B] 不變 (2) [B] 變為 3 倍、[A] 不變 (3) [A] 減半且 [B] 同時加倍 (4) 將容器體積壓縮為原來的 1/2（使所有濃度皆變 2 倍）。`,
+    ans:`(1) 2 倍　(2) 9 倍　(3) 2 倍　(4) 8 倍`,
+    hint:`速率 ∝ [A]¹[B]²。各濃度變 r 倍，該項貢獻乘上 r^(級數)。壓縮體積會使所有濃度同步變大。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>只 [A] 加倍（×2），A 為 1 級，速率乘 2¹。</div></div><div class="as-f">倍率 ＝ 2¹ ＝ 2 倍</div><div class="as-step"><div class="as-n">2</div><div>只 [B] 變 3 倍，B 為 2 級，速率乘 3²。</div></div><div class="as-f">倍率 ＝ 3² ＝ 9 倍</div><div class="as-step"><div class="as-n">3</div><div>[A]×½ 貢獻 (½)¹＝½；[B]×2 貢獻 2²＝4。兩者相乘。</div></div><div class="as-f">倍率 ＝ (½) × (2²) ＝ 0.5 × 4 ＝ 2 倍</div><div class="as-step"><div class="as-n">4</div><div>體積壓成 1/2，濃度＝莫耳數/體積，故 [A]、[B] 皆變 2 倍。代入速率定律。</div></div><div class="as-f">倍率 ＝ (2)¹ × (2)² ＝ 2 × 4 ＝ 8 倍</div><div class="as-warn">⚠ 級數是「次方」不是「係數倍數」：[B] 變 3 倍是 3²＝9 倍不是 ×3。第 4 問要記得壓縮體積讓「每一種」濃度都變 2 倍，不是只有一個。</div><div class="as-ans">答：(1) 2 倍　(2) 9 倍　(3) 2 倍　(4) 8 倍。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】合成氨反應 N₂ ＋ 3H₂ → 2NH₃ 在一密閉容器中進行。經 10 秒，[N₂] 由 1.0 M 降為 0.8 M。試求此 10 秒內：(1) N₂ 的平均消耗速率 (2) H₂ 的平均消耗速率 (3) NH₃ 的平均生成速率 (4) 以統一反應速率 rate ＝ −(1/係數)·Δ[反應物]/Δt 表示此反應的反應速率值。`,
+    ans:`(1) 0.02 M/s　(2) 0.06 M/s　(3) 0.04 M/s　(4) 反應速率 ＝ 0.02 M/s`,
+    hint:`平均速率＝濃度變化量的絕對值÷時間。各物種速率比＝化學計量係數比（N₂ : H₂ : NH₃ ＝ 1 : 3 : 2）。統一反應速率＝各物種速率÷其係數。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>N₂ 平均消耗速率＝濃度減少量÷時間。</div></div><div class="as-f">rate(N₂) ＝ (1.0 − 0.8) ÷ 10 ＝ 0.2 ÷ 10 ＝ 0.02 M/s</div><div class="as-step"><div class="as-n">2</div><div>速率比等於係數比。H₂ 係數是 N₂ 的 3 倍，消耗速率也為 3 倍。</div></div><div class="as-f">rate(H₂) ＝ 3 × 0.02 ＝ 0.06 M/s</div><div class="as-step"><div class="as-n">3</div><div>NH₃ 係數是 N₂ 的 2 倍，生成速率為 2 倍。</div></div><div class="as-f">rate(NH₃) ＝ 2 × 0.02 ＝ 0.04 M/s</div><div class="as-step"><div class="as-n">4</div><div>統一反應速率＝任一物種速率÷其係數，結果應相同。以 N₂ 為例（係數 1）。</div></div><div class="as-f">rate ＝ −(1/1)·Δ[N₂]/Δt ＝ 0.02 M/s</div><div class="as-f">檢驗：(1/2)·Δ[NH₃]/Δt ＝ 0.04 ÷ 2 ＝ 0.02 M/s ✓</div><div class="as-warn">⚠ 各物種的「個別速率」不同（因係數不同），但「統一反應速率」只有一個值：算時務必各自除以係數。消耗速率取濃度變化的絕對值，別留負號。</div><div class="as-ans">答：(1) 0.02 M/s　(2) 0.06 M/s　(3) 0.04 M/s　(4) 統一反應速率 ＝ 0.02 M/s。</div></div>`
+  }
+];
+
+// ── ch05_course.js ──
+// chem_g1_v31/ch05_course.js — 化學高二 CH05「化學平衡」課程＋4筆記卡＋7速記卡（檔A）
+var CHEM_COURSE_G1_CH05 = {
+  num: 'CH 05',
+  name: '化學平衡',
+  book: '選修化學（上）',
+  grade: '高二',
+  sub: '可逆反應與動態平衡、平衡常數 Kc／Kp、反應商 Q 與方向判斷、勒沙特列原理、ICE 表平衡計算',
+  tags: ['分科範圍', '選修', '先懂再背'],
+  sections: [
+    {
+      title: '🗣 白話導讀',
+      color: 'blue',
+      body: `<p class="c-intro">很多反應不會「一路做到底」，而是做到一半就<span class="c-def">正、逆兩個方向同時進行、速率剛好相等</span>——這就是<span class="c-def">化學平衡</span>。表面看起來反應好像停了，其實正反應和逆反應都還在跑，只是互相抵消，所以各物質的濃度不再改變。這叫<span class="c-def">動態平衡</span>。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">正反應</span>反應物 → 生成物</div><div class="c-op">⇌</div><div class="c-block o"><span class="bk-tag">逆反應</span>生成物 → 反應物</div></div>
+<p class="c-intro">這一章學三件事：① 用<span class="c-def">平衡常數 K</span> 描述平衡「偏向哪邊」；② 用<span class="c-def">反應商 Q</span> 跟 K 比大小，判斷反應會往哪走；③ 用<span class="c-def">勒沙特列原理</span>預測改變濃度、壓力、溫度後平衡怎麼移動。最後用 <span class="c-def">ICE 表</span> 把濃度算出來。</p>
+<div class="c-warn">⚠ 平衡不是「反應停了」，也不是「正逆兩邊量相等」，而是「正逆<b>速率</b>相等、濃度<b>不再變</b>」。平衡可以偏左、也可以偏右。</div>`
+    },
+    {
+      title: '⇌ 可逆反應與動態平衡',
+      color: 'green',
+      body: `<p class="c-intro">可逆反應一開始只有反應物，正反應快、逆反應為零；隨著生成物累積，正反應變慢、逆反應變快，直到兩者<span class="c-def">速率相等</span>，系統就達平衡，濃度從此不再變（但反應沒停）。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<line x1="50" y1="20" x2="50" y2="182" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="50" y1="182" x2="362" y2="182" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="14" y="26" font-size="12" fill="var(--ink3)">濃度</text>
+<text x="330" y="200" font-size="12" fill="var(--ink3)">時間</text>
+<polyline points="50,45 75,72 100,94 130,110 160,118 200,122 362,122" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<polyline points="50,178 75,150 100,128 130,108 160,95 200,88 362,88" fill="none" stroke="var(--green)" stroke-width="2.5"/>
+<line x1="200" y1="20" x2="200" y2="182" stroke="var(--ink3)" stroke-width="1.3" stroke-dasharray="4 4"/>
+<text x="206" y="34" font-size="12" fill="var(--ink)">達平衡</text>
+<text x="270" y="116" font-size="12" fill="var(--accent)">反應物</text>
+<text x="270" y="82" font-size="12" fill="var(--green)">生成物</text>
+</svg></div>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext">反應物濃度一路<b>下降</b>，生成物濃度一路<b>上升</b>，變化越來越慢。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext">過了虛線（達平衡）後，兩條線都<b>變水平</b>——濃度不再變。這裡兩邊濃度不必相等，偏右就是生成物多。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext">平衡是「動態」的：正逆反應仍在進行，只是<b>速率相等</b>，抵消掉了。</div></div>
+<div class="c-warn">⚠ 判斷是否達平衡，看「濃度是否不再變」與「正逆速率是否相等」，不要看兩邊濃度是否一樣多。</div>`
+    },
+    {
+      title: '⚖ 平衡常數 Kc 與 Kp',
+      color: 'gold',
+      body: `<p class="c-intro">達平衡時，把<span class="c-def">生成物濃度乘積 ÷ 反應物濃度乘積</span>（各自以係數為次方）算出來，會得到一個<span class="c-def">固定的數</span>——這就是濃度平衡常數 <b>Kc</b>。同一反應、同一溫度下，不管起始濃度怎麼放，達平衡時算出的 Kc 都一樣。</p>
+<div class="formula">對 aA + bB ⇌ cC + dD：Kc = [C]ᶜ[D]ᵈ ÷ [A]ᵃ[B]ᵇ</div>
+<div class="fcard"><div class="fcard-f">Kc = [生成物]^係數 ÷ [反應物]^係數（純固體、純液體不寫入）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>生成物擺分子、反應物擺分母，各自以方程式係數當次方。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>要寫平衡常數式、或已知平衡濃度求 K 時。先把方程式配平，係數就是次方。純固體（如 CaCO₃）、純液體、溶劑水不列入。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>H₂ + I₂ ⇌ 2HI，平衡時 [H₂]=0.2、[I₂]=0.2、[HI]=1.6（單位 M）→ Kc = 1.6² ÷ (0.2×0.2) = 2.56 ÷ 0.04 = 64。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① N₂ + 3H₂ ⇌ 2NH₃ 的 Kc 式子？<details><summary>看解法</summary><div class="ans">Kc = [NH₃]² ÷ ([N₂][H₂]³)，氫的次方是 3。</div></details>② CaCO₃(s) ⇌ CaO(s) + CO₂(g) 的 Kc？<details><summary>看解法</summary><div class="ans">固體不寫，Kc = [CO₂]，只剩氣體那一項。</div></details></div></div>
+<p class="c-intro">若反應物、生成物都是氣體，也可以改用<span class="c-def">分壓</span>寫平衡常數，叫 <b>Kp</b>：把上式的濃度換成各氣體的分壓即可。兩者關係為 Kp = Kc(RT)^Δn，其中 Δn＝生成物氣體莫耳數 − 反應物氣體莫耳數。</p>
+<div class="formula">Kp = Kc(RT)^Δn　（Δn = 氣體生成物係數和 − 氣體反應物係數和）</div>
+<div class="c-warn">⚠ 當 Δn = 0（兩邊氣體莫耳數相同，如 H₂ + I₂ ⇌ 2HI）時，(RT)⁰ = 1，故 Kp = Kc。K 只隨<b>溫度</b>改變；加濃度、加壓、加催化劑都不會改變 K 值。</div>`
+    },
+    {
+      title: '🧭 反應商 Q 與勒沙特列原理',
+      color: 'blue',
+      body: `<p class="c-intro">把<span class="c-def">當下（未必平衡）</span>的濃度代進 K 的式子，算出來的值叫<span class="c-def">反應商 Q</span>。把 Q 跟 K 比大小，就知道反應會往哪個方向走，好讓 Q 追上 K。</p>
+<div class="fcard"><div class="fcard-f">Q &lt; K → 正向（生成物增）；Q = K → 已平衡；Q &gt; K → 逆向（反應物增）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>Q 太小就往右補生成物、Q 太大就往左補反應物，追到 Q 等於 K 就停。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>題目給一組「現在的濃度」問「反應往哪走」，或問「是否已達平衡」時。Q 和 K 用同一條式子，差別只在 Q 用當下濃度、K 用平衡濃度。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>H₂ + I₂ ⇌ 2HI（K = 64）。若當下 [H₂]=[I₂]=[HI]=1 M，Q = 1² ÷ (1×1) = 1。因為 1 小於 64（Q &lt; K），反應往<b>正向</b>走、生成更多 HI。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 同反應若 Q 算出 100，往哪走？<details><summary>看解法</summary><div class="ans">100 大於 64（Q &gt; K），往逆向走、消耗 HI。</div></details>② Q 剛好等於 64？<details><summary>看解法</summary><div class="ans">Q = K，系統已達平衡，淨反應為零。</div></details></div></div>
+<p class="c-intro"><span class="c-def">勒沙特列原理</span>：對平衡系統施加改變（加濃度、改壓力、變溫度），平衡會<span class="c-def">往「抵消這個改變」的方向移動</span>。以放熱反應 N₂ + 3H₂ ⇌ 2NH₃（正向放熱）為例：</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arQ" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker></defs>
+<rect x="26" y="86" width="116" height="46" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="84" y="106" text-anchor="middle" font-size="13" fill="var(--ink)">N₂ + 3H₂</text>
+<text x="84" y="123" text-anchor="middle" font-size="11" fill="var(--ink3)">4 mol 氣體</text>
+<text x="177" y="115" text-anchor="middle" font-size="22" fill="var(--ink)">⇌</text>
+<rect x="212" y="86" width="116" height="46" rx="9" fill="var(--accent)" stroke="var(--accent)"/>
+<text x="270" y="106" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">2NH₃</text>
+<text x="270" y="123" text-anchor="middle" font-size="11" fill="#fff">2 mol 氣體</text>
+<line x1="96" y1="52" x2="258" y2="52" stroke="var(--green)" stroke-width="2" marker-end="url(#arQ)"/>
+<text x="177" y="42" text-anchor="middle" font-size="12" fill="var(--green)">加壓 / 加 N₂ → 移向右</text>
+<line x1="258" y1="170" x2="96" y2="170" stroke="var(--accent)" stroke-width="2" marker-end="url(#arQ)"/>
+<text x="177" y="190" text-anchor="middle" font-size="12" fill="var(--accent)">升溫（放熱）→ 移向左</text>
+</svg></div>
+<div class="c-stepline"><div class="c-stepnum">濃度</div><div class="c-steptext">加反應物（N₂）→ 往右消耗它；移走生成物（NH₃）→ 也往右補回。</div></div>
+<div class="c-stepline"><div class="c-stepnum">壓力</div><div class="c-steptext">加壓（縮小體積）→ 往<b>氣體莫耳數較少</b>的一邊移（此例 4→2，往右）。兩邊氣體莫耳數相等則加壓不移動。</div></div>
+<div class="c-stepline"><div class="c-stepnum">溫度</div><div class="c-steptext">升溫 → 往<b>吸熱</b>方向移（放熱反應的逆向，往左，NH₃ 變少，K 變小）。只有溫度會改變 K。</div></div>
+<div class="fcard"><div class="fcard-f">加壓 → 往氣體莫耳數少的一邊移（兩邊相等則不移動）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>擠壓系統，平衡就躲到「氣體分子比較少」的那一邊來減壓。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>改變壓力（縮放體積）問移動方向時。先數兩邊<b>氣體</b>係數和，往少的一邊移；只出現在固液的物種不算。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>N₂ + 3H₂ ⇌ 2NH₃：左 4 mol 氣體、右 2 mol 氣體。加壓 → 往右（NH₃ 增）。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① H₂ + I₂ ⇌ 2HI 加壓怎麼移？<details><summary>看解法</summary><div class="ans">兩邊都 2 mol 氣體（Δn=0），加壓<b>不移動</b>。</div></details>② 想讓 N₂O₄ ⇌ 2NO₂ 多生成 NO₂ 該加壓還減壓？<details><summary>看解法</summary><div class="ans">右邊 2 mol 比左邊 1 mol 多，減壓（增大體積）往右，得到更多 NO₂。</div></details></div></div>
+<div class="c-warn">⚠ <b>催化劑不移動平衡</b>：它讓正、逆反應同倍加速，只是「更快達到」同一個平衡，不改變 K，也不改變各物質最終濃度。</div>`
+    },
+    {
+      title: '✏️ 練習問題',
+      color: 'green',
+      body: `<div class="c-practice"><b>練習 1：</b>H₂ + I₂ ⇌ 2HI（Kc = 64）。將 1.0 M 的 H₂ 與 1.0 M 的 I₂ 放入 1 L 容器，求平衡時 [HI]。<details><summary>看解答</summary>設反應掉 x：ICE 得 [H₂]=[I₂]=1−x、[HI]=2x。Kc = (2x)² ÷ (1−x)² = 64，兩邊開根號：2x ÷ (1−x) = 8 → 2x = 8 − 8x → 10x = 8 → x = 0.8。故 [HI] = 2×0.8 = 1.6 M，[H₂]=[I₂]=0.2 M（驗算 1.6²/0.04 = 64 ✓）。</details></div>
+<div class="c-practice"><b>練習 2：</b>PCl₅ ⇌ PCl₃ + Cl₂（Kc = 0.5）。起始只放 1.0 M 的 PCl₅，求平衡時各濃度。<details><summary>看解答</summary>設解離 x：[PCl₅]=1−x、[PCl₃]=[Cl₂]=x。Kc = x·x ÷ (1−x) = 0.5 → x² = 0.5 − 0.5x → 2x² + x − 1 = 0 → (2x−1)(x+1)=0 → x = 0.5。故三者皆 0.5 M（驗算 0.5×0.5/0.5 = 0.5 ✓）。</details></div>
+<div class="c-practice"><b>練習 3：</b>對放熱反應 N₂ + 3H₂ ⇌ 2NH₃（正向放熱），要提高 NH₃ 的產率，應該升溫還是降溫？加壓還是減壓？<details><summary>看解答</summary>降溫（放熱反應降溫使平衡往正向、放熱方向移）＋加壓（往氣體莫耳數少的右邊移，4 mol → 2 mol）。工業上另加催化劑只是加速達平衡，不提高產率。</details></div>`
+    }
+  ]
+};
+
+var CHEM_NOTES_G1_CH05 = [
+  {
+    title: '一張圖看懂動態平衡',
+    tag: '核心概念',
+    tagClass: 'blue',
+    open: true,
+    body: `<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<line x1="50" y1="20" x2="50" y2="182" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="50" y1="182" x2="362" y2="182" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="14" y="26" font-size="12" fill="var(--ink3)">濃度</text>
+<text x="330" y="200" font-size="12" fill="var(--ink3)">時間</text>
+<polyline points="50,45 75,72 100,94 130,110 160,118 200,122 362,122" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<polyline points="50,178 75,150 100,128 130,108 160,95 200,88 362,88" fill="none" stroke="var(--green)" stroke-width="2.5"/>
+<line x1="200" y1="20" x2="200" y2="182" stroke="var(--ink3)" stroke-width="1.3" stroke-dasharray="4 4"/>
+<text x="206" y="34" font-size="12" fill="var(--ink)">達平衡</text>
+<text x="268" y="116" font-size="12" fill="var(--accent)">反應物</text>
+<text x="268" y="82" font-size="12" fill="var(--green)">生成物</text>
+</svg></div>
+<p class="c-intro">虛線右邊兩條線都變水平＝<span class="c-def">達平衡</span>：反應物降到定值、生成物升到定值，濃度不再變。此時<b>正逆反應速率相等</b>，反應沒停，只是抵消。兩邊濃度不必相等，偏右就是生成物多（K 較大）。</p>
+<div class="formula">達平衡：正反應速率 = 逆反應速率，各物濃度不再變（K 才固定）</div>`
+  },
+  {
+    title: '平衡常數 Kc 怎麼寫',
+    tag: '核心概念',
+    tagClass: 'green',
+    open: false,
+    body: `<div class="formula">aA + bB ⇌ cC + dD　→　Kc = [C]ᶜ[D]ᵈ ÷ [A]ᵃ[B]ᵇ</div>
+<p class="c-intro"><b>生成物在上、反應物在下</b>，各以方程式係數當次方。純固體、純液體、溶劑水<b>不列入</b>。K 只隨<b>溫度</b>改變，加濃度／加壓／加催化劑都不改變 K。</p>
+<p class="c-intro">氣體反應可改用分壓寫成 <span class="c-def">Kp</span>：Kp = Kc(RT)^Δn，Δn 為兩邊氣體莫耳數差。當 Δn = 0 時 Kp = Kc。</p>`
+  },
+  {
+    title: '勒沙特列原理速記',
+    tag: '觀念釐清',
+    tagClass: 'gold',
+    open: false,
+    body: `<div class="c-blocks"><div class="c-block"><span class="bk-tag">加反應物</span>移向右</div><div class="c-op">·</div><div class="c-block o"><span class="bk-tag">加壓</span>移向氣體少側</div><div class="c-op">·</div><div class="c-block"><span class="bk-tag">升溫</span>移向吸熱側</div></div>
+<p class="c-intro">一句話：施加什麼改變，平衡就往<b>抵消該改變</b>的方向移。加濃度往消耗它的一邊；加壓往氣體莫耳數少的一邊（兩邊相等則不動）；升溫往吸熱方向（放熱反應升溫使 K 變小）。</p>
+<p class="c-intro"><span class="c-def">催化劑不移動平衡</span>：正逆同倍加速，只是更快達到同一平衡，不改變 K、不改變最終濃度。</p>`
+  },
+  {
+    title: '必背公式卡（K、Q、Kp）',
+    tag: '必背公式',
+    tagClass: 'red',
+    open: false,
+    body: `<div class="fcard"><div class="fcard-f">Kc = [生成物]^係數 ÷ [反應物]^係數；比較 Q 與 K 判方向</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>K 用平衡濃度、Q 用當下濃度，同一條式子；Q 比 K 小就往右、大就往左。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>寫平衡常數、求 K、或判斷反應方向與是否達平衡。純固體純液體不入式；Kp = Kc(RT)^Δn。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>H₂ + I₂ ⇌ 2HI，平衡 [HI]=1.6、[H₂]=[I₂]=0.2 → K = 1.6²/(0.2×0.2) = 64。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 當下 [H₂]=[I₂]=[HI]=1，往哪走？<details><summary>看解法</summary><div class="ans">Q = 1²/(1×1)=1，1 小於 64（Q &lt; K），往正向生成 HI。</div></details>② Δn=0 時 Kp 與 Kc 關係？<details><summary>看解法</summary><div class="ans">(RT)⁰=1，故 Kp = Kc。</div></details></div></div></div>
+<div class="formula">Q &lt; K 正向　·　Q = K 平衡　·　Q &gt; K 逆向　（K 只隨溫度變）</div>`
+  }
+];
+
+var CHEM_CARDS_G1_CH05 = [
+  { q: '什麼是動態平衡？有什麼特徵？', a: '可逆反應中，正反應速率 = 逆反應速率的狀態。\n各物質濃度不再改變，但反應沒停（正逆仍在進行、互相抵消）。\n兩邊濃度不必相等。' },
+  { q: '平衡常數 Kc 怎麼寫？', a: '對 aA + bB ⇌ cC + dD：\nKc = [C]ᶜ[D]ᵈ ÷ [A]ᵃ[B]ᵇ。\n生成物在上、反應物在下，各以係數為次方。' },
+  { q: '哪些東西不寫進平衡常數式？', a: '純固體、純液體、（稀溶液的）溶劑水都不列入。\n例：CaCO₃(s) ⇌ CaO(s) + CO₂(g)，Kc = [CO₂] 只剩氣體項。' },
+  { q: '反應商 Q 和 K 比較能判斷什麼？', a: 'Q 用「當下濃度」代入 K 的式子。\nQ 小於 K → 往正向（生成物增）\nQ = K → 已平衡\nQ 大於 K → 往逆向（反應物增）。' },
+  { q: '勒沙特列原理一句話？', a: '對平衡施加改變，平衡往「抵消該改變」的方向移動。\n加濃度→往消耗它那邊；加壓→往氣體莫耳數少那邊；升溫→往吸熱方向。' },
+  { q: '升溫對放熱反應的平衡有何影響？', a: '正向放熱→升溫往吸熱的逆向移動。\n生成物減少、K 值變小。\n只有溫度會改變 K。' },
+  { q: '催化劑對化學平衡的影響？', a: '不移動平衡、不改變 K、不改變最終濃度。\n只是讓正逆反應同倍加速，更快達到同一個平衡。' }
+];
+
+// ── ch05_basic.js ──
+var CHEM_BASIC_G1_CH05 = [
+  // 1. Kc 表示式（single, ans A）
+  {
+    q: '合成氨反應 N₂(g) ＋ 3H₂(g) ⇌ 2NH₃(g)，其平衡常數 Kc 的表示式為何？',
+    opts: ['[NH₃]² ÷ ([N₂][H₂]³)', '[N₂][H₂]³ ÷ [NH₃]²', '2[NH₃] ÷ ([N₂] ＋ 3[H₂])', '[NH₃] ÷ ([N₂][H₂])'],
+    ans: 'A',
+    hint: 'Kc ＝ 生成物濃度乘積 ÷ 反應物濃度乘積，各濃度的次方＝該物種在平衡式的係數。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>平衡常數 Kc 定義：生成物濃度連乘（分子）除以反應物濃度連乘（分母），每一項的指數就是平衡式係數。</div></div><div class="as-f">Kc ＝ [生成物]^係數 ÷ [反應物]^係數</div><div class="as-step"><div class="as-n">2</div><div>生成物 NH₃ 係數 2，反應物 N₂ 係數 1、H₂ 係數 3，逐一代入。</div></div><div class="as-f">Kc ＝ [NH₃]² ÷ ([N₂]¹[H₂]³)</div><div class="as-warn">⚠ 係數要放到「指數」不是乘在濃度前面；寫成 2[NH₃] 是常見錯誤。</div><div class="as-ans">答：(A) [NH₃]² ÷ ([N₂][H₂]³)</div></div>'
+  },
+  // 2. 非勻相平衡：純固體不入式（single, ans C）
+  {
+    q: '碳酸鈣受熱分解 CaCO₃(s) ⇌ CaO(s) ＋ CO₂(g)，其平衡常數 Kc 的表示式為何？',
+    opts: ['[CaO][CO₂] ÷ [CaCO₃]', '[CaCO₃] ÷ [CO₂]', '[CO₂]', '[CaO][CO₂]'],
+    ans: 'C',
+    hint: '純固體、純液體濃度視為定值，不列入平衡常數式，只留下氣體（或水溶液）項。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>非勻相平衡中，純固體與純液體的「濃度」不變，被併入常數，故不寫進 Kc。</div></div><div class="as-f">純固體 CaCO₃、CaO 不入式；只剩氣體 CO₂</div><div class="as-step"><div class="as-n">2</div><div>本反應只有 CO₂ 是氣體，且它在生成物側，故 Kc ＝ [CO₂]。</div></div><div class="as-f">Kc ＝ [CO₂]</div><div class="as-warn">⚠ 不要把 CaCO₃、CaO 這兩個純固體寫進去；它們的量多寡不影響 Kc。</div><div class="as-ans">答：(C) [CO₂]</div></div>'
+  },
+  // 3. 由平衡濃度算 Kc（single, ans B）
+  {
+    q: '在某溫度下，反應 H₂(g) ＋ I₂(g) ⇌ 2HI(g) 達平衡時，[H₂]＝0.2 M、[I₂]＝0.2 M、[HI]＝1.6 M。則此溫度的 Kc 為何？',
+    opts: ['16', '64', '32', '128'],
+    ans: 'B',
+    hint: 'Kc ＝ [HI]² ÷ ([H₂][I₂])，直接代入平衡濃度。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>寫出 Kc 式：生成物 HI 係數 2 放指數，反應物各 1 次方。</div></div><div class="as-f">Kc ＝ [HI]² ÷ ([H₂][I₂])</div><div class="as-step"><div class="as-n">2</div><div>代入平衡濃度：分子 (1.6)² ＝ 2.56；分母 0.2 × 0.2 ＝ 0.04。</div></div><div class="as-f">Kc ＝ 2.56 ÷ 0.04 ＝ 64</div><div class="as-warn">⚠ HI 濃度要「先平方」再除；先除再平方會算成不同數值。</div><div class="as-ans">答：(B) 64</div></div>'
+  },
+  // 4. 由平衡濃度算 Kc（single, ans D）
+  {
+    q: '在某溫度下，反應 N₂O₄(g) ⇌ 2NO₂(g) 達平衡時，[N₂O₄]＝0.1 M、[NO₂]＝0.2 M。則此溫度的 Kc 為何？',
+    opts: ['4', '0.04', '0.2', '0.4'],
+    ans: 'D',
+    hint: 'Kc ＝ [NO₂]² ÷ [N₂O₄]。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>生成物 NO₂ 係數 2 放指數，反應物 N₂O₄ 係數 1。</div></div><div class="as-f">Kc ＝ [NO₂]² ÷ [N₂O₄]</div><div class="as-step"><div class="as-n">2</div><div>代入：分子 (0.2)² ＝ 0.04；除以 0.1。</div></div><div class="as-f">Kc ＝ 0.04 ÷ 0.1 ＝ 0.4</div><div class="as-warn">⚠ 別漏掉 NO₂ 的平方；直接用 0.2÷0.1 ＝ 2 是錯的。</div><div class="as-ans">答：(D) 0.4</div></div>'
+  },
+  // 5. Kp 表示式（single, ans A）
+  {
+    q: '反應 2NO(g) ＋ O₂(g) ⇌ 2NO₂(g)，若以各氣體「分壓」表示平衡常數 Kp，則 Kp 為何？',
+    opts: ['P(NO₂)² ÷ (P(NO)² · P(O₂))', 'P(NO)² · P(O₂) ÷ P(NO₂)²', 'P(NO₂) ÷ (P(NO) · P(O₂))', 'P(NO₂)² ÷ (P(NO) · P(O₂))'],
+    ans: 'A',
+    hint: 'Kp 與 Kc 形式相同，只是把濃度換成分壓 P，指數仍是平衡式係數。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>Kp 的寫法與 Kc 一模一樣，只是每一項改用分壓，指數仍為係數。</div></div><div class="as-f">Kp ＝ P(生成物)^係數 ÷ P(反應物)^係數</div><div class="as-step"><div class="as-n">2</div><div>生成物 NO₂ 係數 2；反應物 NO 係數 2、O₂ 係數 1。</div></div><div class="as-f">Kp ＝ P(NO₂)² ÷ (P(NO)² · P(O₂))</div><div class="as-warn">⚠ O₂ 係數是 1，分母只放一次方；NO 才是平方，別把兩者搞混。</div><div class="as-ans">答：(A) P(NO₂)² ÷ (P(NO)² · P(O₂))</div></div>'
+  },
+  // 6. Q vs K 判方向（single, ans C）＋ 反應商流程 SVG
+  {
+    q: '已知反應 H₂(g) ＋ I₂(g) ⇌ 2HI(g) 在某溫度的 Kc＝64。某時刻測得 [H₂]＝[I₂]＝[HI]＝1 M。此時反應商 Q 為何？反應將往哪個方向進行？',
+    opts: ['Q＝1，Q&gt;K，向左（逆反應）', 'Q＝64，已達平衡', 'Q＝1，Q&lt;K，向右（正反應）', 'Q＝1，Q&lt;K，向左（逆反應）'],
+    ans: 'C',
+    hint: '反應商 Q 用「當下濃度」代入 K 式；比較 Q 與 K：Q 小於 K 向右、Q 大於 K 向左、相等則平衡。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>Q 的算法與 K 相同，但代入的是「當下」濃度（未必平衡）。</div></div><div class="as-f">Q ＝ [HI]² ÷ ([H₂][I₂]) ＝ 1² ÷ (1 × 1) ＝ 1</div><svg viewBox="0 0 380 78" xmlns="http://www.w3.org/2000/svg"><line x1="24" y1="40" x2="356" y2="40" stroke="var(--ink3)"/><circle cx="80" cy="40" r="6" fill="var(--accent)"/><text x="80" y="24" font-size="11" text-anchor="middle" fill="var(--ink)">Q＝1</text><circle cx="300" cy="40" r="6" fill="var(--gold)"/><text x="300" y="24" font-size="11" text-anchor="middle" fill="var(--ink)">K＝64</text><polygon points="150,40 138,34 138,46" fill="var(--green)"/><text x="185" y="62" font-size="11" text-anchor="middle" fill="var(--green)">向右（正反應）</text></svg><div class="as-note">Q（1）在數線上小於 K（64），系統要增加生成物才能追上 K，故往右進行。</div><div class="as-step"><div class="as-n">2</div><div>比較：Q＝1 小於 K＝64，生成物不足，反應向右（正反應）增加 HI 以達平衡。</div></div><div class="as-f">Q ＝ 1 &lt; K ＝ 64 → 向右</div><div class="as-warn">⚠ 記法：Q 太「小」表示生成物太少，要往生成物（右）跑；別把方向記反。</div><div class="as-ans">答：(C) Q＝1，Q&lt;K，向右（正反應）</div></div>'
+  },
+  // 7. 勒沙特列：溫度（放熱升溫）（single, ans D）
+  {
+    q: '放熱反應 2SO₂(g) ＋ O₂(g) ⇌ 2SO₃(g)（ΔH &lt; 0）已達平衡。若升高溫度，平衡如何移動？平衡常數 K 如何變化？',
+    opts: ['向右移動，K 變大', '向右移動，K 不變', '不移動，K 不變', '向左移動，K 變小'],
+    ans: 'D',
+    hint: '把「熱」看成一項：放熱反應可寫成 反應物 ⇌ 生成物 ＋ 熱。升溫＝加入熱，平衡往吸熱方向（逆向）移。溫度是唯一會改變 K 的因素。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>放熱反應可視為：反應物 ⇌ 生成物 ＋ 熱。升溫等於在生成物側「加熱」。</div></div><div class="as-f">2SO₂ ＋ O₂ ⇌ 2SO₃ ＋ 熱（放熱）</div><div class="as-step"><div class="as-n">2</div><div>由勒沙特列，系統要抵銷多出的熱，往吸熱方向（逆向、向左）移動，SO₃ 減少。</div></div><div class="as-f">升溫 → 向左（逆向、吸熱方向）</div><div class="as-step"><div class="as-n">3</div><div>溫度是唯一改變 K 的因素；放熱反應升溫使生成物變少，故 K 變小。</div></div><div class="as-f">放熱反應升溫 → K 變小</div><div class="as-warn">⚠ 只有「溫度」會改變 K；改濃度、壓力只移動平衡位置，K 不變。</div><div class="as-ans">答：(D) 向左移動，K 變小</div></div>'
+  },
+  // 8. 勒沙特列：壓力（single, ans B）
+  {
+    q: '反應 N₂(g) ＋ 3H₂(g) ⇌ 2NH₃(g) 已達平衡（左側共 4 莫耳氣體、右側 2 莫耳氣體）。若在定溫下縮小容器體積（加大壓力），平衡如何移動？',
+    opts: ['向氣體莫耳數較多側（左）移動', '向氣體莫耳數較少側（右）移動', '不移動', '向左移動，NH₃ 減少'],
+    ans: 'B',
+    hint: '加壓時，平衡往「氣體總莫耳數較少」的一側移動以降低壓力。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>比較兩側氣體莫耳數：左側 N₂＋3H₂ ＝ 4 莫耳，右側 2NH₃ ＝ 2 莫耳。</div></div><div class="as-f">左側 4 莫耳氣體　vs　右側 2 莫耳氣體</div><div class="as-step"><div class="as-n">2</div><div>加壓（縮小體積）時，系統要降低壓力，往氣體莫耳數較少的一側（右）移動。</div></div><div class="as-f">加壓 → 向莫耳數少側（右）→ 生成更多 NH₃</div><div class="as-warn">⚠ 只有「氣體」莫耳數才算；若兩側氣體莫耳數相等，加壓不移動平衡。</div><div class="as-ans">答：(B) 向氣體莫耳數較少側（右）移動</div></div>'
+  },
+  // 9. 勒沙特列：催化劑（single, ans C）
+  {
+    q: '對一個已達平衡的氣相反應加入催化劑，下列敘述何者正確？',
+    opts: ['平衡向右移動，生成物增加', '平衡向左移動，反應物增加', '同時加速正、逆反應，平衡位置與 K 皆不變', '平衡常數 K 變大'],
+    ans: 'C',
+    hint: '催化劑同等程度加速正、逆反應，只縮短到達平衡的時間，不改變平衡位置與 K。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>催化劑降低活化能，讓正、逆反應「同等程度」加快。</div></div><div class="as-f">催化劑：v(正) 與 v(逆) 同時加快、加快倍率相同</div><div class="as-step"><div class="as-n">2</div><div>因正逆同步加速，平衡點不變、產率不變、K 也不變，只是「更快」達平衡。</div></div><div class="as-f">平衡位置不變、K 不變、僅縮短達平衡時間</div><div class="as-warn">⚠ 催化劑不能提高產率！想提高產率要靠濃度、壓力、溫度等條件。</div><div class="as-ans">答：(C) 同時加速正、逆反應，平衡位置與 K 皆不變</div></div>'
+  },
+  // 10. K 大小的意義（single, ans A）
+  {
+    q: '在同溫下，反應甲的平衡常數 K＝1×10¹⁰，反應乙的平衡常數 K＝1×10⁻⁸。下列敘述何者正確？',
+    opts: ['甲平衡時以生成物為主（近乎完全反應）；乙以反應物為主（幾乎不反應）', '甲以反應物為主；乙以生成物為主', '兩反應皆為完全反應', 'K 越大代表反應速率越快'],
+    ans: 'A',
+    hint: 'K 很大→生成物濃度遠大於反應物（反應趨於完全）；K 很小→反應物為主。K 只描述平衡「位置」，不代表速率。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>K ＝ 生成物項 ÷ 反應物項。K 很大代表分子（生成物）遠大於分母（反應物）。</div></div><div class="as-f">K ＝ 1×10¹⁰ ≫ 1 → 生成物為主（近乎完全反應）</div><div class="as-step"><div class="as-n">2</div><div>K 很小（10⁻⁸ 遠小於 1）代表分母大，平衡偏向反應物，幾乎不反應。</div></div><div class="as-f">K ＝ 1×10⁻⁸ ≪ 1 → 反應物為主</div><div class="as-warn">⚠ K 只講平衡「位置」，與反應「快慢」無關；K 大不代表反應快。</div><div class="as-ans">答：(A) 甲以生成物為主、乙以反應物為主</div></div>'
+  },
+  // 11. 勒沙特列多重判斷（multi, ans A/B/D）
+  {
+    type: 'multi',
+    q: '【多選】放熱反應 N₂(g) ＋ 3H₂(g) ⇌ 2NH₃(g)（ΔH &lt; 0）已達平衡。下列哪些操作會使平衡「向右」移動（增加 NH₃ 產量）？',
+    opts: ['增加 N₂ 的量', '移走部分 NH₃', '升高溫度', '定溫下加壓（縮小體積）', '加入催化劑'],
+    ans: ['A', 'B', 'D'],
+    hint: '增加反應物、移走生成物、往莫耳數少側加壓都使平衡右移；放熱反應升溫會左移；催化劑不移動平衡。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>逐一用勒沙特列判斷「抵銷變化」的方向。</div></div><div class="as-f">增反應物→右；移走生成物→右</div><div class="as-step"><div class="as-n">2</div><div>(A) 加 N₂：反應物增加→向右 ✔。(B) 移走 NH₃：生成物減少→向右 ✔。(D) 加壓：右側氣體 2 莫耳少於左側 4 莫耳，往少側（右）→向右 ✔。</div></div><div class="as-f">左 4 莫耳氣 vs 右 2 莫耳氣，加壓 → 右</div><div class="as-step"><div class="as-n">3</div><div>(C) 升溫：放熱反應往吸熱方向（左）移動 ✘。(E) 催化劑：正逆同步加速，平衡不移動 ✘。</div></div><div class="as-f">升溫→左（放熱）；催化劑→不移動</div><div class="as-warn">⚠ 別把「加催化劑」當成增產手段；它只讓平衡「更快」到，產量不變。</div><div class="as-ans">答：(A) 增加 N₂、(B) 移走 NH₃、(D) 加壓</div></div>'
+  },
+  // 12. 平衡與 K/Q 綜合正誤（multi, ans A/B/D/E）
+  {
+    type: 'multi',
+    q: '【多選】下列有關化學平衡的敘述，何者正確？',
+    opts: ['當 Q &gt; K 時，反應向左（逆向）進行', '對吸熱反應而言，升高溫度會使 K 變大', '加入催化劑可提高平衡時的產率', '達平衡時，正反應速率等於逆反應速率', '平衡常數式中，純固體與純液體視為定值不列入'],
+    ans: ['A', 'B', 'D', 'E'],
+    hint: 'Q 大於 K 向左；吸熱反應升溫 K 變大；催化劑不改變產率；動態平衡時正逆速率相等；純固體純液體不入 K 式。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>(A) Q &gt; K：生成物過量，反應往回（左、逆向）消耗生成物 ✔。</div></div><div class="as-f">Q &gt; K → 向左；Q &lt; K → 向右；Q ＝ K → 平衡</div><div class="as-step"><div class="as-n">2</div><div>(B) 吸熱反應可寫成「反應物 ＋ 熱 ⇌ 生成物」，升溫使平衡右移、生成物變多，故 K 變大 ✔。(D) 平衡是動態的，正逆反應速率相等（濃度不再變）✔。(E) 純固體、純液體濃度視為定值，不入 K 式 ✔。</div></div><div class="as-f">吸熱升溫→K 大；平衡：v(正)＝v(逆)</div><div class="as-step"><div class="as-n">3</div><div>(C) 催化劑同步加速正逆反應，平衡位置與產率皆不變 ✘。</div></div><div class="as-f">催化劑：產率不變、K 不變</div><div class="as-warn">⚠ 唯一改變 K 的因素是「溫度」；催化劑與濃度、壓力都不改變 K。</div><div class="as-ans">答：(A)、(B)、(D)、(E)</div></div>'
+  },
+  // 13. ICE 求 Kc（fill, ans 0.5）
+  {
+    type: 'fill',
+    q: '【選填】在 1 L 容器中放入 1.0 mol PCl₅，加熱至某溫度達平衡：PCl₅(g) ⇌ PCl₃(g) ＋ Cl₂(g)，測得 PCl₅ 有 50% 分解。求此溫度的 Kc。（填數值）',
+    ans: '0.5',
+    acc: ['0.50', '1/2', '½'],
+    hint: '用 ICE 表：初始 1.0、變化 −0.5（分解 50%）、平衡 PCl₅＝0.5、PCl₃＝Cl₂＝0.5，代入 Kc＝[PCl₃][Cl₂]÷[PCl₅]。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>容器 1 L，濃度＝莫耳數。50% 分解表示反應掉 1.0 × 0.5 ＝ 0.5 M PCl₅。</div></div><div class="as-f">ICE：PCl₅ 1.0→0.5；PCl₃ 0→0.5；Cl₂ 0→0.5</div><div class="as-step"><div class="as-n">2</div><div>由係數 1:1:1，PCl₃、Cl₂ 各生成 0.5 M。代入平衡常數式。</div></div><div class="as-f">Kc ＝ [PCl₃][Cl₂] ÷ [PCl₅] ＝ (0.5 × 0.5) ÷ 0.5</div><div class="as-step"><div class="as-n">3</div><div>計算：0.25 ÷ 0.5 ＝ 0.5。</div></div><div class="as-f">Kc ＝ 0.25 ÷ 0.5 ＝ 0.5</div><div class="as-warn">⚠ 平衡值要用「剩下的」0.5，不是初始 1.0；分解掉的量要從反應物扣除、加到生成物。</div><div class="as-ans">答：Kc ＝ 0.5</div></div>'
+  },
+  // 14. ICE 求平衡濃度（fill, ans 1.6）
+  {
+    type: 'fill',
+    q: '【選填】某溫度下 H₂(g) ＋ I₂(g) ⇌ 2HI(g) 的 Kc＝64。今在 1 L 容器中放入 1.0 mol H₂ 與 1.0 mol I₂（無 HI）。達平衡時 HI 的濃度為多少 M？（填數值）',
+    ans: '1.6',
+    acc: ['1.60', '1.6 M'],
+    hint: '設反應掉 x：H₂＝I₂＝1−x、HI＝2x。代入 Kc＝(2x)²÷(1−x)²＝64，開根號得 2x÷(1−x)＝8 解 x。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>列 ICE：設 H₂、I₂ 各反應掉 x M，生成 HI 為 2x。</div></div><div class="as-f">平衡：H₂＝1−x、I₂＝1−x、HI＝2x</div><div class="as-step"><div class="as-n">2</div><div>代入 Kc：(2x)² ÷ [(1−x)(1−x)] ＝ 64。此式兩邊皆為完全平方，可直接開根號。</div></div><div class="as-f">(2x ÷ (1−x))² ＝ 64 → 2x ÷ (1−x) ＝ 8</div><div class="as-step"><div class="as-n">3</div><div>解方程：2x ＝ 8(1−x) ＝ 8 − 8x → 10x ＝ 8 → x ＝ 0.8。</div></div><div class="as-f">HI ＝ 2x ＝ 2 × 0.8 ＝ 1.6 M</div><div class="as-step"><div class="as-n">4</div><div>驗算：平衡 H₂＝I₂＝0.2、HI＝1.6，Kc ＝ 1.6² ÷ (0.2 × 0.2) ＝ 2.56 ÷ 0.04 ＝ 64 ✔。</div></div><div class="as-f">Kc ＝ 1.6² ÷ (0.2 × 0.2) ＝ 64（吻合）</div><div class="as-warn">⚠ HI 是「2x」不是「x」；且題目 Kc 恰為完全平方數，開根號比用公式解快很多。</div><div class="as-ans">答：[HI] ＝ 1.6 M</div></div>'
+  }
+];
+
+// ── ch05_adv.js ──
+// ch05_adv.js — 化學高二 CH05「化學平衡」6 進階實戰題（檔 C）
+var CHEM_ADV_G1_CH05 = [
+  {
+    type:'open',
+    q:`【進階實戰】將 1.0 mol CO 與 1.0 mol H₂O(g) 置於 1.0 L 密閉容器中，發生反應 CO(g) ＋ H₂O(g) ⇌ CO₂(g) ＋ H₂(g)。達平衡時測得生成 0.60 mol CO₂（如圖）。(1) 列 ICE 表求各物種平衡濃度 (2) 求此溫度下的平衡常數 Kc。`,
+    ans:`(1) CO＝H₂O＝0.40 M、CO₂＝H₂＝0.60 M　(2) Kc ＝ 2.25`,
+    hint:`容器為 1.0 L，故莫耳數即濃度。生成 0.60 mol CO₂ 代表 x＝0.60，反應物各減 0.60、產物各增 0.60。`,
+    fig:`<svg viewBox="0 0 340 76" xmlns="http://www.w3.org/2000/svg"><text x="10" y="24" font-size="13" fill="var(--ink)">CO ＋ H₂O ⇌ CO₂ ＋ H₂　（1.0 L）</text><text x="10" y="46" font-size="12" fill="var(--ink3)">初始 CO＝H₂O＝1.0 mol；平衡 CO₂＝0.60 mol</text><text x="10" y="68" font-size="13" fill="var(--red)">Kc ＝ ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>設反應進度 x。由「平衡時 CO₂＝0.60 mol」且容器 1.0 L，得 x＝0.60。列 ICE 表（濃度 M）。</div></div><div class="as-f">初始：CO 1.0、H₂O 1.0、CO₂ 0、H₂ 0<br>變化：−x、−x、＋x、＋x（x＝0.60）<br>平衡：CO 0.40、H₂O 0.40、CO₂ 0.60、H₂ 0.60</div><div class="as-step"><div class="as-n">2</div><div>代入平衡常數表示式。此反應兩邊氣體莫耳數相同（Δn＝0），Kc 為純數。</div></div><div class="as-f">Kc ＝ [CO₂][H₂] ÷ ([CO][H₂O]) ＝ (0.60×0.60) ÷ (0.40×0.40)</div><div class="as-f">Kc ＝ 0.36 ÷ 0.16 ＝ 2.25</div><div class="as-note">反代驗算：0.40×0.40×2.25 ＝ 0.36 ＝ 0.60×0.60，左右一致，Kc 正確。</div><div class="as-warn">⚠ Kc 用「平衡濃度」不是初始濃度；且產物在分子、反應物在分母，別放反。此題體積 1 L 才可莫耳數當濃度，換別的體積要先除以 V。</div><div class="as-ans">答：(1) CO＝H₂O＝0.40 M、CO₂＝H₂＝0.60 M　(2) Kc ＝ 2.25</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】五氯化磷分解反應 PCl₅(g) ⇌ PCl₃(g) ＋ Cl₂(g)，在某溫度下 Kc ＝ 0.50。今將 PCl₅ 以初始濃度 1.0 M 置入容器（PCl₃、Cl₂ 初始為 0）。試以 ICE 表列一元二次方程式，求各物種的平衡濃度。`,
+    ans:`PCl₅ ＝ 0.50 M、PCl₃ ＝ 0.50 M、Cl₂ ＝ 0.50 M（解離量 x ＝ 0.50 M）`,
+    hint:`設分解 x M。平衡：PCl₅＝1.0−x、PCl₃＝Cl₂＝x。代入 Kc＝x²/(1.0−x)＝0.50，整理成一元二次求 x，取 0 與 1.0 之間的合理根。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>設分解掉 x M 的 PCl₅，列 ICE 表。</div></div><div class="as-f">平衡：PCl₅ ＝ 1.0−x、PCl₃ ＝ x、Cl₂ ＝ x</div><div class="as-step"><div class="as-n">2</div><div>代入平衡常數表示式。</div></div><div class="as-f">Kc ＝ [PCl₃][Cl₂] ÷ [PCl₅] ＝ x·x ÷ (1.0−x) ＝ 0.50</div><div class="as-step"><div class="as-n">3</div><div>兩邊乘 (1.0−x)，整理成一元二次標準式。</div></div><div class="as-f">x² ＝ 0.50(1.0−x) ＝ 0.50 − 0.50x<br>x² ＋ 0.50x − 0.50 ＝ 0</div><div class="as-step"><div class="as-n">4</div><div>用公式解。判別式 D ＝ 0.50² − 4×1×(−0.50) ＝ 0.25 ＋ 2.0 ＝ 2.25，√D ＝ 1.5。</div></div><div class="as-f">x ＝ (−0.50 ± 1.5) ÷ 2　→　x ＝ 0.50 或 x ＝ −1.0</div><div class="as-note">反代驗算：(0.50×0.50) ÷ 0.50 ＝ 0.25 ÷ 0.50 ＝ 0.50 ＝ Kc，正確。</div><div class="as-warn">⚠ 一元二次會解出兩根，負根 x＝−1.0 代表「負濃度」無物理意義必須捨去；且 x 也不可大於初始濃度 1.0（否則 PCl₅ 變負）。只取 0 &lt; x &lt; 1.0 的根。</div><div class="as-ans">答：PCl₅ ＝ PCl₃ ＝ Cl₂ ＝ 0.50 M。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】合成氨反應 N₂(g) ＋ 3H₂(g) ⇌ 2NH₃(g)，正反應為放熱（ΔH &lt; 0）且已達平衡。試依勒沙特列原理判斷下列各獨立擾動，平衡各往哪個方向移動、NH₃ 產量如何變化：(1) 定溫下縮小容器體積（加壓）(2) 定容下升高溫度 (3) 加入催化劑 (4) 定溫定容下移走部分 NH₃。`,
+    ans:`(1) 右移，NH₃ 增多　(2) 左移，NH₃ 減少（K 變小）　(3) 不移動，NH₃ 不變（只加快達平衡）　(4) 右移，NH₃ 補回`,
+    hint:`加壓看兩邊氣體莫耳數（左 4 mol vs 右 2 mol）；升溫把「熱」當放熱反應的產物；催化劑同時加快正逆兩向；移走產物系統會補充。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>縮小體積使總壓上升，平衡移向「氣體莫耳數較少」的一方以抵抗。左邊 1＋3＝4 mol、右邊 2 mol。</div></div><div class="as-f">4 mol（左） &gt; 2 mol（右）　→　平衡右移，NH₃ 增多</div><div class="as-step"><div class="as-n">2</div><div>正反應放熱，可視為「反應物 → 產物 ＋ 熱」。升溫等於加入「熱」，平衡往吸熱方向（逆向）移動。</div></div><div class="as-f">升溫 → 左移；平衡常數 K 隨溫度升高而變小</div><div class="as-step"><div class="as-n">3</div><div>催化劑同時加快正、逆反應，Q 與 K 皆不變，平衡位置不動，只是更快達到平衡。</div></div><div class="as-f">催化劑：不移動，NH₃ 平衡量不變</div><div class="as-step"><div class="as-n">4</div><div>移走產物 NH₃ 使 Q 瞬間變小（Q &lt; K），系統正向進行以補充產物。</div></div><div class="as-f">移走 NH₃ → Q &lt; K → 右移補回</div><div class="as-warn">⚠ 三個易錯點：①催化劑不會改變平衡位置或 K，只改變速率；②只有「溫度」會改變 K 值，濃度與壓力改變的是平衡「位置」而非 K；③加壓判斷要比兩邊氣體莫耳數，固體/液體不計。</div><div class="as-ans">答：(1) 右移增多　(2) 左移減少（K 變小）　(3) 不移動　(4) 右移補回。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】二氧化硫氧化反應 2SO₂(g) ＋ O₂(g) ⇌ 2SO₃(g)，在 500 K 時 Kc ＝ 4.1（氣體常數 R ＝ 0.082 atm·L/(mol·K)）。已知 Kp ＝ Kc(RT)^Δn。(1) 求 Δn (2) 求此溫度的 Kp (3) 說明本題 Kp 與 Kc 何者較大並解釋原因。`,
+    ans:`(1) Δn ＝ −1　(2) Kp ＝ 0.10　(3) Kc &gt; Kp；因 Δn &lt; 0，(RT) 的指數為負使 Kp 較小`,
+    hint:`Δn ＝（產物氣體莫耳數）−（反應物氣體莫耳數）＝ 2 −（2＋1）。先算 RT，再代 Kp＝Kc(RT)^Δn。指數為 −1 相當於除以 RT。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>Δn 由「產物－反應物」的氣體係數計算。</div></div><div class="as-f">Δn ＝ 2 −（2 ＋ 1）＝ 2 − 3 ＝ −1</div><div class="as-step"><div class="as-n">2</div><div>先算 RT，再代入換算式。R＝0.082、T＝500 K。</div></div><div class="as-f">RT ＝ 0.082 × 500 ＝ 41</div><div class="as-f">Kp ＝ Kc(RT)^Δn ＝ 4.1 × 41⁻¹ ＝ 4.1 ÷ 41 ＝ 0.10</div><div class="as-step"><div class="as-n">3</div><div>因 Δn＝−1（指數為負），(RT) 落在分母，使 Kp 小於 Kc。</div></div><div class="as-f">Kc ＝ 4.1 &gt; Kp ＝ 0.10</div><div class="as-note">物理意義：此反應由 3 mol 氣體變成 2 mol 氣體，氣體分子數減少；以「分壓」表示的平衡常數 Kp 因而比以「濃度」表示的 Kc 小。</div><div class="as-warn">⚠ Δn 只算「氣態」的莫耳數變化，固體、液體不算入；指數帶正負號別搞錯：Δn＝−1 是「除以 RT」不是「乘」。溫度務必用 K（不是 ℃）。</div><div class="as-ans">答：(1) Δn ＝ −1　(2) Kp ＝ 0.10　(3) Kc &gt; Kp，因 Δn &lt; 0。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】反應 H₂(g) ＋ I₂(g) ⇌ 2HI(g) 在某溫度下 Kc ＝ 64。今於 1.0 L 容器中放入 H₂、I₂、HI 各 1.0 mol（如圖）。(1) 先算反應商 Q 並判斷反應初始往哪個方向進行 (2) 以 ICE 表求達平衡時各物種濃度。`,
+    ans:`(1) Q ＝ 1，Q &lt; K 故正向（往右生成 HI）　(2) H₂ ＝ I₂ ＝ 0.30 M、HI ＝ 2.40 M`,
+    hint:`Q 用「當下濃度」代入同一表示式。Q &lt; K 表示產物太少要正向進行。設正向消耗 x：H₂＝I₂＝1−x、HI＝1＋2x。因兩邊係數平方可整式，兩邊開根號解一次式即可。`,
+    fig:`<svg viewBox="0 0 340 84" xmlns="http://www.w3.org/2000/svg"><line x1="24" y1="46" x2="316" y2="46" stroke="var(--ink3)"/><circle cx="70" cy="46" r="5" fill="var(--gold)"/><text x="70" y="32" text-anchor="middle" font-size="12" fill="var(--ink)">Q ＝ 1</text><circle cx="280" cy="46" r="5" fill="var(--accent)"/><text x="280" y="32" text-anchor="middle" font-size="12" fill="var(--ink)">K ＝ 64</text><text x="175" y="74" text-anchor="middle" font-size="13" fill="var(--red)">往哪邊移動 ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>容器 1.0 L，初始濃度皆 1.0 M。先算反應商 Q（用當下濃度）。</div></div><div class="as-f">Q ＝ [HI]² ÷ ([H₂][I₂]) ＝ 1.0² ÷ (1.0×1.0) ＝ 1</div><div class="as-step"><div class="as-n">2</div><div>比較 Q 與 K：Q＝1、K＝64。Q &lt; K 表示產物尚不足，反應正向（往右）進行以增加 HI。</div></div><div class="as-f">Q ＝ 1 &lt; K ＝ 64　→　正向（生成 HI）</div><div class="as-step"><div class="as-n">3</div><div>設正向再消耗 x M 的 H₂。列平衡濃度並代入 Kc。</div></div><div class="as-f">平衡：H₂ ＝ 1−x、I₂ ＝ 1−x、HI ＝ 1＋2x<br>Kc ＝ (1＋2x)² ÷ (1−x)² ＝ 64</div><div class="as-step"><div class="as-n">4</div><div>兩邊皆為完全平方，直接開根號（取正號，√64＝8）化成一次式。</div></div><div class="as-f">(1＋2x) ÷ (1−x) ＝ 8　→　1＋2x ＝ 8 − 8x　→　10x ＝ 7　→　x ＝ 0.70</div><div class="as-f">H₂ ＝ I₂ ＝ 1−0.70 ＝ 0.30 M；HI ＝ 1＋1.40 ＝ 2.40 M</div><div class="as-note">反代驗算：2.40² ÷ (0.30×0.30) ＝ 5.76 ÷ 0.09 ＝ 64 ＝ Kc，一致。</div><div class="as-warn">⚠ 兩個常見錯誤：①忘記系統一開始就有 HI，HI 的變化是「1＋2x」不是「2x」；②開根號時 x 必須讓所有濃度 &gt; 0（0 &lt; x &lt; 1），取正根。</div><div class="as-ans">答：(1) Q ＝ 1 &lt; K，正向進行　(2) H₂ ＝ I₂ ＝ 0.30 M、HI ＝ 2.40 M</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】將 1.0 mol N₂O₄ 置於 2.0 L 密閉容器，發生 N₂O₄(g) ⇌ 2NO₂(g)。達平衡時測得 N₂O₄ 有 20% 解離（如圖）。(1) 求平衡時 N₂O₄ 與 NO₂ 的濃度 (2) 求平衡常數 Kc (3) 若在定溫下把容器體積壓縮，解離度會增加還是減少？為什麼？`,
+    ans:`(1) N₂O₄ ＝ 0.40 M、NO₂ ＝ 0.20 M　(2) Kc ＝ 0.10　(3) 解離度減少；加壓移向氣體莫耳數少的 N₂O₄ 側`,
+    hint:`先算初始濃度 1.0 mol ÷ 2.0 L ＝ 0.50 M。解離 20% 即 x ＝ 0.20×0.50 ＝ 0.10 M；每消耗 1 個 N₂O₄ 生成 2 個 NO₂。壓縮看兩邊莫耳數（左 1、右 2）。`,
+    fig:`<svg viewBox="0 0 330 92" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="16" width="128" height="60" rx="6" fill="none" stroke="var(--accent)"/><text x="82" y="42" text-anchor="middle" font-size="12" fill="var(--ink)">1.0 mol N₂O₄</text><text x="82" y="62" text-anchor="middle" font-size="11" fill="var(--ink3)">2.0 L 容器</text><text x="172" y="40" font-size="12" fill="var(--ink3)">解離度 20%</text><text x="172" y="62" font-size="13" fill="var(--red)">Kc ＝ ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先由莫耳數與體積求初始濃度，再依解離度求反應量 x。</div></div><div class="as-f">[N₂O₄]₀ ＝ 1.0 ÷ 2.0 ＝ 0.50 M<br>x ＝ 0.50 × 20% ＝ 0.10 M</div><div class="as-step"><div class="as-n">2</div><div>列 ICE：每 1 mol N₂O₄ 解離生成 2 mol NO₂。</div></div><div class="as-f">平衡：N₂O₄ ＝ 0.50−0.10 ＝ 0.40 M；NO₂ ＝ 2×0.10 ＝ 0.20 M</div><div class="as-step"><div class="as-n">3</div><div>代入平衡常數表示式（NO₂ 係數 2 要平方）。</div></div><div class="as-f">Kc ＝ [NO₂]² ÷ [N₂O₄] ＝ (0.20)² ÷ 0.40 ＝ 0.04 ÷ 0.40 ＝ 0.10</div><div class="as-step"><div class="as-n">4</div><div>壓縮體積使壓力上升，平衡移向氣體莫耳數少的一方。左邊 1 mol、右邊 2 mol。</div></div><div class="as-f">1 mol（N₂O₄） &lt; 2 mol（NO₂）　→　平衡左移，解離度減少</div><div class="as-note">反代驗算：(0.20)² ÷ 0.40 ＝ 0.10 ＝ Kc；且壓縮後 N₂O₄ 增多、NO₂ 減少，故解離度下降。</div><div class="as-warn">⚠ 兩個易錯：①NO₂ 係數為 2，濃度要「×2」再「平方」，別漏；②解離度指「解離掉的比例」，加壓雖使兩者「濃度」都上升，但比較的是往哪邊移動，需看莫耳數而非絕對濃度。</div><div class="as-ans">答：(1) N₂O₄ ＝ 0.40 M、NO₂ ＝ 0.20 M　(2) Kc ＝ 0.10　(3) 解離度減少（左移）。</div></div>`
+  }
+];
+
 var CHEM_questions={0:{},1:{},2:{}};
 CHEM_questions[0]['物質與原子結構']=CHEM_BASIC.concat(CHEM_ADV);
 CHEM_questions[0]['化學反應與計量']=CHEM_BASIC_CH02.concat(CHEM_ADV_CH02);
 CHEM_questions[0]['溶液與濃度']=CHEM_BASIC_CH03.concat(CHEM_ADV_CH03);
+CHEM_questions[1]['原子結構與週期表']=CHEM_BASIC_G1_CH01.concat(CHEM_ADV_G1_CH01);
+CHEM_questions[1]['化學鍵結']=CHEM_BASIC_G1_CH02.concat(CHEM_ADV_G1_CH02);
+CHEM_questions[1]['分子間作用力與物質三態']=CHEM_BASIC_G1_CH03.concat(CHEM_ADV_G1_CH03);
+CHEM_questions[1]['化學反應速率']=CHEM_BASIC_G1_CH04.concat(CHEM_ADV_G1_CH04);
+CHEM_questions[1]['化學平衡']=CHEM_BASIC_G1_CH05.concat(CHEM_ADV_G1_CH05);
 var CHEM_curriculum={
   0:{label:'高一・化學 基礎',books:[{name:'第一冊 基礎化學',units:[
     {num:'CH 01',name:'物質與原子結構',sub:'物質分類、原子構造、原子量分子量、莫耳與亞佛加厥數、化學計量',pct:0},
     {num:'CH 02',name:'化學反應與計量',sub:'化學式、方程式配平、質量守恆、莫耳比計量、限量試劑、百分產率、反應類型',pct:0},
     {num:'CH 03',name:'溶液與濃度',sub:'溶解度、重量百分濃度、體積莫耳濃度、ppm、稀釋公式、配製、電解質、沉澱反應',pct:0}
   ]}]},
-  1:{label:'高二・化學',books:[{name:'選修化學（上）',units:[{num:'CH 01',name:'化學鍵與反應',sub:'即將推出',pct:0,locked:true}]}]},
+  1:{label:'高二・化學',books:[{name:'選修化學（上）',units:[
+    {num:'CH 01',name:'原子結構與週期表',sub:'電子組態與軌域、包立/洪德/遞建、價電子、週期表結構、週期性遞變（半徑/游離能/電負度）',pct:0},
+    {num:'CH 02',name:'化學鍵結',sub:'離子鍵、共價鍵與極性、路易斯結構、VSEPR 分子形狀、分子極性、金屬鍵、鍵結與物性',pct:0},
+    {num:'CH 03',name:'分子間作用力與物質三態',sub:'凡得瓦力、氫鍵、沸點熔點、三態相變、理想氣體 PV=nRT、道耳頓分壓、擴散',pct:0},
+    {num:'CH 04',name:'化學反應速率',sub:'速率定義、碰撞學說與活化能、影響因素、速率定律與反應級數、反應機構、催化劑',pct:0},
+    {num:'CH 05',name:'化學平衡',sub:'動態平衡、平衡常數 Kc/Kp、反應商 Q 判方向、勒沙特列原理、ICE 平衡計算',pct:0}
+  ]}]},
   2:{label:'高三・化學',books:[{name:'選修化學（下）',units:[{num:'CH 01',name:'有機化學',sub:'即將推出',pct:0,locked:true}]}]}
 };
-var CHEM_details={};if(CHEM_COURSE)CHEM_details['gc0_ch01']=CHEM_COURSE;CHEM_details['gc0_ch02']=CHEM_COURSE_CH02;CHEM_details['gc0_ch03']=CHEM_COURSE_CH03;
+var CHEM_details={};if(CHEM_COURSE)CHEM_details['gc0_ch01']=CHEM_COURSE;CHEM_details['gc0_ch02']=CHEM_COURSE_CH02;CHEM_details['gc0_ch03']=CHEM_COURSE_CH03;CHEM_details['gc1_ch01']=CHEM_COURSE_G1_CH01;CHEM_details['gc1_ch02']=CHEM_COURSE_G1_CH02;CHEM_details['gc1_ch03']=CHEM_COURSE_G1_CH03;CHEM_details['gc1_ch04']=CHEM_COURSE_G1_CH04;CHEM_details['gc1_ch05']=CHEM_COURSE_G1_CH05;
 var CHEM_currTree={
   0:{tracks:[{label:'化學',chapters:[{key:'gc0_ch01',num:'C1',name:'物質與原子結構'},{key:'gc0_ch02',num:'C2',name:'化學反應與計量'},{key:'gc0_ch03',num:'C3',name:'溶液與濃度'}]}]},
-  1:{tracks:[{label:'化學',chapters:[]}]},
+  1:{tracks:[{label:'化學',chapters:[{key:'gc1_ch01',num:'C1',name:'原子結構與週期表'},{key:'gc1_ch02',num:'C2',name:'化學鍵結'},{key:'gc1_ch03',num:'C3',name:'分子間作用力與物質三態'},{key:'gc1_ch04',num:'C4',name:'化學反應速率'},{key:'gc1_ch05',num:'C5',name:'化學平衡'}]}]},
   2:{tracks:[{label:'化學',chapters:[]}]}
 };
-var CHEM_notes={0:{pills:CHEM_NOTES.pills.concat(['化學反應與計量','溶液與濃度']),content:Object.assign({},CHEM_NOTES.content,{'化學反應與計量':CHEM_NOTES_CH02,'溶液與濃度':CHEM_NOTES_CH03})},1:{pills:[],content:{}},2:{pills:[],content:{}}};
-var CHEM_flash={0:{'物質與原子結構':CHEM_CARDS,'化學反應與計量':CHEM_CARDS_CH02,'溶液與濃度':CHEM_CARDS_CH03},1:{},2:{}};
+var CHEM_notes={0:{pills:CHEM_NOTES.pills.concat(['化學反應與計量','溶液與濃度']),content:Object.assign({},CHEM_NOTES.content,{'化學反應與計量':CHEM_NOTES_CH02,'溶液與濃度':CHEM_NOTES_CH03})},1:{pills:['原子結構與週期表','化學鍵結','分子間作用力與物質三態','化學反應速率','化學平衡'],content:{'原子結構與週期表':CHEM_NOTES_G1_CH01,'化學鍵結':CHEM_NOTES_G1_CH02,'分子間作用力與物質三態':CHEM_NOTES_G1_CH03,'化學反應速率':CHEM_NOTES_G1_CH04,'化學平衡':CHEM_NOTES_G1_CH05}},2:{pills:[],content:{}}};
+var CHEM_flash={0:{'物質與原子結構':CHEM_CARDS,'化學反應與計量':CHEM_CARDS_CH02,'溶液與濃度':CHEM_CARDS_CH03},1:{'原子結構與週期表':CHEM_CARDS_G1_CH01,'化學鍵結':CHEM_CARDS_G1_CH02,'分子間作用力與物質三態':CHEM_CARDS_G1_CH03,'化學反應速率':CHEM_CARDS_G1_CH04,'化學平衡':CHEM_CARDS_G1_CH05},2:{}};
 var CHEM_exam={0:[],1:[],2:[]};
 var CHEM_sols={0:[],1:[],2:[]};
 var CHEM_noteMap={0:{},1:{},2:{}};
-var CHEM_solOrder={0:['物質與原子結構','化學反應與計量','溶液與濃度'],1:[],2:[]};
+var CHEM_solOrder={0:['物質與原子結構','化學反應與計量','溶液與濃度'],1:['原子結構與週期表','化學鍵結','分子間作用力與物質三態','化學反應速率','化學平衡'],2:[]};
 
 /* registry：[0]=數學(現有全域指標), [1]=物理, [2]=化學 */
 var SUBJECTS=[
