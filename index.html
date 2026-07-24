@@ -5026,7 +5026,7 @@ function setGrade(idx,el){
 function pickExam(el,g){el.parentElement.querySelectorAll('.exam-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');}
 function startExam(){alert('請從試卷列表選擇試卷開始作答');}
 
-var APP_VER='v29.1';
+var APP_VER='v30';
 function toggleInstall(){var g=document.getElementById('install-guide');if(!g)return;g.style.display=(g.style.display==='none'||!g.style.display)?'block':'none';}
 function forceUpdate(){
   var btn=document.getElementById('hv-btn'),st=document.getElementById('hv-status');
@@ -13512,29 +13512,750 @@ var CHEM_ADV = [
   }
 ];
 
+
+// ═══ 化學 v30：CH02 化學反應與計量 / CH03 溶液與濃度 ═══
+
+// ── ch02_course.js ──
+// ch02_course.js — 化學高一「化學反應與計量」課程頁 + 重點筆記 + 速記卡
+// 三段：var CHEM_COURSE_CH02 / var CHEM_NOTES_CH02 / var CHEM_CARDS_CH02
+
+var CHEM_COURSE_CH02 = {
+  num: 'CH 02',
+  name: '化學反應與計量',
+  book: '第一冊 基礎化學',
+  grade: '高一',
+  sub: '實驗式與分子式、方程式配平、質量守恆、莫耳比計量、限量試劑、百分產率、四大反應類型',
+  tags: ['分科範圍', '必修', '先懂再背'],
+  sections: [
+    {
+      title: '🗣 白話導讀',
+      color: 'blue',
+      body: `<p class="c-intro">上一章學會用<span class="c-def">莫耳</span>把「秤得到的克數」換成「數不完的粒子數」。這一章要把莫耳拿去用：物質<span class="c-def">互相反應</span>時，誰配誰、配多少、能生出多少——這就是<span class="c-def">化學計量</span>。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">先寫對</span>化學式 + 配平</div><div class="c-op">→</div><div class="c-block o"><span class="bk-tag">再換算</span>克數 ↔ 莫耳</div><div class="c-op">→</div><div class="c-block"><span class="bk-tag">才計量</span>係數比求未知</div></div>
+<p class="c-intro">整章只靠一個核心觀念：<span class="c-def">配平後的係數比，就是莫耳數的比</span>。所以任何計量題的走法永遠一樣——把已知的克數（或體積）先換成莫耳，用係數比走到目標物質的莫耳，最後再換回克數。</p>
+<div class="c-warn">⚠ 係數比是「莫耳比」，不是「質量比」！2H₂ + O₂ → 2H₂O 的意思是「2 莫耳配 1 莫耳」，不是「2 克配 1 克」。這是本章最常見的錯。</div>`
+    },
+    {
+      title: '⚗ 化學式、配平與質量守恆',
+      color: 'green',
+      body: `<p class="c-intro"><span class="c-def">實驗式</span>（簡式）只表示各原子的<b>最簡整數比</b>；<span class="c-def">分子式</span>才是分子裡<b>真正的原子個數</b>。兩者關係是整數倍：分子式 = 實驗式 × n，其中 n = 分子量 ÷ 實驗式量。</p>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext">各元素的<b>百分組成 ÷ 原子量</b>，得到各自的莫耳數。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext">全部<b>除以最小的那個</b>，化成最簡整數比（出現 .5 就整組再乘 2）。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext">比值就是實驗式的下標；若題目再給分子量，就乘上倍數 n 得分子式。</div></div>
+<div class="formula">分子式 = 實驗式 × n　，　n = 分子量 ÷ 實驗式量</div>
+<div class="fcard"><div class="fcard-f">實驗式：各元素百分比 ÷ 原子量 → 化最簡整數比</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>先把百分比變莫耳，再除以最小的，比出來就是下標。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>題目給「百分組成」或「各元素質量」要求化學式時。給了分子量才求得出分子式。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>某物含 C 40.0%、H 6.7%、O 53.3%：C = 40.0 ÷ 12 ≈ 3.33、H = 6.7 ÷ 1 = 6.7、O = 53.3 ÷ 16 ≈ 3.33 → 除以 3.33 得 1 : 2 : 1 → 實驗式 CH₂O（式量 30）。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 上例若分子量為 180，分子式是什麼？<details><summary>看解法</summary><div class="ans">n = 180 ÷ 30 = 6 → 分子式 C₆H₁₂O₆。</div></details>② 某鐵的氧化物含 Fe 70%、O 30%，實驗式為何？<details><summary>看解法</summary><div class="ans">Fe = 70 ÷ 56 = 1.25、O = 30 ÷ 16 = 1.875；同除 1.25 得 1 : 1.5，整組乘 2 得 2 : 3 → Fe₂O₃。</div></details></div></div></div>
+<p class="c-intro">寫好化學式後要<span class="c-def">配平</span>：用<b>觀察法</b>調整係數，讓等號兩邊每種原子的個數都相同。訣竅是<b>先配只出現一次的元素（通常 C、H），氧留到最後</b>；出現分數就整組乘 2。</p>
+<div class="formula">C₃H₈ + 5O₂ → 3CO₂ + 4H₂O　（左氧 10、右氧 6 + 4 = 10 ✔）</div>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<line x1="60" y1="118" x2="320" y2="118" stroke="var(--ink)" stroke-width="3"/>
+<path d="M190,118 L172,176 L208,176 Z" fill="var(--ink3)"/>
+<rect x="20" y="126" width="118" height="40" rx="8" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="79" y="143" text-anchor="middle" font-size="12" fill="var(--ink)">2Mg + O₂</text>
+<text x="79" y="159" text-anchor="middle" font-size="12" fill="var(--accent)">4.8 + 3.2 = 8.0 g</text>
+<rect x="242" y="126" width="118" height="40" rx="8" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="301" y="143" text-anchor="middle" font-size="12" fill="var(--ink)">2MgO</text>
+<text x="301" y="159" text-anchor="middle" font-size="12" fill="var(--green)">8.0 g</text>
+<line x1="79" y1="118" x2="79" y2="126" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="301" y1="118" x2="301" y2="126" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="190" y="30" text-anchor="middle" font-size="13" fill="var(--ink)" font-weight="700">質量守恆：兩端一樣重</text>
+<text x="190" y="56" text-anchor="middle" font-size="12" fill="var(--ink3)">Mg 0.2 mol、O₂ 0.1 mol → MgO 0.2 mol</text>
+<text x="190" y="78" text-anchor="middle" font-size="12" fill="var(--ink3)">0.2×24 + 0.1×32 = 0.2×40</text>
+</svg></div>
+<p class="c-intro">上圖就是<span class="c-def">質量守恆定律</span>：反應前後原子只是重新排列，一顆都沒少，所以<b>反應物總質量 = 生成物總質量</b>。天平兩端 8.0 g 對 8.0 g，正是配平之所以成立的理由。</p>
+<div class="c-warn">⚠ 配平只能改<b>係數</b>（化學式前面的數字），絕不可以改下標！把 O₂ 改成 O₃ 就變成另一種物質了。</div>`
+    },
+    {
+      title: '⚖ 莫耳比計量：由已知量求未知量',
+      color: 'gold',
+      body: `<p class="c-intro">配平後的<span class="c-def">係數比 = 莫耳比</span>。這句話是本章的心臟。有了它，任何「給我 A 幾克，問你能生成 B 幾克」的題目都走同一條四步路線。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arC02a" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker></defs>
+<rect x="8" y="26" width="104" height="44" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="60" y="46" text-anchor="middle" font-size="12" fill="var(--ink)">已知 m(A)</text>
+<text x="60" y="62" text-anchor="middle" font-size="11" fill="var(--accent)">CaCO₃ 50 g</text>
+<rect x="146" y="26" width="104" height="44" rx="9" fill="var(--gold)" stroke="var(--gold)"/>
+<text x="198" y="46" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">n(A)</text>
+<text x="198" y="62" text-anchor="middle" font-size="11" fill="#fff">0.5 mol</text>
+<line x1="114" y1="48" x2="144" y2="48" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arC02a)"/>
+<text x="129" y="40" text-anchor="middle" font-size="11" fill="var(--accent)">÷100</text>
+<rect x="146" y="126" width="104" height="44" rx="9" fill="var(--gold)" stroke="var(--gold)"/>
+<text x="198" y="146" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">n(B)</text>
+<text x="198" y="162" text-anchor="middle" font-size="11" fill="#fff">0.5 mol</text>
+<line x1="198" y1="72" x2="198" y2="124" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arC02a)"/>
+<text x="252" y="102" text-anchor="middle" font-size="11" fill="var(--green)">×係數比 1/1</text>
+<rect x="8" y="126" width="104" height="44" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="60" y="146" text-anchor="middle" font-size="12" fill="var(--ink)">求 m(B)</text>
+<text x="60" y="162" text-anchor="middle" font-size="11" fill="var(--green)">CaO 28 g</text>
+<line x1="144" y1="148" x2="114" y2="148" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arC02a)"/>
+<text x="129" y="182" text-anchor="middle" font-size="11" fill="var(--accent)">×56</text>
+<text x="316" y="46" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="700">CaCO₃ →</text>
+<text x="316" y="64" text-anchor="middle" font-size="12" fill="var(--ink)">CaO + CO₂</text>
+<text x="316" y="146" text-anchor="middle" font-size="11" fill="var(--ink3)">係數皆為 1</text>
+</svg></div>
+<p class="c-intro">照圖走一次：50 g 碳酸鈣（式量 100）÷ 100 得 0.5 mol；係數比 CaCO₃ : CaO = 1 : 1，所以 CaO 也是 0.5 mol；再 × 56（CaO 式量）＝ <b>28 g</b>。<span class="c-def">中間那兩個黃格永遠是莫耳</span>，克數只在頭尾出現。</p>
+<div class="fcard"><div class="fcard-f">n(B) = n(A) × ( B 的係數 ÷ A 的係數 )</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>要求的莫耳，等於已知的莫耳，乘上「要求的係數比已知的係數」。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>反應式配平之後，要從一種物質的量推另一種物質的量時。用之前一定先確認方程式配平了。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>2H₂ + O₂ → 2H₂O。4 g H₂（M = 2）＝ 2 mol → 需 O₂ = 2 × (1/2) = 1 mol = 32 g；生成 H₂O = 2 × (2/2) = 2 mol = 36 g。（4 + 32 = 36 ✔ 守恆）</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 0.3 mol Zn 與足量鹽酸反應（Zn + 2HCl → ZnCl₂ + H₂），在 STP 產生多少升 H₂？<details><summary>看解法</summary><div class="ans">係數比 Zn : H₂ = 1 : 1 → H₂ = 0.3 mol → V = 0.3 × 22.4 = 6.72 L。</div></details>② 要製造 4 mol NH₃（N₂ + 3H₂ → 2NH₃），至少需要幾莫耳 N₂？<details><summary>看解法</summary><div class="ans">N₂ : NH₃ = 1 : 2 → n(N₂) = 4 × (1/2) = 2 mol（＝ 2 × 28 = 56 g）。</div></details></div></div></div>
+<div class="c-warn">⚠ 題目給的若是「STP 氣體體積」，先 ÷ 22.4 換成莫耳再走係數比；千萬別拿體積直接乘係數，除非兩邊都是同溫同壓的氣體。</div>`
+    },
+    {
+      title: '🔍 限量試劑、百分產率與四大反應類型',
+      color: 'blue',
+      body: `<p class="c-intro">實際反應時兩種反應物很少剛好配完。<span class="c-def">先用完的那個叫限量試劑</span>，它決定生成物最多能有多少；沒用完的叫<span class="c-def">過量試劑</span>，會剩在瓶子裡。判斷方法：把每個反應物的莫耳數<b>各自除以自己的係數</b>，商最小的就是限量試劑。</p>
+<div class="fcard"><div class="fcard-f">限量試劑：比較「n ÷ 係數」，最小者先用完</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>每個反應物的莫耳除以自己的係數，誰的商最小誰先耗盡。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>題目同時給兩個（以上）反應物的量時，一定要先判斷限量試劑，之後全部用它來算。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>2H₂ + O₂ → 2H₂O，取 H₂ 6 g（3 mol）與 O₂ 32 g（1 mol）。H₂：3 ÷ 2 = 1.5；O₂：1 ÷ 1 = 1 → <b>O₂ 是限量試劑</b>。生成 H₂O = 1 × (2/1) = 2 mol = 36 g；H₂ 只用掉 2 mol，剩 1 mol = 2 g。（6 + 32 = 36 + 2 ✔）</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 2Na + Cl₂ → 2NaCl，取 Na 4.6 g 與 Cl₂ 14.2 g，誰限量？生成 NaCl 幾克？<details><summary>看解法</summary><div class="ans">Na = 4.6 ÷ 23 = 0.2 mol → 0.2 ÷ 2 = 0.1；Cl₂ = 14.2 ÷ 71 = 0.2 mol → 0.2 ÷ 1 = 0.2。商較小者為 Na，故 Na 限量。NaCl = 0.2 mol × 58.5 = 11.7 g，Cl₂ 剩 0.1 mol = 7.1 g。</div></details>② 承上，剩下的過量試劑質量加生成物質量應等於多少？<details><summary>看解法</summary><div class="ans">11.7 + 7.1 = 18.8 g，恰等於原本 4.6 + 14.2 = 18.8 g，符合質量守恆。</div></details></div></div></div>
+<p class="c-intro">就算限量試劑算得再準，實驗上也拿不到那麼多——會有損失、副反應、未反應完。所以用<span class="c-def">百分產率</span>衡量效率：算出來的叫<b>理論產量</b>，秤到的叫<b>實際產量</b>。</p>
+<div class="fcard"><div class="fcard-f">百分產率 = ( 實際產量 ÷ 理論產量 ) × 100%</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>實際拿到的除以理論算出的，再乘一百。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>題目同時出現「實際得到」與計量算出的量時。分子分母務必是<b>同一物質、同一單位</b>（都用克或都用莫耳）。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>50 g CaCO₃ 加熱分解，理論可得 CaO 28 g（見上一段），實際只秤到 22.4 g → 產率 = 22.4 ÷ 28 = 0.8 = <b>80%</b>。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① N₂ + 3H₂ → 2NH₃，1 mol N₂ 完全反應理論得 NH₃ 幾克？若實得 27.2 g，產率多少？<details><summary>看解法</summary><div class="ans">NH₃ = 2 mol = 2 × 17 = 34 g；產率 = 27.2 ÷ 34 = 0.8 = 80%。</div></details>② 某反應理論產量 40 g，產率 85%，實際可得幾克？<details><summary>看解法</summary><div class="ans">實際 = 40 × 0.85 = 34 g。</div></details></div></div></div>
+<p class="c-intro">最後把常見反應歸成<span class="c-def">四大類型</span>，看到式子就能喊出名字：</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">化合</span>A + B → AB</div><div class="c-op">/</div><div class="c-block o"><span class="bk-tag">分解</span>AB → A + B</div></div>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">置換</span>A + BC → AC + B</div><div class="c-op">/</div><div class="c-block o"><span class="bk-tag">複分解</span>AB + CD → AD + CB</div></div>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext"><b>化合</b>（合成）：多變一。例 2Mg + O₂ → 2MgO。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext"><b>分解</b>：一變多。例 CaCO₃ → CaO + CO₂（加熱）、2H₂O₂ → 2H₂O + O₂。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext"><b>置換</b>：單質把化合物裡的元素擠出來。例 Zn + CuSO₄ → ZnSO₄ + Cu（活性大的換活性小的）。</div></div>
+<div class="c-stepline"><div class="c-stepnum">4</div><div class="c-steptext"><b>複分解</b>：兩化合物交換離子，常生成沉澱、氣體或水。例 AgNO₃ + NaCl → AgCl↓ + NaNO₃。</div></div>
+<div class="formula">燃燒通式：CxHy + ( x + y/4 ) O₂ → x CO₂ + ( y/2 ) H₂O</div>
+<p class="c-intro">拿 C₃H₈ 驗證：x = 3、y = 8 → O₂ 係數 = 3 + 8/4 = 5，CO₂ = 3、H₂O = 4，正是前面配平的結果。碳氫化合物<b>完全燃燒</b>的產物永遠只有 CO₂ 和 H₂O。</p>
+<div class="c-warn">⚠ 「完全燃燒」才只生成 CO₂ 與 H₂O；氧氣不足時會生成有毒的 CO 甚至碳粒（黑煙），那叫不完全燃燒。</div>`
+    },
+    {
+      title: '✏️ 練習問題',
+      color: 'green',
+      body: `<div class="c-practice"><b>練習 1：</b>配平乙烷完全燃燒：C₂H₆ + O₂ → CO₂ + H₂O。<details><summary>看解答</summary>先配 C：右邊 CO₂ 係數 2；再配 H：右邊 H₂O 係數 3；此時右邊氧 = 2×2 + 3 = 7，需 O₂ 為 7/2，整組乘 2 →<br>2C₂H₆ + 7O₂ → 4CO₂ + 6H₂O。檢查：C 4 = 4、H 12 = 12、O 14 = 8 + 6 = 14 ✔</details></div>
+<div class="c-practice"><b>練習 2：</b>20 g 碳酸鈣 CaCO₃ 完全分解（CaCO₃ → CaO + CO₂），可得 CaO 幾克？在 STP 放出 CO₂ 幾升？（Ca = 40、C = 12、O = 16）<details><summary>看解答</summary>CaCO₃ 式量 = 100 → n = 20 ÷ 100 = 0.2 mol。係數比皆 1 : 1 → CaO 0.2 mol、CO₂ 0.2 mol。<br>CaO 式量 = 56 → m = 0.2 × 56 = 11.2 g；CO₂ 體積 = 0.2 × 22.4 = 4.48 L。（驗證守恆：CO₂ = 0.2 × 44 = 8.8 g，11.2 + 8.8 = 20 ✔）</details></div>
+<div class="c-practice"><b>練習 3：</b>取 H₂ 6 g 與 O₂ 32 g 反應（2H₂ + O₂ → 2H₂O）。理論可得水幾克？若實際只收集到 27 g，百分產率是多少？<details><summary>看解答</summary>H₂ = 6 ÷ 2 = 3 mol → 3 ÷ 2 = 1.5；O₂ = 32 ÷ 32 = 1 mol → 1 ÷ 1 = 1。商較小者為 O₂，故 O₂ 限量。<br>H₂O = 1 × (2/1) = 2 mol = 2 × 18 = 36 g（理論產量）。<br>產率 = 27 ÷ 36 = 0.75 = 75%。</details></div>`
+    }
+  ]
+};
+
+var CHEM_NOTES_CH02 = [
+  {
+    title: '一張圖看懂限量試劑',
+    tag: '核心概念',
+    tagClass: 'blue',
+    open: true,
+    body: `<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arC02b" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker></defs>
+<text x="12" y="26" font-size="12" fill="var(--ink)" font-weight="700">2H₂ + O₂ → 2H₂O</text>
+<text x="12" y="56" font-size="12" fill="var(--ink3)">H₂ 6 g</text>
+<circle cx="78" cy="52" r="11" fill="var(--accent)"/>
+<circle cx="106" cy="52" r="11" fill="var(--accent)"/>
+<circle cx="134" cy="52" r="11" fill="#e05555"/>
+<text x="152" y="56" font-size="11" fill="var(--ink3)">＝3 mol　3÷2 = 1.5</text>
+<text x="12" y="98" font-size="12" fill="var(--ink3)">O₂ 32 g</text>
+<circle cx="78" cy="94" r="11" fill="var(--green)"/>
+<text x="98" y="98" font-size="11" fill="var(--ink3)">＝1 mol　1÷1 = 1 ← 最小</text>
+<line x1="106" y1="112" x2="106" y2="136" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arC02b)"/>
+<text x="196" y="130" font-size="11" fill="var(--green)">O₂ 先用完 → 限量試劑</text>
+<rect x="12" y="144" width="164" height="44" rx="8" fill="var(--bg)" stroke="var(--green)" stroke-width="1.5"/>
+<text x="94" y="163" text-anchor="middle" font-size="12" fill="var(--ink)">生成 H₂O 2 mol</text>
+<text x="94" y="180" text-anchor="middle" font-size="12" fill="var(--green)">= 36 g（理論產量）</text>
+<rect x="196" y="144" width="172" height="44" rx="8" fill="var(--bg)" stroke="#e05555" stroke-width="1.5"/>
+<text x="282" y="163" text-anchor="middle" font-size="12" fill="var(--ink)">剩下 H₂ 1 mol</text>
+<text x="282" y="180" text-anchor="middle" font-size="12" fill="#e05555">= 2 g（過量沒用到）</text>
+</svg></div>
+<p class="c-intro">圖上兩個 H₂（藍）配掉一個 O₂（綠）之後，<b>紅色那顆 H₂ 沒有伴</b>，只能剩著。判斷方法就是圖右的除法：<span class="c-def">各自的莫耳數 ÷ 各自的係數，商最小者限量</span>——這裡 O₂ 的 1 比 H₂ 的 1.5 小，所以 O₂ 決定產量。</p>
+<div class="formula">生成物的量一律由「限量試劑」算　；　6 + 32 = 36 + 2（質量仍守恆）</div>`
+  },
+  {
+    title: '配平與質量守恆',
+    tag: '核心概念',
+    tagClass: 'green',
+    open: false,
+    body: `<div class="formula">反應物總質量 = 生成物總質量（原子只重排，一顆不少）</div>
+<p class="c-intro"><b>觀察法配平三口訣</b>：① 先配只出現一次的元素（通常 C、H）；② <b>氧留到最後</b>；③ 出現分數就整組乘 2。配平只能改<span class="c-def">係數</span>，絕不可改下標。</p>
+<p class="c-intro">範例：C₃H₈ + 5O₂ → 3CO₂ + 4H₂O。C：3 = 3；H：8 = 8；O：10 = 6 + 4 ✔<br>燃燒通式 CxHy + ( x + y/4 ) O₂ → x CO₂ + ( y/2 ) H₂O，代 x = 3、y = 8 得 O₂ 係數 5，完全吻合。</p>
+<p class="c-intro"><span class="c-def">實驗式 vs 分子式</span>：實驗式只是最簡整數比（如 CH₂O），分子式才是真正的原子數（如 C₆H₁₂O₆）。求法＝百分比 ÷ 原子量 → 除以最小 → 化最簡整數比；再用 n = 分子量 ÷ 實驗式量 乘回去。</p>`
+  },
+  {
+    title: '四大反應類型與燃燒',
+    tag: '觀念釐清',
+    tagClass: 'gold',
+    open: false,
+    body: `<div class="c-blocks"><div class="c-block"><span class="bk-tag">化合</span>A + B → AB</div><div class="c-op">vs</div><div class="c-block o"><span class="bk-tag">分解</span>AB → A + B</div></div>
+<p class="c-intro"><b>化合</b>多變一：2Mg + O₂ → 2MgO。<b>分解</b>一變多：CaCO₃ → CaO + CO₂、2H₂O₂ → 2H₂O + O₂。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">置換</span>A + BC → AC + B</div><div class="c-op">vs</div><div class="c-block o"><span class="bk-tag">複分解</span>AB + CD → AD + CB</div></div>
+<p class="c-intro"><b>置換</b>是單質把化合物裡的元素擠出來，活性大的換活性小的：Zn + CuSO₄ → ZnSO₄ + Cu。<b>複分解</b>是兩化合物交換離子，推力常是生成沉澱、氣體或水：AgNO₃ + NaCl → AgCl↓ + NaNO₃。</p>
+<p class="c-intro"><span class="c-def">完全燃燒</span>的碳氫化合物，產物只有 CO₂ 與 H₂O；氧不足時會出現 CO 或碳粒（不完全燃燒）。</p>`
+  },
+  {
+    title: '必背公式卡（計量四公式）',
+    tag: '必背公式',
+    tagClass: 'red',
+    open: false,
+    body: `<div class="fcard"><div class="fcard-f">係數比 = 莫耳比：n(B) = n(A) × ( B 係數 ÷ A 係數 )</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>已知的莫耳，乘上「要求的係數比已知的係數」，就是要求的莫耳。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>所有計量題的中樞。四步走：m(A) ─÷M→ n(A) ─×係數比→ n(B) ─×M→ m(B)。用之前先確認配平。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>CaCO₃ → CaO + CO₂。50 g CaCO₃ ÷ 100 = 0.5 mol → CaO 0.5 mol → × 56 = 28 g。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 給的是 STP 氣體體積怎麼辦？<details><summary>看解法</summary><div class="ans">先 ÷ 22.4 換成莫耳，再走係數比；最後要體積就再 × 22.4。</div></details>② 2H₂ + O₂ → 2H₂O，4 g H₂ 完全反應需 O₂ 幾克？<details><summary>看解法</summary><div class="ans">H₂ = 2 mol → O₂ = 2 × (1/2) = 1 mol = 32 g。</div></details></div></div></div>
+<div class="formula">限量試劑：比較各反應物的 n ÷ 係數，商最小者限量（產量由它決定）</div>
+<div class="formula">百分產率 = ( 實際產量 ÷ 理論產量 ) × 100%</div>
+<div class="formula">分子式 = 實驗式 × n，n = 分子量 ÷ 實驗式量</div>`
+  }
+];
+
+var CHEM_CARDS_CH02 = [
+  { q: '實驗式和分子式差在哪？怎麼互求？', a: '實驗式＝各原子的最簡整數比（CH₂O）。\n分子式＝真正的原子個數（C₆H₁₂O₆）。\n求實驗式：百分比 ÷ 原子量 → 除以最小 → 化最簡整數比。\n分子式 = 實驗式 × n，n = 分子量 ÷ 實驗式量（180 ÷ 30 = 6）。' },
+  { q: '觀察法配平的三個口訣？', a: '① 先配只出現一次的元素（通常 C、H）。\n② 氧留到最後配。\n③ 出現分數就整組乘 2。\n只能改係數，絕不可改下標。\n例：C₃H₈ + 5O₂ → 3CO₂ + 4H₂O。' },
+  { q: '質量守恆定律說什麼？', a: '反應前後原子只是重新排列，一顆都沒少。\n→ 反應物總質量 = 生成物總質量。\n例：2Mg + O₂ → 2MgO，4.8 g + 3.2 g = 8.0 g。' },
+  { q: '化學計量的四步路線怎麼走？', a: 'm(A) ─÷M→ n(A) ─×係數比→ n(B) ─×M→ m(B)。\n中間永遠是莫耳，克數只在頭尾。\n例：50 g CaCO₃ ÷100 = 0.5 mol → CaO 0.5 mol ×56 = 28 g。\n係數比是莫耳比，不是質量比！' },
+  { q: '限量試劑怎麼判斷？', a: '各反應物的莫耳數 ÷ 自己的係數，商最小者就是限量試劑。\n生成物的量一律用限量試劑算。\n例：2H₂ + O₂ → 2H₂O，H₂ 3 mol（3÷2 = 1.5）、O₂ 1 mol（1÷1 = 1）→ O₂ 限量，得水 2 mol = 36 g，剩 H₂ 1 mol = 2 g。' },
+  { q: '百分產率的公式與注意事項？', a: '百分產率 = ( 實際產量 ÷ 理論產量 ) × 100%。\n理論產量由限量試劑算出。\n分子分母要同物質、同單位。\n例：理論 CaO 28 g，實得 22.4 g → 22.4 ÷ 28 = 80%。' },
+  { q: '四大反應類型各是什麼？燃燒通式？', a: '化合 A + B → AB（2Mg + O₂ → 2MgO）\n分解 AB → A + B（CaCO₃ → CaO + CO₂）\n置換 A + BC → AC + B（Zn + CuSO₄ → ZnSO₄ + Cu）\n複分解 AB + CD → AD + CB（AgNO₃ + NaCl → AgCl↓ + NaNO₃）\n燃燒：CxHy + ( x + y/4 ) O₂ → x CO₂ + ( y/2 ) H₂O。' }
+];
+
+// ── ch02_basic.js ──
+// ch02_basic.js — 化學高一「化學反應與計量」14 基本題（單選10＋多選2＋選填2）
+var CHEM_BASIC_CH02 = [
+  // 1. 實驗式（single, ans B）
+  {
+    q: '某化合物經分析得知，其質量組成為碳 40.0%、氫 6.7%、氧 53.3%（原子量 H＝1、C＝12、O＝16）。則此化合物的實驗式為何？',
+    opts: ['CHO', 'CH₂O', 'C₂H₄O₂', 'CH₄O'],
+    ans: 'B',
+    hint: '取 100 g 樣品，各元素質量除以原子量得莫耳數，再同除以最小值化成最簡整數比。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>假設取 100 g 樣品，則 C 有 40.0 g、H 有 6.7 g、O 有 53.3 g，各自除以原子量換成莫耳數。</div></div><div class="as-f">n(C) ＝ 40.0 ÷ 12 ≈ 3.33　n(H) ＝ 6.7 ÷ 1 ＝ 6.7　n(O) ＝ 53.3 ÷ 16 ≈ 3.33</div><div class="as-step"><div class="as-n">2</div><div>三者同除以最小值 3.33，化成最簡整數比。</div></div><div class="as-f">C : H : O ＝ 3.33/3.33 : 6.7/3.33 : 3.33/3.33 ≈ 1 : 2 : 1</div><div class="as-step"><div class="as-n">3</div><div>最簡整數比 1 : 2 : 1 即為實驗式的下標，得 CH₂O。</div></div><div class="as-f">實驗式 ＝ CH₂O</div><div class="as-warn">⚠ 實驗式只表示「最簡整數比」，不代表真正的分子式；C₂H₄O₂ 雖然比例也是 1:2:1，但已不是最簡形式，不能當實驗式。</div><div class="as-ans">答：(B) CH₂O</div></div>'
+  },
+  // 2. 由實驗式與分子量求分子式（single, ans C）
+  {
+    q: '已知某化合物的實驗式為 CH₂O，且其分子量為 180（原子量 H＝1、C＝12、O＝16）。則此化合物的分子式為何？',
+    opts: ['C₂H₄O₂', 'C₃H₆O₃', 'C₆H₁₂O₆', 'C₅H₁₀O₅'],
+    ans: 'C',
+    hint: '先算實驗式量，再用「分子量 ÷ 實驗式量」求倍數 n，把實驗式的下標全部乘 n。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先算實驗式 CH₂O 的式量。</div></div><div class="as-f">實驗式量 ＝ 12 ＋ 1×2 ＋ 16 ＝ 30</div><div class="as-step"><div class="as-n">2</div><div>分子量是實驗式量的整數倍，求倍數 n。</div></div><div class="as-f">n ＝ 分子量 ÷ 實驗式量 ＝ 180 ÷ 30 ＝ 6</div><div class="as-step"><div class="as-n">3</div><div>把實驗式下標全部乘 6：C₁×₆H₂×₆O₁×₆ ＝ C₆H₁₂O₆（葡萄糖）。驗算分子量：12×6＋1×12＋16×6 ＝ 72＋12＋96 ＝ 180 ✓</div></div><div class="as-f">分子式 ＝ (CH₂O)₆ ＝ C₆H₁₂O₆</div><div class="as-warn">⚠ 倍數 n 一定要乘在「每一個」下標上，只乘碳會得到錯誤的 C₆H₂O。</div><div class="as-ans">答：(C) C₆H₁₂O₆</div></div>'
+  },
+  // 3. 配平：丙烷燃燒係數總和（single, ans A）
+  {
+    q: '丙烷完全燃燒的反應式為　C₃H₈ ＋ O₂ → CO₂ ＋ H₂O。配平成最簡整數係數後，四項係數的總和為何？',
+    opts: ['13', '11', '9', '15'],
+    ans: 'A',
+    hint: '先配 C 再配 H，最後才配 O（氧只出現在一種反應物，留到最後最好算）。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先配碳：左邊 C₃H₈ 有 3 個 C，故 CO₂ 前面放 3。</div></div><div class="as-f">C₃H₈ ＋ O₂ → 3CO₂ ＋ H₂O</div><div class="as-step"><div class="as-n">2</div><div>再配氫：左邊有 8 個 H，每個 H₂O 含 2 個 H，故 H₂O 前面放 4。</div></div><div class="as-f">C₃H₈ ＋ O₂ → 3CO₂ ＋ 4H₂O</div><div class="as-step"><div class="as-n">3</div><div>最後配氧：右邊氧原子 ＝ 3×2 ＋ 4×1 ＝ 10 個，左邊每個 O₂ 提供 2 個，故 O₂ 前面放 5。</div></div><div class="as-f">C₃H₈ ＋ 5O₂ → 3CO₂ ＋ 4H₂O</div><div class="as-step"><div class="as-n">4</div><div>係數總和 ＝ 1 ＋ 5 ＋ 3 ＋ 4 ＝ 13。</div></div><div class="as-f">1 ＋ 5 ＋ 3 ＋ 4 ＝ 13</div><div class="as-warn">⚠ C₃H₈ 前面的係數是 1，計算總和時不可漏掉；另外配平只能改係數，絕不能改化學式的下標。</div><div class="as-ans">答：(A) 13</div></div>'
+  },
+  // 4. 質量守恆與配平觀念（multi, ans B/C/D）
+  {
+    type: 'multi',
+    q: '【多選】關於化學反應方程式的配平與質量守恆定律，下列敘述何者正確？',
+    opts: ['配平時可以更改化學式中的下標，使兩邊原子數相等', '反應前後原子的種類與各種原子的數目均不改變', '在密閉容器中進行反應，反應前後物質的總質量不變', '配平後各物質的係數比，就等於它們反應的莫耳數比', '配平後反應前後的分子總數一定相等'],
+    ans: ['B', 'C', 'D'],
+    hint: '質量守恆的根本原因是「原子只是重新排列，沒有生成也沒有消失」；係數比＝莫耳比，但分子數不必相等。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>(A) 錯：改下標等於換成另一種物質（H₂O 改成 H₂O₂ 就不是水了）。配平只准在化學式「前面」加係數。</div></div><div class="as-f">配平規則：只改係數，不改下標</div><div class="as-step"><div class="as-n">2</div><div>(B)(C) 對：化學反應只是原子的重新組合，原子種類與數目不變，因此總質量必然守恆（質量守恆定律）。</div></div><div class="as-f">原子不生不滅 → 總質量不變</div><div class="as-step"><div class="as-n">3</div><div>(D) 對：係數就是各物質參與反應的莫耳數比，是所有計量計算的核心。</div></div><div class="as-f">係數比 ＝ 莫耳比（計量計算的橋樑）</div><div class="as-step"><div class="as-n">4</div><div>(E) 錯：以 N₂ ＋ 3H₂ → 2NH₃ 為例，左邊 4 個分子、右邊 2 個分子，分子總數並不相等。</div></div><div class="as-f">1 ＋ 3 ＝ 4 個分子 → 2 個分子（不相等）</div><div class="as-warn">⚠ 守恆的是「原子數」與「總質量」，不是「分子數」；也不是「體積」。若在敞口容器中有氣體逸出，秤到的質量會變輕，但那是氣體跑掉，不是質量消失。</div><div class="as-ans">答：(B) 原子種類數目不變、(C) 密閉容器總質量不變、(D) 係數比即莫耳比</div></div>'
+  },
+  // 5. 配平：鐵生鏽 O₂ 係數（single, ans B）
+  {
+    q: '鐵在氧氣中燃燒生成氧化鐵：　Fe ＋ O₂ → Fe₂O₃。配平成最簡整數係數後，O₂ 的係數為何？',
+    opts: ['2', '3', '4', '6'],
+    ans: 'B',
+    hint: '氧原子在左邊是偶數（O₂）、右邊是奇數（Fe₂O₃ 有 3 個 O），先把 Fe₂O₃ 乘 2 湊成偶數。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>右邊 Fe₂O₃ 含 3 個氧（奇數），但左邊 O₂ 只能提供偶數個氧，故先把 Fe₂O₃ 前面放 2，使氧變成 6 個。</div></div><div class="as-f">Fe ＋ O₂ → 2Fe₂O₃（右邊 O ＝ 3×2 ＝ 6 個）</div><div class="as-step"><div class="as-n">2</div><div>配氧：左邊需 6 ÷ 2 ＝ 3 個 O₂。</div></div><div class="as-f">O₂ 係數 ＝ 6 ÷ 2 ＝ 3</div><div class="as-step"><div class="as-n">3</div><div>配鐵：右邊 Fe ＝ 2×2 ＝ 4 個，故左邊 Fe 前面放 4，完成配平。</div></div><div class="as-f">4Fe ＋ 3O₂ → 2Fe₂O₃　（Fe：4＝4 ✓　O：6＝6 ✓）</div><div class="as-warn">⚠ 遇到「一邊奇數、一邊偶數」的原子，先把奇數那一項乘 2 是最快的手法；別急著在 O₂ 前填分數 1.5，題目要求最簡「整數」係數。</div><div class="as-ans">答：(B) 3</div></div>'
+  },
+  // 6. 質量守恆計算（fill, ans 16）
+  {
+    type: 'fill',
+    q: '【選填】將 24 g 鎂帶置於密閉容器中與氧氣完全反應，生成 40 g 氧化鎂 MgO，且鎂與氧氣皆恰好完全反應。則參與反應的氧氣質量為多少克？（填數值，單位 g）',
+    ans: '16',
+    acc: ['16 g', '16g', '16.0'],
+    hint: '質量守恆：反應物總質量＝生成物總質量，把已知的兩項相減即可。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>依質量守恆定律，反應物總質量等於生成物總質量。</div></div><div class="as-f">m(Mg) ＋ m(O₂) ＝ m(MgO)</div><div class="as-step"><div class="as-n">2</div><div>代入已知：24 ＋ m(O₂) ＝ 40，移項得 m(O₂) ＝ 40 － 24 ＝ 16 g。</div></div><div class="as-f">m(O₂) ＝ 40 － 24 ＝ 16（g）</div><div class="as-step"><div class="as-n">3</div><div>用莫耳比驗算：2Mg ＋ O₂ → 2MgO。24 g Mg ÷ 24 ＝ 1 mol，依係數比 Mg : O₂ ＝ 2 : 1，需 O₂ 0.5 mol ＝ 0.5 × 32 ＝ 16 g，與上式一致 ✓</div></div><div class="as-f">n(Mg) ＝ 1 mol → n(O₂) ＝ 0.5 mol → 0.5 × 32 ＝ 16 g</div><div class="as-warn">⚠ 一定要在「密閉」容器中總質量才守恆；若在空氣中敞口燃燒，秤到的質量看起來會增加（吸收了空氣中的氧），常被誤以為質量不守恆。</div><div class="as-ans">答：16 g</div></div>'
+  },
+  // 7. 莫耳比計量：質量（single, ans C）
+  {
+    q: '氫氣燃燒的反應式為　2H₂ ＋ O₂ → 2H₂O（原子量 H＝1、O＝16）。若有 4 g 氫氣完全燃燒，需消耗氧氣多少克？',
+    opts: ['16 g', '64 g', '32 g', '8 g'],
+    ans: 'C',
+    hint: '質量不能直接照係數比分配，必須先把質量換成莫耳，用係數比算完再換回質量。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先把氫氣質量換成莫耳數（M(H₂) ＝ 1×2 ＝ 2 g/mol）。</div></div><div class="as-f">n(H₂) ＝ 4 ÷ 2 ＝ 2（mol）</div><div class="as-step"><div class="as-n">2</div><div>由係數比 H₂ : O₂ ＝ 2 : 1，求所需氧氣莫耳數。</div></div><div class="as-f">n(O₂) ＝ 2 × (1/2) ＝ 1（mol）</div><div class="as-step"><div class="as-n">3</div><div>再換回質量（M(O₂) ＝ 16×2 ＝ 32 g/mol）。</div></div><div class="as-f">m(O₂) ＝ 1 × 32 ＝ 32（g）</div><div class="as-step"><div class="as-n">4</div><div>用質量守恆驗算：4 ＋ 32 ＝ 36 g，而生成 H₂O 為 2 mol × 18 ＝ 36 g，兩邊相符 ✓</div></div><div class="as-f">4 ＋ 32 ＝ 36 ＝ 2 × 18 ✓</div><div class="as-warn">⚠ 千萬別把 4 g 直接除以 2 得「2 g 氧氣」——係數比是莫耳比，不是質量比。計量三步驟固定為：質量 → 莫耳 → 莫耳 → 質量。</div><div class="as-ans">答：(C) 32 g</div></div>'
+  },
+  // 8. 限量試劑：莫耳版（single, ans D）
+  {
+    q: '合成氨的反應式為　N₂ ＋ 3H₂ → 2NH₃。今將 2 mol 的 N₂ 與 3 mol 的 H₂ 置於容器中反應至完全，則理論上可生成 NH₃ 多少莫耳？',
+    opts: ['1 mol', '1.5 mol', '3 mol', '2 mol'],
+    ans: 'D',
+    hint: '把每種反應物的莫耳數各自「除以自己的係數」，商最小的那個就是限量試劑。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>判斷限量試劑：各反應物莫耳數除以自己的係數，商較小者先用完。</div></div><div class="as-f">N₂：2 ÷ 1 ＝ 2　　H₂：3 ÷ 3 ＝ 1</div><div class="as-step"><div class="as-n">2</div><div>H₂ 的商 1 較小，故 H₂ 是限量試劑，N₂ 過量。生成物的量必須由 H₂ 決定。</div></div><div class="as-f">限量試劑 ＝ H₂（3 mol）</div><div class="as-step"><div class="as-n">3</div><div>由係數比 H₂ : NH₃ ＝ 3 : 2 求 NH₃。</div></div><div class="as-f">n(NH₃) ＝ 3 × (2/3) ＝ 2（mol）</div><div class="as-step"><div class="as-n">4</div><div>順帶檢查過量：消耗 N₂ ＝ 3 × (1/3) ＝ 1 mol，剩餘 N₂ ＝ 2 － 1 ＝ 1 mol。</div></div><div class="as-f">剩餘 N₂ ＝ 2 － 1 ＝ 1（mol）</div><div class="as-warn">⚠ 不可以看到「哪個莫耳數比較少就是限量」——這裡 H₂ 有 3 mol 比 N₂ 的 2 mol 還多，卻仍是限量試劑，因為它每次反應要用掉 3 份。一定要先除以係數再比較。</div><div class="as-ans">答：(D) 2 mol</div></div>'
+  },
+  // 9. 限量試劑：質量版（single, ans A）
+  {
+    q: '鋅與鹽酸反應的方程式為　Zn ＋ 2HCl → ZnCl₂ ＋ H₂（原子量 Zn＝65）。今取 6.5 g 鋅粒加入含 0.1 mol HCl 的鹽酸中，反應完全後可生成氫氣多少莫耳？',
+    opts: ['0.05 mol', '0.1 mol', '0.2 mol', '0.025 mol'],
+    ans: 'A',
+    hint: '先把鋅的質量換成莫耳，再各除以係數比較，才知道是鋅過量還是鹽酸過量。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先把鋅換成莫耳數。</div></div><div class="as-f">n(Zn) ＝ 6.5 ÷ 65 ＝ 0.1（mol）</div><div class="as-step"><div class="as-n">2</div><div>各自除以係數判斷限量試劑（Zn 係數 1、HCl 係數 2）。</div></div><div class="as-f">Zn：0.1 ÷ 1 ＝ 0.1　　HCl：0.1 ÷ 2 ＝ 0.05</div><div class="as-step"><div class="as-n">3</div><div>HCl 的商 0.05 較小，HCl 為限量試劑，鋅有剩。以 HCl 計算氫氣（HCl : H₂ ＝ 2 : 1）。</div></div><div class="as-f">n(H₂) ＝ 0.1 × (1/2) ＝ 0.05（mol）</div><div class="as-step"><div class="as-n">4</div><div>檢查剩餘：消耗 Zn ＝ 0.1 × (1/2) ＝ 0.05 mol，剩下 Zn 0.05 mol（即 3.25 g 未溶解）。</div></div><div class="as-f">剩餘 Zn ＝ 0.1 － 0.05 ＝ 0.05 mol ＝ 3.25 g</div><div class="as-warn">⚠ 兩者都是 0.1 mol，很容易直接誤答 0.1 mol；但 HCl 的係數是 2，每 1 mol 反應要吃掉 2 mol HCl，所以鹽酸才是先用完的那一方。</div><div class="as-ans">答：(A) 0.05 mol</div></div>'
+  },
+  // 10. 百分產率（fill, ans 75）
+  {
+    type: 'fill',
+    q: '【選填】將 20 g 碳酸鈣 CaCO₃ 加強熱使其完全分解：　CaCO₃ → CaO ＋ CO₂（原子量 Ca＝40、C＝12、O＝16）。若實際得到氧化鈣 CaO 8.4 g，則此反應的百分產率為多少 %？（填數值，不必寫百分號）',
+    ans: '75',
+    acc: ['75%', '0.75', '75.0'],
+    hint: '百分產率＝（實際產量 ÷ 理論產量）×100%，先用莫耳比算出理論上「應該」生成多少 CaO。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先算式量並把 CaCO₃ 換成莫耳數。M(CaCO₃) ＝ 40 ＋ 12 ＋ 16×3 ＝ 100 g/mol。</div></div><div class="as-f">n(CaCO₃) ＝ 20 ÷ 100 ＝ 0.2（mol）</div><div class="as-step"><div class="as-n">2</div><div>由係數比 CaCO₃ : CaO ＝ 1 : 1，理論上可得 CaO 0.2 mol。M(CaO) ＝ 40 ＋ 16 ＝ 56 g/mol。</div></div><div class="as-f">理論產量 ＝ 0.2 × 56 ＝ 11.2（g）</div><div class="as-step"><div class="as-n">3</div><div>代入百分產率公式。</div></div><div class="as-f">百分產率 ＝ (8.4 ÷ 11.2) × 100% ＝ 0.75 × 100% ＝ 75%</div><div class="as-warn">⚠ 分母必須是「理論產量 11.2 g」，不是原料的 20 g；用 8.4 ÷ 20 會得到 42% 的錯誤答案。另外百分產率必定小於或等於 100%，若算出超過 100% 表示算錯或產物不純。</div><div class="as-ans">答：75（%）</div></div>'
+  },
+  // 11. 四大反應類型：複分解（multi, ans A/C/E）
+  {
+    type: 'multi',
+    q: '【多選】下列反應中，何者屬於「複分解反應」（兩化合物互相交換成分而生成兩新化合物）？',
+    opts: ['NaOH ＋ HCl → NaCl ＋ H₂O', '2H₂ ＋ O₂ → 2H₂O', 'AgNO₃ ＋ NaCl → AgCl↓ ＋ NaNO₃', 'Zn ＋ 2HCl → ZnCl₂ ＋ H₂', 'BaCl₂ ＋ Na₂SO₄ → BaSO₄↓ ＋ 2NaCl'],
+    ans: ['A', 'C', 'E'],
+    hint: '複分解的形狀是「AB ＋ CD → AD ＋ CB」，兩邊都是化合物且沒有單質參與。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先記四大類型的形狀：化合 A＋B→AB；分解 AB→A＋B；置換 A＋BC→AC＋B（有單質）；複分解 AB＋CD→AD＋CB（全是化合物）。</div></div><div class="as-f">複分解特徵：反應物與生成物「全部都是化合物」，成分兩兩交換</div><div class="as-step"><div class="as-n">2</div><div>(A) NaOH ＋ HCl → NaCl ＋ H₂O：Na⁺ 與 H⁺ 交換陰離子，全是化合物 → 複分解（也是中和反應）✓</div></div><div class="as-f">(A) 中和反應 ＝ 複分解的一種</div><div class="as-step"><div class="as-n">3</div><div>(B) 2H₂ ＋ O₂ → 2H₂O：兩種單質合成一種化合物 → 化合反應 ✗　(D) Zn ＋ 2HCl → ZnCl₂ ＋ H₂：單質 Zn 把化合物中的 H 換出來 → 置換反應 ✗</div></div><div class="as-f">出現「單質」就絕不是複分解</div><div class="as-step"><div class="as-n">4</div><div>(C) Ag⁺ 與 Na⁺ 交換，生成 AgCl 沉澱 → 複分解 ✓　(E) Ba²⁺ 與 Na⁺ 交換，生成 BaSO₄ 沉澱 → 複分解 ✓</div></div><div class="as-f">(C)(E) 皆為沉澱反應，屬複分解</div><div class="as-warn">⚠ 判斷的關鍵是看有沒有「單質」（如 H₂、O₂、Zn）出現：只要式子裡有單質，就落在化合、分解或置換，絕不可能是複分解。</div><div class="as-ans">答：(A) 中和、(C) 生成 AgCl 沉澱、(E) 生成 BaSO₄ 沉澱</div></div>'
+  },
+  // 12. 反應類型判斷（single, ans B）
+  {
+    q: '將鋅片放入硫酸銅溶液中，鋅片表面會析出紅色的銅：　Zn ＋ CuSO₄ → ZnSO₄ ＋ Cu。此反應屬於下列何種反應類型？',
+    opts: ['分解反應', '置換反應', '複分解反應', '化合反應'],
+    ans: 'B',
+    hint: '看反應式的「形狀」：單質＋化合物 → 新單質＋新化合物。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先標出各物質是單質還是化合物。Zn 是單質、CuSO₄ 是化合物；ZnSO₄ 是化合物、Cu 是單質。</div></div><div class="as-f">單質 ＋ 化合物 → 化合物 ＋ 單質</div><div class="as-step"><div class="as-n">2</div><div>這正是置換反應的通式 A ＋ BC → AC ＋ B：活性較大的 Zn 把化合物裡的 Cu 「擠」了出來。</div></div><div class="as-f">Zn ＋ CuSO₄ → ZnSO₄ ＋ Cu　（A ＋ BC → AC ＋ B）</div><div class="as-step"><div class="as-n">3</div><div>逐一排除：化合是「多變一」、分解是「一變多」、複分解兩邊都必須是化合物，皆不符。</div></div><div class="as-f">化合 A＋B→AB　｜　分解 AB→A＋B　｜　複分解 AB＋CD→AD＋CB</div><div class="as-warn">⚠ 別因為看到「一個換一個」就選複分解；複分解的兩邊全是化合物，而這裡明顯有 Zn 與 Cu 兩個單質，只能是置換。</div><div class="as-ans">答：(B) 置換反應</div></div>'
+  },
+  // 13. 質量守恆推未知物（single, ans D）
+  {
+    q: '在密閉容器中，10 g 的甲物質與 8 g 的乙物質恰好完全反應，生成 12 g 的丙物質與另一生成物丁。則生成的丁物質為多少克？',
+    opts: ['2 g', '4 g', '8 g', '6 g'],
+    ans: 'D',
+    hint: '密閉容器中反應前後總質量不變，把反應物總和減去已知生成物即可。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>密閉容器中適用質量守恆定律：反應物總質量＝生成物總質量。</div></div><div class="as-f">m(甲) ＋ m(乙) ＝ m(丙) ＋ m(丁)</div><div class="as-step"><div class="as-n">2</div><div>先算反應物總質量。</div></div><div class="as-f">10 ＋ 8 ＝ 18（g）</div><div class="as-step"><div class="as-n">3</div><div>再減去已知的生成物丙。</div></div><div class="as-f">m(丁) ＝ 18 － 12 ＝ 6（g）</div><div class="as-warn">⚠ 若容器沒有密閉且丁是氣體，秤到的殘留質量會少 6 g，看起來像「質量減少」，但那是氣體逸出，不是質量消失——這是質量守恆最常見的考點陷阱。</div><div class="as-ans">答：(D) 6 g</div></div>'
+  },
+  // 14. 莫耳比計量：求生成物質量（single, ans C）
+  {
+    q: '大理石的主成分為碳酸鈣，與鹽酸反應：　CaCO₃ ＋ 2HCl → CaCl₂ ＋ H₂O ＋ CO₂（原子量 H＝1、C＝12、O＝16、Ca＝40、Cl＝35.5）。今取 10 g 純碳酸鈣與足量鹽酸完全反應，可產生二氧化碳多少克？',
+    opts: ['2.2 g', '44 g', '4.4 g', '8.8 g'],
+    ans: 'C',
+    hint: '「足量鹽酸」代表鹽酸過量，生成量完全由碳酸鈣決定；先換莫耳、再用係數比、最後換回質量。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>題目說鹽酸「足量」，故 CaCO₃ 是限量試劑，一切以它計算。先求式量與莫耳數。</div></div><div class="as-f">M(CaCO₃) ＝ 40 ＋ 12 ＋ 16×3 ＝ 100　→　n ＝ 10 ÷ 100 ＝ 0.1（mol）</div><div class="as-step"><div class="as-n">2</div><div>由係數比 CaCO₃ : CO₂ ＝ 1 : 1，求二氧化碳莫耳數。</div></div><div class="as-f">n(CO₂) ＝ 0.1 × (1/1) ＝ 0.1（mol）</div><div class="as-step"><div class="as-n">3</div><div>再換回質量（M(CO₂) ＝ 12 ＋ 16×2 ＝ 44 g/mol）。</div></div><div class="as-f">m(CO₂) ＝ 0.1 × 44 ＝ 4.4（g）</div><div class="as-step"><div class="as-n">4</div><div>延伸：若問 STP 下的體積，則 V ＝ 0.1 × 22.4 ＝ 2.24 L。</div></div><div class="as-f">V(CO₂, STP) ＝ 0.1 × 22.4 ＝ 2.24（L）</div><div class="as-warn">⚠ 44 是「每莫耳」的質量，不是答案；本題只有 0.1 mol，直接寫 44 g 是把莫耳質量當成產量的典型錯誤。</div><div class="as-ans">答：(C) 4.4 g</div></div>'
+  }
+];
+
+// ── ch02_adv.js ──
+var CHEM_ADV_CH02 = [
+  {
+    type:'open',
+    q:`【進階實戰】工業合成氨的反應為 N₂ ＋ 3H₂ → 2NH₃（原子量 N＝14、H＝1）。今取 28 g 的 N₂ 與 9 g 的 H₂ 放入反應器（如圖）。試依序求：(1) 兩者各為幾莫耳 (2) 何者為限量試劑 (3) NH₃ 的理論產量（g）(4) 反應完全後剩下的過量試劑質量 (5) 若實際只得到 25.5 g 的 NH₃，求百分產率。`,
+    ans:`(1) N₂ 1 mol、H₂ 4.5 mol　(2) 限量試劑為 N₂　(3) 理論產量 34 g　(4) 剩 H₂ 1.5 mol＝3 g　(5) 產率 75%`,
+    hint:`先各自 n＝m/M；再把兩者的莫耳數「同除以自己的係數」，商較小者就是限量試劑。理論產量一律由限量試劑算，產率＝實際／理論×100%。`,
+    fig:`<svg viewBox="0 0 380 130" xmlns="http://www.w3.org/2000/svg"><rect x="14" y="20" width="120" height="46" rx="6" fill="none" stroke="var(--accent)"/><text x="74" y="40" text-anchor="middle" font-size="13" fill="var(--ink)">N₂　28 g</text><text x="74" y="58" text-anchor="middle" font-size="11" fill="var(--ink3)">n ＝ ?</text><rect x="14" y="74" width="120" height="46" rx="6" fill="none" stroke="var(--gold)"/><text x="74" y="94" text-anchor="middle" font-size="13" fill="var(--ink)">H₂　9 g</text><text x="74" y="112" text-anchor="middle" font-size="11" fill="var(--ink3)">n ＝ ?</text><line x1="134" y1="70" x2="212" y2="70" stroke="var(--ink3)"/><text x="173" y="62" text-anchor="middle" font-size="11" fill="var(--ink3)">1 : 3</text><rect x="212" y="46" width="120" height="46" rx="6" fill="none" stroke="var(--red)"/><text x="272" y="66" text-anchor="middle" font-size="13" fill="var(--ink)">NH₃</text><text x="272" y="84" text-anchor="middle" font-size="14" fill="var(--red)">?</text><text x="212" y="118" font-size="11" fill="var(--ink3)">實際得 25.5 g</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先分別求莫耳數。M(N₂)＝14×2＝28、M(H₂)＝1×2＝2。</div></div><div class="as-f">n(N₂) ＝ 28 ÷ 28 ＝ 1 mol　；　n(H₂) ＝ 9 ÷ 2 ＝ 4.5 mol</div><div class="as-step"><div class="as-n">2</div><div>判限量：把莫耳數各除以方程式中自己的係數，商小者不夠用。</div></div><div class="as-f">N₂：1 ÷ 1 ＝ 1　；　H₂：4.5 ÷ 3 ＝ 1.5　→　N₂ 商較小，為限量試劑</div><div class="as-step"><div class="as-n">3</div><div>理論產量只能由限量試劑 N₂ 算。係數比 N₂ : NH₃ ＝ 1 : 2。</div></div><div class="as-f">n(NH₃) ＝ 1 × 2 ＝ 2 mol　；　M(NH₃)＝14＋3＝17</div><div class="as-f">理論產量 ＝ 2 × 17 ＝ 34 g</div><div class="as-step"><div class="as-n">4</div><div>過量的 H₂ 只消耗掉 1×3＝3 mol，剩下的即為差額。</div></div><div class="as-f">剩 H₂ ＝ 4.5 − 3 ＝ 1.5 mol ＝ 1.5 × 2 ＝ 3 g</div><div class="as-step"><div class="as-n">5</div><div>百分產率＝實際產量÷理論產量×100%。</div></div><div class="as-f">產率 ＝ 25.5 ÷ 34 × 100% ＝ 75%</div><div class="as-note">限量試劑就像做三明治：麵包夠多但火腿只有一份，能做幾份完全看火腿；多出來的麵包只會剩著。</div><div class="as-warn">⚠ 兩個扣分點：(一) 判限量時只比「質量」或只比「莫耳數」而忘了除以係數，會誤判成 H₂ 限量；(二) 理論產量若用過量的 H₂ 去算會算出 3 mol NH₃，整題全錯。</div><div class="as-ans">答：(1) N₂ 1 mol、H₂ 4.5 mol　(2) N₂ 為限量試劑　(3) 理論產量 34 g　(4) 剩 H₂ 3 g　(5) 百分產率 75%</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】丙烷 C₃H₈ 為家用瓦斯主成分，在足量氧氣中完全燃燒生成 CO₂ 與 H₂O（原子量 C＝12、H＝1、O＝16；STP 下氣體莫耳體積 22.4 L/mol）。今完全燃燒 8.8 g 的 C₃H₈。試求：(1) 寫出配平後的化學反應式 (2) 消耗 O₂ 的質量 (3) 生成 CO₂ 的質量與其在 STP 下的體積 (4) 生成 H₂O 的質量 (5) 用質量守恆定律檢驗你的答案。`,
+    ans:`(1) C₃H₈ ＋ 5O₂ → 3CO₂ ＋ 4H₂O　(2) O₂ 32 g　(3) CO₂ 26.4 g、13.44 L　(4) H₂O 14.4 g　(5) 反應前 8.8＋32＝40.8 g，反應後 26.4＋14.4＝40.8 g，相等`,
+    hint:`配平口訣「先碳後氫最後氧」。求出 n(C₃H₈) 後，其餘各物質的莫耳數＝n×(自己的係數／C₃H₈ 的係數)。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>配平：先讓 C 平衡（CO₂ 係數 3），再讓 H 平衡（H₂O 係數 4），最後數右邊氧共 3×2＋4＝10 個，故 O₂ 係數為 5。</div></div><div class="as-f">C₃H₈ ＋ 5O₂ → 3CO₂ ＋ 4H₂O</div><div class="as-step"><div class="as-n">2</div><div>求丙烷莫耳數。M(C₃H₈)＝12×3＋1×8＝44。</div></div><div class="as-f">n(C₃H₈) ＝ 8.8 ÷ 44 ＝ 0.2 mol</div><div class="as-step"><div class="as-n">3</div><div>係數比即莫耳比 1 : 5 : 3 : 4，各乘 0.2 得各物質莫耳數。</div></div><div class="as-f">n(O₂)＝1.0 mol　n(CO₂)＝0.6 mol　n(H₂O)＝0.8 mol</div><div class="as-step"><div class="as-n">4</div><div>各乘自己的莫耳質量換回質量：M(O₂)＝32、M(CO₂)＝44、M(H₂O)＝18。</div></div><div class="as-f">m(O₂) ＝ 1.0 × 32 ＝ 32 g</div><div class="as-f">m(CO₂) ＝ 0.6 × 44 ＝ 26.4 g　；　m(H₂O) ＝ 0.8 × 18 ＝ 14.4 g</div><div class="as-step"><div class="as-n">5</div><div>氣體體積只看莫耳數，與種類無關。</div></div><div class="as-f">V(CO₂) ＝ 0.6 × 22.4 ＝ 13.44 L</div><div class="as-step"><div class="as-n">6</div><div>質量守恆檢驗：反應物總質量應等於生成物總質量。</div></div><div class="as-f">前：8.8 ＋ 32 ＝ 40.8 g　；　後：26.4 ＋ 14.4 ＝ 40.8 g　✔</div><div class="as-warn">⚠ 扣分點：(一) 方程式沒配平就直接算莫耳比，係數錯全盤皆錯；(二) 把 22.4 L/mol 拿去乘「質量」而不是莫耳數；(三) 水在常溫是液體，不可用 22.4 L/mol 去算 H₂O 體積。</div><div class="as-ans">答：(1) C₃H₈＋5O₂→3CO₂＋4H₂O　(2) 32 g　(3) 26.4 g、13.44 L　(4) 14.4 g　(5) 前後皆 40.8 g，符合質量守恆</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】有一含碳酸鈣 CaCO₃ 與二氧化矽 SiO₂ 的岩石粉末樣品共 20.0 g，加入足量鹽酸後只有 CaCO₃ 反應（SiO₂ 不與鹽酸作用），收集到 STP 下 3.36 L 的 CO₂ 氣體（如圖）。反應式為 CaCO₃ ＋ 2HCl → CaCl₂ ＋ H₂O ＋ CO₂↑（原子量 Ca＝40、C＝12、O＝16、H＝1、Cl＝35.5）。試求：(1) CO₂ 的莫耳數 (2) 樣品中 CaCO₃ 的質量與重量百分比 (3) 至少需消耗 HCl 幾莫耳 (4) 殘留固體 SiO₂ 的質量。`,
+    ans:`(1) 0.15 mol　(2) CaCO₃ 15.0 g，占 75.0%　(3) HCl 0.30 mol　(4) SiO₂ 5.0 g`,
+    hint:`不反應的雜質是干擾項，要先用「產生的氣體」倒推會反應的成分有多少。CaCO₃ 與 CO₂ 的係數比是 1 : 1，與 HCl 是 1 : 2。`,
+    fig:`<svg viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="30" width="130" height="80" rx="8" fill="none" stroke="var(--accent)"/><text x="85" y="54" text-anchor="middle" font-size="12" fill="var(--ink)">樣品 20.0 g</text><text x="85" y="74" text-anchor="middle" font-size="12" fill="var(--ink)">CaCO₃ ＋ SiO₂</text><text x="85" y="94" text-anchor="middle" font-size="13" fill="var(--red)">各 ? g</text><line x1="150" y1="62" x2="222" y2="62" stroke="var(--ink3)"/><text x="186" y="54" text-anchor="middle" font-size="11" fill="var(--ink3)">足量 HCl</text><rect x="222" y="26" width="140" height="44" rx="6" fill="none" stroke="var(--gold)"/><text x="292" y="44" text-anchor="middle" font-size="12" fill="var(--ink)">CO₂（STP）</text><text x="292" y="62" text-anchor="middle" font-size="12" fill="var(--ink)">3.36 L</text><rect x="222" y="84" width="140" height="40" rx="6" fill="none" stroke="var(--red)"/><text x="292" y="102" text-anchor="middle" font-size="12" fill="var(--ink)">殘留固體</text><text x="292" y="118" text-anchor="middle" font-size="13" fill="var(--red)">?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>STP 下氣體莫耳數＝體積÷22.4。</div></div><div class="as-f">n(CO₂) ＝ 3.36 ÷ 22.4 ＝ 0.15 mol</div><div class="as-step"><div class="as-n">2</div><div>由係數比 CaCO₃ : CO₂ ＝ 1 : 1，倒推會反應的 CaCO₃ 莫耳數。</div></div><div class="as-f">n(CaCO₃) ＝ 0.15 mol</div><div class="as-step"><div class="as-n">3</div><div>換回質量。M(CaCO₃)＝40＋12＋16×3＝100。</div></div><div class="as-f">m(CaCO₃) ＝ 0.15 × 100 ＝ 15.0 g</div><div class="as-step"><div class="as-n">4</div><div>重量百分比＝該成分質量÷樣品總質量×100%。</div></div><div class="as-f">%CaCO₃ ＝ 15.0 ÷ 20.0 × 100% ＝ 75.0%</div><div class="as-step"><div class="as-n">5</div><div>係數比 CaCO₃ : HCl ＝ 1 : 2，故 HCl 需求量為兩倍。</div></div><div class="as-f">n(HCl) ＝ 0.15 × 2 ＝ 0.30 mol</div><div class="as-step"><div class="as-n">6</div><div>SiO₂ 不參與反應，仍全部留下，質量＝總質量減去 CaCO₃。</div></div><div class="as-f">m(SiO₂) ＝ 20.0 − 15.0 ＝ 5.0 g　（占 25.0%）</div><div class="as-note">混合物題的固定路線：可測量的產物（氣體體積或沉澱質量）→ 莫耳數 → 由係數比回推活性成分 → 換算質量與百分比。</div><div class="as-warn">⚠ 扣分點：(一) 把 20.0 g 整包當成 CaCO₃ 去算，等於忽略雜質；(二) HCl 忘了乘 2；(三) 題目說鹽酸「足量」，代表 HCl 不是限量試劑，不必比誰先用完。</div><div class="as-ans">答：(1) 0.15 mol　(2) CaCO₃ 15.0 g、占 75.0%　(3) HCl 0.30 mol　(4) SiO₂ 5.0 g</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】將 11.1 g 氯化鈣 CaCl₂ 水溶液與 15.9 g 碳酸鈉 Na₂CO₃ 水溶液混合，發生複分解反應：CaCl₂ ＋ Na₂CO₃ → CaCO₃↓ ＋ 2NaCl（原子量 Ca＝40、Cl＝35.5、Na＝23、C＝12、O＝16）。試求：(1) 兩反應物各幾莫耳 (2) 何者為限量試劑 (3) CaCO₃ 沉澱的理論產量 (4) 過濾烘乾後實際秤得 8.5 g，求百分產率 (5) 反應後溶液中尚未反應的過量試劑有幾莫耳。`,
+    ans:`(1) CaCl₂ 0.10 mol、Na₂CO₃ 0.15 mol　(2) 限量試劑為 CaCl₂　(3) 理論產量 10.0 g　(4) 產率 85%　(5) 剩 Na₂CO₃ 0.05 mol`,
+    hint:`係數比是 1 : 1，這時直接比莫耳數大小即可分出限量。理論產量必須由限量試劑算，產率不可能超過 100%。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先算兩者的莫耳質量。M(CaCl₂)＝40＋35.5×2＝111；M(Na₂CO₃)＝23×2＋12＋16×3＝106。</div></div><div class="as-f">n(CaCl₂) ＝ 11.1 ÷ 111 ＝ 0.10 mol</div><div class="as-f">n(Na₂CO₃) ＝ 15.9 ÷ 106 ＝ 0.15 mol</div><div class="as-step"><div class="as-n">2</div><div>係數比為 1 : 1，各除以係數 1 後仍是 0.10 與 0.15，商小者先用完。</div></div><div class="as-f">0.10 ＜ 0.15　→　CaCl₂ 為限量試劑</div><div class="as-step"><div class="as-n">3</div><div>沉澱由限量試劑決定。CaCl₂ : CaCO₃ ＝ 1 : 1，M(CaCO₃)＝100。</div></div><div class="as-f">n(CaCO₃) ＝ 0.10 mol　→　理論產量 ＝ 0.10 × 100 ＝ 10.0 g</div><div class="as-step"><div class="as-n">4</div><div>百分產率＝實際÷理論×100%。</div></div><div class="as-f">產率 ＝ 8.5 ÷ 10.0 × 100% ＝ 85%</div><div class="as-step"><div class="as-n">5</div><div>Na₂CO₃ 只被消耗掉 0.10 mol，其餘留在溶液中。</div></div><div class="as-f">剩 Na₂CO₃ ＝ 0.15 − 0.10 ＝ 0.05 mol</div><div class="as-note">產率永遠小於 100%：過濾時沉澱會沾在濾紙上、烘乾不完全或反應未走到底，都會讓實際量偏低。</div><div class="as-warn">⚠ 扣分點：(一) 誤用過量的 Na₂CO₃ 去算，會得到 15 g 的假理論值，產率就變成不合理的 56.7%；(二) 產率算出大於 100% 時代表哪一步用錯了限量試劑，一定要回頭檢查。</div><div class="as-ans">答：(1) CaCl₂ 0.10 mol、Na₂CO₃ 0.15 mol　(2) CaCl₂ 為限量試劑　(3) 理論 10.0 g　(4) 產率 85%　(5) 剩餘 Na₂CO₃ 0.05 mol</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】將 13.0 g 鋅粒投入含 0.30 mol 氯化氫的鹽酸中，發生置換反應：Zn ＋ 2HCl → ZnCl₂ ＋ H₂↑（原子量 Zn＝65、H＝1、Cl＝35.5；STP 下 22.4 L/mol）。試求：(1) Zn 的莫耳數 (2) 判斷限量試劑並說明理由 (3) 產生 H₂ 的莫耳數、質量與 STP 下的體積 (4) 反應停止後未溶解的 Zn 質量 (5) 若要讓 Zn 完全溶解，至少還需再加入多少莫耳的 HCl。`,
+    ans:`(1) 0.20 mol　(2) HCl 為限量試劑（0.30÷2＝0.15 小於 0.20÷1＝0.20）　(3) H₂ 0.15 mol、0.3 g、3.36 L　(4) 剩 Zn 0.05 mol＝3.25 g　(5) 還需 HCl 0.10 mol`,
+    hint:`係數比 Zn : HCl ＝ 1 : 2，判限量時 HCl 的莫耳數要先除以 2 再比。剩餘的固體代表酸不夠用。`,
+    fig:`<svg viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg"><path d="M110 34 L110 108 Q110 122 126 122 L196 122 Q212 122 212 108 L212 34" fill="none" stroke="var(--ink3)"/><rect x="110" y="72" width="102" height="50" fill="none" stroke="var(--accent)"/><text x="161" y="102" text-anchor="middle" font-size="12" fill="var(--ink)">HCl 0.30 mol</text><circle cx="140" cy="112" r="6" fill="none" stroke="var(--gold)"/><circle cx="161" cy="115" r="6" fill="none" stroke="var(--gold)"/><circle cx="182" cy="112" r="6" fill="none" stroke="var(--gold)"/><text x="161" y="64" text-anchor="middle" font-size="12" fill="var(--ink)">Zn 13.0 g</text><line x1="212" y1="52" x2="280" y2="52" stroke="var(--ink3)"/><text x="300" y="44" text-anchor="middle" font-size="12" fill="var(--ink)">H₂</text><text x="300" y="62" text-anchor="middle" font-size="14" fill="var(--red)">? L</text><text x="20" y="118" font-size="12" fill="var(--ink)">剩固體</text><text x="60" y="118" font-size="14" fill="var(--red)">?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先求鋅的莫耳數。M(Zn)＝65。</div></div><div class="as-f">n(Zn) ＝ 13.0 ÷ 65 ＝ 0.20 mol</div><div class="as-step"><div class="as-n">2</div><div>判限量：各除以自己的係數（Zn 除 1、HCl 除 2）。</div></div><div class="as-f">Zn：0.20 ÷ 1 ＝ 0.20　；　HCl：0.30 ÷ 2 ＝ 0.15　→　HCl 為限量試劑</div><div class="as-step"><div class="as-n">3</div><div>產物由限量試劑 HCl 決定。係數比 HCl : H₂ ＝ 2 : 1。</div></div><div class="as-f">n(H₂) ＝ 0.30 ÷ 2 ＝ 0.15 mol</div><div class="as-step"><div class="as-n">4</div><div>換算質量與體積。M(H₂)＝2。</div></div><div class="as-f">m(H₂) ＝ 0.15 × 2 ＝ 0.3 g　；　V ＝ 0.15 × 22.4 ＝ 3.36 L</div><div class="as-step"><div class="as-n">5</div><div>實際被溶解的 Zn 與 H₂ 為 1 : 1，故只溶掉 0.15 mol，其餘留為固體。</div></div><div class="as-f">剩 Zn ＝ 0.20 − 0.15 ＝ 0.05 mol ＝ 0.05 × 65 ＝ 3.25 g</div><div class="as-step"><div class="as-n">6</div><div>要溶完剩下的 0.05 mol Zn，需再補其 2 倍莫耳數的 HCl。</div></div><div class="as-f">追加 n(HCl) ＝ 0.05 × 2 ＝ 0.10 mol</div><div class="as-note">看到「加入酸後仍有金屬殘留」，就等於題目直接告訴你酸是限量試劑，所有產物都要用酸來算。</div><div class="as-warn">⚠ 扣分點：(一) 用 0.20 mol 的 Zn 去算會得到 0.20 mol H₂＝4.48 L，把酸不夠這件事漏掉；(二) HCl 判限量時忘了先除以係數 2；(三) H₂ 的莫耳質量是 2 不是 1。</div><div class="as-ans">答：(1) 0.20 mol　(2) HCl 為限量試劑　(3) H₂ 0.15 mol、0.3 g、3.36 L　(4) 剩 Zn 3.25 g　(5) 再加 HCl 0.10 mol</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】某化合物僅由 C、H、O 三種元素組成。取 4.6 g 該化合物在足量氧氣中完全燃燒，生成 8.8 g 的 CO₂ 與 5.4 g 的 H₂O（原子量 C＝12、H＝1、O＝16）。已知其分子量為 46。試求：(1) 化合物中碳與氫的質量 (2) 氧的質量與莫耳數 (3) C、H、O 的最簡莫耳整數比與實驗式 (4) 分子式 (5) 說明為何氧的質量不能直接由 CO₂ 與 H₂O 中的氧去算。`,
+    ans:`(1) C 2.4 g、H 0.6 g　(2) O 1.6 g＝0.10 mol　(3) C : H : O ＝ 2 : 6 : 1，實驗式 C₂H₆O　(4) 分子式 C₂H₆O　(5) 因產物中的氧一部分來自燃燒用的 O₂，必須用「總質量扣掉 C 與 H」求得`,
+    hint:`燃燒分析的骨架：CO₂ 裡的 C 全部來自樣品、H₂O 裡的 H 全部來自樣品；氧則用差減法（樣品質量 − C 質量 − H 質量）。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>碳全部進入 CO₂。先求 n(CO₂)，M(CO₂)＝44。</div></div><div class="as-f">n(CO₂) ＝ 8.8 ÷ 44 ＝ 0.20 mol　→　n(C) ＝ 0.20 mol　→　m(C) ＝ 0.20 × 12 ＝ 2.4 g</div><div class="as-step"><div class="as-n">2</div><div>氫全部進入 H₂O，且每 1 個 H₂O 含 2 個 H。M(H₂O)＝18。</div></div><div class="as-f">n(H₂O) ＝ 5.4 ÷ 18 ＝ 0.30 mol　→　n(H) ＝ 0.30 × 2 ＝ 0.60 mol　→　m(H) ＝ 0.6 g</div><div class="as-step"><div class="as-n">3</div><div>氧用差減法：樣品總質量扣掉 C 與 H 的質量。</div></div><div class="as-f">m(O) ＝ 4.6 − 2.4 − 0.6 ＝ 1.6 g　→　n(O) ＝ 1.6 ÷ 16 ＝ 0.10 mol</div><div class="as-step"><div class="as-n">4</div><div>三者莫耳數同除以最小值 0.10，化成最簡整數比。</div></div><div class="as-f">C : H : O ＝ 0.20 : 0.60 : 0.10 ＝ 2 : 6 : 1　→　實驗式 C₂H₆O</div><div class="as-step"><div class="as-n">5</div><div>實驗式式量＝12×2＋1×6＋16＝46，與分子量相除得倍數 n。</div></div><div class="as-f">n ＝ 46 ÷ 46 ＝ 1　→　分子式 ＝ C₂H₆O</div><div class="as-step"><div class="as-n">6</div><div>驗算：4.6÷46＝0.10 mol 化合物，含 C 0.20 mol、H 0.60 mol、O 0.10 mol，與上面完全吻合。</div></div><div class="as-note">實驗式只告訴你原子的「比例」，要再有分子量才能定出真正的分子式；本題倍數恰為 1，兩者相同。</div><div class="as-warn">⚠ 扣分點：(一) 把 CO₂ 與 H₂O 中的氧加總當成樣品含氧量（那裡面混了燃燒用的 O₂），氧必須用差減法；(二) 算 H 時忘了乘 2；(三) 求出實驗式就當答案交卷，沒用分子量檢查倍數。</div><div class="as-ans">答：(1) C 2.4 g、H 0.6 g　(2) O 1.6 g、0.10 mol　(3) 2 : 6 : 1，實驗式 C₂H₆O　(4) 分子式 C₂H₆O　(5) 產物中的氧含有燃燒所加入的 O₂，故只能用總質量差減法求樣品自身的氧</div></div>`
+  }
+];
+
+// ── ch03_course.js ──
+// ch03_course.js — 化學高一「溶液與濃度」課程頁 + 重點筆記 + 速記卡
+// 三段：var CHEM_COURSE_CH03 / var CHEM_NOTES_CH03 / var CHEM_CARDS_CH03
+
+var CHEM_COURSE_CH03 = {
+  num: 'CH 03',
+  name: '溶液與濃度',
+  book: '第一冊 基礎化學',
+  grade: '高一',
+  sub: '溶液組成、溶解度曲線、重量百分濃度、體積莫耳濃度、ppm、稀釋、電解質與沉澱',
+  tags: ['分科範圍', '必修', '先懂再背'],
+  sections: [
+    {
+      title: '🗣 白話導讀',
+      color: 'blue',
+      body: `<p class="c-intro">把糖丟進水裡攪一攪，糖不見了、水變甜了——這杯東西就是<span class="c-def">溶液</span>。被溶解的糖叫<span class="c-def">溶質</span>，負責溶解的水叫<span class="c-def">溶劑</span>，兩者加起來才是<span class="c-def">溶液</span>。這一章要學的，就是怎麼用數字把「這杯有多濃」講清楚。</p>
+<div class="c-blocks"><div class="c-block"><span class="bk-tag">溶質</span>被溶解的（糖、鹽）</div><div class="c-op">+</div><div class="c-block"><span class="bk-tag">溶劑</span>做溶解的（水）</div><div class="c-op">=</div><div class="c-block o"><span class="bk-tag">溶液</span>整杯</div></div>
+<p class="c-intro">濃度有三種常見講法：秤重量的<span class="c-def">重量百分濃度 P%</span>、算莫耳的<span class="c-def">體積莫耳濃度 M</span>、講超級稀的<span class="c-def">ppm</span>。它們的骨架都一樣：<b>某一部分 ÷ 整杯</b>。差別只在「用什麼單位算」和「分母是質量還是體積」。</p>
+<div class="c-warn">⚠ 全章最容易錯的一句話：<b>分母是「溶液」不是「溶劑」</b>。20 g 鹽溶在 80 g 水裡，濃度是 20 ÷ 100，不是 20 ÷ 80。</div>`
+    },
+    {
+      title: '💧 溶解度、飽和與溶解度曲線',
+      color: 'green',
+      body: `<p class="c-intro">水能溶的量不是無限的。在某個溫度下，100 g 水最多能溶多少克某物質，就叫這個物質的<span class="c-def">溶解度</span>（單位 g/100 g 水）。溶到不能再溶、底下開始有剩的狀態叫<span class="c-def">飽和</span>；還溶得下就叫<span class="c-def">未飽和</span>。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<line x1="46" y1="20" x2="46" y2="180" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="46" y1="180" x2="356" y2="180" stroke="var(--ink3)" stroke-width="1.5"/>
+<line x1="46" y1="127" x2="350" y2="127" stroke="var(--ink3)" stroke-width="0.6" stroke-dasharray="3 3"/>
+<line x1="46" y1="73" x2="350" y2="73" stroke="var(--ink3)" stroke-width="0.6" stroke-dasharray="3 3"/>
+<line x1="46" y1="20" x2="350" y2="20" stroke="var(--ink3)" stroke-width="0.6" stroke-dasharray="3 3"/>
+<text x="40" y="184" text-anchor="end" font-size="10" fill="var(--ink3)">0</text>
+<text x="40" y="131" text-anchor="end" font-size="10" fill="var(--ink3)">60</text>
+<text x="40" y="77" text-anchor="end" font-size="10" fill="var(--ink3)">120</text>
+<text x="40" y="24" text-anchor="end" font-size="10" fill="var(--ink3)">180</text>
+<text x="46" y="196" text-anchor="middle" font-size="10" fill="var(--ink3)">0</text>
+<text x="122" y="196" text-anchor="middle" font-size="10" fill="var(--ink3)">20</text>
+<text x="198" y="196" text-anchor="middle" font-size="10" fill="var(--ink3)">40</text>
+<text x="274" y="196" text-anchor="middle" font-size="10" fill="var(--ink3)">60</text>
+<text x="350" y="196" text-anchor="middle" font-size="10" fill="var(--ink3)">80</text>
+<text x="200" y="208" text-anchor="middle" font-size="10" fill="var(--ink3)">溫度（°C）</text>
+<text x="10" y="16" font-size="10" fill="var(--ink3)">溶解度 g/100 g 水</text>
+<polyline points="46,168 122,152 198,123 274,82 350,30" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+<polyline points="46,148 122,148 198,147 274,147 350,146" fill="none" stroke="var(--green)" stroke-width="2.2"/>
+<circle cx="122" cy="152" r="3.2" fill="var(--accent)"/>
+<circle cx="274" cy="82" r="3.2" fill="var(--accent)"/>
+<text x="132" y="168" font-size="10" fill="var(--accent)">20°C：32</text>
+<text x="238" y="74" font-size="10" fill="var(--accent)">60°C：110</text>
+<text x="300" y="44" font-size="11" fill="var(--accent)" font-weight="700">KNO₃</text>
+<text x="196" y="140" font-size="11" fill="var(--green)" font-weight="700">NaCl（約 36，幾乎不動）</text>
+</svg></div>
+<p class="c-intro">看圖說話：<b>KNO₃ 的線很陡</b>，20°C 只溶 32 g，升到 60°C 就能溶 110 g——這種<span class="c-def">溫度越高溶越多</span>的固體最常考。<b>NaCl 的線幾乎是平的</b>（36 到 38 之間），所以想靠降溫把食鹽從水裡逼出來，幾乎沒用。</p>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext"><b>點落在線上</b> = 剛好飽和；<b>點在線下方</b> = 未飽和（還溶得下）；<b>點在線上方</b> = 溶不完，多的會沉在底部。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext"><b>降溫析出</b>：60°C 的 100 g 水裡溶滿 110 g KNO₃，降到 20°C 只能留 32 g，所以析出 110 − 32 = <b>78 g</b> 結晶。這就是重結晶純化的原理。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext"><b>飽和溶液的濃度</b>可以直接由溶解度算：20°C 飽和食鹽水 = 36 g 鹽 + 100 g 水 = 136 g 溶液 → 36 ÷ 136 = <b>26.5%</b>。</div></div>
+<div class="c-warn">⚠ 氣體相反：<b>溫度越高、氣體溶解度越低</b>（汽水放久變不冰又走氣）；氣體加壓則溶得更多（汽水瓶開蓋冒泡）。</div>`
+    },
+    {
+      title: '📏 三種濃度：P%、M 與 ppm',
+      color: 'gold',
+      body: `<p class="c-intro">三種濃度看起來很多，其實都在回答同一句話：<span class="c-def">整杯裡有多少是溶質</span>。P% 用質量比質量、M 用莫耳比體積、ppm 是「百萬分之幾」，專門講很稀的東西（自來水的餘氯、空氣汙染物）。</p>
+<div class="fcard"><div class="fcard-f">P% ＝ 溶質質量 ÷ 溶液質量 × 100%　（溶液質量 = 溶質 + 溶劑）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>溶質的克數，除以整杯的克數，再乘一百。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>題目全部給「幾克」時用它。動筆前先確認分母是<b>整杯</b>，不是水。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>25 g 糖溶於 75 g 水 → 溶液 100 g → P% = 25 ÷ 100 × 100% = <b>25%</b>。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 15% 的糖水 200 g 含糖幾克？<details><summary>看解法</summary><div class="ans">200 × 0.15 = 30 g 糖，水 = 200 − 30 = 170 g。</div></details>② 要配 10% 食鹽水 250 g，鹽和水各多少？<details><summary>看解法</summary><div class="ans">鹽 = 250 × 0.10 = 25 g，水 = 250 − 25 = 225 g。</div></details></div></div></div>
+<div class="fcard"><div class="fcard-f">M ＝ 溶質莫耳數 n ÷ 溶液體積 V（公升）　單位 mol/L</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>幾莫耳的溶質，攤在一公升的溶液裡。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>只要出現「幾 mL 溶液」或要接反應計量，就走 M。先把 g 換 mol、mL 換 L 再帶。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>5.85 g NaCl（式量 58.5）配成 500 mL 溶液 → n = 5.85 ÷ 58.5 = 0.1 mol，V = 0.5 L → M = 0.1 ÷ 0.5 = <b>0.2 M</b>。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 9.8 g H₂SO₄（分子量 98）配成 250 mL 是幾 M？<details><summary>看解法</summary><div class="ans">n = 9.8 ÷ 98 = 0.1 mol，V = 0.25 L → M = 0.1 ÷ 0.25 = 0.4 M。</div></details>② 2 M 的 NaOH 300 mL 含幾克 NaOH（式量 40）？<details><summary>看解法</summary><div class="ans">n = 2 × 0.3 = 0.6 mol → m = 0.6 × 40 = 24 g。</div></details></div></div></div>
+<div class="fcard"><div class="fcard-f">ppm ＝ 溶質質量 ÷ 溶液質量 × 10⁶　（稀水溶液可視為 mg/kg，也約等於 mg/L）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>百萬分之幾——一百萬份溶液裡，溶質佔幾份。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>濃度小到用 % 寫會變一堆零時（水質、空氣汙染、微量金屬）。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>1000 g 水溶液中含 0.002 g（= 2 mg）鉛 → 0.002 ÷ 1000 × 10⁶ = <b>2 ppm</b>。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 某水樣含氟 0.8 ppm，2 kg 該水樣含氟幾毫克？<details><summary>看解法</summary><div class="ans">0.8 ppm = 0.8 mg/kg → 0.8 × 2 = 1.6 mg。</div></details>② 5 ppm 換成重量百分濃度是多少？<details><summary>看解法</summary><div class="ans">5 ÷ 10⁶ = 5×10⁻⁶ → ×100% = 0.0005%。</div></details></div></div></div>
+<div class="c-warn">⚠ M 的分母是<b>溶液的總體積</b>，不是「加了多少水」。而且體積不能直接相加（酒精加水會縮），所以配製一定要「加水到刻度」才準。</div>`
+    },
+    {
+      title: '🧪 稀釋、配製與電解質',
+      color: 'blue',
+      body: `<p class="c-intro">稀釋只是<span class="c-def">加水</span>：水變多了、溶質一顆也沒少。既然溶質的莫耳數前後相同，而 n = M × V，就得到全章最好用的一條式子。</p>
+<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arC3" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker></defs>
+<path d="M40,60 L40,180 L110,180 L110,60" fill="none" stroke="var(--ink3)" stroke-width="1.8"/>
+<rect x="41" y="140" width="68" height="39" fill="var(--accent)" opacity="0.28"/>
+<circle cx="55" cy="152" r="3.4" fill="var(--accent)"/><circle cx="75" cy="149" r="3.4" fill="var(--accent)"/><circle cx="95" cy="155" r="3.4" fill="var(--accent)"/>
+<circle cx="60" cy="170" r="3.4" fill="var(--accent)"/><circle cx="82" cy="166" r="3.4" fill="var(--accent)"/><circle cx="99" cy="172" r="3.4" fill="var(--accent)"/>
+<text x="75" y="48" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="700">12 M</text>
+<text x="75" y="196" text-anchor="middle" font-size="11" fill="var(--ink3)">取 125 mL</text>
+<line x1="126" y1="118" x2="196" y2="118" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arC3)"/>
+<text x="161" y="110" text-anchor="middle" font-size="12" fill="var(--green)">加水</text>
+<path d="M212,60 L212,180 L340,180 L340,60" fill="none" stroke="var(--ink3)" stroke-width="1.8"/>
+<rect x="213" y="80" width="126" height="99" fill="var(--accent)" opacity="0.14"/>
+<circle cx="238" cy="98" r="3.4" fill="var(--accent)"/><circle cx="300" cy="106" r="3.4" fill="var(--accent)"/><circle cx="268" cy="130" r="3.4" fill="var(--accent)"/>
+<circle cx="322" cy="146" r="3.4" fill="var(--accent)"/><circle cx="232" cy="160" r="3.4" fill="var(--accent)"/><circle cx="288" cy="168" r="3.4" fill="var(--accent)"/>
+<text x="276" y="48" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="700">3 M</text>
+<text x="276" y="196" text-anchor="middle" font-size="11" fill="var(--ink3)">定容到 500 mL</text>
+<text x="161" y="140" text-anchor="middle" font-size="11" fill="var(--ink)">溶質 1.5 mol</text>
+<text x="161" y="156" text-anchor="middle" font-size="11" fill="var(--ink)">前後不變</text>
+</svg></div>
+<p class="c-intro">圖上左右兩杯的<b>圓點數目一樣是 6 顆</b>，只是右邊攤在更大的體積裡，所以看起來變稀。對照數字：12 × 0.125 = 1.5 mol，3 × 0.5 = 1.5 mol，兩邊相等。</p>
+<div class="fcard"><div class="fcard-f">M₁V₁ ＝ M₂V₂　（稀釋前 = 稀釋後，溶質莫耳數守恆）</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>原本的濃度乘體積，等於稀釋後的濃度乘體積。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>題目出現「加水稀釋」「由濃溶液配稀溶液」。只加水、沒加溶質才能用。V 兩邊單位一致即可（都用 mL 也行）。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>用 12 M 濃鹽酸配 500 mL 的 3 M 鹽酸，要取多少？12 × V₁ = 3 × 500 → V₁ = <b>125 mL</b>（再加水到 500 mL）。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 0.5 M 溶液 100 mL 加水到 250 mL，濃度變多少？<details><summary>看解法</summary><div class="ans">0.5 × 100 = M₂ × 250 → M₂ = 0.2 M。</div></details>② 2 M 溶液要稀釋成 0.4 M，需再加多少水才有 500 mL？<details><summary>看解法</summary><div class="ans">V₁ = 0.4 × 500 ÷ 2 = 100 mL，故加水 500 − 100 = 400 mL。</div></details></div></div></div>
+<p class="c-intro"><b>配製 500 mL 0.2 M NaCl 的標準流程</b>（式量 58.5）：</p>
+<div class="c-stepline"><div class="c-stepnum">1</div><div class="c-steptext">先算：n = 0.2 × 0.5 = 0.1 mol → m = 0.1 × 58.5 = <b>5.85 g</b>。</div></div>
+<div class="c-stepline"><div class="c-stepnum">2</div><div class="c-steptext">用天平<b>稱量</b> 5.85 g NaCl，倒入燒杯，加<b>少量</b>蒸餾水攪拌至完全溶解。</div></div>
+<div class="c-stepline"><div class="c-stepnum">3</div><div class="c-steptext">把溶液<b>移入 500 mL 容量瓶</b>，燒杯與玻棒<b>洗滌 2～3 次</b>，洗液也一併倒入（不然溶質會少）。</div></div>
+<div class="c-stepline"><div class="c-stepnum">4</div><div class="c-steptext">加水到接近刻度後改用<b>滴管</b>，讓凹液面最低點與刻度線<b>齊平</b>，加蓋<b>搖勻</b>。</div></div>
+<p class="c-intro">最後看溶液會不會導電。溶在水中會解離出離子、能導電的叫<span class="c-def">電解質</span>；完全解離的是<span class="c-def">強電解質</span>（NaCl、HCl、H₂SO₄、NaOH），只解離一小部分的是<span class="c-def">弱電解質</span>（醋酸 CH₃COOH、氨水 NH₃）；蔗糖、酒精這種在水中還是完整分子的叫<span class="c-def">非電解質</span>，不導電。</p>
+<div class="formula">AgNO₃ + NaCl → AgCl↓（白色沉澱）+ NaNO₃</div>
+<p class="c-intro">兩種可溶鹽的溶液倒在一起，若交換離子後有一組<b>不溶</b>，就會生成<span class="c-def">沉澱</span>。好記的三句：<b>硝酸鹽、鈉鉀銨鹽全部可溶</b>；<b>氯化物大多可溶</b>，但 AgCl、PbCl₂ 例外；<b>硫酸鹽大多可溶</b>，但 BaSO₄、PbSO₄ 例外；<b>碳酸鹽、氫氧化物大多不溶</b>（除了鈉鉀銨）。</p>
+<div class="c-warn">⚠ 別把「強弱」和「濃稀」混在一起：強弱看<b>解離的比例</b>，濃稀看<b>放了多少量</b>。很稀的鹽酸仍是強電解質，很濃的醋酸仍是弱電解質。</div>`
+    },
+    {
+      title: '✏️ 練習問題',
+      color: 'green',
+      body: `<div class="c-practice"><b>練習 1：</b>把 40 g 葡萄糖溶於 160 g 水中，此溶液的重量百分濃度是多少？<details><summary>看解答</summary>溶液質量 = 40 + 160 = 200 g → P% = 40 ÷ 200 × 100% = 20%。（分母是溶液 200 g，不是水 160 g）</details></div>
+<div class="c-practice"><b>練習 2：</b>取 4 g NaOH（式量 40）配成 250 mL 水溶液，體積莫耳濃度是多少 M？<details><summary>看解答</summary>n = 4 ÷ 40 = 0.1 mol；V = 250 mL = 0.25 L → M = 0.1 ÷ 0.25 = 0.4 M。</details></div>
+<div class="c-practice"><b>練習 3：</b>由上面的溶解度曲線，60°C 時 100 g 水恰好溶滿 KNO₃ 成飽和溶液，降溫至 20°C 會析出多少克結晶？<details><summary>看解答</summary>60°C 溶解度 110 g、20°C 溶解度 32 g（水量不變）→ 析出 110 − 32 = 78 g。</details></div>`
+    }
+  ]
+};
+
+var CHEM_NOTES_CH03 = [
+  {
+    title: '一張圖看懂濃度怎麼算',
+    tag: '核心概念',
+    tagClass: 'blue',
+    open: true,
+    body: `<div class="c-svg"><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arN3" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker></defs>
+<rect x="6" y="30" width="104" height="52" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="58" y="52" text-anchor="middle" font-size="13" fill="var(--ink)">溶質質量 m</text>
+<text x="58" y="70" text-anchor="middle" font-size="12" fill="var(--accent)" font-weight="700">5.85 g NaCl</text>
+<rect x="138" y="30" width="104" height="52" rx="9" fill="var(--gold)" stroke="var(--gold)"/>
+<text x="190" y="52" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">莫耳數 n</text>
+<text x="190" y="70" text-anchor="middle" font-size="12" fill="#fff">0.1 mol</text>
+<rect x="270" y="30" width="104" height="52" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="322" y="52" text-anchor="middle" font-size="13" fill="var(--ink)">濃度 M</text>
+<text x="322" y="70" text-anchor="middle" font-size="12" fill="var(--accent)" font-weight="700">0.2 mol/L</text>
+<line x1="112" y1="56" x2="136" y2="56" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arN3)"/>
+<text x="124" y="46" text-anchor="middle" font-size="11" fill="var(--accent)">÷58.5</text>
+<line x1="244" y1="56" x2="268" y2="56" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arN3)"/>
+<text x="256" y="46" text-anchor="middle" font-size="11" fill="var(--accent)">÷0.5 L</text>
+<rect x="138" y="140" width="104" height="50" rx="9" fill="var(--bg)" stroke="var(--ink3)" stroke-width="1.5"/>
+<text x="190" y="161" text-anchor="middle" font-size="13" fill="var(--ink)">溶液質量</text>
+<text x="190" y="179" text-anchor="middle" font-size="12" fill="var(--green)" font-weight="700">溶質 + 溶劑</text>
+<line x1="190" y1="84" x2="190" y2="138" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#arN3)"/>
+<text x="252" y="116" text-anchor="middle" font-size="11" fill="var(--green)">走 P% 這條</text>
+<text x="112" y="116" text-anchor="middle" font-size="11" fill="var(--ink3)">秤重量</text>
+</svg></div>
+<p class="c-intro">圖上就是一個具體例子：<b>5.85 g 的 NaCl 除以式量 58.5 得到 0.1 mol，再除以溶液體積 0.5 L，就是 0.2 M</b>。要走 P% 的話不進莫耳，直接把溶質質量除以「溶質 + 溶劑」的總質量。</p>
+<div class="formula">P% = 溶質 / 溶液 ×100%　　M = n / V(L)　　ppm = 溶質 / 溶液 ×10⁶</div>
+<p class="c-intro">三條式子的分母通通是<span class="c-def">溶液</span>，差別只在 P% 與 ppm 用<b>質量</b>當分母、M 用<b>體積（公升）</b>當分母。</p>`
+  },
+  {
+    title: '溶解度與飽和判讀',
+    tag: '核心概念',
+    tagClass: 'green',
+    open: false,
+    body: `<p class="c-intro"><span class="c-def">溶解度</span>＝某溫度下 100 g 水最多能溶的克數。點在曲線上＝<b>恰飽和</b>；點在曲線下＝<b>未飽和</b>；點在曲線上方＝溶不完，會有固體剩在底部。</p>
+<p class="c-intro"><b>降溫析出量 = 高溫溶解度 − 低溫溶解度</b>（水量不變時）。例：100 g 水的 KNO₃ 由 60°C（110 g）降到 20°C（32 g），析出 110 − 32 = 78 g。</p>
+<p class="c-intro"><b>飽和溶液濃度</b>直接由溶解度算：20°C 飽和食鹽水 = 36 ÷ (36 + 100) × 100% ≈ 26.5%；80°C 飽和 KNO₃ = 169 ÷ (169 + 100) × 100% ≈ 62.8%。</p>
+<div class="c-warn">⚠ 固體多半「越熱越溶」，<b>氣體剛好相反</b>：溫度升高溶解度下降、加壓則上升。</div>`
+  },
+  {
+    title: '電解質強弱與沉澱規則',
+    tag: '觀念釐清',
+    tagClass: 'gold',
+    open: false,
+    body: `<div class="c-blocks"><div class="c-block"><span class="bk-tag">強電解質</span>完全解離</div><div class="c-op">vs</div><div class="c-block"><span class="bk-tag">弱電解質</span>部分解離</div><div class="c-op">vs</div><div class="c-block o"><span class="bk-tag">非電解質</span>不解離</div></div>
+<p class="c-intro"><b>強</b>：NaCl、HCl、HNO₃、H₂SO₄、NaOH、KOH（強酸強鹼與可溶鹽）。<b>弱</b>：醋酸 CH₃COOH、氨水 NH₃、碳酸 H₂CO₃。<b>非</b>：蔗糖、酒精、尿素——在水中仍是完整分子，燈泡不亮。</p>
+<p class="c-intro"><b>沉澱規則（好記四句）</b>：硝酸鹽與鈉鉀銨鹽全溶；氯化物大多溶，AgCl、PbCl₂ 例外；硫酸鹽大多溶，BaSO₄、PbSO₄ 例外；碳酸鹽與氫氧化物大多不溶，只有鈉鉀銨可溶。</p>
+<div class="formula">AgNO₃ + NaCl → AgCl↓ + NaNO₃　　BaCl₂ + Na₂SO₄ → BaSO₄↓ + 2NaCl</div>
+<div class="c-warn">⚠ 強弱看<b>解離比例</b>，濃稀看<b>放多少量</b>，兩件事不可混談。</div>`
+  },
+  {
+    title: '必背公式卡（濃度四式）',
+    tag: '必背公式',
+    tagClass: 'red',
+    open: false,
+    body: `<div class="fcard"><div class="fcard-f">P% = 溶質/溶液 ×100%　M = n/V(L)　ppm = 溶質/溶液 ×10⁶　M₁V₁ = M₂V₂</div><div class="fcard-row"><span class="fcard-k">🗣 唸法</span><div>三個濃度都是「部分除以整杯」；稀釋時濃度乘體積前後相等。</div></div><div class="fcard-row"><span class="fcard-k g">⏰ 時機</span><div>給克數走 P%，給 mL 溶液走 M，濃度極小走 ppm，出現「加水」走 M₁V₁ = M₂V₂。mL 記得換成 L 再帶 M。</div></div><div class="fcard-row"><span class="fcard-k o">📝 例子</span><div>5.85 g NaCl（58.5）配 500 mL → 0.1 mol ÷ 0.5 L = 0.2 M；再加水到 1000 mL → 0.2 × 500 = M₂ × 1000 → 0.1 M。</div></div><div class="fcard-row"><span class="fcard-k p">🔄 舉一反三</span><div>① 用 12 M 濃鹽酸配 500 mL 3 M，取幾 mL？<details><summary>看解法</summary><div class="ans">12 × V₁ = 3 × 500 → V₁ = 125 mL，再加水到 500 mL。</div></details>② 1 kg 水樣含 2 mg 鉛是幾 ppm？<details><summary>看解法</summary><div class="ans">0.002 ÷ 1000 × 10⁶ = 2 ppm（即 2 mg/kg）。</div></details></div></div></div>
+<div class="formula">溶液質量 = 溶質質量 + 溶劑質量　　降溫析出量 = 高溫溶解度 − 低溫溶解度</div>`
+  }
+];
+
+var CHEM_CARDS_CH03 = [
+  { q: '溶質、溶劑、溶液怎麼分？濃度的分母是誰？', a: '溶質 = 被溶解的（鹽、糖）；溶劑 = 做溶解的（水）。\n溶液 = 溶質 + 溶劑（整杯）。\n所有濃度的分母都是「溶液」，不是溶劑。' },
+  { q: '重量百分濃度 P% 怎麼算？', a: 'P% = 溶質質量 ÷ 溶液質量 × 100%。\n例：25 g 糖 + 75 g 水 → 25 ÷ 100 = 25%。\n陷阱：不可寫成 25 ÷ 75。' },
+  { q: '體積莫耳濃度 M 的定義與算法？', a: 'M = 溶質莫耳數 n ÷ 溶液體積 V（公升），單位 mol/L。\n例：5.85 g NaCl（58.5）配 500 mL\n→ n = 0.1 mol，V = 0.5 L → M = 0.2 M。' },
+  { q: 'ppm 是什麼？和百分濃度怎麼換？', a: 'ppm = 溶質質量 ÷ 溶液質量 × 10⁶（百萬分之幾）。\n稀水溶液可視為 mg/kg，約等於 mg/L。\n例：1000 g 水中 0.002 g → 2 ppm；1 ppm = 0.0001%。' },
+  { q: '稀釋公式是什麼？為什麼成立？', a: 'M₁V₁ = M₂V₂。\n只加水時溶質莫耳數不變，而 n = M×V，所以前後相等。\n例：12 M 配 500 mL 3 M → V₁ = 3×500÷12 = 125 mL。' },
+  { q: '溶解度曲線怎麼判讀？降溫會析出多少？', a: '溶解度 = 該溫度下 100 g 水最多溶的克數。\n線上＝恰飽和、線下＝未飽和、線上方＝溶不完有剩。\n降溫析出量 = 高溫溶解度 − 低溫溶解度。\n例：KNO₃ 由 60°C（110 g）降到 20°C（32 g）→ 析出 78 g。' },
+  { q: '強電解質、弱電解質、非電解質各舉例？', a: '強（完全解離）：NaCl、HCl、H₂SO₄、NaOH。\n弱（部分解離）：醋酸 CH₃COOH、氨水 NH₃。\n非（不解離、不導電）：蔗糖、酒精、尿素。\n強弱看解離比例，與濃稀無關。' }
+];
+
+// ── ch03_basic.js ──
+// ch03_basic.js — 化學高一 CH03「溶液與濃度」14 基本題（單選10＋多選2＋選填2）
+var CHEM_BASIC_CH03 = [
+  // 1. 溶液組成（single, ans D）
+  {
+    q: '將少量食鹽完全溶解於一杯水中形成食鹽水。下列何者是此溶液中的「溶劑」？',
+    opts: ['食鹽', '食鹽水', '空氣', '水'],
+    ans: 'D',
+    hint: '溶液＝溶質＋溶劑；量多、負責把別人溶開、且與溶液同狀態的那個是溶劑。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先分清三個名詞：被溶開的叫溶質，把別人溶開的叫溶劑，兩者混成均勻的一相叫溶液。</div></div><div class="as-f">溶液 ＝ 溶質 ＋ 溶劑（食鹽水 ＝ 食鹽 ＋ 水）</div><div class="as-step"><div class="as-n">2</div><div>本題食鹽被溶開→溶質；水把食鹽溶開且量多→溶劑；食鹽水本身是「溶液」，不是溶劑。</div></div><div class="as-f">溶質＝食鹽　溶劑＝水　溶液＝食鹽水</div><div class="as-warn">⚠ 別把「溶液」當成「溶劑」；也別以為溶劑一定是水，只是水最常見（水溶液）。</div><div class="as-ans">答：(D) 水</div></div>'
+  },
+  // 2. 重量百分濃度（single, ans C）
+  {
+    q: '取 20 g 食鹽完全溶於 180 g 水中，所得溶液的重量百分濃度 P% 為何？',
+    opts: ['20%', '11.1%', '10%', '9%'],
+    ans: 'C',
+    hint: 'P% ＝ 溶質質量 ÷ 溶液質量 × 100%，分母是「溶質＋溶劑」不是只有水。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先求溶液總質量：溶液 ＝ 溶質 ＋ 溶劑 ＝ 20 ＋ 180 ＝ 200 g。</div></div><div class="as-f">溶液質量 ＝ 20 ＋ 180 ＝ 200（g）</div><div class="as-step"><div class="as-n">2</div><div>代入重量百分濃度公式。</div></div><div class="as-f">P% ＝ 20 ÷ 200 × 100% ＝ 10%</div><div class="as-warn">⚠ 最常見錯誤是拿 20 ÷ 180 ＝ 11.1%（分母誤用水的質量）；分母必須是「溶液」總質量。</div><div class="as-ans">答：(C) 10%</div></div>'
+  },
+  // 3. 體積莫耳濃度 M（single, ans A）
+  {
+    q: '已知 NaOH 的式量為 40。取 4.0 g NaOH 溶於水中，配成 500 mL 的水溶液，則其體積莫耳濃度為何？',
+    opts: ['0.20 M', '0.10 M', '0.40 M', '2.0 M'],
+    ans: 'A',
+    hint: '先把質量換成莫耳（n＝m/M），再把 mL 換成 L，最後 M ＝ n ÷ V(L)。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>質量換莫耳：n ＝ m ÷ 式量。</div></div><div class="as-f">n ＝ 4.0 g ÷ 40 g/mol ＝ 0.10 mol</div><div class="as-step"><div class="as-n">2</div><div>體積換成公升：500 mL ＝ 0.500 L。</div></div><div class="as-f">V ＝ 500 ÷ 1000 ＝ 0.500 L</div><div class="as-step"><div class="as-n">3</div><div>代入體積莫耳濃度定義。</div></div><div class="as-f">M ＝ n ÷ V ＝ 0.10 ÷ 0.500 ＝ 0.20（mol/L）</div><div class="as-warn">⚠ 分母是「溶液的總體積」不是加入的水量，而且一定要換成公升；忘了換算會得到 0.0002 之類的荒謬值。</div><div class="as-ans">答：(A) 0.20 M</div></div>'
+  },
+  // 4. 稀釋公式（single, ans D）
+  {
+    q: '取 2.0 M 的鹽酸 50 mL，加水稀釋成總體積 500 mL，則稀釋後溶液的體積莫耳濃度為何？',
+    opts: ['0.020 M', '1.0 M', '0.50 M', '0.20 M'],
+    ans: 'D',
+    hint: '稀釋只是加水，溶質莫耳數不變，用 M₁V₁ ＝ M₂V₂。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>稀釋的關鍵觀念：只加溶劑，溶質莫耳數 n 完全不變，所以稀釋前後 M×V 相等。</div></div><div class="as-f">M₁V₁ ＝ M₂V₂（兩邊都等於溶質莫耳數 n）</div><div class="as-step"><div class="as-n">2</div><div>代入已知：M₁＝2.0 M、V₁＝50 mL、V₂＝500 mL，求 M₂。</div></div><div class="as-f">M₂ ＝ (2.0 × 50) ÷ 500 ＝ 100 ÷ 500 ＝ 0.20（M）</div><div class="as-step"><div class="as-n">3</div><div>驗算：體積放大 10 倍，濃度就變成 1/10，2.0 → 0.20 合理。</div></div><div class="as-f">500 ÷ 50 ＝ 10 倍　→　2.0 ÷ 10 ＝ 0.20 M</div><div class="as-warn">⚠ 「稀釋至 500 mL」是最後總體積為 500 mL，不是「再加 500 mL 水」；兩者算出的答案不同。用公式時 V₁、V₂ 單位一致即可，不必特地換成公升。</div><div class="as-ans">答：(D) 0.20 M</div></div>'
+  },
+  // 5. ppm（single, ans B）
+  {
+    q: '某工廠排放的廢水樣品質量為 2.0 kg，經分析其中含鉛 0.010 g。則此廢水中鉛的濃度約為多少 ppm？',
+    opts: ['0.50 ppm', '5.0 ppm', '50 ppm', '20 ppm'],
+    ans: 'B',
+    hint: 'ppm ＝ 溶質質量 ÷ 溶液質量 × 10⁶，計算前先把單位統一成公克。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>ppm 是百萬分之一，本質就是重量百分濃度把 100 換成 10⁶。先統一單位：2.0 kg ＝ 2000 g。</div></div><div class="as-f">ppm ＝ (溶質質量 ÷ 溶液質量) × 10⁶</div><div class="as-step"><div class="as-n">2</div><div>代入數值計算比值。</div></div><div class="as-f">0.010 ÷ 2000 ＝ 5.0×10⁻⁶</div><div class="as-step"><div class="as-n">3</div><div>再乘 10⁶ 換成 ppm。</div></div><div class="as-f">5.0×10⁻⁶ × 10⁶ ＝ 5.0（ppm）</div><div class="as-warn">⚠ 沒把 kg 換成 g 就直接除，會差 1000 倍；ppm 適合表示微量成分，用 % 表示會變成 0.0005% 很難讀。</div><div class="as-ans">答：(B) 5.0 ppm</div></div>'
+  },
+  // 6. 溶解度曲線判讀：冷卻析出（single, ans C）＋溶解度曲線 SVG
+  {
+    q: '已知硝酸鉀 KNO₃ 的溶解度：20°C 為 32 g/100 g 水，60°C 為 110 g/100 g 水。今在 60°C 配製「100 g 水」的飽和 KNO₃ 溶液，再將其冷卻至 20°C，可析出固體 KNO₃ 約多少公克？（水的蒸發忽略不計）',
+    opts: ['32 g', '68 g', '78 g', '110 g'],
+    ans: 'C',
+    hint: '水量不變，析出量＝高溫能溶的量 － 低溫能溶的量。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>溶解度的定義是「每 100 g 水在該溫度所能溶解的最大克數」。本題水正好是 100 g，可直接讀值。</div></div><div class="as-f">60°C 溶有 110 g　｜　20°C 最多只能溶 32 g</div><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="180" x2="350" y2="180" stroke="var(--ink3)"/><line x1="40" y1="180" x2="40" y2="25" stroke="var(--ink3)"/><text x="195" y="200" font-size="11" text-anchor="middle" fill="var(--ink3)">溫度（°C）</text><text x="60" y="20" font-size="11" text-anchor="middle" fill="var(--ink3)">溶解度（g/100 g 水）</text><text x="40" y="194" font-size="10" text-anchor="middle" fill="var(--ink3)">0</text><text x="140" y="194" font-size="10" text-anchor="middle" fill="var(--ink3)">20</text><text x="240" y="194" font-size="10" text-anchor="middle" fill="var(--ink3)">40</text><text x="340" y="194" font-size="10" text-anchor="middle" fill="var(--ink3)">60</text><text x="33" y="146" font-size="10" text-anchor="end" fill="var(--ink3)">32</text><text x="33" y="52" font-size="10" text-anchor="end" fill="var(--ink3)">110</text><polyline points="40,164 90,155 140,142 190,125 240,103 290,78 340,48" fill="none" stroke="var(--accent)" stroke-width="2"/><line x1="140" y1="180" x2="140" y2="142" stroke="var(--ink3)" stroke-dasharray="3 3"/><line x1="40" y1="142" x2="140" y2="142" stroke="var(--ink3)" stroke-dasharray="3 3"/><line x1="340" y1="180" x2="340" y2="48" stroke="var(--ink3)" stroke-dasharray="3 3"/><line x1="40" y1="48" x2="340" y2="48" stroke="var(--ink3)" stroke-dasharray="3 3"/><circle cx="140" cy="142" r="4" fill="var(--green)"/><circle cx="340" cy="48" r="4" fill="var(--gold)"/><line x1="356" y1="48" x2="356" y2="142" stroke="var(--red, var(--accent))" stroke-width="2"/><text x="366" y="100" font-size="11" text-anchor="middle" fill="var(--ink)">78</text></svg><div class="as-note">KNO₃ 溶解度曲線：溫度升高溶解度變大。右側線段即 60°C 的 110 g 與 20°C 的 32 g 之差 ＝ 78 g，就是冷卻時「裝不下而析出」的量。</div><div class="as-step"><div class="as-n">2</div><div>冷卻過程水量不變，仍是 100 g 水；超出 20°C 上限的部分會結晶析出。</div></div><div class="as-f">析出量 ＝ 110 － 32 ＝ 78（g）</div><div class="as-warn">⚠ 別把 32 g（剩在水中的量）或 110 g（原本溶的量）當成析出量；析出的是「多出來裝不下」的差值。溶解度都以 100 g 水為基準，水量若不是 100 g 必須先按比例換算。</div><div class="as-ans">答：(C) 78 g</div></div>'
+  },
+  // 7. 飽和與未飽和（single, ans A）
+  {
+    q: '已知某鹽在 25°C 的溶解度為 36 g/100 g 水。今在 25°C 下，將 20 g 該鹽加入 50 g 水中，充分攪拌並靜置後，杯中的情形為何？',
+    opts: ['成為飽和溶液，且尚有 2 g 固體未溶解', '恰好完全溶解成飽和溶液，無固體剩餘', '完全溶解，成為未飽和溶液', '成為飽和溶液，且尚有 4 g 固體未溶解'],
+    ans: 'A',
+    hint: '先按比例算出 50 g 水最多能溶多少，再和實際加入量比大小。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>溶解度以 100 g 水為基準，水量減半，能溶的上限也減半。</div></div><div class="as-f">50 g 水的上限 ＝ 36 × (50 ÷ 100) ＝ 18（g）</div><div class="as-step"><div class="as-n">2</div><div>比較實際加入量 20 g 與上限 18 g：加入量較多，水已經「裝滿」，成為飽和溶液。</div></div><div class="as-f">20 g 大於 18 g　→　飽和，且有固體沉在杯底</div><div class="as-step"><div class="as-n">3</div><div>未溶的量 ＝ 加入量 － 實際溶入量。</div></div><div class="as-f">未溶 ＝ 20 － 18 ＝ 2（g）</div><div class="as-warn">⚠ 只要杯底還有未溶固體且已達平衡，溶液必為飽和；此時再攪拌也不會多溶，除非升溫或加水。別直接拿 36 － 20 ＝ 16 或 20 － 18 以外的組合亂減。</div><div class="as-ans">答：(A) 成為飽和溶液，且尚有 2 g 固體未溶解</div></div>'
+  },
+  // 8. 溶液配製步驟（single, ans B）
+  {
+    q: '欲以容量瓶精確配製 0.100 M 的葡萄糖水溶液 250 mL，下列操作敘述何者「正確」？',
+    opts: ['應先將固體直接倒入容量瓶，再注入熱水使其溶解', '加水接近刻度時改用滴管逐滴加入，並使視線與凹液面最低處齊平', '定容至刻度線後直接靜置即可，不需搖勻', '若不慎加水超過刻度線，可用滴管吸出多餘的水回到刻度'],
+    ans: 'B',
+    hint: '容量瓶不可加熱、不可當溶解容器；超過刻度線就必須重配。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先回想標準步驟：秤取固體 → 在燒杯中以少量水完全溶解 → 移入容量瓶並洗滌燒杯 2~3 次一併倒入 → 加水近刻度 → 滴管定容 → 加塞倒轉搖勻。</div></div><div class="as-f">溶解在燒杯，定容在容量瓶（容量瓶不做溶解、不加熱）</div><div class="as-step"><div class="as-n">2</div><div>逐項檢查：(A) 容量瓶頸細、且刻度是在特定溫度校正的，直接在瓶內溶解又用熱水，體積會不準 → 錯。</div></div><div class="as-f">(A) 錯：不可在容量瓶內溶解，也不可用熱水</div><div class="as-step"><div class="as-n">3</div><div>(C) 定容後濃度上下不均勻，必須加塞倒轉搖勻 → 錯。(D) 超過刻度線代表溶液被稀釋過頭，吸出的是「溶液」不是純水，溶質也被吸走，只能重新配製 → 錯。</div></div><div class="as-f">(C) 錯：必須倒轉搖勻　(D) 錯：超過刻度只能重配</div><div class="as-step"><div class="as-n">4</div><div>(B) 近刻度改用滴管、視線與凹液面最低處水平相切，正是正確的定容方式。</div></div><div class="as-f">(B) 正確：滴管定容＋視線平視凹液面最低處</div><div class="as-warn">⚠ 俯視會讀得偏低而加水不足（濃度偏高），仰視則加水過多（濃度偏低）；讀刻度一定要平視。</div><div class="as-ans">答：(B) 加水接近刻度時改用滴管逐滴加入，並使視線與凹液面最低處齊平</div></div>'
+  },
+  // 9. 電解質強弱（single, ans D）
+  {
+    q: '下列四種水溶液，濃度皆為 0.1 M，在相同條件下測其導電度，何者導電度最大？',
+    opts: ['蔗糖水溶液', '酒精（乙醇）水溶液', '醋酸水溶液', '氯化鈉水溶液'],
+    ans: 'D',
+    hint: '導電靠的是「自由移動的離子」，離子愈多導電度愈大。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>水溶液能導電的原因是溶質解離出可自由移動的離子；不解離就不導電。</div></div><div class="as-f">非電解質（不解離）：蔗糖、酒精、葡萄糖、尿素</div><div class="as-step"><div class="as-n">2</div><div>先刪非電解質：蔗糖與酒精溶於水後仍以分子存在，幾乎不導電，(A)(B) 淘汰。</div></div><div class="as-f">(A)(B) 為非電解質 → 導電度接近 0</div><div class="as-step"><div class="as-n">3</div><div>再比 (C)(D)：醋酸在水中僅「部分」解離，是弱電解質；NaCl 在水中「幾乎完全」解離成 Na⁺ 與 Cl⁻，是強電解質。相同濃度下 NaCl 產生的離子多很多。</div></div><div class="as-f">NaCl → Na⁺ ＋ Cl⁻（完全解離，強電解質）</div><div class="as-warn">⚠ 強弱電解質比的是「解離程度」不是酸性強弱，也不是濃度；濃度相同時，強電解質導電度必大於弱電解質。乾燥的 NaCl 固體離子無法移動，是不導電的，要溶於水或熔融才導電。</div><div class="as-ans">答：(D) 氯化鈉水溶液</div></div>'
+  },
+  // 10. 沉澱反應（single, ans C）
+  {
+    q: '將硝酸銀 AgNO₃ 水溶液與氯化鈉 NaCl 水溶液混合，會立即產生白色沉澱。此白色沉澱為下列何者？',
+    opts: ['NaNO₃', 'Ag₂O', 'AgCl', 'NaCl'],
+    ans: 'C',
+    hint: '把陽離子與陰離子交換配對，再用溶解度規則挑出不溶的那一組。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>兩種鹽類水溶液混合屬複分解（雙取代）反應，陽離子與陰離子互換夥伴。</div></div><div class="as-f">Ag⁺ ＋ NO₃⁻ ＋ Na⁺ ＋ Cl⁻ → 可能組合：AgCl 與 NaNO₃</div><div class="as-step"><div class="as-n">2</div><div>用簡單溶解度規則判斷：所有硝酸鹽 NO₃⁻ 皆可溶、所有鈉鹽 Na⁺ 皆可溶，故 NaNO₃ 留在水中；氯化物大多可溶，但 AgCl 是著名的例外（不溶）。</div></div><div class="as-f">AgNO₃ ＋ NaCl → AgCl（白色沉澱）↓ ＋ NaNO₃</div><div class="as-step"><div class="as-n">3</div><div>因此沉澱是 AgCl。(D) NaCl 本來就是可溶的反應物，不可能是沉澱；(B) Ag₂O 需鹼性條件，本反應沒有 OH⁻。</div></div><div class="as-f">淨離子反應：Ag⁺ ＋ Cl⁻ → AgCl↓</div><div class="as-warn">⚠ 記住溶解度規則的兩條主線：鈉鉀銨鹽與硝酸鹽「全溶」；鹵化物大多可溶，但銀（Ag⁺）、鉛（Pb²⁺）例外。判斷沉澱前務必先把離子交換配對，別直接猜反應物。</div><div class="as-ans">答：(C) AgCl</div></div>'
+  },
+  // 11. 溶液與電解質觀念（multi, ans A/C/E）
+  {
+    type: 'multi',
+    q: '【多選】下列有關水溶液與濃度的敘述，何者「正確」？',
+    opts: [
+      '氯化鈉固體本身不導電，但將其溶於水後所得的水溶液可以導電',
+      '蔗糖溶於水後會解離成離子，故蔗糖水溶液也是良好的導體',
+      '醋酸溶於水後僅部分解離，屬於弱電解質',
+      '將一杯溶液分成兩半，每一半的體積莫耳濃度都會變成原來的一半',
+      '將飽和溶液加入大量的水稀釋後，溶液的重量百分濃度會變小'
+    ],
+    ans: ['A', 'C', 'E'],
+    hint: '導電看有沒有自由離子；濃度是「強度性質」，與取樣多少無關。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>(A) 固態 NaCl 的離子被鎖在晶格中無法移動，故不導電；溶於水後解離成可自由移動的 Na⁺ 與 Cl⁻，能導電 → 正確。</div></div><div class="as-f">導電條件 ＝ 有離子 ＋ 離子能自由移動</div><div class="as-step"><div class="as-n">2</div><div>(B) 蔗糖是非電解質，溶於水仍以分子形式分散，不產生離子，幾乎不導電 → 錯誤。</div></div><div class="as-f">(B) 錯：蔗糖為非電解質，不解離</div><div class="as-step"><div class="as-n">3</div><div>(C) 醋酸只有一小部分分子解離出 H⁺，屬弱電解質，導電度弱 → 正確。</div></div><div class="as-f">(C) 對：部分解離 ＝ 弱電解質</div><div class="as-step"><div class="as-n">4</div><div>(D) 濃度是「每單位體積含多少溶質」的比值；分成兩半時溶質與體積同時減半，比值不變 → 錯誤。</div></div><div class="as-f">(D) 錯：n 與 V 同時減半，M ＝ n/V 不變</div><div class="as-step"><div class="as-n">5</div><div>(E) 加水後溶質質量不變、溶液總質量變大，比值變小 → 正確。</div></div><div class="as-f">(E) 對：分子不變、分母變大 → P% 變小</div><div class="as-warn">⚠ 濃度與「拿多少」無關，這是最常被誤判的一項；另外「會導電」不代表「發生化學變化」，NaCl 溶解仍屬物理變化。</div><div class="as-ans">答：(A)、(C)、(E)</div></div>'
+  },
+  // 12. 溶解度曲線綜合（multi, ans A/B/D）
+  {
+    type: 'multi',
+    q: '【多選】已知硝酸鉀 KNO₃ 的溶解度在 20°C 為 32 g/100 g 水，在 60°C 為 110 g/100 g 水。下列敘述何者「正確」？（水的蒸發忽略不計）',
+    opts: [
+      '在 20°C 時，將 16 g KNO₃ 加入 50 g 水中充分攪拌，可恰好完全溶解並達到飽和',
+      '60°C 的 KNO₃ 飽和溶液，其重量百分濃度約為 52%',
+      '20°C 的 KNO₃ 飽和溶液，其重量百分濃度為 32%',
+      '取 60°C 的飽和溶液 210 g 冷卻至 20°C，可析出約 78 g 的 KNO₃ 固體',
+      'KNO₃ 的溶解度隨溫度升高而降低'
+    ],
+    ans: ['A', 'B', 'D'],
+    hint: '飽和溶液的 P% ＝ 溶解度 ÷（溶解度＋100），別把溶解度數字直接當百分比。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>(A) 20°C 每 100 g 水溶 32 g，則 50 g 水的上限 ＝ 32 × 0.5 ＝ 16 g，加入量恰為 16 g → 剛好完全溶解且達飽和，正確。</div></div><div class="as-f">32 × (50 ÷ 100) ＝ 16（g）＝ 加入量 → 恰飽和</div><div class="as-step"><div class="as-n">2</div><div>(B) 60°C 飽和溶液的組成為 110 g 溶質 ＋ 100 g 水 ＝ 210 g 溶液。</div></div><div class="as-f">P% ＝ 110 ÷ 210 × 100% ≒ 52.4%</div><div class="as-step"><div class="as-n">3</div><div>(C) 同法算 20°C：溶液 ＝ 32 ＋ 100 ＝ 132 g。</div></div><div class="as-f">32 ÷ 132 × 100% ≒ 24.2%（不是 32%）→ 錯誤</div><div class="as-step"><div class="as-n">4</div><div>(D) 210 g 的 60°C 飽和溶液正好含 100 g 水與 110 g 溶質；冷卻到 20°C 時 100 g 水只能留住 32 g。</div></div><div class="as-f">析出 ＝ 110 － 32 ＝ 78（g）→ 正確</div><div class="as-step"><div class="as-n">5</div><div>(E) 由 32 g 升到 110 g，溶解度是隨溫度「升高」而增大 → 錯誤。</div></div><div class="as-f">20°C：32 g　小於　60°C：110 g → 溶解度隨溫度上升</div><div class="as-warn">⚠ 溶解度的分母是「水」，重量百分濃度的分母是「溶液」，兩者基準不同，所以 32 g/100 g 水 絕不等於 32%。多數固體溶解度隨溫度升高而增加，但氣體相反（溫度愈高愈難溶）。</div><div class="as-ans">答：(A)、(B)、(D)</div></div>'
+  },
+  // 13. 稀釋計算（fill, ans 25）
+  {
+    type: 'fill',
+    q: '【選填】欲以 4.0 M 的濃鹽酸配製 0.50 M 的稀鹽酸 200 mL，需量取濃鹽酸多少毫升（mL）？（填數值）',
+    ans: '25',
+    acc: ['25.0', '25 mL', '25mL'],
+    hint: '稀釋前後溶質莫耳數相同，套 M₁V₁ ＝ M₂V₂ 求 V₁。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>稀釋只是加水，溶質的莫耳數不變，故稀釋前後 M×V 相等。</div></div><div class="as-f">M₁V₁ ＝ M₂V₂　→　4.0 × V₁ ＝ 0.50 × 200</div><div class="as-step"><div class="as-n">2</div><div>先算右邊：0.50 × 200 ＝ 100。</div></div><div class="as-f">4.0 × V₁ ＝ 100</div><div class="as-step"><div class="as-n">3</div><div>兩邊同除以 4.0 求出所需濃鹽酸體積。</div></div><div class="as-f">V₁ ＝ 100 ÷ 4.0 ＝ 25（mL）</div><div class="as-step"><div class="as-n">4</div><div>驗算：25 mL 的 4.0 M 含溶質 0.025 L × 4.0 ＝ 0.10 mol；稀釋成 0.200 L 後 M ＝ 0.10 ÷ 0.200 ＝ 0.50 M，與題目相符。</div></div><div class="as-f">0.10 mol ÷ 0.200 L ＝ 0.50 M ✓</div><div class="as-warn">⚠ 濃度被稀釋成 1/8，體積就要變成 8 倍（25 → 200），別把比例算反。實驗上稀釋濃酸務必「酸加入水中」並持續攪拌，切勿把水倒入濃酸，以免劇烈放熱噴濺。</div><div class="as-ans">答：25 mL</div></div>'
+  },
+  // 14. 重量百分濃度反求溶質（fill, ans 60）
+  {
+    type: 'fill',
+    q: '【選填】欲配製重量百分濃度為 15% 的食鹽水共 400 g，需秤取食鹽多少公克（g）？（填數值）',
+    ans: '60',
+    acc: ['60.0', '60 g', '60g'],
+    hint: '溶質質量 ＝ 溶液質量 × P%，注意 400 g 指的是「溶液」不是水。',
+    explain: '<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>由重量百分濃度的定義反推溶質質量。</div></div><div class="as-f">P% ＝ 溶質 ÷ 溶液 × 100%　→　溶質 ＝ 溶液 × P%</div><div class="as-step"><div class="as-n">2</div><div>代入：溶液 400 g、P% ＝ 15% ＝ 0.15。</div></div><div class="as-f">溶質 ＝ 400 × 0.15 ＝ 60（g）</div><div class="as-step"><div class="as-n">3</div><div>順便求所需的水：溶劑 ＝ 溶液 － 溶質 ＝ 400 － 60 ＝ 340 g。</div></div><div class="as-f">需食鹽 60 g ＋ 水 340 g，合計 400 g</div><div class="as-step"><div class="as-n">4</div><div>驗算：60 ÷ 400 × 100% ＝ 15%，與題目相符。</div></div><div class="as-f">60 ÷ 400 ＝ 0.15 ＝ 15% ✓</div><div class="as-warn">⚠ 常見錯誤是把 400 g 當成「水」而算成 400 × 0.15 ＝ 60 g 食鹽再配 400 g 水（總量變 460 g，濃度只有 13%）；題目說「食鹽水共 400 g」指的是溶液總質量。</div><div class="as-ans">答：60 g</div></div>'
+  }
+];
+
+// ── ch03_adv.js ──
+var CHEM_ADV_CH03 = [
+  {
+    type:'open',
+    q:`【進階實戰】市售濃硫酸標示重量百分濃度 98.0%、密度 1.84 g/mL（H₂SO₄ 分子量 98）。(1) 求其體積莫耳濃度 M (2) 欲配製 0.500 L 的 1.84 M 稀硫酸，需量取此濃硫酸幾 mL (3) 說明配製時「酸入水」還是「水入酸」。`,
+    ans:`(1) 18.4 M　(2) 50.0 mL　(3) 應把濃硫酸沿玻棒緩緩倒入水中（酸入水），並不斷攪拌散熱`,
+    hint:`先取 1 L 溶液當基準：質量＝1000×d，其中 98.0% 是溶質，再除以分子量得莫耳數。第 (2) 小題用稀釋公式 M₁V₁＝M₂V₂。`,
+    fig:`<svg viewBox="0 0 340 74" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="10" width="150" height="52" rx="6" fill="none" stroke="var(--accent)"/><text x="83" y="30" text-anchor="middle" font-size="12" fill="var(--ink)">濃硫酸 98.0%</text><text x="83" y="48" text-anchor="middle" font-size="12" fill="var(--ink)">d ＝ 1.84 g/mL</text><line x1="158" y1="36" x2="212" y2="36" stroke="var(--ink3)"/><rect x="212" y="10" width="118" height="52" rx="6" fill="none" stroke="var(--red)"/><text x="271" y="30" text-anchor="middle" font-size="12" fill="var(--ink)">體積莫耳濃度</text><text x="271" y="50" text-anchor="middle" font-size="16" fill="var(--red)">?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>取 1 L（＝1000 mL）溶液當基準。溶液質量＝體積×密度。</div></div><div class="as-f">m(溶液) ＝ 1000 × 1.84 ＝ 1840 g</div><div class="as-step"><div class="as-n">2</div><div>其中 98.0% 是溶質 H₂SO₄，求溶質質量後除以分子量得莫耳數。</div></div><div class="as-f">m(H₂SO₄) ＝ 1840 × 0.980 ＝ 1803.2 g</div><div class="as-f">n ＝ 1803.2 ÷ 98 ＝ 18.4 mol</div><div class="as-step"><div class="as-n">3</div><div>這 18.4 mol 就溶在 1 L 溶液裡，故 M＝18.4 mol/L。（通式：M＝1000×d×P%÷分子量）</div></div><div class="as-f">M ＝ 1000 × 1.84 × 0.980 ÷ 98 ＝ 18.4 M</div><div class="as-step"><div class="as-n">4</div><div>第 (2) 小題用稀釋公式：稀釋前後溶質莫耳數不變。</div></div><div class="as-f">M₁V₁ ＝ M₂V₂　→　18.4 × V₁ ＝ 1.84 × 0.500</div><div class="as-f">V₁ ＝ 0.920 ÷ 18.4 ＝ 0.0500 L ＝ 50.0 mL</div><div class="as-step"><div class="as-n">5</div><div>硫酸稀釋放出大量熱。若把水倒進濃硫酸，水浮在表面局部沸騰會噴濺；故須「酸入水」。</div></div><div class="as-note">記憶樞紐：重量百分濃度是「質量比」，體積莫耳濃度是「每公升溶液的莫耳數」，兩者靠密度 d 才能互換。</div><div class="as-warn">⚠ 扣分點一：算 M 時分母要用「溶液」體積，不是溶劑（水）的體積。⚠ 扣分點二：稀釋公式兩邊體積單位要一致，0.500 L 不可與 mL 混寫。</div><div class="as-ans">答：(1) 18.4 M　(2) 50.0 mL　(3) 酸入水，沿玻棒緩緩倒入並攪拌散熱。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】將 200 mL 0.50 M 的 NaCl 水溶液與 300 mL 1.00 M 的 NaCl 水溶液混合，假設混合後體積可直接相加。(1) 求混合液的體積莫耳濃度 (2) 求混合液中 Cl⁻ 的莫耳數 (3) 再加純水稀釋至 2.00 L，求最後濃度。`,
+    ans:`(1) 0.80 M　(2) 0.40 mol　(3) 0.20 M`,
+    hint:`混合題一律先各自算「溶質莫耳數」相加，再除以總體積；濃度不可直接平均。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>各溶液的溶質莫耳數＝M×V（體積換成 L）。</div></div><div class="as-f">n₁ ＝ 0.50 × 0.200 ＝ 0.10 mol</div><div class="as-f">n₂ ＝ 1.00 × 0.300 ＝ 0.30 mol</div><div class="as-step"><div class="as-n">2</div><div>同種溶質可直接相加，總體積亦相加。</div></div><div class="as-f">n(總) ＝ 0.10 ＋ 0.30 ＝ 0.40 mol　；　V(總) ＝ 0.500 L</div><div class="as-f">M ＝ 0.40 ÷ 0.500 ＝ 0.80 M</div><div class="as-step"><div class="as-n">3</div><div>NaCl 在水中完全解離為 Na⁺ 與 Cl⁻，比例 1:1:1，故 Cl⁻ 莫耳數等於 NaCl 莫耳數。</div></div><div class="as-f">n(Cl⁻) ＝ 0.40 mol　（n(Na⁺) 亦為 0.40 mol）</div><div class="as-step"><div class="as-n">4</div><div>加水稀釋時溶質莫耳數不變，只有體積變大。</div></div><div class="as-f">M₂ ＝ 0.40 ÷ 2.00 ＝ 0.20 M</div><div class="as-note">若把兩濃度直接平均會得 0.75 M，與正解 0.80 M 不同；因為兩者體積不等，必須用莫耳數加權。</div><div class="as-warn">⚠ 扣分點一：濃度不能相加也不能直接平均。⚠ 扣分點二：若溶質改成 CaCl₂，每 1 mol 會給 2 mol Cl⁻，離子莫耳數要乘係數。</div><div class="as-ans">答：(1) 0.80 M　(2) 0.40 mol　(3) 0.20 M</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】實驗室有 500 g 重量百分濃度 8.0% 的食鹽水，想把它變成 20.0%。(1) 若用加熱蒸發水分的方式，需蒸發掉多少克水 (2) 若改成直接加入固體 NaCl（完全溶解且未飽和），需加入多少克 (3) 比較兩法後溶液總質量。`,
+    ans:`(1) 蒸發 300 g 水　(2) 加入 75 g 固體 NaCl　(3) 蒸發法 200 g、加固體法 575 g`,
+    hint:`先算原有溶質質量。蒸發法「溶質不變、溶液變少」；加固體法「溶質與溶液同時變多」，要設未知數列式。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>先求原溶液中的溶質質量。</div></div><div class="as-f">m(NaCl) ＝ 500 × 8.0% ＝ 40 g　（水 460 g）</div><div class="as-step"><div class="as-n">2</div><div>蒸發法：溶質仍是 40 g，設最後溶液總質量為 m。</div></div><div class="as-f">40 ÷ m ＝ 20.0%　→　m ＝ 40 ÷ 0.200 ＝ 200 g</div><div class="as-f">蒸發水量 ＝ 500 − 200 ＝ 300 g</div><div class="as-step"><div class="as-n">3</div><div>加固體法：設加入 x g NaCl，則溶質變 (40＋x)、溶液變 (500＋x)。</div></div><div class="as-f">(40 ＋ x) ÷ (500 ＋ x) ＝ 0.200</div><div class="as-step"><div class="as-n">4</div><div>去分母求解。</div></div><div class="as-f">40 ＋ x ＝ 100 ＋ 0.200x　→　0.800x ＝ 60　→　x ＝ 75 g</div><div class="as-step"><div class="as-n">5</div><div>驗算：(40＋75)÷(500＋75) ＝ 115 ÷ 575 ＝ 0.200，確為 20.0%。</div></div><div class="as-f">蒸發法總質量 200 g　；　加固體法總質量 575 g</div><div class="as-note">同樣達到 20%，蒸發法「拿掉溶劑」、加固體法「補上溶質」，兩條路的溶液總質量差很多。</div><div class="as-warn">⚠ 扣分點一：加固體時分母也要加 x，只加分子是最常見錯誤。⚠ 扣分點二：蒸發掉的是水，不是溶液，答案別寫 300 g 溶液。</div><div class="as-ans">答：(1) 蒸發 300 g 水　(2) 加 75 g NaCl　(3) 蒸發法 200 g、加固體法 575 g</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】硝酸鉀 KNO₃ 的溶解度曲線如圖，60 °C 時為 110 g／100 g 水，20 °C 時為 32 g／100 g 水。今取 60 °C 的 KNO₃ 飽和溶液 210 g，緩緩冷卻至 20 °C。(1) 求析出的 KNO₃ 晶體質量 (2) 求 20 °C 時剩餘溶液的重量百分濃度 (3) 說明此法為何可用來純化 KNO₃。`,
+    ans:`(1) 析出 78 g　(2) 約 24.2%　(3) 因溶解度隨溫度變化極大，降溫時大量純 KNO₃ 結晶析出，雜質仍留在母液中`,
+    hint:`飽和溶液可拆成「水＋溶質」。60 °C 的 210 g 恰好是 100 g 水＋110 g 溶質；冷卻時水量不變，只是能溶的量變少。`,
+    fig:`<svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg"><line x1="50" y1="180" x2="360" y2="180" stroke="var(--ink3)"/><line x1="50" y1="180" x2="50" y2="25" stroke="var(--ink3)"/><text x="205" y="200" text-anchor="middle" font-size="11" fill="var(--ink3)">溫度 (°C)</text><text x="14" y="30" font-size="11" fill="var(--ink3)">溶解度</text><text x="14" y="44" font-size="10" fill="var(--ink3)">g/100g水</text><text x="50" y="194" text-anchor="middle" font-size="10" fill="var(--ink3)">0</text><text x="125" y="194" text-anchor="middle" font-size="10" fill="var(--ink3)">20</text><text x="200" y="194" text-anchor="middle" font-size="10" fill="var(--ink3)">40</text><text x="275" y="194" text-anchor="middle" font-size="10" fill="var(--ink3)">60</text><text x="44" y="154" text-anchor="end" font-size="10" fill="var(--ink3)">32</text><text x="44" y="81" text-anchor="end" font-size="10" fill="var(--ink3)">110</text><polyline points="50,168 87,160 125,150 162,137 200,120 237,100 275,77 312,51" fill="none" stroke="var(--accent)" stroke-width="2"/><line x1="50" y1="150" x2="125" y2="150" stroke="var(--ink3)" stroke-dasharray="4 3"/><line x1="125" y1="150" x2="125" y2="180" stroke="var(--ink3)" stroke-dasharray="4 3"/><line x1="50" y1="77" x2="275" y2="77" stroke="var(--ink3)" stroke-dasharray="4 3"/><line x1="275" y1="77" x2="275" y2="180" stroke="var(--ink3)" stroke-dasharray="4 3"/><circle cx="125" cy="150" r="3" fill="var(--gold)"/><circle cx="275" cy="77" r="3" fill="var(--gold)"/><text x="288" y="70" font-size="10" fill="var(--ink)">60 °C 飽和 210 g</text><text x="290" y="120" font-size="14" fill="var(--red)">析出 ?</text><line x1="272" y1="88" x2="200" y2="112" stroke="var(--red)" stroke-dasharray="3 3"/></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>60 °C 時溶解度 110 表示「100 g 水最多溶 110 g」，此時飽和溶液 100＋110＝210 g。題目給的正好是 210 g，故拆解為：</div></div><div class="as-f">水 ＝ 100 g　；　溶質 KNO₃ ＝ 110 g</div><div class="as-step"><div class="as-n">2</div><div>冷卻過程水沒有蒸發，水量仍是 100 g。20 °C 時這 100 g 水只能溶 32 g。</div></div><div class="as-f">20 °C 可溶量 ＝ 32 g</div><div class="as-step"><div class="as-n">3</div><div>溶不下的部分結晶析出。</div></div><div class="as-f">析出量 ＝ 110 − 32 ＝ 78 g</div><div class="as-step"><div class="as-n">4</div><div>剩餘溶液＝水 100 g＋溶質 32 g＝132 g，仍是 20 °C 的飽和溶液。</div></div><div class="as-f">P% ＝ 32 ÷ 132 ＝ 0.2424 ≈ 24.2%</div><div class="as-step"><div class="as-n">5</div><div>KNO₃ 的溶解度隨溫度上升而急遽增大，降溫時析出量很大；少量雜質量少且未達飽和，會留在母液中，故重結晶可純化。</div></div><div class="as-note">圖中兩個標示點就是 20 °C 與 60 °C 的溶解度；曲線愈陡，降溫能逼出的晶體愈多。</div><div class="as-warn">⚠ 扣分點一：溶解度的分母是「100 g 水」不是「100 g 溶液」，別把 110 直接當百分濃度。⚠ 扣分點二：冷卻時水量不變，若題目改成同時蒸發水，析出量要另外加算。</div><div class="as-ans">答：(1) 78 g　(2) 約 24.2%　(3) 溶解度隨溫度差異大，降溫析出純晶體而雜質留在母液，可用重結晶純化。</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】取某湖水樣品 250 mL（密度視為 1.00 g/mL），分析出其中含 Ca²⁺ 共 0.0050 g（原子量 Ca＝40）。(1) 求此水樣 Ca²⁺ 的 ppm (2) 若飲用水規範 Ca²⁺ 不得超過 10 ppm，需再加入多少 mL 純水才剛好合格 (3) 求原水樣中 Ca²⁺ 的體積莫耳濃度。`,
+    ans:`(1) 20 ppm　(2) 再加 250 mL 純水　(3) 5.0×10⁻⁴ M`,
+    hint:`ppm＝溶質質量÷溶液質量×10⁶。密度 1.00 g/mL 時 250 mL 剛好是 250 g，換算特別方便。`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>密度 1.00 g/mL，故水樣質量＝250 g。ppm 是百萬分之一的質量比。</div></div><div class="as-f">ppm ＝ (0.0050 ÷ 250) × 10⁶ ＝ 2.0×10⁻⁵ × 10⁶ ＝ 20 ppm</div><div class="as-step"><div class="as-n">2</div><div>加水稀釋時 Ca²⁺ 質量不變，濃度與溶液總量成反比。設稀釋後總體積 V。</div></div><div class="as-f">20 × 250 ＝ 10 × V　→　V ＝ 500 mL</div><div class="as-f">需加純水 ＝ 500 − 250 ＝ 250 mL</div><div class="as-step"><div class="as-n">3</div><div>換成體積莫耳濃度：先把質量除以原子量得莫耳數。</div></div><div class="as-f">n(Ca²⁺) ＝ 0.0050 ÷ 40 ＝ 1.25×10⁻⁴ mol</div><div class="as-step"><div class="as-n">4</div><div>再除以溶液體積（換成公升）。</div></div><div class="as-f">M ＝ 1.25×10⁻⁴ ÷ 0.250 ＝ 5.0×10⁻⁴ M</div><div class="as-note">ppm 用在極稀的溶液（水質、空氣汙染）；1 ppm 對水溶液約等於「每公升 1 毫克」，因為 1 L 水約 1000 g。</div><div class="as-warn">⚠ 扣分點一：ppm 是質量對質量，別拿體積直接除。⚠ 扣分點二：稀釋公式在此用的是「濃度×總量」守恆，別誤把要加的水量寫成 500 mL。</div><div class="as-ans">答：(1) 20 ppm　(2) 再加 250 mL 純水　(3) 5.0×10⁻⁴ M</div></div>`
+  },
+  {
+    type:'open',
+    q:`【進階實戰】將 100 mL 0.20 M 的 AgNO₃ 水溶液與 100 mL 0.10 M 的 NaCl 水溶液混合，產生白色 AgCl 沉澱（原子量 Ag＝108、Cl＝35.5；混合後體積視為 200 mL）。(1) 寫出離子反應式並判斷限量試劑 (2) 求生成的 AgCl 質量 (3) 求反應後溶液中殘留 Ag⁺ 的體積莫耳濃度。`,
+    ans:`(1) Ag⁺ ＋ Cl⁻ → AgCl(s)，Cl⁻ 為限量試劑　(2) 1.435 g　(3) 0.050 M`,
+    hint:`先把兩邊都換成莫耳數再比較。Ag⁺ 與 Cl⁻ 係數比 1:1，誰的莫耳數少誰就是限量試劑，剩下的那個會有殘留。`,
+    fig:`<svg viewBox="0 0 380 120" xmlns="http://www.w3.org/2000/svg"><rect x="14" y="14" width="112" height="52" rx="6" fill="none" stroke="var(--accent)"/><text x="70" y="34" text-anchor="middle" font-size="12" fill="var(--ink)">AgNO₃ 0.20 M</text><text x="70" y="52" text-anchor="middle" font-size="12" fill="var(--ink)">100 mL</text><rect x="14" y="72" width="112" height="36" rx="6" fill="none" stroke="var(--gold)"/><text x="70" y="95" text-anchor="middle" font-size="12" fill="var(--ink)">NaCl 0.10 M　100 mL</text><line x1="126" y1="60" x2="196" y2="60" stroke="var(--ink3)"/><text x="161" y="52" text-anchor="middle" font-size="11" fill="var(--ink3)">混合</text><rect x="196" y="20" width="168" height="80" rx="8" fill="none" stroke="var(--ink3)"/><text x="280" y="42" text-anchor="middle" font-size="12" fill="var(--ink)">總體積 200 mL</text><text x="280" y="64" text-anchor="middle" font-size="12" fill="var(--ink)">AgCl 沉澱 ?</text><text x="280" y="86" text-anchor="middle" font-size="12" fill="var(--red)">殘留 Ag⁺ 濃度 ?</text></svg>`,
+    explain:`<div class="adv-sol"><div class="as-step"><div class="as-n">1</div><div>兩者皆為強電解質，在水中完全解離。先各自算離子莫耳數。</div></div><div class="as-f">n(Ag⁺) ＝ 0.20 × 0.100 ＝ 0.020 mol</div><div class="as-f">n(Cl⁻) ＝ 0.10 × 0.100 ＝ 0.010 mol</div><div class="as-step"><div class="as-n">2</div><div>離子反應式係數比 1:1。Cl⁻ 只有 0.010 mol 比較少，故 Cl⁻ 是限量試劑，全部被沉澱掉。</div></div><div class="as-f">Ag⁺ ＋ Cl⁻ → AgCl(s)　（限量試劑：Cl⁻）</div><div class="as-step"><div class="as-n">3</div><div>生成 AgCl 的莫耳數等於限量試劑莫耳數。式量＝108＋35.5＝143.5。</div></div><div class="as-f">n(AgCl) ＝ 0.010 mol　；　m ＝ 0.010 × 143.5 ＝ 1.435 g</div><div class="as-step"><div class="as-n">4</div><div>Ag⁺ 用掉 0.010 mol，殘留 0.020−0.010＝0.010 mol，溶在總體積 200 mL 中。</div></div><div class="as-f">M(Ag⁺) ＝ 0.010 ÷ 0.200 ＝ 0.050 M</div><div class="as-note">Na⁺ 與 NO₃⁻ 全程沒有參與沉澱，稱為旁觀離子，所以離子反應式裡不寫它們。</div><div class="as-warn">⚠ 扣分點一：不可用「濃度大的過量」直接判斷，一定要換成莫耳數比較。⚠ 扣分點二：算殘留濃度時分母是混合後的 200 mL，不是原來的 100 mL。</div><div class="as-ans">答：(1) Ag⁺ ＋ Cl⁻ → AgCl(s)，Cl⁻ 為限量試劑　(2) 1.435 g　(3) 0.050 M</div></div>`
+  }
+];
+
 var CHEM_questions={0:{},1:{},2:{}};
 CHEM_questions[0]['物質與原子結構']=CHEM_BASIC.concat(CHEM_ADV);
+CHEM_questions[0]['化學反應與計量']=CHEM_BASIC_CH02.concat(CHEM_ADV_CH02);
+CHEM_questions[0]['溶液與濃度']=CHEM_BASIC_CH03.concat(CHEM_ADV_CH03);
 var CHEM_curriculum={
   0:{label:'高一・化學 基礎',books:[{name:'第一冊 基礎化學',units:[
     {num:'CH 01',name:'物質與原子結構',sub:'物質分類、原子構造、原子量分子量、莫耳與亞佛加厥數、化學計量',pct:0},
-    {num:'CH 02',name:'化學反應與計量',sub:'即將推出',pct:0,locked:true},
-    {num:'CH 03',name:'溶液與濃度',sub:'即將推出',pct:0,locked:true}
+    {num:'CH 02',name:'化學反應與計量',sub:'化學式、方程式配平、質量守恆、莫耳比計量、限量試劑、百分產率、反應類型',pct:0},
+    {num:'CH 03',name:'溶液與濃度',sub:'溶解度、重量百分濃度、體積莫耳濃度、ppm、稀釋公式、配製、電解質、沉澱反應',pct:0}
   ]}]},
   1:{label:'高二・化學',books:[{name:'選修化學（上）',units:[{num:'CH 01',name:'化學鍵與反應',sub:'即將推出',pct:0,locked:true}]}]},
   2:{label:'高三・化學',books:[{name:'選修化學（下）',units:[{num:'CH 01',name:'有機化學',sub:'即將推出',pct:0,locked:true}]}]}
 };
-var CHEM_details={};if(CHEM_COURSE)CHEM_details['gc0_ch01']=CHEM_COURSE;
+var CHEM_details={};if(CHEM_COURSE)CHEM_details['gc0_ch01']=CHEM_COURSE;CHEM_details['gc0_ch02']=CHEM_COURSE_CH02;CHEM_details['gc0_ch03']=CHEM_COURSE_CH03;
 var CHEM_currTree={
-  0:{tracks:[{label:'化學',chapters:[{key:'gc0_ch01',num:'C1',name:'物質與原子結構'}]}]},
+  0:{tracks:[{label:'化學',chapters:[{key:'gc0_ch01',num:'C1',name:'物質與原子結構'},{key:'gc0_ch02',num:'C2',name:'化學反應與計量'},{key:'gc0_ch03',num:'C3',name:'溶液與濃度'}]}]},
   1:{tracks:[{label:'化學',chapters:[]}]},
   2:{tracks:[{label:'化學',chapters:[]}]}
 };
-var CHEM_notes={0:CHEM_NOTES,1:{pills:[],content:{}},2:{pills:[],content:{}}};
-var CHEM_flash={0:{'物質與原子結構':CHEM_CARDS},1:{},2:{}};
+var CHEM_notes={0:{pills:CHEM_NOTES.pills.concat(['化學反應與計量','溶液與濃度']),content:Object.assign({},CHEM_NOTES.content,{'化學反應與計量':CHEM_NOTES_CH02,'溶液與濃度':CHEM_NOTES_CH03})},1:{pills:[],content:{}},2:{pills:[],content:{}}};
+var CHEM_flash={0:{'物質與原子結構':CHEM_CARDS,'化學反應與計量':CHEM_CARDS_CH02,'溶液與濃度':CHEM_CARDS_CH03},1:{},2:{}};
 var CHEM_exam={0:[],1:[],2:[]};
 var CHEM_sols={0:[],1:[],2:[]};
 var CHEM_noteMap={0:{},1:{},2:{}};
-var CHEM_solOrder={0:['物質與原子結構'],1:[],2:[]};
+var CHEM_solOrder={0:['物質與原子結構','化學反應與計量','溶液與濃度'],1:[],2:[]};
 
 /* registry：[0]=數學(現有全域指標), [1]=物理, [2]=化學 */
 var SUBJECTS=[
